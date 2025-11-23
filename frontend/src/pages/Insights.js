@@ -7,6 +7,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { toast } from 'sonner';
 import { Sparkles, TrendingUp, AlertTriangle, Target, Loader2, Clock, RefreshCw, ChevronDown, ChevronUp, CheckCircle, XCircle } from 'lucide-react';
 
+// Helper function to format markdown-style text
+const formatText = (text) => {
+  if (!text) return '';
+  // Convert **text** to <strong>text</strong>
+  return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+             .replace(/\*(.*?)\*/g, '<em>$1</em>');
+};
+
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
