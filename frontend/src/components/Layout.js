@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { LayoutDashboard, Wallet, Settings, LogOut, ShieldCheck, FileText, FolderLock } from 'lucide-react';
+import { LayoutDashboard, Wallet, Settings, LogOut, ShieldCheck, FileText, FolderLock, Sparkles, Calendar, Crown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 
