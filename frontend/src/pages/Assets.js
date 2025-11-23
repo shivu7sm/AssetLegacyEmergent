@@ -284,6 +284,127 @@ export default function Assets() {
     }
   };
 
+  const fetchPortfolios = async () => {
+    try {
+      const response = await axios.get(`${API}/portfolio-assets`, { withCredentials: true });
+      setPortfolios(response.data);
+    } catch (error) {
+      console.error('Failed to fetch portfolios:', error);
+      toast.error('Failed to load portfolios');
+    }
+  };
+
+  const fetchPortfolioDetails = async (portfolioId) => {
+    try {
+      const response = await axios.get(`${API}/portfolio-assets/${portfolioId}`, { withCredentials: true });
+      setSelectedPortfolio(response.data);
+    } catch (error) {
+      console.error('Failed to fetch portfolio details:', error);
+      toast.error('Failed to load portfolio details');
+    }
+  };
+
+  const handleCreatePortfolio = async (e) => {
+    e.preventDefault();
+    try {
+      const payload = {
+        name: formData.name,
+        provider_name: formData.provider_name,
+        provider_type: formData.provider_type,
+        purchase_currency: formData.purchase_currency
+      };
+      
+      await axios.post(`${API}/portfolio-assets`, payload, { withCredentials: true });
+      toast.success('Portfolio created successfully');
+      setPortfolioDialogOpen(false);
+      resetForm();
+      fetchPortfolios();
+    } catch (error) {
+      console.error('Failed to create portfolio:', error);
+      toast.error('Failed to create portfolio');
+    }
+  };
+
+  const handleAddHolding = async (e) => {
+    e.preventDefault();
+    if (!selectedPortfolio) return;
+    
+    try {
+      const payload = {
+        ...holdingForm,
+        quantity: parseFloat(holdingForm.quantity),
+        purchase_price: parseFloat(holdingForm.purchase_price),
+        current_price: holdingForm.current_price ? parseFloat(holdingForm.current_price) : null
+      };
+      
+      if (editingHolding) {
+        await axios.put(
+          `${API}/portfolio-assets/${selectedPortfolio.id}/holdings/${editingHolding.symbol}`,
+          payload,
+          { withCredentials: true }
+        );
+        toast.success('Holding updated successfully');
+      } else {
+        await axios.post(
+          `${API}/portfolio-assets/${selectedPortfolio.id}/holdings`,
+          payload,
+          { withCredentials: true }
+        );
+        toast.success('Holding added successfully');
+      }
+      
+      setHoldingDialogOpen(false);
+      setEditingHolding(null);
+      setHoldingForm({
+        symbol: '',
+        name: '',
+        quantity: '',
+        purchase_price: '',
+        purchase_date: '',
+        purchase_currency: 'USD',
+        current_price: '',
+        asset_type: 'crypto'
+      });
+      fetchPortfolioDetails(selectedPortfolio.id);
+      fetchPortfolios();
+    } catch (error) {
+      console.error('Failed to save holding:', error);
+      toast.error('Failed to save holding');
+    }
+  };
+
+  const handleDeleteHolding = async (portfolioId, symbol) => {
+    if (!window.confirm('Are you sure you want to delete this holding?')) return;
+    
+    try {
+      await axios.delete(
+        `${API}/portfolio-assets/${portfolioId}/holdings/${symbol}`,
+        { withCredentials: true }
+      );
+      toast.success('Holding deleted successfully');
+      fetchPortfolioDetails(portfolioId);
+      fetchPortfolios();
+    } catch (error) {
+      console.error('Failed to delete holding:', error);
+      toast.error('Failed to delete holding');
+    }
+  };
+
+  const handleDeletePortfolio = async (portfolioId) => {
+    if (!window.confirm('Are you sure you want to delete this portfolio and all its holdings?')) return;
+    
+    try {
+      await axios.delete(`${API}/portfolio-assets/${portfolioId}`, { withCredentials: true });
+      toast.success('Portfolio deleted successfully');
+      setSelectedPortfolio(null);
+      fetchPortfolios();
+    } catch (error) {
+      console.error('Failed to delete portfolio:', error);
+      toast.error('Failed to delete portfolio');
+    }
+  };
+
+
   const calculateAssetValue = (asset, useCurrent = false) => {
     let value = 0;
     
