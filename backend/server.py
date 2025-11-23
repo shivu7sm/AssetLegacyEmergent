@@ -468,7 +468,7 @@ async def create_session(request: Request, response: Response):
     else:
         user_id = existing_user["id"]
         # If existing user is the admin email but not marked as admin, update them
-        if session_data["email"] == "shivu7sm@gmail.com" and existing_user.get("role") != "admin":
+        if session_data["email"] == os.environ.get('ADMIN_EMAIL', 'shivu7sm@gmail.com') and existing_user.get("role") != "admin":
             await db.users.update_one(
                 {"email": session_data["email"]},
                 {"$set": {"role": "admin"}}
