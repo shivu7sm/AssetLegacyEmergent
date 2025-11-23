@@ -888,6 +888,46 @@ async def stripe_webhook(request: Request):
     
     return {"status": "success"}
 
+@api_router.post("/subscription/cancel")
+async def cancel_subscription(user: User = Depends(require_auth)):
+    try:
+        subscription_id = getattr(user, 'stripe_subscription_id', None)
+        if not subscription_id:
+            raise HTTPException(status_code=400, detail="No active subscription")
+        
+        # Cancel subscription in Stripe
+        stripe.Subscription.modify(subscription_id, cancel_at_period_end=True)
+        
+        await db.users.update_one(
+            {"id": user.id},
+            {"$set": {"subscription_status": "canceling"}}
+        )
+        
+        return {"success": True, "message": "Subscription will be canceled at period end"}
+    except stripe.error.StripeError as e:
+        logger.error(f"Stripe error: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e))
+
+@api_router.post("/subscription/reactivate")
+async def reactivate_subscription(user: User = Depends(require_auth)):
+    try:
+        subscription_id = getattr(user, 'stripe_subscription_id', None)
+        if not subscription_id:
+            raise HTTPException(status_code=400, detail="No subscription to reactivate")
+        
+        # Reactivate subscription in Stripe
+        stripe.Subscription.modify(subscription_id, cancel_at_period_end=False)
+        
+        await db.users.update_one(
+            {"id": user.id},
+            {"$set": {"subscription_status": "active"}}
+        )
+        
+        return {"success": True, "message": "Subscription reactivated"}
+    except stripe.error.StripeError as e:
+        logger.error(f"Stripe error: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e))
+
 # Scheduled Messages Routes
 @api_router.get("/scheduled-messages", response_model=List[ScheduledMessage])
 async def get_scheduled_messages(user: User = Depends(require_auth)):
