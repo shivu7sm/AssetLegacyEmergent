@@ -170,6 +170,9 @@ export default function Assets() {
   const [sortBy, setSortBy] = useState('date');
   const [filteredAssets, setFilteredAssets] = useState([]);
   const [conversionRates, setConversionRates] = useState({});
+  const [portfolioTotal, setPortfolioTotal] = useState(null);
+  const [assetsTotal, setAssetsTotal] = useState(null);
+  const [liabilitiesTotal, setLiabilitiesTotal] = useState(null);
   const [formData, setFormData] = useState({
     type: 'crypto',
     name: '',
