@@ -528,6 +528,172 @@ export default function Admin() {
             </Card>
           </div>
         )}
+
+        {/* Analytics Tab */}
+        {activeTab === 'analytics' && analytics && (
+          <div className="space-y-6">
+            {/* Revenue Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#10b981'}}>
+                <CardContent className="p-6">
+                  <p className="text-sm font-medium mb-2" style={{color: '#94a3b8'}}>MONTHLY RECURRING REVENUE</p>
+                  <div className="text-4xl font-bold" style={{color: '#10b981'}}>
+                    ${analytics.monthly_recurring_revenue}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#3b82f6'}}>
+                <CardContent className="p-6">
+                  <p className="text-sm font-medium mb-2" style={{color: '#94a3b8'}}>ANNUAL RECURRING REVENUE</p>
+                  <div className="text-4xl font-bold" style={{color: '#3b82f6'}}>
+                    ${analytics.annual_recurring_revenue}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#ec4899'}}>
+                <CardContent className="p-6">
+                  <p className="text-sm font-medium mb-2" style={{color: '#94a3b8'}}>PAID SUBSCRIBERS</p>
+                  <div className="text-4xl font-bold" style={{color: '#ec4899'}}>
+                    {analytics.total_paid_subscribers}
+                  </div>
+                  <p className="text-xs mt-1" style={{color: '#64748b'}}>+{analytics.recent_subscriptions_30d} this month</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Current Subscriptions Breakdown */}
+            <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+              <CardHeader>
+                <CardTitle style={{color: '#f8fafc'}}>Current Subscription Distribution</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-3 gap-4">
+                  {Object.entries(analytics.current_subscriptions).map(([plan, count]) => (
+                    <div key={plan} className="p-4 rounded-lg text-center" style={{background: '#16001e'}}>
+                      <div className="text-3xl font-bold mb-2" style={{
+                        color: plan === 'Free' ? '#64748b' : plan === 'Pro' ? '#ec4899' : '#a855f7'
+                      }}>
+                        {count}
+                      </div>
+                      <div className="text-sm" style={{color: '#94a3b8'}}>{plan}</div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Revenue Trend */}
+            <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+              <CardHeader>
+                <CardTitle style={{color: '#f8fafc'}}>12-Month Revenue Trend</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  {analytics.revenue_trend_12_months.slice(-6).map((month, index) => (
+                    <div key={index} className="flex items-center gap-4">
+                      <div className="w-24 text-sm" style={{color: '#94a3b8'}}>{month.month}</div>
+                      <div className="flex-1">
+                        <div className="h-8 rounded-lg flex items-center px-3" style={{
+                          background: 'linear-gradient(90deg, #10b981 0%, #3b82f6 100%)',
+                          width: `${(month.revenue / Math.max(...analytics.revenue_trend_12_months.map(m => m.revenue))) * 100}%`,
+                          minWidth: '60px'
+                        }}>
+                          <span className="text-sm font-semibold text-white">${month.revenue}</span>
+                        </div>
+                      </div>
+                      <div className="w-20 text-sm text-right" style={{color: '#64748b'}}>
+                        {month.subscribers} subs
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {/* Audit Logs Tab */}
+        {activeTab === 'audit' && (
+          <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <Shield className="w-5 h-5" style={{color: '#a855f7'}} />
+                <CardTitle style={{color: '#f8fafc'}}>Audit Logs</CardTitle>
+              </div>
+              <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Track all system changes and admin actions</p>
+            </CardHeader>
+            <CardContent>
+              {auditLogs.length > 0 ? (
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr style={{borderBottom: '2px solid #2d1f3d'}}>
+                        <th className="text-left py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>TIME</th>
+                        <th className="text-left py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>USER</th>
+                        <th className="text-center py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>ACTION</th>
+                        <th className="text-center py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>RESOURCE</th>
+                        <th className="text-left py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>IP ADDRESS</th>
+                        <th className="text-left py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>DETAILS</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {auditLogs.map((log) => (
+                        <tr 
+                          key={log.id} 
+                          style={{
+                            borderBottom: '1px solid #1a1229',
+                            background: log.is_admin_action ? 'rgba(168, 85, 247, 0.1)' : 'transparent'
+                          }}
+                        >
+                          <td className="py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>
+                            {new Date(log.timestamp).toLocaleString()}
+                          </td>
+                          <td className="py-3 px-2">
+                            <div>
+                              <div style={{color: '#f8fafc', fontWeight: 500}}>{log.user_email}</div>
+                              {log.is_admin_action && (
+                                <span className="text-xs px-2 py-1 rounded-full" style={{background: '#a855f7', color: '#fff'}}>
+                                  ADMIN
+                                </span>
+                              )}
+                            </div>
+                          </td>
+                          <td className="py-3 px-2 text-center">
+                            <span 
+                              className="px-3 py-1 rounded-full text-xs font-semibold"
+                              style={{
+                                background: log.action === 'CREATE' ? 'rgba(16, 185, 129, 0.2)' : 
+                                           log.action === 'DELETE' ? 'rgba(239, 68, 68, 0.2)' : 
+                                           'rgba(59, 130, 246, 0.2)',
+                                color: log.action === 'CREATE' ? '#10b981' : 
+                                       log.action === 'DELETE' ? '#ef4444' : '#3b82f6'
+                              }}
+                            >
+                              {log.action}
+                            </span>
+                          </td>
+                          <td className="py-3 px-2 text-center" style={{color: '#cbd5e1'}}>
+                            {log.resource_type}
+                          </td>
+                          <td className="py-3 px-2" style={{color: '#64748b', fontSize: '12px', fontFamily: 'monospace'}}>
+                            {log.ip_address || 'N/A'}
+                          </td>
+                          <td className="py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>
+                            {log.changes ? JSON.stringify(log.changes).substring(0, 50) + '...' : '-'}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <p style={{color: '#94a3b8', textAlign: 'center', padding: '2rem'}}>No audit logs found</p>
+              )}
+            </CardContent>
+          </Card>
+        )}
       </div>
     </Layout>
   );
