@@ -111,27 +111,33 @@ user_problem_statement: "AssetVault app - New Phase Implementation:
 backend:
   - task: "Snapshot Auto-creation from Purchase Dates"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Added helper function create_snapshot_for_date() to create snapshots for specific dates. Modified asset create/update endpoints to auto-create snapshots when purchase_date is provided or changed. Added /networth/backfill endpoint to backfill all snapshots from existing asset purchase dates."
+      - working: true
+        agent: "testing"
+        comment: "✅ PASSED - Net worth snapshot auto-creation working correctly. Tested: 1) Asset creation with purchase_date auto-creates snapshot for that date. 2) Backfill endpoint successfully creates snapshots from existing asset purchase dates (created 3 snapshots for 3 different dates). 3) Asset update with purchase_date change creates new snapshot for new date. All endpoints return proper response structure with snapshots_created count and dates_processed list."
   
   - task: "AI Insights Storage and Persistence"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Created AIInsight model to store insights in database. Updated /insights/generate endpoint to provide structured data (portfolio_summary, asset_distribution_analysis, allocation_recommendations, advantages, risks, action_items) and store in DB with timestamp. Added /insights/latest endpoint to retrieve most recent insight. AI now focuses on asset distribution, diversification, risks, and advantages."
+      - working: true
+        agent: "testing"
+        comment: "✅ PASSED - AI insights generation and storage working correctly. Tested: 1) POST /api/insights/generate returns structured insight with all required fields (portfolio_summary, asset_distribution_analysis, allocation_recommendations, advantages, risks, action_items, generated_at). 2) GET /api/insights/latest retrieves most recent insight with correct timestamp. 3) Multiple insights refresh scenario works - second generation has more recent timestamp and latest endpoint returns most recent. Fixed datetime serialization issue during testing. Minor: One timeout occurred during testing but functionality is confirmed working."
   
   - task: "Extended Real Estate Fields"
     implemented: true
