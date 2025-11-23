@@ -2516,6 +2516,11 @@ print('Test data cleaned up');
             # Portfolio Management Backend Testing
             self.test_portfolio_management_apis()
             
+            # Portfolio Integration Testing (Review Request)
+            self.test_portfolio_integration_dashboard()
+            self.test_portfolio_integration_ai_insights()
+            self.test_portfolio_integration_networth_snapshots()
+            
             # Admin Panel Backend Testing
             self.test_admin_panel_backend()
             
