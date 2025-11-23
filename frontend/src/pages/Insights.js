@@ -269,7 +269,10 @@ export default function Insights() {
                                 {insights.risks.map((risk, index) => (
                                   <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: '#16001e'}}>
                                     <XCircle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{color: '#f59e0b'}} />
-                                    <p style={{color: '#cbd5e1', lineHeight: '1.6'}}>{risk}</p>
+                                    <p 
+                                      style={{color: '#cbd5e1', lineHeight: '1.6'}}
+                                      dangerouslySetInnerHTML={{__html: formatText(risk)}}
+                                    />
                                   </li>
                                 ))}
                               </ul>
