@@ -376,7 +376,10 @@ export default function Insights() {
                       {insights.risks.slice(0, expandedSections.risks ? undefined : 2).map((risk, index) => (
                         <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: '#16001e', borderLeft: '2px solid #f59e0b'}}>
                           <AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{color: '#f59e0b'}} />
-                          <p style={{color: '#cbd5e1', lineHeight: '1.6', fontSize: '14px'}}>{risk}</p>
+                          <p 
+                            style={{color: '#cbd5e1', lineHeight: '1.6', fontSize: '14px'}}
+                            dangerouslySetInnerHTML={{__html: formatText(risk)}}
+                          />
                         </li>
                       ))}
                     </ul>
