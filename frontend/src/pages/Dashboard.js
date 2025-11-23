@@ -254,6 +254,9 @@ export default function Dashboard() {
           </Card>
         )}
 
+        {/* Historical Net Worth Chart */}
+        <NetWorthChart />
+
         {/* Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Assets vs Liabilities Comparison */}
