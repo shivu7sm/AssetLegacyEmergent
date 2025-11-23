@@ -561,6 +561,7 @@ async def get_dashboard_summary(user: User = Depends(require_auth)):
     
     total_assets = len(assets)
     asset_types = {}
+    asset_values = {}
     total_value_usd = 0.0
     
     for asset in assets:
@@ -569,12 +570,16 @@ async def get_dashboard_summary(user: User = Depends(require_auth)):
         
         # Calculate value based on asset type
         value = 0
-        if asset.get('total_value'):
+        if asset.get('current_price'):
+            value = asset['current_price']
+        elif asset.get('total_value'):
             value = asset['total_value']
         elif asset.get('quantity') and asset.get('unit_price'):
             value = asset['quantity'] * asset['unit_price']
         elif asset.get('area') and asset.get('price_per_area'):
             value = asset['area'] * asset['price_per_area']
+        elif asset.get('weight') and asset.get('unit_price'):
+            value = asset['weight'] * asset['unit_price']
         elif asset.get('principal_amount'):
             value = asset['principal_amount']
         
@@ -594,10 +599,12 @@ async def get_dashboard_summary(user: User = Depends(require_auth)):
                 pass
         
         total_value_usd += value
+        asset_values[asset_type] = asset_values.get(asset_type, 0) + value
     
     return {
         "total_assets": total_assets,
         "asset_types": asset_types,
+        "asset_values": asset_values,
         "total_value_usd": round(total_value_usd, 2),
         "has_nominee": await db.nominees.count_documents({"user_id": user.id}) > 0,
         "has_dms": await db.dead_man_switches.count_documents({"user_id": user.id}) > 0,
