@@ -1,0 +1,93 @@
+<analysis>
+The trajectory details the iterative development and enhancement of the AssetVault application. Initially built by a previous AI engineer, the work was handed over to me. My primary role has been to implement a series of complex features and bug fixes based on continuous, detailed user feedback.
+
+The development process involved several major phases:
+1.  **Phase 1 (Fixes & Foundation):** Addressed core calculation bugs, ensuring liabilities were treated as negative values and net worth was calculated correctly. This involved backend API changes in  and frontend updates in  and . A global currency context () was established to handle conversions.
+2.  **Phase 2 (UI/UX Enhancements):** Redesigned the  page with a side-navigation layout, improved the  UI with better card designs and a cleaner header in , and implemented a red/green color scheme to visually distinguish liabilities from assets.
+3.  **Phase 3 (Major Feature Implementation):**
+    *   **Stripe Integration:** Added backend endpoints and frontend components for subscription management.
+    *   **Historical Tracking:** Implemented a  model and API endpoints in the backend and added a  component to the dashboard.
+    *   **Portfolio Asset Type:** Added a new 'portfolio' asset type to manage exchange-linked assets. This included backend models and API endpoints. The last action was creating a dedicated  component to handle the complex UI for this new asset type.
+
+Throughout the process, I systematically addressed user requests, including fixing UI bugs (like the  error), adding INR currency formatting, and preparing the codebase for AI insights and exchange integrations. The user's primary language is English; future communications must be in English.
+</analysis>
+
+<product_requirements>
+The AssetVault application is a secure, full-stack personal asset management platform. It solves the problem of tracking diverse assets (property, stocks, crypto, loans) so that an owner's family can be aware of them.
+
+**Core Features:**
+*   **Comprehensive Asset Management:** Full CRUD for various asset types, including a new Portfolio type for exchange-linked holdings.
+*   **Financial Dashboard:** A central view of net worth, asset vs. liability breakdowns, and a historical net worth chart. It supports global currency conversion.
+*   **Distinction between Assets and Liabilities:** Liabilities (e.g., loans) are treated as negative values in all calculations and are visually distinguished with a red color scheme.
+*   **User Preferences:** A redesigned settings page allows users to manage preferences like default asset view (grid/table), currency format (including INR lakhs/crores), and communication consent.
+*   **Subscription Model:** Integrated Stripe for handling tiered user subscriptions, including checkout and cancellation flows.
+*   **Dead Man's Switch (DMS):** A core feature to notify a nominee after prolonged user inactivity.
+*   **Future/Pending Features:** AI-powered financial insights, scheduled messaging, and real-time bank/exchange account integration.
+</product_requirements>
+
+<key_technical_concepts>
+- **Backend:** FastAPI, Pydantic for data modeling, Motor (async MongoDB driver).
+- **Frontend:** React, React Context API for global state (currency), Shadcn UI, Tailwind CSS, Recharts for charts.
+- **Database:** MongoDB.
+- **Authentication:** Google OAuth 2.0 with backend session management.
+- **Integrations:** Stripe for subscriptions,  for future LLM-based AI insights.
+- **APIs:** RESTful API with a  prefix.
+</key_technical_concepts>
+
+<code_architecture>
+The application is a monorepo with distinct  and  services.
+
+**Directory Structure:**
+
+
+- ****
+  - **Importance:** The single source of truth for all API logic, database models, and business rules.
+  - **Changes:** Heavily modified to add endpoints for historical net worth snapshots (), Stripe webhooks and checkout sessions, user preferences, AI insights, and portfolio assets. Fixed the  endpoint to correctly calculate net worth based on asset/liability types and respect the user's selected currency. New Pydantic models like , , and  were added.
+
+- ****
+  - **Importance:** The primary user interface for managing all assets.
+  - **Changes:** Refactored to use the global currency context from  instead of local state. The local currency selector was removed. Implemented logic to use the default view (grid/table) from user preferences on first load and  to persist the choice within a session. Added styling to visually differentiate liabilities (red tones). Added state and handlers for the new 'portfolio' asset type.
+
+- ****
+  - **Importance:** Displays the user's overall financial health.
+  - **Changes:** Rewritten to use the global currency context, passing the selected currency to the backend for accurate calculations. The UI was updated with improved summary cards and a red/green color scheme for the asset/liability charts. The new  component was added to display historical trends.
+
+- ****
+  - **Importance:** Provides the main application frame, including the header and navigation.
+  - **Changes:** The header was updated to include the global currency selector. The navigation links were updated to include new pages like AI Insights and Subscriptions. The UI was cleaned up to prevent overlapping elements.
+
+- ****
+  - **Importance:** A new file created to provide global state management for the application.
+  - **Changes:** Created to manage and provide the user's  and  across all components, eliminating prop-drilling and ensuring consistent state.
+
+- ****
+  - **Importance:** A new component created to manage the complex UI for portfolio assets.
+  - **Changes:** Created to encapsulate the form logic for adding/editing a Portfolio asset, which contains a list of individual s (e.g., stocks, cryptos). This separates complex logic from the already large  file.
+
+</code_architecture>
+
+<pending_tasks>
+- **AI Insights:** Enhance the AI insights page with charts and actionable good/bad indicators based on trends and risk.
+- **Stripe Billing:** Complete the Stripe integration by implementing the customer billing portal for upgrades/downgrades.
+- **Bank/Exchange Integration:** Implement the frontend UI and manual sync logic for connecting to banks and exchanges using the backend framework already in place.
+- **Color Theme:** Ensure the red/green asset/liability color scheme is applied consistently across all remaining views.
+</pending_tasks>
+
+<current_work>
+The most recent work focused on implementing a new, complex asset type called Portfolio, designed to group individual holdings from a single source like a crypto exchange.
+
+**Backend:**
+- The  file was updated with new Pydantic models (, ) and API endpoints (, ) to support CRUD operations for these new structures.
+
+**Frontend:**
+- In , the  constant was updated to include Portfolio.
+- State management logic was added to  to handle portfolio-specific data.
+- Recognizing the UI complexity, the decision was made to abstract the portfolio creation/editing form into a separate component.
+- The very last action taken was the creation of a new file: . This file is currently a placeholder component, created to house the dedicated dialog and form for managing portfolio assets and their nested items.
+
+The immediate task was paused right after creating this new component file, with the next logical step being to build out its functionality and integrate it into the  page.
+</current_work>
+
+<optional_next_step>
+Continue building the Portfolio frontend UI by implementing the  component and integrating it into the  page to open when a user adds or edits a Portfolio asset.
+</optional_next_step>
