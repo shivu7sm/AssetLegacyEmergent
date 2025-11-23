@@ -801,18 +801,22 @@ export default function Assets() {
                   </CardHeader>
                   <CardContent>
                     {(() => {
-                      let value = asset.total_value;
-                      if (asset.quantity && asset.unit_price) value = asset.quantity * asset.unit_price;
-                      if (asset.area && asset.price_per_area) value = asset.area * asset.price_per_area;
-                      if (asset.weight && asset.unit_price) value = asset.weight * asset.unit_price;
-                      if (asset.principal_amount) value = asset.principal_amount;
+                      const purchaseValue = calculateAssetValue(asset, false);
+                      const currentValue = calculateAssetValue(asset, true) || purchaseValue;
+                      const gain = currentValue - purchaseValue;
+                      const gainPercent = purchaseValue ? ((gain / purchaseValue) * 100).toFixed(2) : 0;
                       
-                      return value ? (
+                      return purchaseValue ? (
                         <div className="mb-4">
-                          <div className="text-sm mb-1" style={{color: '#94a3b8'}}>Value</div>
+                          <div className="text-sm mb-1" style={{color: '#94a3b8'}}>Current Value</div>
                           <div className="text-2xl font-bold" data-testid={`asset-value-${asset.id}`} style={{color: '#ec4899'}}>
-                            {asset.purchase_currency} {value.toLocaleString()}
+                            {asset.purchase_currency} {currentValue.toLocaleString()}
                           </div>
+                          {gain !== 0 && (
+                            <div className="text-sm mt-1" style={{color: gain > 0 ? '#22c55e' : '#ef4444'}}>
+                              {gain > 0 ? '↑' : '↓'} {gain > 0 ? '+' : ''}{gain.toLocaleString()} ({gainPercent}%)
+                            </div>
+                          )}
                         </div>
                       ) : null;
                     })()}
