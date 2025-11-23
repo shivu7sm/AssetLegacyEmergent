@@ -52,6 +52,21 @@ export default function Dashboard() {
     }
   };
 
+  // Custom Tooltip Component
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div style={{ background: '#1a1229', border: '1px solid #2d1f3d', borderRadius: '8px', padding: '12px' }}>
+          <p style={{ color: '#f8fafc', fontWeight: 600, marginBottom: '4px' }}>{label || payload[0].name}</p>
+          <p style={{ color: '#ec4899', fontSize: '14px' }}>
+            {payload[0].name === 'percentage' ? `${payload[0].value}%` : formatCurrency(payload[0].value, selectedCurrency, currencyFormat)}
+          </p>
+        </div>
+      );
+    }
+    return null;
+  };
+
   // Asset Distribution (only assets, no liabilities)
   const assetDistributionData = summary?.asset_values_separate ? Object.entries(summary.asset_values_separate).map(([key, value]) => {
     const totalAssets = summary.total_assets_value || 1;
