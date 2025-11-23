@@ -2571,6 +2571,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.on_event("startup")
+async def startup_scheduler():
+    """Start the background job scheduler on application startup"""
+    logger.info("Starting background job scheduler...")
+    start_scheduler()
+
 @app.on_event("shutdown")
 async def shutdown_db_client():
+    """Shutdown database client and scheduler"""
+    logger.info("Shutting down...")
+    stop_scheduler()
     client.close()
