@@ -1073,6 +1073,39 @@ async def get_dashboard_summary(user: User = Depends(require_auth), target_curre
             if asset_type in liquid_asset_types:
                 liquid_assets_value += value_in_target_currency
     
+    # Process portfolio assets
+    for portfolio in portfolios:
+        portfolio_type = "portfolio"
+        portfolio_currency = portfolio.get("purchase_currency", "USD")
+        portfolio_value_original = portfolio.get("total_value", 0.0)
+        
+        # Convert portfolio value to target currency
+        portfolio_value_converted = convert_currency(
+            portfolio_value_original,
+            portfolio_currency,
+            target_currency
+        )
+        
+        # Track portfolio in asset types and values
+        asset_types[portfolio_type] = asset_types.get(portfolio_type, 0) + 1
+        total_assets_value += portfolio_value_converted
+        asset_values_separate[portfolio_type] = asset_values_separate.get(portfolio_type, 0) + portfolio_value_converted
+        asset_values[portfolio_type] = asset_values.get(portfolio_type, 0) + portfolio_value_converted
+        
+        # Portfolios are liquid assets
+        liquid_assets_value += portfolio_value_converted
+        
+        # Track for validation
+        individual_values.append({
+            "name": portfolio.get("name", "Unknown Portfolio"),
+            "type": portfolio_type,
+            "original_value": portfolio_value_original,
+            "original_currency": portfolio_currency,
+            "converted_value": portfolio_value_converted,
+            "target_currency": target_currency,
+            "is_liability": False
+        })
+    
     net_worth = total_assets_value - total_liabilities_value
     
     # Count unique asset types for diversification
