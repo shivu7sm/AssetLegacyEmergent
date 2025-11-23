@@ -251,7 +251,7 @@ export default function LandingPage() {
       </section>
 
       {/* The Hard Truth Section */}
-      <section className="py-20" style={{background: 'linear-gradient(135deg, #1a0b2e 0%, #0a0e27 100%)'}}>
+      <section id="truth" className="py-20" style={{background: 'linear-gradient(135deg, #1a0b2e 0%, #0a0e27 100%)'}}>
         <div className="container mx-auto px-6">
           <div className="max-w-5xl mx-auto">
             {/* Title */}
