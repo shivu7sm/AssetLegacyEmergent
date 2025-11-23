@@ -433,7 +433,8 @@ export default function Assets() {
                   <Button 
                     data-testid="save-asset-btn"
                     type="submit" 
-                    className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white"
+                    className="flex-1 text-white"
+                    style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
                   >
                     {editingAsset ? 'Update Asset' : 'Add Asset'}
                   </Button>
@@ -442,7 +443,7 @@ export default function Assets() {
                     type="button" 
                     variant="outline" 
                     onClick={handleDialogClose}
-                    className="border-slate-600 text-slate-300 hover:bg-slate-800"
+                    style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
                   >
                     Cancel
                   </Button>
