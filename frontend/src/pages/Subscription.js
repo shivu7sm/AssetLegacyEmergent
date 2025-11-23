@@ -168,6 +168,24 @@ export default function Subscription() {
     }
   };
 
+  const handleReactivateSubscription = async () => {
+    if (!confirm('Reactivate your subscription? Your payment method will be charged at the next billing cycle.')) {
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await axios.post(`${API}/subscription/reactivate`, {}, { withCredentials: true });
+      toast.success('Subscription reactivated successfully!');
+      fetchSubscription();
+    } catch (error) {
+      console.error('Failed to reactivate:', error);
+      toast.error('Failed to reactivate subscription');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const formatDate = (dateStr) => {
     return new Date(dateStr).toLocaleDateString('en-US', {
       year: 'numeric',
