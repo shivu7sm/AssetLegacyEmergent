@@ -400,14 +400,29 @@ export default function Assets() {
                 {/* Crypto/Stock - Quantity based */}
                 {(formData.type === 'crypto' || formData.type === 'stock') && (
                   <>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-3 gap-4">
                       <div>
                         <Label className="text-slate-300">Quantity *</Label>
-                        <Input type="number" step="any" value={formData.quantity} onChange={(e) => setFormData({ ...formData, quantity: e.target.value })} placeholder="10" required className="bg-slate-800 border-slate-700 text-white" />
+                        <Input type="number" step="any" value={formData.quantity} onChange={(e) => handleQuantityChange(e.target.value)} placeholder="10" required className="bg-slate-800 border-slate-700 text-white" />
                       </div>
                       <div>
-                        <Label className="text-slate-300">Price Per Unit</Label>
-                        <Input type="number" step="any" value={formData.unit_price} onChange={(e) => setFormData({ ...formData, unit_price: e.target.value })} placeholder="50000" className="bg-slate-800 border-slate-700 text-white" />
+                        <Label className="text-slate-300">Purchase Price Per Unit</Label>
+                        <Input type="number" step="any" value={formData.unit_price} onChange={(e) => handleUnitPriceChange(e.target.value)} placeholder="50000" className="bg-slate-800 border-slate-700 text-white" />
+                      </div>
+                      <div>
+                        <Label className="text-slate-300">Total Purchase Value</Label>
+                        <Input type="number" step="any" value={formData.total_value} onChange={(e) => handleTotalValueChange(e.target.value)} placeholder="Auto-calculated" className="bg-slate-800 border-slate-700 text-white" />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label className="text-slate-300">Current Price Per Unit (optional)</Label>
+                        <Input type="number" step="any" value={formData.current_unit_price} onChange={(e) => handleCurrentUnitPriceChange(e.target.value)} placeholder="Defaults to purchase price" className="bg-slate-800 border-slate-700 text-white" />
+                        <p className="text-xs mt-1" style={{color: '#64748b'}}>For crypto, we'll try to fetch from API</p>
+                      </div>
+                      <div>
+                        <Label className="text-slate-300">Current Total Value (optional)</Label>
+                        <Input type="number" step="any" value={formData.current_total_value} onChange={(e) => handleCurrentTotalValueChange(e.target.value)} placeholder="Auto-calculated" className="bg-slate-800 border-slate-700 text-white" />
                       </div>
                     </div>
                     {formData.type === 'crypto' && (
