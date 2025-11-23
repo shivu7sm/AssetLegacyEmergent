@@ -46,7 +46,9 @@ export default function Assets() {
     name: '',
     quantity: '',
     unit_price: '',
+    current_unit_price: '',
     total_value: '',
+    current_total_value: '',
     symbol: '',
     weight: '',
     weight_unit: 'gram',
@@ -54,6 +56,7 @@ export default function Assets() {
     area: '',
     area_unit: 'sqft',
     price_per_area: '',
+    current_price_per_area: '',
     location: { address: '', lat: '', lng: '' },
     principal_amount: '',
     interest_rate: '',
@@ -65,7 +68,6 @@ export default function Assets() {
     locker_number: '',
     purchase_currency: 'USD',
     purchase_date: '',
-    current_price: '',
     details: {}
   });
 
