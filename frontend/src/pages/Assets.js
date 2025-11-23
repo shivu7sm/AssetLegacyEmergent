@@ -948,6 +948,7 @@ export default function Assets() {
               );
             })}
           </div>
+          </>
         ) : (
           <div>
             <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
