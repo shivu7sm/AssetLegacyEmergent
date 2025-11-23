@@ -195,20 +195,32 @@ export default function Dashboard() {
 
           <Card 
             data-testid="net-worth-card" 
-            className="overflow-hidden transition-all hover:shadow-lg"
-            style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#ec4899', borderWidth: '2px'}}
+            className={`overflow-hidden transition-all hover:shadow-lg card ${dashboardTheme === 'modern' ? 'stat-card' : ''}`}
+            style={dashboardTheme === 'standard' ? {
+              background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', 
+              borderColor: isPositive ? '#10b981' : '#ef4444', 
+              borderWidth: '2px'
+            } : {}}
           >
             <CardContent className="p-6">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <p className="text-sm font-medium mb-2" style={{color: '#94a3b8', letterSpacing: '0.5px'}}>NET WORTH</p>
-                  <div className="text-3xl font-bold mb-1" style={{color: '#ec4899', fontFamily: 'Inter, sans-serif'}} data-testid="net-worth-value">
-                    {formatCurrency(summary?.net_worth || 0, selectedCurrency, currencyFormat)}
+                  <p className={`text-sm font-medium mb-2 ${dashboardTheme === 'modern' ? 'stat-label' : ''}`} style={dashboardTheme === 'standard' ? {color: '#94a3b8', letterSpacing: '0.5px'} : {}}>NET WORTH</p>
+                  <div 
+                    className={`text-3xl font-bold mb-1 ${dashboardTheme === 'modern' ? 'stat-value' : ''} ${dashboardTheme === 'modern' ? (isPositive ? 'positive' : 'negative') : ''}`}
+                    style={dashboardTheme === 'standard' ? {color: isPositive ? '#10b981' : '#ef4444', fontFamily: 'Inter, sans-serif'} : {}} 
+                    data-testid="net-worth-value"
+                  >
+                    {formatCurrency(netWorthValue, selectedCurrency, currencyFormat)}
                   </div>
                   <p className="text-xs" style={{color: '#64748b'}}>{selectedCurrency} equivalent</p>
                 </div>
-                <div className="p-3 rounded-xl" style={{background: 'rgba(236, 72, 153, 0.1)'}}>
-                  <TrendingUp className="w-8 h-8" style={{color: '#ec4899'}} />
+                <div className={`p-3 rounded-xl ${dashboardTheme === 'modern' ? 'stat-icon' : ''} ${dashboardTheme === 'modern' ? (isPositive ? 'positive' : 'negative') : ''}`} style={dashboardTheme === 'standard' ? {background: isPositive ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)'} : {}}>
+                  {isPositive ? (
+                    <TrendingUp className="w-8 h-8" style={{color: isPositive ? '#10b981' : '#ef4444'}} />
+                  ) : (
+                    <TrendingDown className="w-8 h-8" style={{color: '#ef4444'}} />
+                  )}
                 </div>
               </div>
             </CardContent>
