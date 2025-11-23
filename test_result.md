@@ -229,26 +229,21 @@ frontend:
 
 metadata:
   created_by: "main_agent"
-  version: "1.0"
-  test_sequence: 1
+  version: "2.0"
+  test_sequence: 2
   run_ui: false
 
 test_plan:
   current_focus:
-    - "Asset vs Liability Calculation"
-    - "Grid View Summary Card"
-    - "Real Estate Extended Fields Form"
-    - "Table View Net Total"
+    - "Snapshot Auto-creation from Purchase Dates"
+    - "AI Insights Storage and Persistence"
+    - "Dashboard Layout Reorganization"
+    - "Net Worth Chart Backfill Feature"
+    - "Enhanced AI Insights Page"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
 agent_communication:
   - agent: "main"
-    message: "Phase 1 implementation complete. Updated backend to properly distinguish assets vs liabilities with net worth calculation. Added grid view summary card with gradient styling. Extended real estate form with current price fields matching the existing stock/crypto/precious metals pattern. Updated table view to show net total. Ready for backend testing."
-  - agent: "testing"
-    message: "✅ BACKEND TESTING COMPLETE - All Phase 1 backend features are working perfectly! Asset vs liability calculation is accurate with proper segregation. Real estate extended fields (current_price_per_area) implemented and functioning correctly. Dashboard summary returns all required fields with correct calculations. All 44 backend API tests passed (100% success rate). Backend is ready for production. Main agent should now focus on frontend testing or summarize completion."
-  - agent: "testing"
-    message: "✅ FRONTEND TESTING COMPLETE - All Phase 1 frontend features are working correctly! Successfully tested with authenticated user session. Grid View Summary Card displays with proper red-purple gradient and shows total portfolio value, asset/liability counts. Real Estate Extended Fields Form contains all required fields (Area, Purchase Price Per Area, Current Price Per Area, Total Purchase Value) with working calculations. Table View shows 'Net Total' in footer correctly. Dashboard charts (pie and bar) display properly. Authentication flow works with Google OAuth. All core functionality verified and working as expected."
-  - agent: "main"
-    message: "Phase 2 implementation complete. Added missing backend endpoints for subscription management, scheduled messages, AI insights generation (using Emergent LLM key with OpenAI gpt-4o-mini), and exchange connection placeholders. Updated Settings page with display preferences (currency format: standard/Indian lakhs-crores, default asset view: grid/table), consent management (marketing and communication). Created new pages: Insights, Subscription, ScheduleMessages. Fixed dashboard charts with separate Assets vs Liabilities comparison and proper Asset Distribution charts. Added custom tooltip with proper contrast. Created currency formatting utility for Indian numbering system. All features now have backend and frontend implementation ready for testing."
+    message: "New phase implementation complete. Backend: Added helper function to create snapshots for specific dates, modified asset create/update to auto-create snapshots from purchase_date, added /networth/backfill endpoint. Created AIInsight model with structured fields (portfolio_summary, asset_distribution_analysis, recommendations, advantages, risks, actions). Enhanced /insights/generate to provide better AI analysis focused on distribution and risks, stores in DB. Added /insights/latest to retrieve persisted insights. Frontend: Reorganized Dashboard.js to move NetWorthChart below pie charts, added data table cards next to each pie chart showing breakdown with values and percentages. Updated NetWorthChart with backfill button. Completely rewrote Insights.js with persistence, timestamp display, refresh button, detailed modal view, collapsible quick insights cards. Ready for backend testing first."
