@@ -1564,6 +1564,44 @@ async def get_networth_trends(user: User = Depends(require_auth), target_currenc
         "earliest_net_worth": round(earliest_nw, 2)
     }
 
+@api_router.post("/networth/backfill")
+async def backfill_snapshots_from_assets(user: User = Depends(require_auth), currency: str = "USD"):
+    """Backfill net worth snapshots from all assets with purchase dates."""
+    try:
+        assets = await db.assets.find({"user_id": user.id}).to_list(1000)
+        
+        # Get unique purchase dates
+        purchase_dates = set()
+        for asset in assets:
+            if asset.get('purchase_date'):
+                purchase_dates.add(asset['purchase_date'])
+        
+        if not purchase_dates:
+            return {
+                "success": True,
+                "message": "No assets with purchase dates found",
+                "snapshots_created": 0
+            }
+        
+        # Create snapshots for each unique purchase date
+        snapshots_created = 0
+        for date in sorted(purchase_dates):
+            try:
+                await create_snapshot_for_date(user.id, date, currency)
+                snapshots_created += 1
+            except Exception as e:
+                logger.error(f"Failed to create snapshot for date {date}: {str(e)}")
+        
+        return {
+            "success": True,
+            "message": f"Backfilled {snapshots_created} snapshots from asset purchase dates",
+            "snapshots_created": snapshots_created,
+            "dates_processed": list(sorted(purchase_dates))
+        }
+    except Exception as e:
+        logger.error(f"Backfill failed: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to backfill snapshots")
+
 app.include_router(api_router)
 
 app.add_middleware(
