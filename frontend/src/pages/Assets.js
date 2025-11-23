@@ -16,6 +16,7 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 const ASSET_TYPES = [
+  { value: 'portfolio', label: 'Portfolio Account', icon: '📊', isPortfolio: true, description: 'Exchange/Broker with multiple holdings' },
   { value: 'crypto', label: 'Cryptocurrency', icon: '₿', hasQuantity: true },
   { value: 'stock', label: 'Stocks', icon: '📈', hasQuantity: true },
   { value: 'precious_metals', label: 'Precious Metals (Gold/Silver)', icon: '🥇', hasWeight: true },
@@ -27,6 +28,18 @@ const ASSET_TYPES = [
   { value: 'credit_card', label: 'Credit Card', icon: '💳', isLiability: true },
   { value: 'locker', label: 'Safe/Locker', icon: '🔐' },
   { value: 'diamond', label: 'Diamond/Jewelry', icon: '💎' }
+];
+
+const PORTFOLIO_PROVIDERS = [
+  { value: 'binance', label: 'Binance', type: 'crypto_exchange' },
+  { value: 'coinbase', label: 'Coinbase', type: 'crypto_exchange' },
+  { value: 'kraken', label: 'Kraken', type: 'crypto_exchange' },
+  { value: 'gemini', label: 'Gemini', type: 'crypto_exchange' },
+  { value: 'zerodha', label: 'Zerodha', type: 'stock_broker' },
+  { value: 'robinhood', label: 'Robinhood', type: 'stock_broker' },
+  { value: 'etrade', label: 'E*TRADE', type: 'stock_broker' },
+  { value: 'fidelity', label: 'Fidelity', type: 'stock_broker' },
+  { value: 'other', label: 'Other', type: 'other' }
 ];
 
 const CURRENCIES = ['USD', 'EUR', 'GBP', 'INR', 'JPY', 'AUD', 'CAD', 'SGD', 'AED'];
