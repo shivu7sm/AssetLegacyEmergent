@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
@@ -8,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
-import { User, Settings as SettingsIcon, Eye, Globe, Shield, CreditCard, Users, Clock, RefreshCw, Link } from 'lucide-react';
+import { User, Settings as SettingsIcon, Eye, Globe, Shield, CreditCard, Users, Clock, RefreshCw, Link, Bell, AlertTriangle, ChevronUp, ChevronDown, Trash2, Heart } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -17,6 +18,8 @@ const API = `${BACKEND_URL}/api`;
 const SECTIONS = [
   { id: 'profile', label: 'Profile', icon: User },
   { id: 'preferences', label: 'Preferences', icon: Eye },
+  { id: 'nominees', label: 'Nominees', icon: Users },
+  { id: 'dms', label: 'Dead Man\'s Switch', icon: Clock },
   { id: 'connected', label: 'Connected Accounts', icon: Link },
   { id: 'subscription', label: 'Subscription & Billing', icon: CreditCard },
   { id: 'security', label: 'Security', icon: Shield },
@@ -25,9 +28,10 @@ const SECTIONS = [
 
 export default function Settings() {
   const { selectedCurrency, currencyFormat, preferences, loadPreferences } = useApp();
-  const [activeSection, setActiveSection] = useState('profile');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [activeSection, setActiveSection] = useState(searchParams.get('tab') || 'profile');
   const [user, setUser] = useState(null);
-  const [nominee, setNominee] = useState(null);
+  const [nominees, setNominees] = useState([]);
   const [dms, setDms] = useState(null);
   const [subscription, setSubscription] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -36,14 +40,18 @@ export default function Settings() {
     name: '',
     email: '',
     phone: '',
-    relationship: ''
+    relationship: '',
+    priority: 1
   });
+  
+  const [editingNomineeId, setEditingNomineeId] = useState(null);
   
   const [dmsForm, setDmsForm] = useState({
     inactivity_days: 90,
     reminder_1_days: 60,
     reminder_2_days: 75,
-    reminder_3_days: 85
+    reminder_3_days: 85,
+    is_active: true
   });
 
   const [preferencesForm, setPreferencesForm] = useState({
