@@ -800,17 +800,91 @@ async def get_preferences(user: User = Depends(require_auth)):
 async def get_subscription(user: User = Depends(require_auth)):
     return {
         "plan": getattr(user, 'subscription_plan', 'Free'),
+        "stripe_customer_id": getattr(user, 'stripe_customer_id', None),
+        "stripe_subscription_id": getattr(user, 'stripe_subscription_id', None),
         "features": []
     }
 
-@api_router.post("/subscription/subscribe")
-async def subscribe(data: Dict[str, Any], user: User = Depends(require_auth)):
-    plan = data.get('plan', 'Free')
-    await db.users.update_one(
-        {"id": user.id},
-        {"$set": {"subscription_plan": plan}}
-    )
-    return {"success": True, "plan": plan}
+@api_router.post("/subscription/create-checkout-session")
+async def create_checkout_session(data: Dict[str, Any], user: User = Depends(require_auth)):
+    try:
+        plan = data.get('plan')
+        price_id = None
+        
+        if plan == 'Pro':
+            price_id = os.environ.get('STRIPE_PRICE_PRO')
+        elif plan == 'Family':
+            price_id = os.environ.get('STRIPE_PRICE_FAMILY')
+        else:
+            raise HTTPException(status_code=400, detail="Invalid plan")
+        
+        # Create or retrieve Stripe customer
+        stripe_customer_id = getattr(user, 'stripe_customer_id', None)
+        if not stripe_customer_id:
+            customer = stripe.Customer.create(
+                email=user.email,
+                name=user.name,
+                metadata={"user_id": user.id}
+            )
+            stripe_customer_id = customer.id
+            await db.users.update_one(
+                {"id": user.id},
+                {"$set": {"stripe_customer_id": stripe_customer_id}}
+            )
+        
+        # Create checkout session
+        frontend_url = os.environ.get('CORS_ORIGINS', '').split(',')[0] or 'http://localhost:3000'
+        session = stripe.checkout.Session.create(
+            customer=stripe_customer_id,
+            payment_method_types=['card'],
+            mode='subscription',
+            line_items=[{'price': price_id, 'quantity': 1}],
+            success_url=f"{frontend_url}/subscription?success=true",
+            cancel_url=f"{frontend_url}/subscription?canceled=true",
+            metadata={"user_id": user.id, "plan": plan}
+        )
+        
+        return {"sessionId": session.id, "url": session.url}
+    except stripe.error.StripeError as e:
+        logger.error(f"Stripe error: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e))
+
+@api_router.post("/subscription/webhook")
+async def stripe_webhook(request: Request):
+    payload = await request.body()
+    sig_header = request.headers.get('stripe-signature')
+    webhook_secret = os.environ.get('STRIPE_WEBHOOK_SECRET')
+    
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, webhook_secret
+        )
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid payload")
+    except stripe.error.SignatureVerificationError:
+        raise HTTPException(status_code=400, detail="Invalid signature")
+    
+    # Handle events
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+        user_id = session['metadata']['user_id']
+        plan = session['metadata']['plan']
+        
+        await db.users.update_one(
+            {"id": user_id},
+            {"$set": {
+                "subscription_plan": plan,
+                "stripe_subscription_id": session.get('subscription')
+            }}
+        )
+    elif event['type'] == 'customer.subscription.deleted':
+        subscription = event['data']['object']
+        await db.users.update_one(
+            {"stripe_subscription_id": subscription['id']},
+            {"$set": {"subscription_plan": "Free", "stripe_subscription_id": None}}
+        )
+    
+    return {"status": "success"}
 
 # Scheduled Messages Routes
 @api_router.get("/scheduled-messages", response_model=List[ScheduledMessage])
