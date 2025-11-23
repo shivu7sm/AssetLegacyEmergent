@@ -1403,6 +1403,68 @@ async def recalculate_portfolio_value(portfolio_id: str, user_id: str):
         {"$set": {"total_value": total_value}}
     )
 
+# Helper function to create snapshot for a specific date
+async def create_snapshot_for_date(user_id: str, snapshot_date: str, currency: str = "USD"):
+    """Helper function to create a net worth snapshot for a specific date."""
+    # Get all assets for this user
+    assets = await db.assets.find({"user_id": user_id}).to_list(1000)
+    
+    # Define liability types
+    liability_types = {'loan', 'credit_card'}
+    
+    total_assets_value = 0.0
+    total_liabilities_value = 0.0
+    asset_breakdown = {}
+    liability_breakdown = {}
+    
+    for asset in assets:
+        asset_type = asset["type"]
+        is_liability = asset_type in liability_types
+        
+        # Calculate value in original currency
+        value_in_original_currency = calculate_asset_current_value(asset)
+        original_currency = asset.get("purchase_currency", "USD")
+        
+        # Convert to target currency
+        value_in_target_currency = convert_currency(
+            value_in_original_currency, 
+            original_currency, 
+            currency
+        )
+        
+        # Separate assets and liabilities
+        if is_liability:
+            total_liabilities_value += value_in_target_currency
+            liability_breakdown[asset_type] = liability_breakdown.get(asset_type, 0) + value_in_target_currency
+        else:
+            total_assets_value += value_in_target_currency
+            asset_breakdown[asset_type] = asset_breakdown.get(asset_type, 0) + value_in_target_currency
+    
+    net_worth = total_assets_value - total_liabilities_value
+    
+    snapshot = NetWorthSnapshot(
+        user_id=user_id,
+        snapshot_date=snapshot_date,
+        total_assets=total_assets_value,
+        total_liabilities=total_liabilities_value,
+        net_worth=net_worth,
+        currency=currency,
+        asset_breakdown=asset_breakdown,
+        liability_breakdown=liability_breakdown
+    )
+    
+    snap_dict = snapshot.model_dump()
+    snap_dict['created_at'] = snap_dict['created_at'].isoformat()
+    
+    # Upsert - update if snapshot for this date exists, create if not
+    await db.networth_snapshots.update_one(
+        {"user_id": user_id, "snapshot_date": snapshot_date},
+        {"$set": snap_dict},
+        upsert=True
+    )
+    
+    return snapshot
+
 # Net Worth Snapshot Routes
 @api_router.post("/networth/snapshot")
 async def create_networth_snapshot(snapshot_data: NetWorthSnapshotCreate, user: User = Depends(require_auth)):
