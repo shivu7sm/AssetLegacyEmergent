@@ -1261,29 +1261,33 @@ async def get_subscription(user: User = Depends(require_auth)):
                 
                 # Get payment method
                 payment_method_info = None
-                if sub.get('default_payment_method'):
-                    pm = stripe.PaymentMethod.retrieve(sub['default_payment_method'])
-                    if pm.type == 'card':
-                        payment_method_info = {
-                            "type": "card",
-                            "brand": pm.card.brand,
-                            "last4": pm.card.last4,
-                            "exp_month": pm.card.exp_month,
-                            "exp_year": pm.card.exp_year
-                        }
+                default_pm = getattr(sub, 'default_payment_method', None)
+                if default_pm:
+                    try:
+                        pm = stripe.PaymentMethod.retrieve(default_pm)
+                        if pm.type == 'card':
+                            payment_method_info = {
+                                "type": "card",
+                                "brand": pm.card.brand,
+                                "last4": pm.card.last4,
+                                "exp_month": pm.card.exp_month,
+                                "exp_year": pm.card.exp_year
+                            }
+                    except Exception as pm_error:
+                        logger.warning(f"Failed to fetch payment method: {str(pm_error)}")
                 
                 subscription_details = {
                     "subscription_id": sub.id,
                     "status": sub.status,
-                    "current_period_start": datetime.fromtimestamp(sub['current_period_start']).isoformat(),
-                    "current_period_end": datetime.fromtimestamp(sub['current_period_end']).isoformat(),
-                    "cancel_at_period_end": sub['cancel_at_period_end'],
-                    "canceled_at": datetime.fromtimestamp(sub['canceled_at']).isoformat() if sub.get('canceled_at') else None,
-                    "created": datetime.fromtimestamp(sub['created']).isoformat(),
+                    "current_period_start": datetime.fromtimestamp(sub.current_period_start).isoformat(),
+                    "current_period_end": datetime.fromtimestamp(sub.current_period_end).isoformat(),
+                    "cancel_at_period_end": sub.cancel_at_period_end,
+                    "canceled_at": datetime.fromtimestamp(sub.canceled_at).isoformat() if getattr(sub, 'canceled_at', None) else None,
+                    "created": datetime.fromtimestamp(sub.created).isoformat(),
                     "payment_method": payment_method_info,
-                    "amount": sub['items']['data'][0]['price']['unit_amount'] / 100,
-                    "currency": sub['items']['data'][0]['price']['currency'].upper(),
-                    "interval": sub['items']['data'][0]['price']['recurring']['interval']
+                    "amount": sub.items.data[0].price.unit_amount / 100,
+                    "currency": sub.items.data[0].price.currency.upper(),
+                    "interval": sub.items.data[0].price.recurring.interval
                 }
         except Exception as e:
             logger.error(f"Failed to fetch Stripe subscription details: {str(e)}")
