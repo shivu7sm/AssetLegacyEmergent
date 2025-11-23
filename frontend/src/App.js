@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import Assets from "./pages/Assets";
 import Settings from "./pages/Settings";
 import DigitalWill from "./pages/DigitalWill";
+import Documents from "./pages/Documents";
 import { Toaster } from "@/components/ui/sonner";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
