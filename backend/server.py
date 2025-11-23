@@ -769,6 +769,55 @@ async def delete_document(doc_id: str, user: User = Depends(require_auth)):
         raise HTTPException(status_code=404, detail="Document not found")
     return {"success": True}
 
+@api_router.put("/documents/{document_id}/link-asset")
+async def link_document_to_asset(document_id: str, asset_data: dict, user: User = Depends(require_auth)):
+    """Link a document to an asset"""
+    asset_id = asset_data.get("asset_id")
+    
+    # Verify document exists and belongs to user
+    document = await db.documents.find_one({"id": document_id, "user_id": user.id})
+    if not document:
+        raise HTTPException(status_code=404, detail="Document not found")
+    
+    # If asset_id provided, verify it exists and belongs to user
+    if asset_id:
+        asset = await db.assets.find_one({"id": asset_id, "user_id": user.id})
+        if not asset:
+            raise HTTPException(status_code=404, detail="Asset not found")
+    
+    # Update document with linked asset
+    result = await db.documents.update_one(
+        {"id": document_id},
+        {"$set": {"linked_asset_id": asset_id, "updated_at": datetime.now(timezone.utc).isoformat()}}
+    )
+    
+    if result.modified_count == 0:
+        raise HTTPException(status_code=400, detail="Failed to link document")
+    
+    return {"success": True, "message": "Document linked successfully"}
+
+@api_router.get("/assets/{asset_id}/documents")
+async def get_asset_documents(asset_id: str, user: User = Depends(require_auth)):
+    """Get all documents linked to a specific asset"""
+    # Verify asset belongs to user
+    asset = await db.assets.find_one({"id": asset_id, "user_id": user.id})
+    if not asset:
+        raise HTTPException(status_code=404, detail="Asset not found")
+    
+    documents = await db.documents.find(
+        {"user_id": user.id, "linked_asset_id": asset_id},
+        {"_id": 0}
+    ).to_list(100)
+    
+    # Convert datetime fields
+    for doc in documents:
+        if isinstance(doc.get('created_at'), str):
+            doc['created_at'] = datetime.fromisoformat(doc['created_at'])
+        if isinstance(doc.get('updated_at'), str):
+            doc['updated_at'] = datetime.fromisoformat(doc['updated_at'])
+    
+    return documents
+
 # Price API Routes
 @api_router.get("/prices/crypto/{symbol}")
 async def get_crypto_price(symbol: str, currency: str = "usd"):
