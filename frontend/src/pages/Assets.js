@@ -609,7 +609,17 @@ export default function Assets() {
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <Label className="text-slate-300">Area *</Label>
-                        <Input type="number" step="any" value={formData.area} onChange={(e) => setFormData({ ...formData, area: e.target.value })} placeholder="2000" required className="bg-slate-800 border-slate-700 text-white" />
+                        <Input type="number" step="any" value={formData.area} onChange={(e) => {
+                          const a = e.target.value;
+                          const p = parseFloat(formData.price_per_area) || 0;
+                          const cp = parseFloat(formData.current_price_per_area) || 0;
+                          setFormData({ 
+                            ...formData, 
+                            area: a,
+                            total_value: a && p ? (parseFloat(a) * p).toString() : '',
+                            current_total_value: a && cp ? (parseFloat(a) * cp).toString() : ''
+                          });
+                        }} placeholder="2000" required className="bg-slate-800 border-slate-700 text-white" />
                       </div>
                       <div>
                         <Label className="text-slate-300">Unit</Label>
@@ -621,9 +631,31 @@ export default function Assets() {
                         </Select>
                       </div>
                     </div>
-                    <div>
-                      <Label className="text-slate-300">Price Per {formData.area_unit}</Label>
-                      <Input type="number" step="any" value={formData.price_per_area} onChange={(e) => setFormData({ ...formData, price_per_area: e.target.value })} placeholder="500" className="bg-slate-800 border-slate-700 text-white" />
+                    <div className="grid grid-cols-3 gap-4">
+                      <div>
+                        <Label className="text-slate-300">Purchase Price Per {formData.area_unit}</Label>
+                        <Input type="number" step="any" value={formData.price_per_area} onChange={(e) => {
+                          const p = e.target.value;
+                          const a = parseFloat(formData.area) || 0;
+                          setFormData({ ...formData, price_per_area: p, total_value: a && p ? (a * parseFloat(p)).toString() : '' });
+                        }} placeholder="500" className="bg-slate-800 border-slate-700 text-white" />
+                      </div>
+                      <div>
+                        <Label className="text-slate-300">Current Price Per {formData.area_unit}</Label>
+                        <Input type="number" step="any" value={formData.current_price_per_area} onChange={(e) => {
+                          const cp = e.target.value;
+                          const a = parseFloat(formData.area) || 0;
+                          setFormData({ ...formData, current_price_per_area: cp, current_total_value: a && cp ? (a * parseFloat(cp)).toString() : '' });
+                        }} placeholder="550" className="bg-slate-800 border-slate-700 text-white" />
+                      </div>
+                      <div>
+                        <Label className="text-slate-300">Total Purchase Value</Label>
+                        <Input type="number" step="any" value={formData.total_value} onChange={(e) => {
+                          const tv = e.target.value;
+                          const a = parseFloat(formData.area) || 0;
+                          setFormData({ ...formData, total_value: tv, price_per_area: a && tv ? (parseFloat(tv) / a).toString() : '' });
+                        }} placeholder="Auto-calculated" className="bg-slate-800 border-slate-700 text-white" />
+                      </div>
                     </div>
                     <div>
                       <Label className="text-slate-300">Location Address</Label>
