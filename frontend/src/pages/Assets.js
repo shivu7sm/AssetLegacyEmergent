@@ -91,12 +91,24 @@ export default function Assets() {
     }
   };
 
-  const calculateAssetValue = (asset) => {
-    let value = asset.total_value || 0;
+  const calculateAssetValue = (asset, useCurrent = false) => {
+    let value = 0;
+    
+    if (useCurrent) {
+      // Calculate current value
+      if (asset.current_total_value) return asset.current_total_value;
+      if (asset.quantity && asset.current_unit_price) return asset.quantity * asset.current_unit_price;
+      if (asset.area && asset.current_price_per_area) return asset.area * asset.current_price_per_area;
+      if (asset.weight && asset.current_unit_price) return asset.weight * asset.current_unit_price;
+    }
+    
+    // Fall back to purchase value
+    value = asset.total_value || 0;
     if (asset.quantity && asset.unit_price) value = asset.quantity * asset.unit_price;
     if (asset.area && asset.price_per_area) value = asset.area * asset.price_per_area;
     if (asset.weight && asset.unit_price) value = asset.weight * asset.unit_price;
     if (asset.principal_amount) value = asset.principal_amount;
+    
     return value;
   };
 
