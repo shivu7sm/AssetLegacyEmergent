@@ -442,11 +442,16 @@ async def create_session(request: Request, response: Response):
         # Check if this is the admin user
         is_admin = session_data["email"] == "shivu7sm@gmail.com"
         
+        # Get system default currency from preferences (can be configured later)
+        default_currency = os.environ.get('DEFAULT_CURRENCY', 'USD')
+        
         user = User(
             email=session_data["email"],
             name=session_data["name"],
             picture=session_data.get("picture"),
-            role="admin" if is_admin else "customer"
+            role="admin" if is_admin else "customer",
+            default_currency=default_currency,
+            selected_currency=default_currency
         )
         user_dict = user.model_dump()
         user_dict['last_activity'] = user_dict['last_activity'].isoformat()
