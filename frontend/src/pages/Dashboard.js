@@ -38,11 +38,14 @@ export default function Dashboard() {
 
   useEffect(() => {
     fetchSummary();
-  }, []);
+  }, [selectedCurrency]); // Refetch when currency changes
 
   const fetchSummary = async () => {
     try {
-      const response = await axios.get(`${API}/dashboard/summary`, { withCredentials: true });
+      const response = await axios.get(`${API}/dashboard/summary`, { 
+        params: { target_currency: selectedCurrency },
+        withCredentials: true 
+      });
       setSummary(response.data);
     } catch (error) {
       console.error('Failed to fetch summary:', error);
