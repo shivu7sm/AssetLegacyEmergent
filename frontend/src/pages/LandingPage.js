@@ -178,6 +178,85 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* How It Works Section */}
+      <section id="how-it-works" className="py-20" style={{background: '#0a0e27'}}>
+        <div className="container mx-auto px-6">
+          <div className="max-w-4xl mx-auto text-center mb-16">
+            <h3 className="text-3xl sm:text-4xl font-bold mb-4" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
+              Three Simple Steps to Peace of Mind
+            </h3>
+            <p className="text-base sm:text-lg" style={{color: '#94a3b8'}}>
+              Protecting your legacy shouldn't be complicated. We've made it beautifully simple.
+            </p>
+          </div>
+
+          <div className="max-w-5xl mx-auto">
+            <div className="space-y-8">
+              {/* Step 1 */}
+              <div className="flex gap-6 items-start p-8 rounded-2xl transition-all hover:scale-102" style={{background: '#131835', border: '1px solid #1e293b'}}>
+                <div className="flex-shrink-0 w-16 h-16 rounded-2xl flex items-center justify-center font-bold text-2xl" style={{background: 'linear-gradient(135deg, #ef4444 0%, #ec4899 100%)', color: 'white'}}>
+                  1
+                </div>
+                <div>
+                  <h4 className="text-2xl font-bold mb-3" style={{color: '#f8fafc'}}>Add Your Assets in Minutes</h4>
+                  <p className="text-lg mb-3" style={{color: '#cbd5e1'}}>
+                    Bank accounts, properties, investments, insurance policies, crypto—add them all with simple forms. 
+                    No bank login required, you control what you share.
+                  </p>
+                  <p className="text-sm" style={{color: '#64748b'}}>
+                    ✓ Multi-currency support  •  ✓ Real-time net worth tracking  •  ✓ AI-powered insights
+                  </p>
+                </div>
+              </div>
+
+              {/* Step 2 */}
+              <div className="flex gap-6 items-start p-8 rounded-2xl transition-all hover:scale-102" style={{background: '#131835', border: '1px solid #1e293b'}}>
+                <div className="flex-shrink-0 w-16 h-16 rounded-2xl flex items-center justify-center font-bold text-2xl" style={{background: 'linear-gradient(135deg, #ec4899 0%, #a855f7 100%)', color: 'white'}}>
+                  2
+                </div>
+                <div>
+                  <h4 className="text-2xl font-bold mb-3" style={{color: '#f8fafc'}}>Designate Your Trusted Nominees</h4>
+                  <p className="text-lg mb-3" style={{color: '#cbd5e1'}}>
+                    Choose who should receive your asset information. You can add family members, lawyers, or trusted advisors. 
+                    Set custom timelines and decide what each person can access.
+                  </p>
+                  <p className="text-sm" style={{color: '#64748b'}}>
+                    ✓ Multiple nominees  •  ✓ Granular permissions  •  ✓ Encrypted document sharing
+                  </p>
+                </div>
+              </div>
+
+              {/* Step 3 */}
+              <div className="flex gap-6 items-start p-8 rounded-2xl transition-all hover:scale-102" style={{background: '#131835', border: '1px solid #1e293b'}}>
+                <div className="flex-shrink-0 w-16 h-16 rounded-2xl flex items-center justify-center font-bold text-2xl" style={{background: 'linear-gradient(135deg, #a855f7 0%, #7c3aed 100%)', color: 'white'}}>
+                  3
+                </div>
+                <div>
+                  <h4 className="text-2xl font-bold mb-3" style={{color: '#f8fafc'}}>Relax—We'll Handle the Rest</h4>
+                  <p className="text-lg mb-3" style={{color: '#cbd5e1'}}>
+                    Our automated Dead Man Switch monitors your activity. If life takes an unexpected turn, 
+                    your nominees are notified and guided through accessing your asset information—all while respecting your privacy.
+                  </p>
+                  <p className="text-sm" style={{color: '#64748b'}}>
+                    ✓ Smart reminders  •  ✓ Grace periods  •  ✓ Instant activation option
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="text-center mt-12 p-8 rounded-2xl" style={{background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%)', border: '1px solid rgba(168, 85, 247, 0.3)'}}>
+              <p className="text-xl font-semibold mb-4" style={{color: '#f8fafc'}}>
+                That's it. Your legacy is protected.
+              </p>
+              <p className="text-base" style={{color: '#94a3b8'}}>
+                Log in whenever you want to add new assets or update information. 
+                We'll keep watch, so you don't have to worry.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Features Section */}
       <section className="py-20" style={{background: 'rgba(19, 24, 53, 0.5)'}}>
         <div className="container mx-auto px-6">
