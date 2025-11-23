@@ -14,18 +14,23 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 const ASSET_TYPES = [
+  { value: 'crypto', label: 'Cryptocurrency', icon: '₿', hasQuantity: true },
+  { value: 'stock', label: 'Stocks', icon: '📈', hasQuantity: true },
+  { value: 'gold', label: 'Gold', icon: '🥇', hasWeight: true },
+  { value: 'silver', label: 'Silver', icon: '⚪', hasWeight: true },
+  { value: 'property', label: 'Real Estate', icon: '🏠', hasArea: true },
   { value: 'bank', label: 'Bank Account', icon: '🏦' },
+  { value: 'investment', label: 'Investment', icon: '💰', hasMaturity: true },
   { value: 'insurance', label: 'Insurance', icon: '🛡️' },
-  { value: 'investment', label: 'Investment', icon: '📈' },
-  { value: 'crypto', label: 'Cryptocurrency', icon: '₿' },
-  { value: 'gold', label: 'Gold', icon: '🪙' },
-  { value: 'diamond', label: 'Diamond/Jewelry', icon: '💎' },
+  { value: 'loan', label: 'Loan', icon: '💸', isLiability: true },
+  { value: 'credit_card', label: 'Credit Card', icon: '💳', isLiability: true },
   { value: 'locker', label: 'Safe/Locker', icon: '🔐' },
-  { value: 'property', label: 'Property', icon: '🏠' },
-  { value: 'loan', label: 'Loan', icon: '💸' }
+  { value: 'diamond', label: 'Diamond/Jewelry', icon: '💎' }
 ];
 
-const CURRENCIES = ['USD', 'EUR', 'GBP', 'INR', 'JPY', 'AUD', 'CAD'];
+const CURRENCIES = ['USD', 'EUR', 'GBP', 'INR', 'JPY', 'AUD', 'CAD', 'SGD', 'AED'];
+const AREA_UNITS = ['sqft', 'sqmt', 'yard', 'acre'];
+const WEIGHT_UNITS = ['gram', 'kilogram', 'ounce', 'pound'];
 
 export default function Assets() {
   const [assets, setAssets] = useState([]);
