@@ -208,7 +208,10 @@ export default function Insights() {
                           {/* Detailed Summary */}
                           <div className="p-4 rounded-lg" style={{background: '#16001e', borderLeft: '3px solid #10b981'}}>
                             <h4 className="font-semibold mb-2" style={{color: '#10b981', fontSize: '16px'}}>Portfolio Overview</h4>
-                            <p style={{color: '#cbd5e1', lineHeight: '1.8'}}>{insights.portfolio_summary}</p>
+                            <p 
+                              style={{color: '#cbd5e1', lineHeight: '1.8'}}
+                              dangerouslySetInnerHTML={{__html: formatText(insights.portfolio_summary)}}
+                            />
                           </div>
 
                           {/* Asset Distribution Analysis */}
