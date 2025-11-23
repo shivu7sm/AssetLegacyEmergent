@@ -227,6 +227,37 @@ export default function Assets() {
     filterAndSortAssets();
   }, [assets, filterType, sortBy]);
 
+  // Calculate portfolio totals with proper currency conversion
+  useEffect(() => {
+    const calculateTotals = async () => {
+      const displayAssets = filteredAssets.length > 0 ? filteredAssets : assets;
+      
+      let totalPortfolio = 0;
+      let totalAssets = 0;
+      let totalLiabilities = 0;
+      
+      for (const asset of displayAssets) {
+        const assetType = getAssetTypeInfo(asset.type);
+        const currentValue = calculateAssetValue(asset, true) || calculateAssetValue(asset, false);
+        const convertedValue = await calculateAssetValueConverted(asset, true);
+        
+        if (assetType.isLiability) {
+          totalLiabilities += convertedValue;
+          totalPortfolio -= convertedValue;
+        } else {
+          totalAssets += convertedValue;
+          totalPortfolio += convertedValue;
+        }
+      }
+      
+      setPortfolioTotal(totalPortfolio);
+      setAssetsTotal(totalAssets);
+      setLiabilitiesTotal(totalLiabilities);
+    };
+    
+    calculateTotals();
+  }, [assets, filteredAssets, selectedCurrency]);
+
   // Save viewMode to sessionStorage when changed
   useEffect(() => {
     sessionStorage.setItem('assetsViewMode', viewMode);
