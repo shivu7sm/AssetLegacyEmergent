@@ -446,7 +446,8 @@ async def create_session(request: Request, response: Response):
     
     if not existing_user:
         # Check if this is the admin user
-        is_admin = session_data["email"] == "shivu7sm@gmail.com"
+        admin_email = os.environ.get('ADMIN_EMAIL', 'shivu7sm@gmail.com')
+        is_admin = session_data["email"] == admin_email
         
         # Get system default currency from preferences (can be configured later)
         default_currency = os.environ.get('DEFAULT_CURRENCY', 'USD')
