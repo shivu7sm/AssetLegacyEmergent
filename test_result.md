@@ -213,6 +213,9 @@ frontend:
       - working: "NA"
         agent: "main"
         comment: "Complete portfolio management UI implementation: 1) Added page mode toggle between 'Individual Assets' and 'Portfolios' 2) Created portfolio list view with cards showing provider, holdings count, total value 3) Implemented portfolio creation dialog with provider selection (Binance, Zerodha, Robinhood, etc.) 4) Built portfolio details modal showing all holdings with purchase/current prices, gains/losses 5) Created holding add/edit dialog with symbol, quantity, prices 6) Added delete functionality for both portfolios and holdings 7) Integrated with all backend APIs 8) Proper state management for portfolios, holdings, and dialogs"
+      - working: "NA"
+        agent: "main"
+        comment: "INTEGRATION COMPLETE: Portfolio values now integrated across all views: 1) Dashboard summary includes portfolio total_value in calculations 2) Asset distribution pie charts show portfolios as separate category 3) Financial ratios include portfolios in liquid assets 4) AI Insights analyze portfolio holdings alongside individual assets 5) Net worth snapshots include portfolio values for historical tracking 6) Dashboard color scheme updated with purple (#a855f7) for portfolios"
   
   - task: "Net Worth Chart Backfill Feature"
     implemented: true
