@@ -2,18 +2,34 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { LayoutDashboard, Wallet, Settings, LogOut, ShieldCheck, FileText, FolderLock, Sparkles, Calendar, Crown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
+import { useApp } from '@/context/AppContext';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
+const CURRENCIES = [
+  { value: 'USD', label: 'USD ($)', symbol: '$' },
+  { value: 'EUR', label: 'EUR (€)', symbol: '€' },
+  { value: 'GBP', label: 'GBP (£)', symbol: '£' },
+  { value: 'INR', label: 'INR (₹)', symbol: '₹' },
+  { value: 'JPY', label: 'JPY (¥)', symbol: '¥' },
+  { value: 'AUD', label: 'AUD (A$)', symbol: 'A$' },
+  { value: 'CAD', label: 'CAD (C$)', symbol: 'C$' },
+  { value: 'SGD', label: 'SGD (S$)', symbol: 'S$' }
+];
+
 export default function Layout({ children }) {
   const navigate = useNavigate();
   const location = useLocation();
+  const { selectedCurrency, setSelectedCurrency } = useApp();
 
   const handleLogout = async () => {
     try {
       await axios.post(`${API}/auth/logout`, {}, { withCredentials: true });
+      // Clear session storage
+      sessionStorage.clear();
       toast.success('Logged out successfully');
       navigate('/');
     } catch (error) {
@@ -32,6 +48,11 @@ export default function Layout({ children }) {
     { path: '/will', label: 'Will', icon: FileText, testId: 'nav-will' },
     { path: '/settings', label: 'Settings', icon: Settings, testId: 'nav-settings' }
   ];
+
+  const handleCurrencyChange = async (currency) => {
+    await setSelectedCurrency(currency);
+    toast.success(`Currency changed to ${currency}`);
+  };
 
   return (
     <div className="min-h-screen" style={{background: 'linear-gradient(135deg, #1a0b2e 0%, #16001e 50%, #2d0e3e 100%)'}}>
@@ -65,22 +86,38 @@ export default function Layout({ children }) {
             })}
           </nav>
 
-          <Button 
-            data-testid="logout-btn"
-            onClick={handleLogout} 
-            variant="outline" 
-            style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
-          >
-            <LogOut className="w-4 h-4 mr-2" />
-            Logout
-          </Button>
+          <div className="flex items-center gap-4">
+            {/* Currency Selector */}
+            <Select value={selectedCurrency} onValueChange={handleCurrencyChange}>
+              <SelectTrigger className="w-32" style={{background: '#1a1229', borderColor: '#2d1f3d', color: '#f8fafc'}}>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                {CURRENCIES.map(curr => (
+                  <SelectItem key={curr.value} value={curr.value} style={{color: '#f8fafc'}}>
+                    {curr.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Button 
+              data-testid="logout-btn"
+              onClick={handleLogout} 
+              variant="outline" 
+              style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+            >
+              <LogOut className="w-4 h-4 mr-2" />
+              Logout
+            </Button>
+          </div>
         </div>
       </header>
 
       {/* Mobile Navigation */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-50" style={{background: '#1a1229', borderTop: '1px solid #2d1f3d'}}>
         <div className="flex justify-around items-center py-3">
-          {navItems.map((item) => {
+          {navItems.slice(0, 5).map((item) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.path;
             return (
