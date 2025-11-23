@@ -191,6 +191,15 @@ class DigitalWillCreate(BaseModel):
     beneficiaries: List[Dict[str, Any]] = []
     asset_distribution: Dict[str, Any] = {}
 
+class DocumentCreate(BaseModel):
+    name: str
+    description: Optional[str] = None
+    file_type: str
+    file_data: str
+    file_size: int
+    tags: List[str] = []
+    share_with_nominee: bool = False
+
 class UserPreferences(BaseModel):
     measurement_unit: str = "imperial"
     weight_unit: str = "ounce"
