@@ -2114,6 +2114,49 @@ async def backfill_snapshots_from_assets(user: User = Depends(require_auth), cur
         logger.error(f"Backfill failed: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to backfill snapshots")
 
+# Subscription Plan Features
+SUBSCRIPTION_FEATURES = {
+    "Free": {
+        "max_assets": 10,
+        "max_documents": 5,
+        "storage_mb": 50,  # 50 MB
+        "ai_insights": False,
+        "scheduled_messages": False,
+        "dms": False,
+        "portfolio_tracking": False
+    },
+    "Pro": {
+        "max_assets": 100,
+        "max_documents": 50,
+        "storage_mb": 500,  # 500 MB
+        "ai_insights": True,
+        "scheduled_messages": True,
+        "dms": True,
+        "portfolio_tracking": True
+    },
+    "Family": {
+        "max_assets": -1,  # Unlimited
+        "max_documents": -1,  # Unlimited
+        "storage_mb": 2000,  # 2 GB
+        "ai_insights": True,
+        "scheduled_messages": True,
+        "dms": True,
+        "portfolio_tracking": True
+    }
+}
+
+def check_subscription_limit(user: User, feature: str) -> bool:
+    """Check if user's subscription allows a feature."""
+    plan = getattr(user, 'subscription_plan', 'Free')
+    features = SUBSCRIPTION_FEATURES.get(plan, SUBSCRIPTION_FEATURES["Free"])
+    return features.get(feature, False)
+
+async def get_user_storage_usage(user_id: str) -> int:
+    """Calculate total storage used by user in bytes."""
+    documents = await db.documents.find({"user_id": user_id}).to_list(1000)
+    total_bytes = sum(doc.get("file_size", 0) for doc in documents)
+    return total_bytes
+
 # Admin Routes
 @api_router.get("/admin/stats")
 async def get_admin_stats(user: User = Depends(require_admin)):
