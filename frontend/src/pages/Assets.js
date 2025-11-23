@@ -576,9 +576,9 @@ export default function Assets() {
               </div>
             </CardContent>
           </Card>
-        ) : (
+        ) : viewMode === 'grid' ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {assets.map((asset) => {
+            {(filteredAssets.length > 0 ? filteredAssets : assets).map((asset) => {
               const typeInfo = getAssetTypeInfo(asset.type);
               return (
                 <Card 
