@@ -1304,7 +1304,12 @@ Format your response clearly with these section headers."""
         insight_dict['generated_at'] = insight_dict['generated_at'].isoformat()
         await db.ai_insights.insert_one(insight_dict)
         
-        return AIInsightResponse(**insight.model_dump())
+        # Convert datetime to string for response
+        response_data = insight.model_dump()
+        if isinstance(response_data.get('generated_at'), datetime):
+            response_data['generated_at'] = response_data['generated_at'].isoformat()
+        
+        return AIInsightResponse(**response_data)
     except Exception as e:
         logger.error(f"AI insights generation failed: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to generate insights: {str(e)}")
