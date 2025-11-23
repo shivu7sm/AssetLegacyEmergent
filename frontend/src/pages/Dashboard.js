@@ -273,28 +273,30 @@ export default function Dashboard() {
               </Button>
               
               <Button 
-                  data-testid="view-assets-btn"
-                  onClick={() => navigate('/assets')} 
-                  variant="outline"
-                  className="w-full border-slate-600 text-slate-300 hover:bg-slate-700 justify-start rounded-xl h-14"
-                >
-                  <DollarSign className="w-5 h-5 mr-3" />
-                  View All Assets
-                </Button>
-                
-                <Button 
-                  data-testid="manage-security-btn"
-                  onClick={() => navigate('/settings')} 
-                  variant="outline"
-                  className="w-full border-slate-600 text-slate-300 hover:bg-slate-700 justify-start rounded-xl h-14"
-                >
-                  <Shield className="w-5 h-5 mr-3" />
-                  Manage Security
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+                data-testid="view-assets-btn"
+                onClick={() => navigate('/assets')} 
+                variant="outline"
+                className="justify-start rounded-xl h-14"
+                style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+              >
+                <DollarSign className="w-5 h-5 mr-3" />
+                View All Assets
+              </Button>
+              
+              <Button 
+                data-testid="manage-security-btn"
+                onClick={() => navigate('/settings')} 
+                variant="outline"
+                className="justify-start rounded-xl h-14"
+                style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+              >
+                <Shield className="w-5 h-5 mr-3" />
+                Manage Security
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
       </div>
     </Layout>
   );
