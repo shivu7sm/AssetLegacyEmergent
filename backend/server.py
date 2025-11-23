@@ -635,27 +635,42 @@ async def get_currency_conversion(from_currency: str, to_currency: str):
 async def get_dashboard_summary(user: User = Depends(require_auth)):
     assets = await db.assets.find({"user_id": user.id}).to_list(1000)
     
+    # Define liability types
+    liability_types = {'loan', 'credit_card'}
+    
     total_assets = len(assets)
     asset_types = {}
     asset_values = {}
-    total_value_usd = 0.0
+    total_assets_value_usd = 0.0
+    total_liabilities_value_usd = 0.0
+    asset_values_separate = {}
+    liability_values_separate = {}
     
     for asset in assets:
         asset_type = asset["type"]
         asset_types[asset_type] = asset_types.get(asset_type, 0) + 1
+        is_liability = asset_type in liability_types
         
         # Calculate value based on asset type
         value = 0
         if asset.get('current_price'):
             value = asset['current_price']
+        elif asset.get('current_total_value'):
+            value = asset['current_total_value']
         elif asset.get('total_value'):
             value = asset['total_value']
+        elif asset.get('quantity') and asset.get('current_unit_price'):
+            value = asset['quantity'] * asset['current_unit_price']
         elif asset.get('quantity') and asset.get('unit_price'):
             value = asset['quantity'] * asset['unit_price']
         elif asset.get('area') and asset.get('price_per_area'):
             value = asset['area'] * asset['price_per_area']
+        elif asset.get('weight') and asset.get('current_unit_price'):
+            value = asset['weight'] * asset['current_unit_price']
         elif asset.get('weight') and asset.get('unit_price'):
             value = asset['weight'] * asset['unit_price']
+        elif asset.get('outstanding_balance'):
+            value = asset['outstanding_balance']
         elif asset.get('principal_amount'):
             value = asset['principal_amount']
         
@@ -674,14 +689,28 @@ async def get_dashboard_summary(user: User = Depends(require_auth)):
             except:
                 pass
         
-        total_value_usd += value
-        asset_values[asset_type] = asset_values.get(asset_type, 0) + value
+        # Separate assets and liabilities
+        if is_liability:
+            total_liabilities_value_usd += value
+            liability_values_separate[asset_type] = liability_values_separate.get(asset_type, 0) + value
+            asset_values[asset_type] = asset_values.get(asset_type, 0) - value  # Negative for chart
+        else:
+            total_assets_value_usd += value
+            asset_values_separate[asset_type] = asset_values_separate.get(asset_type, 0) + value
+            asset_values[asset_type] = asset_values.get(asset_type, 0) + value
+    
+    net_worth = total_assets_value_usd - total_liabilities_value_usd
     
     return {
         "total_assets": total_assets,
         "asset_types": asset_types,
         "asset_values": asset_values,
-        "total_value_usd": round(total_value_usd, 2),
+        "asset_values_separate": asset_values_separate,
+        "liability_values_separate": liability_values_separate,
+        "total_assets_value": round(total_assets_value_usd, 2),
+        "total_liabilities_value": round(total_liabilities_value_usd, 2),
+        "net_worth": round(net_worth, 2),
+        "total_value_usd": round(net_worth, 2),  # Keep for backward compatibility
         "has_nominee": await db.nominees.count_documents({"user_id": user.id}) > 0,
         "has_dms": await db.dead_man_switches.count_documents({"user_id": user.id}) > 0,
         "has_will": await db.digital_wills.count_documents({"user_id": user.id}) > 0
