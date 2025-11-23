@@ -2209,6 +2209,22 @@ async def create_snapshot_for_date(user_id: str, snapshot_date: str, currency: s
             total_assets_value += value_in_target_currency
             asset_breakdown[asset_type] = asset_breakdown.get(asset_type, 0) + value_in_target_currency
     
+    # Process portfolios
+    for portfolio in portfolios:
+        portfolio_type = "portfolio"
+        portfolio_currency = portfolio.get("purchase_currency", "USD")
+        portfolio_value_original = portfolio.get("total_value", 0.0)
+        
+        # Convert portfolio value to target currency
+        portfolio_value_converted = convert_currency(
+            portfolio_value_original,
+            portfolio_currency,
+            currency
+        )
+        
+        total_assets_value += portfolio_value_converted
+        asset_breakdown[portfolio_type] = asset_breakdown.get(portfolio_type, 0) + portfolio_value_converted
+    
     net_worth = total_assets_value - total_liabilities_value
     
     snapshot = NetWorthSnapshot(
