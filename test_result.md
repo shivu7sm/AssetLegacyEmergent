@@ -203,6 +203,18 @@ frontend:
         agent: "main"
         comment: "Complete rewrite of Insights page. Added persistence: fetches latest insight on load via /insights/latest. Shows 'Last updated' timestamp with clock icon. Refresh button to regenerate insights. Concise summary by default with 'View Detailed Analysis' button opening modal. Modal shows comprehensive analysis with all sections. Quick insights cards with collapsible sections (top 2 items shown, expandable). Better formatting with proper headings, icons, colors for different sections (recommendations, advantages, risks, actions)."
   
+  - task: "Admin Panel Frontend"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/Admin.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Created comprehensive Admin.js page with 3 tabs: Overview (statistics cards showing users, assets, subscriptions, AI insights; asset distribution grid; scheduled messages & DMS status summary), Users (table with user management: view all users with email/name/role/plan/asset count/joined date, inline role editor dropdown, delete user button), Scheduled Jobs (scheduled messages table with recipient/subject/send date/status icons; DMS reminders table with user info/days inactive/days until trigger/reminders sent/active status). Added refresh button. Updated App.js to add /admin route. Updated Layout.js to show Admin link only for users with role='admin'. Imports useAuth hook to check user role."
+  
   - task: "Real Estate Extended Fields Form"
     implemented: true
     working: true
