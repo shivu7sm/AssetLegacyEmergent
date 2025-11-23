@@ -2189,6 +2189,49 @@ async def delete_user(user_id: str, admin: User = Depends(require_admin)):
         logger.error(f"Failed to delete user: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to delete user")
 
+@api_router.get("/admin/audit-logs")
+async def get_audit_logs(
+    admin: User = Depends(require_admin),
+    skip: int = 0,
+    limit: int = 100,
+    action: str = None,
+    resource_type: str = None,
+    user_email: str = None,
+    admin_only: bool = False
+):
+    """Get audit logs with filtering."""
+    try:
+        # Build query
+        query = {}
+        if action:
+            query["action"] = action
+        if resource_type:
+            query["resource_type"] = resource_type
+        if user_email:
+            query["user_email"] = user_email
+        if admin_only:
+            query["is_admin_action"] = True
+        
+        # Get logs
+        logs = await db.audit_logs.find(query, {"_id": 0}).sort("timestamp", -1).skip(skip).limit(limit).to_list(limit)
+        
+        # Convert timestamp
+        for log in logs:
+            if isinstance(log.get('timestamp'), str):
+                log['timestamp'] = datetime.fromisoformat(log['timestamp'])
+        
+        total = await db.audit_logs.count_documents(query)
+        
+        return {
+            "logs": logs,
+            "total": total,
+            "skip": skip,
+            "limit": limit
+        }
+    except Exception as e:
+        logger.error(f"Failed to get audit logs: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to fetch audit logs")
+
 @api_router.get("/admin/subscription-analytics")
 async def get_subscription_analytics(admin: User = Depends(require_admin)):
     """Get subscription and revenue analytics."""
