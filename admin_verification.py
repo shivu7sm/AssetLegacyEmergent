@@ -8,7 +8,7 @@ import json
 import time
 
 def test_admin_endpoints():
-    base_url = "https://assetvault-admin.preview.emergentagent.com"
+    base_url = "https://assetvault-dev.preview.emergentagent.com"
     api_url = f"{base_url}/api"
     
     # Create admin user
