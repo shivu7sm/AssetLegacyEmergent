@@ -117,6 +117,14 @@ function AppRoutes() {
           </ProtectedRoute>
         } 
       />
+      <Route 
+        path="/will" 
+        element={
+          <ProtectedRoute>
+            <DigitalWill />
+          </ProtectedRoute>
+        } 
+      />
     </Routes>
   );
 }
