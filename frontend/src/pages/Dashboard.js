@@ -151,9 +151,9 @@ export default function Dashboard() {
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold" style={{color: '#ec4899'}} data-testid="net-worth-value">
-                ${summary?.net_worth?.toLocaleString() || '0'}
+                {formatCurrency(summary?.net_worth || 0, selectedCurrency, currencyFormat)}
               </div>
-              <p className="text-xs mt-1" style={{color: '#64748b'}}>USD equivalent</p>
+              <p className="text-xs mt-1" style={{color: '#64748b'}}>{selectedCurrency} value</p>
             </CardContent>
           </Card>
 
