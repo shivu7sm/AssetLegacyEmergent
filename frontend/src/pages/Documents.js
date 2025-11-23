@@ -31,6 +31,8 @@ export default function Documents() {
 
   useEffect(() => {
     fetchDocuments();
+    fetchAssets();
+    fetchStorageInfo();
   }, []);
 
   const fetchDocuments = async () => {
@@ -42,6 +44,24 @@ export default function Documents() {
       toast.error('Failed to load documents');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchAssets = async () => {
+    try {
+      const response = await axios.get(`${API}/assets`, { withCredentials: true });
+      setAssets(response.data);
+    } catch (error) {
+      console.error('Failed to fetch assets:', error);
+    }
+  };
+
+  const fetchStorageInfo = async () => {
+    try {
+      const response = await axios.get(`${API}/subscription/current`, { withCredentials: true });
+      setStorageInfo(response.data);
+    } catch (error) {
+      console.error('Failed to fetch storage info:', error);
     }
   };
 
