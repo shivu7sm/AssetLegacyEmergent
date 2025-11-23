@@ -572,10 +572,17 @@ async def update_asset(asset_id: str, asset_data: AssetCreate, user: User = Depe
     return Asset(**updated)
 
 @api_router.delete("/assets/{asset_id}")
-async def delete_asset(asset_id: str, user: User = Depends(require_auth)):
-    result = await db.assets.delete_one({"id": asset_id, "user_id": user.id})
-    if result.deleted_count == 0:
+async def delete_asset(asset_id: str, user: User = Depends(require_auth), request: Request = None):
+    # Get asset name before deletion for logging
+    asset = await db.assets.find_one({"id": asset_id, "user_id": user.id})
+    if not asset:
         raise HTTPException(status_code=404, detail="Asset not found")
+    
+    result = await db.assets.delete_one({"id": asset_id, "user_id": user.id})
+    
+    # Log audit event
+    await log_audit(user, "DELETE", "asset", asset_id, {"name": asset.get("name"), "type": asset.get("type")}, request)
+    
     return {"success": True}
 
 @api_router.get("/assets/{asset_id}/loan-schedule")
