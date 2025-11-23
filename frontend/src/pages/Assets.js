@@ -148,7 +148,8 @@ export default function Assets() {
         principal_amount: formData.principal_amount ? parseFloat(formData.principal_amount) : null,
         interest_rate: formData.interest_rate ? parseFloat(formData.interest_rate) : null,
         tenure_months: formData.tenure_months ? parseInt(formData.tenure_months) : null,
-        expected_return: formData.expected_return ? parseFloat(formData.expected_return) : null
+        expected_return: formData.expected_return ? parseFloat(formData.expected_return) : null,
+        current_price: formData.current_price ? parseFloat(formData.current_price) : null
       };
 
       if (editingAsset) {
