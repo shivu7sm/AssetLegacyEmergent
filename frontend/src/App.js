@@ -12,6 +12,7 @@ import Insights from "./pages/Insights";
 import Subscription from "./pages/Subscription";
 import ScheduleMessages from "./pages/ScheduleMessages";
 import PortfolioGuide from "./pages/PortfolioGuide";
+import Admin from "./pages/Admin";
 import { Toaster } from "@/components/ui/sonner";
 import { AppProvider } from "./context/AppContext";
 
