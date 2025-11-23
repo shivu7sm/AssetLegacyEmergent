@@ -28,15 +28,15 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen" style={{background: '#0a0e27'}}>
+    <div className="min-h-screen" style={{background: 'linear-gradient(135deg, #1a0b2e 0%, #16001e 50%, #2d0e3e 100%)'}}>
       {/* Header */}
-      <header className="border-b backdrop-blur-xl sticky top-0 z-50" style={{borderColor: '#1e293b', background: 'rgba(10, 14, 39, 0.8)'}}>
+      <header className="border-b backdrop-blur-xl sticky top-0 z-50" style={{borderColor: '#2d1f3d', background: 'rgba(15, 10, 30, 0.9)'}}>
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <ShieldCheck className="w-8 h-8" style={{color: '#60a5fa'}} />
+            <ShieldCheck className="w-8 h-8" style={{color: '#ec4899'}} />
             <h1 className="text-2xl font-bold" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>AssetVault</h1>
           </div>
-          <Button data-testid="header-login-btn" onClick={handleLogin} className="px-6 py-2 rounded-full" style={{background: 'linear-gradient(135deg, #2563eb 0%, #7c3aed 100%)', color: 'white', border: 'none'}}>
+          <Button data-testid="header-login-btn" onClick={handleLogin} className="px-6 py-2 rounded-full" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: 'white', border: 'none'}}>
             Sign In
           </Button>
         </div>
