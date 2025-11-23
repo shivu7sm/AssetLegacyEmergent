@@ -125,12 +125,70 @@ export default function Settings() {
   const handleNomineeSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${API}/nominee`, nomineeForm, { withCredentials: true });
-      toast.success('Nominee saved successfully');
+      if (editingNomineeId) {
+        await axios.put(`${API}/nominees/${editingNomineeId}`, nomineeForm, { withCredentials: true });
+        toast.success('Nominee updated successfully');
+      } else {
+        await axios.post(`${API}/nominees`, nomineeForm, { withCredentials: true });
+        toast.success('Nominee added successfully');
+      }
+      setNomineeForm({ name: '', email: '', phone: '', relationship: '', priority: nominees.length + 1 });
+      setEditingNomineeId(null);
       fetchData();
     } catch (error) {
       console.error('Failed to save nominee:', error);
       toast.error('Failed to save nominee');
+    }
+  };
+
+  const handleEditNominee = (nominee) => {
+    setNomineeForm({
+      name: nominee.name,
+      email: nominee.email,
+      phone: nominee.phone || '',
+      relationship: nominee.relationship || '',
+      priority: nominee.priority
+    });
+    setEditingNomineeId(nominee.id);
+  };
+
+  const handleDeleteNominee = async (nomineeId) => {
+    if (!window.confirm('Are you sure you want to delete this nominee?')) return;
+    
+    try {
+      await axios.delete(`${API}/nominees/${nomineeId}`, { withCredentials: true });
+      toast.success('Nominee deleted successfully');
+      fetchData();
+    } catch (error) {
+      console.error('Failed to delete nominee:', error);
+      toast.error('Failed to delete nominee');
+    }
+  };
+
+  const handleMovePriority = async (nomineeId, direction) => {
+    const currentIndex = nominees.findIndex(n => n.id === nomineeId);
+    if ((direction === 'up' && currentIndex === 0) || 
+        (direction === 'down' && currentIndex === nominees.length - 1)) {
+      return;
+    }
+
+    const newIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
+    const updatedNominees = [...nominees];
+    [updatedNominees[currentIndex], updatedNominees[newIndex]] = 
+      [updatedNominees[newIndex], updatedNominees[currentIndex]];
+
+    // Update priorities
+    try {
+      await Promise.all(
+        updatedNominees.map((nominee, index) => 
+          axios.put(`${API}/nominees/${nominee.id}`, { ...nominee, priority: index + 1 }, { withCredentials: true })
+        )
+      );
+      toast.success('Priority updated');
+      fetchData();
+    } catch (error) {
+      console.error('Failed to update priority:', error);
+      toast.error('Failed to update priority');
     }
   };
 
