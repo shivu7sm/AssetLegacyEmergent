@@ -502,6 +502,19 @@ export default function Assets() {
                   </div>
                 </div>
 
+                <div>
+                  <Label className="text-slate-300">Current Value (Optional - leave blank to use purchase value)</Label>
+                  <Input 
+                    type="number" 
+                    step="any" 
+                    value={formData.current_price || ''} 
+                    onChange={(e) => setFormData({ ...formData, current_price: e.target.value })} 
+                    placeholder="Manual current value or API will fetch" 
+                    className="bg-slate-800 border-slate-700 text-white" 
+                  />
+                  <p className="text-xs mt-1" style={{color: '#94a3b8'}}>For assets with live prices (crypto, stocks), we'll fetch automatically. For others, enter manually.</p>
+                </div>
+
                 <div className="flex gap-3 pt-4">
                   <Button 
                     data-testid="save-asset-btn"
