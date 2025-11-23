@@ -159,6 +159,7 @@ class AssetCreate(BaseModel):
     area: Optional[float] = None
     area_unit: Optional[str] = "sqft"
     price_per_area: Optional[float] = None
+    current_price_per_area: Optional[float] = None
     location: Optional[Dict[str, Any]] = None
     principal_amount: Optional[float] = None
     interest_rate: Optional[float] = None
