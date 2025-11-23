@@ -323,9 +323,7 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* Stats section completed */}
-
-        {/* Financial Health Ratios */}
+        {/* Financial Ratios - Both Themes */}
         {summary?.financial_ratios && (
           <div>
             <div className="flex items-center justify-between mb-4">
