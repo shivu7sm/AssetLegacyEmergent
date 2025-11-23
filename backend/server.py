@@ -25,6 +25,9 @@ db = client[os.environ['DB_NAME']]
 
 cg = CoinGeckoAPI()
 
+# Stripe configuration
+stripe.api_key = os.environ.get('STRIPE_SECRET_KEY', 'sk_test_placeholder')
+
 app = FastAPI()
 api_router = APIRouter(prefix="/api")
 
