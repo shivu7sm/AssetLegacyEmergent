@@ -174,6 +174,111 @@ export default function Dashboard() {
           </p>
         </div>
 
+        {/* Setup Requirements Banner for New Users */}
+        {(!summary?.has_nominee || !summary?.has_dms) && (
+          <Card 
+            className="border-l-4"
+            style={{
+              background: dashboardTheme === 'modern' 
+                ? 'linear-gradient(135deg, #fff5f5 0%, #ffe5e5 100%)' 
+                : 'linear-gradient(135deg, #2d0e1e 0%, #3d1828 100%)',
+              borderColor: '#ef4444',
+              borderLeftWidth: '4px'
+            }}
+          >
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3" style={{color: dashboardTheme === 'modern' ? '#991b1b' : '#fca5a5'}}>
+                <AlertCircle className="w-6 h-6" />
+                <span>Complete Your Profile Setup</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="mb-4" style={{color: dashboardTheme === 'modern' ? '#7f1d1d' : '#cbd5e1', fontSize: '0.9375rem'}}>
+                Secure your legacy by completing these essential steps. Your loved ones will thank you.
+              </p>
+              
+              <div className="space-y-3">
+                {!summary?.has_nominee && (
+                  <div 
+                    className="flex items-center justify-between p-4 rounded-lg transition-all hover:shadow-md cursor-pointer"
+                    style={{
+                      background: dashboardTheme === 'modern' ? '#fff' : 'rgba(26, 18, 41, 0.5)',
+                      border: '1px solid',
+                      borderColor: dashboardTheme === 'modern' ? '#fecaca' : '#3d1828'
+                    }}
+                    onClick={() => navigate('/settings?tab=nominees')}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div 
+                        className="w-10 h-10 rounded-full flex items-center justify-center"
+                        style={{background: 'rgba(239, 68, 68, 0.1)'}}
+                      >
+                        <Shield className="w-5 h-5" style={{color: '#ef4444'}} />
+                      </div>
+                      <div>
+                        <div className="font-semibold" style={{color: dashboardTheme === 'modern' ? '#1a1f36' : '#f8fafc'}}>
+                          Add a Nominee
+                        </div>
+                        <div className="text-sm" style={{color: dashboardTheme === 'modern' ? '#697386' : '#94a3b8'}}>
+                          Designate someone to inherit your assets
+                        </div>
+                      </div>
+                    </div>
+                    <Button 
+                      size="sm"
+                      style={{background: '#ef4444', color: '#fff'}}
+                    >
+                      Set Up Now →
+                    </Button>
+                  </div>
+                )}
+
+                {!summary?.has_dms && (
+                  <div 
+                    className="flex items-center justify-between p-4 rounded-lg transition-all hover:shadow-md cursor-pointer"
+                    style={{
+                      background: dashboardTheme === 'modern' ? '#fff' : 'rgba(26, 18, 41, 0.5)',
+                      border: '1px solid',
+                      borderColor: dashboardTheme === 'modern' ? '#fecaca' : '#3d1828'
+                    }}
+                    onClick={() => navigate('/settings?tab=dms')}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div 
+                        className="w-10 h-10 rounded-full flex items-center justify-center"
+                        style={{background: 'rgba(239, 68, 68, 0.1)'}}
+                      >
+                        <Clock className="w-5 h-5" style={{color: '#ef4444'}} />
+                      </div>
+                      <div>
+                        <div className="font-semibold" style={{color: dashboardTheme === 'modern' ? '#1a1f36' : '#f8fafc'}}>
+                          Enable Dead Man's Switch
+                        </div>
+                        <div className="text-sm" style={{color: dashboardTheme === 'modern' ? '#697386' : '#94a3b8'}}>
+                          Automatic notifications if you're inactive
+                        </div>
+                      </div>
+                    </div>
+                    <Button 
+                      size="sm"
+                      style={{background: '#ef4444', color: '#fff'}}
+                    >
+                      Set Up Now →
+                    </Button>
+                  </div>
+                )}
+              </div>
+
+              <div className="mt-4 p-3 rounded-lg" style={{background: dashboardTheme === 'modern' ? 'rgba(239, 68, 68, 0.05)' : 'rgba(239, 68, 68, 0.1)'}}>
+                <p className="text-xs" style={{color: dashboardTheme === 'modern' ? '#7f1d1d' : '#cbd5e1'}}>
+                  💡 <strong>Why this matters:</strong> Without these safeguards, your assets could be lost forever to your family. 
+                  Complete setup takes less than 5 minutes.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {dashboardTheme === 'modern' ? (
           /* Modern Layout - Hero Card + Grid */
           <>
