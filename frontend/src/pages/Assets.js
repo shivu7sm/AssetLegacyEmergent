@@ -66,6 +66,7 @@ export default function Assets() {
     locker_number: '',
     purchase_currency: 'USD',
     purchase_date: '',
+    current_price: '',
     details: {}
   });
 
