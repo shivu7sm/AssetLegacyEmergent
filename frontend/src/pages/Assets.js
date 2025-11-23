@@ -489,10 +489,10 @@ export default function Assets() {
                       <div className="flex items-center gap-3">
                         <div className="text-3xl">{typeInfo.icon}</div>
                         <div>
-                          <CardTitle className="text-white text-lg" data-testid={`asset-name-${asset.id}`}>
+                          <CardTitle className="text-lg" data-testid={`asset-name-${asset.id}`} style={{color: '#f8fafc'}}>
                             {asset.name}
                           </CardTitle>
-                          <p className="text-sm text-slate-400">{typeInfo.label}</p>
+                          <p className="text-sm" style={{color: '#94a3b8'}}>{typeInfo.label}</p>
                         </div>
                       </div>
                     </div>
