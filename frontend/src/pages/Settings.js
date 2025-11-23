@@ -50,6 +50,7 @@ export default function Settings() {
     measurement_unit: 'imperial',
     weight_unit: 'ounce',
     currency_format: 'standard',
+    default_currency: 'USD',
     default_asset_view: 'grid',
     marketing_consent: false,
     communication_consent: true
