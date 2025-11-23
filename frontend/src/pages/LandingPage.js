@@ -179,7 +179,7 @@ export default function LandingPage() {
       </section>
 
       {/* Video Section */}
-      <section className="py-20" style={{background: 'rgba(19, 24, 53, 0.5)'}}>
+      <section className="py-20" style={{background: 'rgba(26, 11, 46, 0.3)'}}>
         <div className="container mx-auto px-6">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12">
