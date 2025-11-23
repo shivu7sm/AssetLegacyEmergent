@@ -551,10 +551,14 @@ export default function Assets() {
                 {/* Precious Metals - Weight based */}
                 {formData.type === 'precious_metals' && (
                   <>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-3 gap-4">
                       <div>
                         <Label className="text-slate-300">Weight *</Label>
-                        <Input type="number" step="any" value={formData.weight} onChange={(e) => setFormData({ ...formData, weight: e.target.value })} placeholder="100" required className="bg-slate-800 border-slate-700 text-white" />
+                        <Input type="number" step="any" value={formData.weight} onChange={(e) => {
+                          const w = e.target.value;
+                          const p = parseFloat(formData.unit_price) || 0;
+                          setFormData({ ...formData, weight: w, total_value: w && p ? (parseFloat(w) * p).toString() : '' });
+                        }} placeholder="100" required className="bg-slate-800 border-slate-700 text-white" />
                       </div>
                       <div>
                         <Label className="text-slate-300">Unit</Label>
@@ -565,15 +569,35 @@ export default function Assets() {
                           </SelectContent>
                         </Select>
                       </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <Label className="text-slate-300">Price Per Unit</Label>
-                        <Input type="number" step="any" value={formData.unit_price} onChange={(e) => setFormData({ ...formData, unit_price: e.target.value })} placeholder="65" className="bg-slate-800 border-slate-700 text-white" />
+                        <Label className="text-slate-300">Purity (e.g., 24K)</Label>
+                        <Input value={formData.purity} onChange={(e) => setFormData({ ...formData, purity: e.target.value })} placeholder="24K" className="bg-slate-800 border-slate-700 text-white" />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-3 gap-4">
+                      <div>
+                        <Label className="text-slate-300">Purchase Price Per {formData.weight_unit}</Label>
+                        <Input type="number" step="any" value={formData.unit_price} onChange={(e) => {
+                          const p = e.target.value;
+                          const w = parseFloat(formData.weight) || 0;
+                          setFormData({ ...formData, unit_price: p, total_value: w && p ? (w * parseFloat(p)).toString() : '' });
+                        }} placeholder="65" className="bg-slate-800 border-slate-700 text-white" />
                       </div>
                       <div>
-                        <Label className="text-slate-300">Purity (e.g., 24K, 22K)</Label>
-                        <Input value={formData.purity} onChange={(e) => setFormData({ ...formData, purity: e.target.value })} placeholder="24K" className="bg-slate-800 border-slate-700 text-white" />
+                        <Label className="text-slate-300">Current Price Per {formData.weight_unit}</Label>
+                        <Input type="number" step="any" value={formData.current_unit_price} onChange={(e) => {
+                          const cp = e.target.value;
+                          const w = parseFloat(formData.weight) || 0;
+                          setFormData({ ...formData, current_unit_price: cp, current_total_value: w && cp ? (w * parseFloat(cp)).toString() : '' });
+                        }} placeholder="70" className="bg-slate-800 border-slate-700 text-white" />
+                      </div>
+                      <div>
+                        <Label className="text-slate-300">Total Purchase Value</Label>
+                        <Input type="number" step="any" value={formData.total_value} onChange={(e) => {
+                          const tv = e.target.value;
+                          const w = parseFloat(formData.weight) || 0;
+                          setFormData({ ...formData, total_value: tv, unit_price: w && tv ? (parseFloat(tv) / w).toString() : '' });
+                        }} placeholder="Auto-calculated" className="bg-slate-800 border-slate-700 text-white" />
                       </div>
                     </div>
                   </>
