@@ -1234,7 +1234,7 @@ async def get_stripe_price_for_plan(plan: str):
         raise HTTPException(status_code=500, detail="Failed to fetch subscription prices")
 
 @api_router.post("/subscription/create-checkout-session")
-async def create_checkout_session(data: Dict[str, Any], user: User = Depends(require_auth)):
+async def create_checkout_session(data: dict, user: User = Depends(require_auth)):
     try:
         plan = data.get('plan')
         
