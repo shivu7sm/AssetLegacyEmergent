@@ -489,6 +489,14 @@ async def create_asset(asset_data: AssetCreate, user: User = Depends(require_aut
     asset_dict['created_at'] = asset_dict['created_at'].isoformat()
     asset_dict['updated_at'] = asset_dict['updated_at'].isoformat()
     await db.assets.insert_one(asset_dict)
+    
+    # Auto-create snapshot for purchase date if provided
+    if asset.purchase_date:
+        try:
+            await create_snapshot_for_date(user.id, asset.purchase_date, asset.purchase_currency)
+        except Exception as e:
+            logger.warning(f"Failed to auto-create snapshot for asset purchase: {str(e)}")
+    
     return asset
 
 @api_router.put("/assets/{asset_id}", response_model=Asset)
