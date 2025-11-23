@@ -116,6 +116,7 @@ class Asset(BaseModel):
     area: Optional[float] = None  # sqft or sqmt
     area_unit: Optional[str] = "sqft"  # sqft, sqmt, yard
     price_per_area: Optional[float] = None
+    current_price_per_area: Optional[float] = None
     location: Optional[Dict[str, Any]] = None  # {address, lat, lng}
     
     # Loan/Credit Card specific
