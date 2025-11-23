@@ -137,6 +137,30 @@ function AppRoutes() {
           </ProtectedRoute>
         } 
       />
+      <Route 
+        path="/insights" 
+        element={
+          <ProtectedRoute>
+            <Insights />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/subscription" 
+        element={
+          <ProtectedRoute>
+            <Subscription />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/schedule-messages" 
+        element={
+          <ProtectedRoute>
+            <ScheduleMessages />
+          </ProtectedRoute>
+        } 
+      />
     </Routes>
   );
 }
