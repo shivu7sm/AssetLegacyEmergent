@@ -6,12 +6,23 @@
   box-sizing: border-box;
 }
 
+:root {
+  --primary-blue: #2563eb;
+  --primary-purple: #7c3aed;
+  --accent-cyan: #06b6d4;
+  --background-dark: #0a0e27;
+  --background-card: #131835;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --border-color: #1e293b;
+}
+
 body {
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #0f172a;
-  color: #e2e8f0;
+  background: var(--background-dark);
+  color: var(--text-primary);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -21,4 +32,15 @@ h1, h2, h3, h4, h5, h6 {
 
 .App {
   min-height: 100vh;
+}
+
+.gradient-bg {
+  background: linear-gradient(135deg, #1e40af 0%, #7c3aed 50%, #06b6d4 100%);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #22d3ee 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
