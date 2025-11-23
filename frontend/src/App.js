@@ -15,6 +15,7 @@ import PortfolioGuide from "./pages/PortfolioGuide";
 import Admin from "./pages/Admin";
 import { Toaster } from "@/components/ui/sonner";
 import { AppProvider } from "./context/AppContext";
+import { ThemeProvider } from "./context/ThemeContext";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
