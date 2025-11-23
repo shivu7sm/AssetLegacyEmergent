@@ -18,15 +18,12 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-# MongoDB connection
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
-# CoinGecko API
 cg = CoinGeckoAPI()
 
-# Create the main app
 app = FastAPI()
 api_router = APIRouter(prefix="/api")
 
@@ -38,6 +35,8 @@ class User(BaseModel):
     name: str
     picture: Optional[str] = None
     last_activity: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    measurement_unit: str = "imperial"  # imperial or metric
+    weight_unit: str = "ounce"  # ounce or gram
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class UserSession(BaseModel):
@@ -62,24 +61,69 @@ class DeadManSwitch(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     user_id: str
     inactivity_days: int = 90
-    reminder_1_days: int = 60  # First reminder at 60 days
-    reminder_2_days: int = 75  # Second reminder at 75 days
-    reminder_3_days: int = 85  # Third reminder at 85 days
+    reminder_1_days: int = 60
+    reminder_2_days: int = 75
+    reminder_3_days: int = 85
     is_active: bool = True
     last_reset: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     reminders_sent: int = 0
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
+class DigitalWill(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    will_text: str
+    beneficiaries: List[Dict[str, Any]] = []
+    asset_distribution: Dict[str, Any] = {}
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
 class Asset(BaseModel):
     model_config = ConfigDict(extra="ignore")
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     user_id: str
-    type: str  # bank, insurance, investment, crypto, gold, diamond, locker, property, loan
+    type: str
     name: str
-    details: Dict[str, Any] = {}
-    purchase_price: Optional[float] = None
+    
+    # Common fields
+    quantity: Optional[float] = None
+    unit_price: Optional[float] = None
+    total_value: Optional[float] = None
     purchase_currency: str = "USD"
     purchase_date: Optional[str] = None
+    
+    # Crypto/Stock specific
+    symbol: Optional[str] = None
+    
+    # Real Estate specific
+    area: Optional[float] = None  # sqft or sqmt
+    area_unit: Optional[str] = "sqft"  # sqft, sqmt, yard
+    price_per_area: Optional[float] = None
+    location: Optional[Dict[str, Any]] = None  # {address, lat, lng}
+    
+    # Loan/Credit Card specific
+    principal_amount: Optional[float] = None
+    interest_rate: Optional[float] = None
+    tenure_months: Optional[int] = None
+    emi_amount: Optional[float] = None
+    outstanding_balance: Optional[float] = None
+    
+    # Investment specific
+    maturity_date: Optional[str] = None
+    expected_return: Optional[float] = None
+    
+    # Locker specific
+    bank_name: Optional[str] = None
+    branch: Optional[str] = None
+    locker_number: Optional[str] = None
+    
+    # Precious metals specific
+    weight: Optional[float] = None
+    weight_unit: Optional[str] = "gram"  # gram or ounce
+    purity: Optional[str] = None
+    
+    details: Dict[str, Any] = {}
     current_price: Optional[float] = None
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
@@ -87,10 +131,30 @@ class Asset(BaseModel):
 class AssetCreate(BaseModel):
     type: str
     name: str
-    details: Dict[str, Any] = {}
-    purchase_price: Optional[float] = None
+    quantity: Optional[float] = None
+    unit_price: Optional[float] = None
+    total_value: Optional[float] = None
     purchase_currency: str = "USD"
     purchase_date: Optional[str] = None
+    symbol: Optional[str] = None
+    area: Optional[float] = None
+    area_unit: Optional[str] = "sqft"
+    price_per_area: Optional[float] = None
+    location: Optional[Dict[str, Any]] = None
+    principal_amount: Optional[float] = None
+    interest_rate: Optional[float] = None
+    tenure_months: Optional[int] = None
+    emi_amount: Optional[float] = None
+    outstanding_balance: Optional[float] = None
+    maturity_date: Optional[str] = None
+    expected_return: Optional[float] = None
+    bank_name: Optional[str] = None
+    branch: Optional[str] = None
+    locker_number: Optional[str] = None
+    weight: Optional[float] = None
+    weight_unit: Optional[str] = "gram"
+    purity: Optional[str] = None
+    details: Dict[str, Any] = {}
 
 class NomineeCreate(BaseModel):
     name: str
@@ -103,6 +167,15 @@ class DMSCreate(BaseModel):
     reminder_1_days: int = 60
     reminder_2_days: int = 75
     reminder_3_days: int = 85
+
+class DigitalWillCreate(BaseModel):
+    will_text: str
+    beneficiaries: List[Dict[str, Any]] = []
+    asset_distribution: Dict[str, Any] = {}
+
+class UserPreferences(BaseModel):
+    measurement_unit: str = "imperial"
+    weight_unit: str = "ounce"
 
 # Auth Helper
 async def get_current_user(request: Request) -> Optional[User]:
@@ -120,16 +193,7 @@ async def get_current_user(request: Request) -> Optional[User]:
     if not session:
         return None
     
-    # Handle both datetime objects and ISO strings for expires_at
-    expires_at = session["expires_at"]
-    if isinstance(expires_at, str):
-        expires_at = datetime.fromisoformat(expires_at)
-    elif isinstance(expires_at, datetime):
-        # If it's already a datetime, ensure it has timezone info
-        if expires_at.tzinfo is None:
-            expires_at = expires_at.replace(tzinfo=timezone.utc)
-    
-    if expires_at < datetime.now(timezone.utc):
+    if datetime.fromisoformat(session["expires_at"]) < datetime.now(timezone.utc):
         await db.user_sessions.delete_one({"session_token": session_token})
         return None
     
@@ -137,13 +201,11 @@ async def get_current_user(request: Request) -> Optional[User]:
     if not user_doc:
         return None
     
-    # Update last activity
     await db.users.update_one(
         {"id": session["user_id"]},
         {"$set": {"last_activity": datetime.now(timezone.utc).isoformat()}}
     )
     
-    # Convert datetime strings back to datetime objects
     if isinstance(user_doc.get('last_activity'), str):
         user_doc['last_activity'] = datetime.fromisoformat(user_doc['last_activity'])
     if isinstance(user_doc.get('created_at'), str):
@@ -164,7 +226,6 @@ async def create_session(request: Request, response: Response):
     if not session_id:
         raise HTTPException(status_code=400, detail="Session ID required")
     
-    # Get session data from Emergent Auth
     try:
         auth_response = requests.get(
             "https://demobackend.emergentagent.com/auth/v1/env/oauth/session-data",
@@ -176,11 +237,9 @@ async def create_session(request: Request, response: Response):
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to validate session: {str(e)}")
     
-    # Check if user exists
     existing_user = await db.users.find_one({"email": session_data["email"]})
     
     if not existing_user:
-        # Create new user
         user = User(
             email=session_data["email"],
             name=session_data["name"],
@@ -194,7 +253,6 @@ async def create_session(request: Request, response: Response):
     else:
         user_id = existing_user["id"]
     
-    # Create session
     session_token = session_data["session_token"]
     expires_at = datetime.now(timezone.utc) + timedelta(days=7)
     
@@ -209,7 +267,6 @@ async def create_session(request: Request, response: Response):
     session_dict['created_at'] = session_dict['created_at'].isoformat()
     await db.user_sessions.insert_one(session_dict)
     
-    # Set cookie
     response.set_cookie(
         key="session_token",
         value=session_token,
@@ -233,6 +290,15 @@ async def logout(request: Request, response: Response):
         await db.user_sessions.delete_one({"session_token": session_token})
     
     response.delete_cookie(key="session_token", path="/")
+    return {"success": True}
+
+# User Preferences
+@api_router.put("/user/preferences")
+async def update_preferences(prefs: UserPreferences, user: User = Depends(require_auth)):
+    await db.users.update_one(
+        {"id": user.id},
+        {"$set": {"measurement_unit": prefs.measurement_unit, "weight_unit": prefs.weight_unit}}
+    )
     return {"success": True}
 
 # Asset Routes
@@ -284,7 +350,51 @@ async def delete_asset(asset_id: str, user: User = Depends(require_auth)):
         raise HTTPException(status_code=404, detail="Asset not found")
     return {"success": True}
 
-# Nominee Routes
+@api_router.get("/assets/{asset_id}/loan-schedule")
+async def get_loan_schedule(asset_id: str, user: User = Depends(require_auth)):
+    asset = await db.assets.find_one({"id": asset_id, "user_id": user.id})
+    if not asset:
+        raise HTTPException(status_code=404, detail="Asset not found")
+    
+    if asset['type'] not in ['loan', 'credit_card']:
+        raise HTTPException(status_code=400, detail="Not a loan/credit card asset")
+    
+    principal = asset.get('principal_amount', 0)
+    rate = asset.get('interest_rate', 0) / 100 / 12  # Monthly rate
+    tenure = asset.get('tenure_months', 0)
+    
+    if not all([principal, rate, tenure]):
+        return {"schedule": [], "total_interest": 0, "total_amount": principal}
+    
+    # Calculate EMI
+    emi = principal * rate * ((1 + rate) ** tenure) / (((1 + rate) ** tenure) - 1)
+    
+    schedule = []
+    balance = principal
+    total_interest = 0
+    
+    for month in range(1, tenure + 1):
+        interest = balance * rate
+        principal_paid = emi - interest
+        balance -= principal_paid
+        total_interest += interest
+        
+        schedule.append({
+            "month": month,
+            "emi": round(emi, 2),
+            "principal": round(principal_paid, 2),
+            "interest": round(interest, 2),
+            "balance": round(max(balance, 0), 2)
+        })
+    
+    return {
+        "schedule": schedule,
+        "emi": round(emi, 2),
+        "total_interest": round(total_interest, 2),
+        "total_amount": round(principal + total_interest, 2)
+    }
+
+# Nominee Routes  
 @api_router.get("/nominee", response_model=Optional[Nominee])
 async def get_nominee(user: User = Depends(require_auth)):
     nominee = await db.nominees.find_one({"user_id": user.id}, {"_id": 0})
@@ -366,6 +476,45 @@ async def reset_dms(user: User = Depends(require_auth)):
         raise HTTPException(status_code=404, detail="Dead man switch not configured")
     return {"success": True, "message": "Timer reset successfully"}
 
+# Digital Will Routes
+@api_router.get("/will")
+async def get_will(user: User = Depends(require_auth)):
+    will = await db.digital_wills.find_one({"user_id": user.id}, {"_id": 0})
+    if will:
+        if isinstance(will.get('created_at'), str):
+            will['created_at'] = datetime.fromisoformat(will['created_at'])
+        if isinstance(will.get('updated_at'), str):
+            will['updated_at'] = datetime.fromisoformat(will['updated_at'])
+        return DigitalWill(**will)
+    return None
+
+@api_router.post("/will")
+async def create_or_update_will(will_data: DigitalWillCreate, user: User = Depends(require_auth)):
+    existing = await db.digital_wills.find_one({"user_id": user.id})
+    
+    if existing:
+        update_dict = will_data.model_dump()
+        update_dict['updated_at'] = datetime.now(timezone.utc).isoformat()
+        await db.digital_wills.update_one(
+            {"user_id": user.id},
+            {"$set": update_dict}
+        )
+        will_id = existing["id"]
+    else:
+        will = DigitalWill(user_id=user.id, **will_data.model_dump())
+        will_dict = will.model_dump()
+        will_dict['created_at'] = will_dict['created_at'].isoformat()
+        will_dict['updated_at'] = will_dict['updated_at'].isoformat()
+        await db.digital_wills.insert_one(will_dict)
+        will_id = will.id
+    
+    result = await db.digital_wills.find_one({"id": will_id}, {"_id": 0})
+    if isinstance(result.get('created_at'), str):
+        result['created_at'] = datetime.fromisoformat(result['created_at'])
+    if isinstance(result.get('updated_at'), str):
+        result['updated_at'] = datetime.fromisoformat(result['updated_at'])
+    return DigitalWill(**result)
+
 # Price API Routes
 @api_router.get("/prices/crypto/{symbol}")
 async def get_crypto_price(symbol: str, currency: str = "usd"):
@@ -376,26 +525,22 @@ async def get_crypto_price(symbol: str, currency: str = "usd"):
         raise HTTPException(status_code=400, detail=f"Failed to fetch price: {str(e)}")
 
 @api_router.get("/prices/gold")
-async def get_gold_price(currency: str = "USD"):
-    # Using metals-api.com free tier alternative
-    # For production, use a proper API key
+async def get_gold_price(currency: str = "USD", unit: str = "gram"):
     try:
-        # Simplified - return approximate gold price per gram
-        # In production, integrate with metals-api.com or similar
         base_prices = {
-            "USD": 65.0,
-            "INR": 5400.0,
-            "EUR": 60.0,
-            "GBP": 52.0
+            "USD": {"gram": 65.0, "ounce": 2020.0},
+            "INR": {"gram": 5400.0, "ounce": 167600.0},
+            "EUR": {"gram": 60.0, "ounce": 1864.0},
+            "GBP": {"gram": 52.0, "ounce": 1616.0}
         }
-        return {"metal": "gold", "price": base_prices.get(currency.upper(), 65.0), "currency": currency, "unit": "gram"}
+        price = base_prices.get(currency.upper(), base_prices["USD"])[unit]
+        return {"metal": "gold", "price": price, "currency": currency, "unit": unit}
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to fetch gold price: {str(e)}")
 
 @api_router.get("/prices/currency/{from_currency}/{to_currency}")
 async def get_currency_conversion(from_currency: str, to_currency: str):
     try:
-        # Using exchangerate-api.com free tier
         response = requests.get(
             f"https://api.exchangerate-api.com/v4/latest/{from_currency.upper()}",
             timeout=10
@@ -422,12 +567,21 @@ async def get_dashboard_summary(user: User = Depends(require_auth)):
         asset_type = asset["type"]
         asset_types[asset_type] = asset_types.get(asset_type, 0) + 1
         
-        # Calculate value
-        price = asset.get("current_price") or asset.get("purchase_price") or 0
+        # Calculate value based on asset type
+        value = 0
+        if asset.get('total_value'):
+            value = asset['total_value']
+        elif asset.get('quantity') and asset.get('unit_price'):
+            value = asset['quantity'] * asset['unit_price']
+        elif asset.get('area') and asset.get('price_per_area'):
+            value = asset['area'] * asset['price_per_area']
+        elif asset.get('principal_amount'):
+            value = asset['principal_amount']
+        
         currency = asset.get("purchase_currency", "USD")
         
         # Convert to USD
-        if currency.upper() != "USD":
+        if currency.upper() != "USD" and value > 0:
             try:
                 conv_response = requests.get(
                     f"https://api.exchangerate-api.com/v4/latest/{currency.upper()}",
@@ -435,21 +589,21 @@ async def get_dashboard_summary(user: User = Depends(require_auth)):
                 )
                 if conv_response.status_code == 200:
                     rate = conv_response.json()["rates"]["USD"]
-                    price = price * rate
+                    value = value * rate
             except:
                 pass
         
-        total_value_usd += price
+        total_value_usd += value
     
     return {
         "total_assets": total_assets,
         "asset_types": asset_types,
         "total_value_usd": round(total_value_usd, 2),
         "has_nominee": await db.nominees.count_documents({"user_id": user.id}) > 0,
-        "has_dms": await db.dead_man_switches.count_documents({"user_id": user.id}) > 0
+        "has_dms": await db.dead_man_switches.count_documents({"user_id": user.id}) > 0,
+        "has_will": await db.digital_wills.count_documents({"user_id": user.id}) > 0
     }
 
-# Include router
 app.include_router(api_router)
 
 app.add_middleware(
