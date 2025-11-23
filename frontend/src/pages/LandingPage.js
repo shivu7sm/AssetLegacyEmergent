@@ -389,7 +389,7 @@ export default function LandingPage() {
       </section>
 
       {/* Security Message Section */}
-      <section className="py-16" style={{background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%)', borderTop: '1px solid #2d1f3d', borderBottom: '1px solid #2d1f3d'}}>
+      <section id="security" className="py-16" style={{background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%)', borderTop: '1px solid #2d1f3d', borderBottom: '1px solid #2d1f3d'}}>
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto">
             <div className="flex items-start gap-6 p-8 rounded-2xl" style={{background: '#131835', border: '2px solid #ef4444'}}>
