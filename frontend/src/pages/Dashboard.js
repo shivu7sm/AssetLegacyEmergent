@@ -174,20 +174,20 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Card 
             data-testid="total-assets-card" 
-            className="overflow-hidden transition-all hover:shadow-lg"
-            style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#3b82f6'}}
+            className={`overflow-hidden transition-all hover:shadow-lg card ${dashboardTheme === 'modern' ? 'stat-card' : ''}`}
+            style={dashboardTheme === 'standard' ? {background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#3b82f6'} : {}}
           >
-            <CardContent className="p-6">
+            <CardContent className={dashboardTheme === 'modern' ? 'p-0' : 'p-6'}>
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <p className="text-sm font-medium mb-2" style={{color: '#94a3b8', letterSpacing: '0.5px'}}>TOTAL ASSETS</p>
-                  <div className="text-4xl font-bold mb-1" style={{color: '#f8fafc', fontFamily: 'Inter, sans-serif'}} data-testid="total-assets-count">
+                  <p className={`text-sm font-medium mb-2 ${dashboardTheme === 'modern' ? 'stat-label' : ''}`} style={dashboardTheme === 'standard' ? {color: '#94a3b8', letterSpacing: '0.5px'} : {}}>TOTAL ASSETS</p>
+                  <div className={`${dashboardTheme === 'modern' ? 'stat-value text-5xl' : 'text-4xl'} font-bold mb-1`} style={dashboardTheme === 'standard' ? {color: '#f8fafc', fontFamily: 'Inter, sans-serif'} : {}} data-testid="total-assets-count">
                     {summary?.total_assets || 0}
                   </div>
                   <p className="text-xs" style={{color: '#64748b'}}>items tracked</p>
                 </div>
-                <div className="p-3 rounded-xl" style={{background: 'rgba(59, 130, 246, 0.1)'}}>
-                  <DollarSign className="w-8 h-8" style={{color: '#3b82f6'}} />
+                <div className={`${dashboardTheme === 'modern' ? 'stat-icon neutral' : 'p-3 rounded-xl'}`} style={dashboardTheme === 'standard' ? {background: 'rgba(59, 130, 246, 0.1)'} : {}}>
+                  <DollarSign className={dashboardTheme === 'modern' ? 'w-10 h-10' : 'w-8 h-8'} style={{color: '#3b82f6'}} />
                 </div>
               </div>
             </CardContent>
