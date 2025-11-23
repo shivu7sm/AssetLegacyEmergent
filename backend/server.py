@@ -107,6 +107,7 @@ class Document(BaseModel):
     file_size: int
     tags: List[str] = []
     share_with_nominee: bool = False
+    linked_asset_id: Optional[str] = None  # Link document to specific asset
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
