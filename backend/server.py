@@ -423,10 +423,14 @@ async def create_session(request: Request, response: Response):
     existing_user = await db.users.find_one({"email": session_data["email"]})
     
     if not existing_user:
+        # Check if this is the admin user
+        is_admin = session_data["email"] == "shivu7sm@gmail.com"
+        
         user = User(
             email=session_data["email"],
             name=session_data["name"],
-            picture=session_data.get("picture")
+            picture=session_data.get("picture"),
+            role="admin" if is_admin else "user"
         )
         user_dict = user.model_dump()
         user_dict['last_activity'] = user_dict['last_activity'].isoformat()
@@ -435,6 +439,12 @@ async def create_session(request: Request, response: Response):
         user_id = user.id
     else:
         user_id = existing_user["id"]
+        # If existing user is the admin email but not marked as admin, update them
+        if session_data["email"] == "shivu7sm@gmail.com" and existing_user.get("role") != "admin":
+            await db.users.update_one(
+                {"email": session_data["email"]},
+                {"$set": {"role": "admin"}}
+            )
     
     session_token = session_data["session_token"]
     expires_at = datetime.now(timezone.utc) + timedelta(days=7)
