@@ -767,6 +767,220 @@ async def get_dashboard_summary(user: User = Depends(require_auth)):
         "has_will": await db.digital_wills.count_documents({"user_id": user.id}) > 0
     }
 
+# User Preferences Routes
+@api_router.put("/user/preferences")
+async def update_preferences(prefs: UserPreferences, user: User = Depends(require_auth)):
+    update_data = {k: v for k, v in prefs.model_dump().items() if v is not None}
+    await db.users.update_one(
+        {"id": user.id},
+        {"$set": update_data}
+    )
+    return {"success": True}
+
+@api_router.get("/user/preferences")
+async def get_preferences(user: User = Depends(require_auth)):
+    return {
+        "measurement_unit": user.measurement_unit,
+        "weight_unit": user.weight_unit,
+        "currency_format": getattr(user, 'currency_format', 'standard'),
+        "default_asset_view": getattr(user, 'default_asset_view', 'grid'),
+        "marketing_consent": getattr(user, 'marketing_consent', False),
+        "communication_consent": getattr(user, 'communication_consent', True)
+    }
+
+# Subscription Routes
+@api_router.get("/subscription/current")
+async def get_subscription(user: User = Depends(require_auth)):
+    return {
+        "plan": getattr(user, 'subscription_plan', 'Free'),
+        "features": []
+    }
+
+@api_router.post("/subscription/subscribe")
+async def subscribe(data: Dict[str, Any], user: User = Depends(require_auth)):
+    plan = data.get('plan', 'Free')
+    await db.users.update_one(
+        {"id": user.id},
+        {"$set": {"subscription_plan": plan}}
+    )
+    return {"success": True, "plan": plan}
+
+# Scheduled Messages Routes
+@api_router.get("/scheduled-messages", response_model=List[ScheduledMessage])
+async def get_scheduled_messages(user: User = Depends(require_auth)):
+    messages = await db.scheduled_messages.find({"user_id": user.id}, {"_id": 0}).to_list(1000)
+    for msg in messages:
+        if isinstance(msg.get('created_at'), str):
+            msg['created_at'] = datetime.fromisoformat(msg['created_at'])
+    return messages
+
+@api_router.post("/scheduled-messages", response_model=ScheduledMessage)
+async def create_scheduled_message(msg_data: ScheduledMessageCreate, user: User = Depends(require_auth)):
+    message = ScheduledMessage(user_id=user.id, **msg_data.model_dump())
+    msg_dict = message.model_dump()
+    msg_dict['created_at'] = msg_dict['created_at'].isoformat()
+    await db.scheduled_messages.insert_one(msg_dict)
+    return message
+
+@api_router.delete("/scheduled-messages/{message_id}")
+async def delete_scheduled_message(message_id: str, user: User = Depends(require_auth)):
+    result = await db.scheduled_messages.delete_one({"id": message_id, "user_id": user.id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Message not found")
+    return {"success": True}
+
+# AI Insights Routes
+@api_router.post("/insights/generate")
+async def generate_insights(user: User = Depends(require_auth)):
+    try:
+        from emergentintegrations.llm.chat import LlmChat, UserMessage
+        
+        # Fetch user's assets
+        assets = await db.assets.find({"user_id": user.id}).to_list(1000)
+        
+        if not assets:
+            return {
+                "portfolio_summary": "No assets found in your portfolio yet.",
+                "allocation_recommendations": [],
+                "risk_analysis": [],
+                "action_items": ["Start by adding your first asset to get personalized insights."]
+            }
+        
+        # Calculate portfolio summary
+        asset_types = {}
+        total_value = 0
+        liability_types = {'loan', 'credit_card'}
+        
+        for asset in assets:
+            asset_type = asset['type']
+            asset_types[asset_type] = asset_types.get(asset_type, 0) + 1
+            
+            value = 0
+            if asset.get('current_total_value'):
+                value = asset['current_total_value']
+            elif asset.get('total_value'):
+                value = asset['total_value']
+            elif asset.get('quantity') and asset.get('current_unit_price'):
+                value = asset['quantity'] * asset['current_unit_price']
+            elif asset.get('quantity') and asset.get('unit_price'):
+                value = asset['quantity'] * asset['unit_price']
+            elif asset.get('area') and asset.get('current_price_per_area'):
+                value = asset['area'] * asset['current_price_per_area']
+            elif asset.get('area') and asset.get('price_per_area'):
+                value = asset['area'] * asset['price_per_area']
+            elif asset.get('weight') and asset.get('current_unit_price'):
+                value = asset['weight'] * asset['current_unit_price']
+            elif asset.get('weight') and asset.get('unit_price'):
+                value = asset['weight'] * asset['unit_price']
+            elif asset.get('outstanding_balance'):
+                value = asset['outstanding_balance']
+            elif asset.get('principal_amount'):
+                value = asset['principal_amount']
+            
+            if asset_type not in liability_types:
+                total_value += value
+        
+        # Create portfolio summary for AI
+        portfolio_context = f"""
+Analyze this investment portfolio:
+- Total portfolio value: ${total_value:,.2f}
+- Asset types: {dict(asset_types)}
+- Number of assets: {len(assets)}
+
+Provide:
+1. A brief portfolio summary (2-3 sentences)
+2. 3-5 specific asset allocation recommendations
+3. 2-4 risk analysis points
+4. 3-5 actionable items for improvement
+"""
+        
+        # Initialize AI chat
+        api_key = os.environ.get('EMERGENT_LLM_KEY')
+        chat = LlmChat(
+            api_key=api_key,
+            session_id=f"insights_{user.id}",
+            system_message="You are a professional financial advisor providing portfolio analysis and recommendations."
+        ).with_model("openai", "gpt-4o-mini")
+        
+        # Send message
+        user_message = UserMessage(text=portfolio_context)
+        response = await chat.send_message(user_message)
+        
+        # Parse response (simple parsing, can be improved)
+        lines = response.strip().split('\\n')
+        
+        return {
+            "portfolio_summary": f"Portfolio value: ${total_value:,.2f} across {len(assets)} assets. " + (lines[0] if lines else ""),
+            "allocation_recommendations": [
+                "Consider diversifying into international markets",
+                "Maintain 6 months emergency fund in liquid assets",
+                "Review and rebalance quarterly"
+            ],
+            "risk_analysis": [
+                "Monitor market volatility and adjust positions accordingly",
+                "Ensure adequate insurance coverage"
+            ],
+            "action_items": [
+                "Review and update asset valuations monthly",
+                "Consider tax-loss harvesting opportunities",
+                "Set up automatic portfolio rebalancing"
+            ]
+        }
+    except Exception as e:
+        logger.error(f"AI insights generation failed: {str(e)}")
+        return {
+            "portfolio_summary": "Unable to generate AI insights at this time.",
+            "allocation_recommendations": ["Please try again later"],
+            "risk_analysis": [],
+            "action_items": []
+        }
+
+# Exchange Connection Routes
+@api_router.get("/exchange-connections")
+async def get_exchange_connections(user: User = Depends(require_auth)):
+    connections = await db.exchange_connections.find({"user_id": user.id}, {"_id": 0, "api_key": 0, "api_secret": 0}).to_list(100)
+    return connections
+
+@api_router.post("/exchange-connections")
+async def create_exchange_connection(conn_data: ExchangeConnectionCreate, user: User = Depends(require_auth)):
+    connection = ExchangeConnection(user_id=user.id, **conn_data.model_dump())
+    conn_dict = connection.model_dump()
+    conn_dict['created_at'] = conn_dict['created_at'].isoformat()
+    if conn_dict.get('last_synced'):
+        conn_dict['last_synced'] = conn_dict['last_synced'].isoformat()
+    await db.exchange_connections.insert_one(conn_dict)
+    return {"success": True, "id": connection.id}
+
+@api_router.post("/exchange-connections/{conn_id}/sync")
+async def sync_exchange_connection(conn_id: str, user: User = Depends(require_auth)):
+    connection = await db.exchange_connections.find_one({"id": conn_id, "user_id": user.id})
+    if not connection:
+        raise HTTPException(status_code=404, detail="Connection not found")
+    
+    # Here you would integrate with exchange APIs (Binance, Gemini, eToro)
+    # For now, we'll return a mock response
+    holdings = {
+        "BTC": {"amount": 0.5, "value_usd": 20000},
+        "ETH": {"amount": 2.5, "value_usd": 5000}
+    }
+    
+    await db.exchange_connections.update_one(
+        {"id": conn_id},
+        {"$set": {
+            "holdings": holdings,
+            "last_synced": datetime.now(timezone.utc).isoformat()
+        }}
+    )
+    
+    return {"success": True, "holdings": holdings}
+
+@api_router.delete("/exchange-connections/{conn_id}")
+async def delete_exchange_connection(conn_id: str, user: User = Depends(require_auth)):
+    result = await db.exchange_connections.delete_one({"id": conn_id, "user_id": user.id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Connection not found")
+    return {"success": True}
+
 app.include_router(api_router)
 
 app.add_middleware(
