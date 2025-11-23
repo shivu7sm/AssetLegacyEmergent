@@ -1,10 +1,12 @@
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { LayoutDashboard, Wallet, Settings, LogOut, ShieldCheck, FileText, FolderLock, Sparkles, Calendar, Crown } from 'lucide-react';
+import { LayoutDashboard, Wallet, Settings, LogOut, ShieldCheck, FileText, FolderLock, Sparkles, Calendar, Crown, ShieldAlert } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
 import { useApp } from '@/context/AppContext';
+import { useAuth } from '@/App';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
