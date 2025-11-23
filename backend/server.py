@@ -688,91 +688,154 @@ async def get_currency_conversion(from_currency: str, to_currency: str):
         raise HTTPException(status_code=400, detail=f"Failed to fetch conversion rate: {str(e)}")
 
 # Dashboard Routes
+# Helper function to calculate current asset value in its original currency
+def calculate_asset_current_value(asset: Dict[str, Any]) -> float:
+    """
+    Calculate the CURRENT value of an asset in its original currency.
+    Prioritizes current values over purchase values.
+    """
+    value = 0.0
+    
+    # Priority 1: Explicit current values
+    if asset.get('current_total_value'):
+        value = float(asset['current_total_value'])
+    elif asset.get('current_price'):
+        value = float(asset['current_price'])
+    # Priority 2: Calculated current values (quantity/weight/area * current_unit_price)
+    elif asset.get('quantity') and asset.get('current_unit_price'):
+        value = float(asset['quantity']) * float(asset['current_unit_price'])
+    elif asset.get('area') and asset.get('current_price_per_area'):
+        value = float(asset['area']) * float(asset['current_price_per_area'])
+    elif asset.get('weight') and asset.get('current_unit_price'):
+        value = float(asset['weight']) * float(asset['current_unit_price'])
+    # Priority 3: Fall back to purchase values if no current value
+    elif asset.get('total_value'):
+        value = float(asset['total_value'])
+    elif asset.get('quantity') and asset.get('unit_price'):
+        value = float(asset['quantity']) * float(asset['unit_price'])
+    elif asset.get('area') and asset.get('price_per_area'):
+        value = float(asset['area']) * float(asset['price_per_area'])
+    elif asset.get('weight') and asset.get('unit_price'):
+        value = float(asset['weight']) * float(asset['unit_price'])
+    # Priority 4: Loans/debts
+    elif asset.get('outstanding_balance'):
+        value = float(asset['outstanding_balance'])
+    elif asset.get('principal_amount'):
+        value = float(asset['principal_amount'])
+    
+    return value
+
+# Helper function to convert currency
+def convert_currency(amount: float, from_currency: str, to_currency: str) -> float:
+    """Convert amount from one currency to another using live exchange rates."""
+    if from_currency.upper() == to_currency.upper():
+        return amount
+    
+    if amount == 0:
+        return 0.0
+    
+    try:
+        response = requests.get(
+            f"https://api.exchangerate-api.com/v4/latest/{from_currency.upper()}",
+            timeout=5
+        )
+        if response.status_code == 200:
+            rate = response.json()["rates"].get(to_currency.upper(), 1.0)
+            return amount * rate
+    except:
+        logger.warning(f"Currency conversion failed: {from_currency} to {to_currency}")
+    
+    return amount  # Return original if conversion fails
+
 @api_router.get("/dashboard/summary")
-async def get_dashboard_summary(user: User = Depends(require_auth)):
+async def get_dashboard_summary(user: User = Depends(require_auth), target_currency: str = "USD"):
+    """
+    Get dashboard summary with all values converted to target currency.
+    This ensures consistent calculation across the app.
+    """
     assets = await db.assets.find({"user_id": user.id}).to_list(1000)
     
     # Define liability types
     liability_types = {'loan', 'credit_card'}
     
-    total_assets = len(assets)
+    total_assets_count = len(assets)
     asset_types = {}
     asset_values = {}
-    total_assets_value_usd = 0.0
-    total_liabilities_value_usd = 0.0
+    total_assets_value = 0.0
+    total_liabilities_value = 0.0
     asset_values_separate = {}
     liability_values_separate = {}
+    
+    # Validation tracking
+    individual_values = []
     
     for asset in assets:
         asset_type = asset["type"]
         asset_types[asset_type] = asset_types.get(asset_type, 0) + 1
         is_liability = asset_type in liability_types
         
-        # Calculate value based on asset type
-        value = 0
-        if asset.get('current_price'):
-            value = asset['current_price']
-        elif asset.get('current_total_value'):
-            value = asset['current_total_value']
-        elif asset.get('total_value'):
-            value = asset['total_value']
-        elif asset.get('quantity') and asset.get('current_unit_price'):
-            value = asset['quantity'] * asset['current_unit_price']
-        elif asset.get('quantity') and asset.get('unit_price'):
-            value = asset['quantity'] * asset['unit_price']
-        elif asset.get('area') and asset.get('current_price_per_area'):
-            value = asset['area'] * asset['current_price_per_area']
-        elif asset.get('area') and asset.get('price_per_area'):
-            value = asset['area'] * asset['price_per_area']
-        elif asset.get('weight') and asset.get('current_unit_price'):
-            value = asset['weight'] * asset['current_unit_price']
-        elif asset.get('weight') and asset.get('unit_price'):
-            value = asset['weight'] * asset['unit_price']
-        elif asset.get('outstanding_balance'):
-            value = asset['outstanding_balance']
-        elif asset.get('principal_amount'):
-            value = asset['principal_amount']
+        # Calculate current value in original currency
+        value_in_original_currency = calculate_asset_current_value(asset)
+        original_currency = asset.get("purchase_currency", "USD")
         
-        currency = asset.get("purchase_currency", "USD")
+        # Convert to target currency
+        value_in_target_currency = convert_currency(
+            value_in_original_currency, 
+            original_currency, 
+            target_currency
+        )
         
-        # Convert to USD
-        if currency.upper() != "USD" and value > 0:
-            try:
-                conv_response = requests.get(
-                    f"https://api.exchangerate-api.com/v4/latest/{currency.upper()}",
-                    timeout=5
-                )
-                if conv_response.status_code == 200:
-                    rate = conv_response.json()["rates"]["USD"]
-                    value = value * rate
-            except:
-                pass
+        # Track for validation
+        individual_values.append({
+            "name": asset.get("name", "Unknown"),
+            "type": asset_type,
+            "original_value": value_in_original_currency,
+            "original_currency": original_currency,
+            "converted_value": value_in_target_currency,
+            "target_currency": target_currency,
+            "is_liability": is_liability
+        })
         
         # Separate assets and liabilities
         if is_liability:
-            total_liabilities_value_usd += value
-            liability_values_separate[asset_type] = liability_values_separate.get(asset_type, 0) + value
-            asset_values[asset_type] = asset_values.get(asset_type, 0) - value  # Negative for chart
+            total_liabilities_value += value_in_target_currency
+            liability_values_separate[asset_type] = liability_values_separate.get(asset_type, 0) + value_in_target_currency
+            asset_values[asset_type] = asset_values.get(asset_type, 0) - value_in_target_currency
         else:
-            total_assets_value_usd += value
-            asset_values_separate[asset_type] = asset_values_separate.get(asset_type, 0) + value
-            asset_values[asset_type] = asset_values.get(asset_type, 0) + value
+            total_assets_value += value_in_target_currency
+            asset_values_separate[asset_type] = asset_values_separate.get(asset_type, 0) + value_in_target_currency
+            asset_values[asset_type] = asset_values.get(asset_type, 0) + value_in_target_currency
     
-    net_worth = total_assets_value_usd - total_liabilities_value_usd
+    net_worth = total_assets_value - total_liabilities_value
+    
+    # Validation checks
+    calculated_sum = sum([v["converted_value"] * (1 if not v["is_liability"] else -1) for v in individual_values])
+    if abs(calculated_sum - net_worth) > 0.01:
+        logger.error(f"Net worth calculation mismatch! Calculated: {calculated_sum}, Reported: {net_worth}")
+    
+    # Check for unrealistic values
+    if net_worth > 100000000:  # $100M threshold
+        logger.warning(f"Unusually high net worth detected: {net_worth} {target_currency} for user {user.id}")
     
     return {
-        "total_assets": total_assets,
+        "total_assets": total_assets_count,
         "asset_types": asset_types,
         "asset_values": asset_values,
         "asset_values_separate": asset_values_separate,
         "liability_values_separate": liability_values_separate,
-        "total_assets_value": round(total_assets_value_usd, 2),
-        "total_liabilities_value": round(total_liabilities_value_usd, 2),
+        "total_assets_value": round(total_assets_value, 2),
+        "total_liabilities_value": round(total_liabilities_value, 2),
         "net_worth": round(net_worth, 2),
-        "total_value_usd": round(net_worth, 2),  # Keep for backward compatibility
+        "currency": target_currency,
+        "total_value_usd": round(net_worth, 2) if target_currency == "USD" else round(convert_currency(net_worth, target_currency, "USD"), 2),
         "has_nominee": await db.nominees.count_documents({"user_id": user.id}) > 0,
         "has_dms": await db.dead_man_switches.count_documents({"user_id": user.id}) > 0,
-        "has_will": await db.digital_wills.count_documents({"user_id": user.id}) > 0
+        "has_will": await db.digital_wills.count_documents({"user_id": user.id}) > 0,
+        # Debug info (remove in production)
+        "validation": {
+            "individual_count": len(individual_values),
+            "calculated_sum": round(calculated_sum, 2)
+        }
     }
 
 # User Preferences Routes
