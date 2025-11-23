@@ -171,7 +171,9 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <AuthProvider>
-          <AppRoutes />
+          <AppProvider>
+            <AppRoutes />
+          </AppProvider>
         </AuthProvider>
       </BrowserRouter>
       <Toaster position="top-right" />
