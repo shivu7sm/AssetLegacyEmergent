@@ -1649,9 +1649,24 @@ async def recalculate_portfolio_value(portfolio_id: str, user_id: str):
 
 # Helper function to create snapshot for a specific date
 async def create_snapshot_for_date(user_id: str, snapshot_date: str, currency: str = "USD"):
-    """Helper function to create a net worth snapshot for a specific date."""
+    """
+    Helper function to create a net worth snapshot for a specific date.
+    IMPORTANT: Only includes assets purchased ON or BEFORE the snapshot date for accurate historical tracking.
+    """
     # Get all assets for this user
-    assets = await db.assets.find({"user_id": user_id}).to_list(1000)
+    all_assets = await db.assets.find({"user_id": user_id}).to_list(1000)
+    
+    # Filter assets: only include those purchased on or before the snapshot date
+    assets = []
+    for asset in all_assets:
+        purchase_date = asset.get("purchase_date")
+        if purchase_date:
+            # Only include if purchase_date <= snapshot_date
+            if purchase_date <= snapshot_date:
+                assets.append(asset)
+        else:
+            # Include assets without purchase date (assume they existed)
+            assets.append(asset)
     
     # Define liability types
     liability_types = {'loan', 'credit_card'}
