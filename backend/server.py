@@ -89,7 +89,9 @@ class Asset(BaseModel):
     # Common fields
     quantity: Optional[float] = None
     unit_price: Optional[float] = None
+    current_unit_price: Optional[float] = None
     total_value: Optional[float] = None
+    current_total_value: Optional[float] = None
     purchase_currency: str = "USD"
     purchase_date: Optional[str] = None
     
