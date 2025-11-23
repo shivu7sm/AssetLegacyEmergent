@@ -2090,6 +2090,9 @@ print('Test data cleaned up');
             self.test_ai_insights_retrieval_latest()
             self.test_multiple_insights_refresh_scenario()
             
+            # Portfolio Management Backend Testing
+            self.test_portfolio_management_apis()
+            
             # Admin Panel Backend Testing
             self.test_admin_panel_backend()
             
