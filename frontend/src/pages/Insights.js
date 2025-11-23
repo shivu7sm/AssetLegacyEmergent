@@ -233,7 +233,10 @@ export default function Insights() {
                                 {insights.allocation_recommendations.map((rec, index) => (
                                   <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: '#16001e'}}>
                                     <span className="text-xl">💡</span>
-                                    <p style={{color: '#cbd5e1', lineHeight: '1.6'}}>{rec}</p>
+                                    <p 
+                                      style={{color: '#cbd5e1', lineHeight: '1.6'}}
+                                      dangerouslySetInnerHTML={{__html: formatText(rec)}}
+                                    />
                                   </li>
                                 ))}
                               </ul>
