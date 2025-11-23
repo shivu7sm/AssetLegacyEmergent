@@ -163,6 +163,14 @@ function AppRoutes() {
           </ProtectedRoute>
         } 
       />
+      <Route 
+        path="/portfolio-guide" 
+        element={
+          <ProtectedRoute>
+            <PortfolioGuide />
+          </ProtectedRoute>
+        } 
+      />
     </Routes>
   );
 }
