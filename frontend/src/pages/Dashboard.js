@@ -264,8 +264,8 @@ export default function Dashboard() {
                     {summary?.has_nominee ? 'Protection active' : 'Setup required'}
                   </p>
                 </div>
-                <div className="p-3 rounded-xl" style={{background: summary?.has_nominee ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)'}}>
-                  <Shield className="w-8 h-8" style={{color: summary?.has_nominee ? '#10b981' : '#f59e0b'}} />
+                <div className={`${dashboardTheme === 'modern' ? 'stat-icon' : 'p-3 rounded-xl'} ${dashboardTheme === 'modern' ? (summary?.has_nominee ? 'positive' : 'orange') : ''}`} style={dashboardTheme === 'standard' ? {background: summary?.has_nominee ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)'} : {}}>
+                  <Shield className={dashboardTheme === 'modern' ? 'w-10 h-10' : 'w-8 h-8'} style={{color: summary?.has_nominee ? '#10b981' : '#f59e0b'}} />
                 </div>
               </div>
             </CardContent>
