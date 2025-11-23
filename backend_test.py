@@ -2480,6 +2480,594 @@ print('Test data cleaned up');
         print(f"   ✅ Holdings CRUD operations")
         print(f"   ✅ Total value calculations")
         print(f"   ✅ Data integrity verification")
+
+    def test_portfolio_integration_dashboard(self):
+        """Test Portfolio Integration - Dashboard Summary"""
+        print("\n📊 Testing Portfolio Integration - Dashboard Summary...")
+        
+        # Clean up existing data
+        self.cleanup_user_data()
+        
+        # Step 1: Create individual assets
+        individual_assets = [
+            {
+                "type": "bank",
+                "name": "Chase Savings",
+                "total_value": 15000,
+                "current_total_value": 15500,
+                "purchase_currency": "USD"
+            },
+            {
+                "type": "crypto",
+                "name": "Personal Bitcoin",
+                "quantity": 0.1,
+                "unit_price": 45000,
+                "current_unit_price": 52000,
+                "symbol": "BTC",
+                "purchase_currency": "USD"
+            }
+        ]
+        
+        created_asset_ids = []
+        for asset in individual_assets:
+            created_asset = self.run_test(
+                f"Create individual {asset['type']} asset: {asset['name']}",
+                "POST",
+                "assets",
+                200,
+                asset
+            )
+            if created_asset:
+                created_asset_ids.append(created_asset.get('id'))
+        
+        # Step 2: Create a portfolio
+        portfolio_data = {
+            "name": "My Binance Account",
+            "provider_name": "binance",
+            "provider_type": "crypto_exchange",
+            "purchase_currency": "USD"
+        }
+        
+        created_portfolio = self.run_test(
+            "Create portfolio for dashboard integration test",
+            "POST",
+            "portfolio-assets",
+            200,
+            portfolio_data
+        )
+        
+        portfolio_id = None
+        if created_portfolio:
+            portfolio_id = created_portfolio.get('id')
+            print(f"   Created portfolio ID: {portfolio_id}")
+        
+        # Step 3: Add holdings to portfolio
+        if portfolio_id:
+            holdings = [
+                {
+                    "symbol": "BTC",
+                    "name": "Bitcoin",
+                    "quantity": 0.5,
+                    "purchase_price": 48000,
+                    "purchase_date": "2024-01-15",
+                    "purchase_currency": "USD",
+                    "current_price": 55000,
+                    "asset_type": "crypto"
+                },
+                {
+                    "symbol": "ETH",
+                    "name": "Ethereum",
+                    "quantity": 2.0,
+                    "purchase_price": 2500,
+                    "purchase_date": "2024-01-20",
+                    "purchase_currency": "USD",
+                    "current_price": 3000,
+                    "asset_type": "crypto"
+                }
+            ]
+            
+            for holding in holdings:
+                self.run_test(
+                    f"Add {holding['symbol']} holding to portfolio",
+                    "POST",
+                    f"portfolio-assets/{portfolio_id}/holdings",
+                    200,
+                    holding
+                )
+        
+        # Step 4: Test dashboard summary includes portfolio values
+        summary = self.run_test(
+            "Get dashboard summary with portfolio integration",
+            "GET",
+            "dashboard/summary",
+            200
+        )
+        
+        if summary:
+            print(f"   📊 Dashboard Integration Test Results:")
+            
+            # Test 1: total_portfolios count
+            total_portfolios = summary.get('total_portfolios', 0)
+            if total_portfolios >= 1:
+                self.log_test(
+                    "Dashboard includes total_portfolios count",
+                    True,
+                    f"Found {total_portfolios} portfolios"
+                )
+            else:
+                self.log_test(
+                    "Dashboard includes total_portfolios count",
+                    False,
+                    f"Expected >= 1 portfolio, got {total_portfolios}"
+                )
+            
+            # Test 2: Portfolio appears in asset_types
+            asset_types = summary.get('asset_types', {})
+            portfolio_count = asset_types.get('portfolio', 0)
+            if portfolio_count >= 1:
+                self.log_test(
+                    "Portfolio appears in asset_types",
+                    True,
+                    f"Portfolio count in asset_types: {portfolio_count}"
+                )
+            else:
+                self.log_test(
+                    "Portfolio appears in asset_types",
+                    False,
+                    f"Portfolio not found in asset_types: {asset_types}"
+                )
+            
+            # Test 3: Portfolio value included in total_assets_value
+            total_assets_value = summary.get('total_assets_value', 0)
+            expected_portfolio_value = (0.5 * 55000) + (2.0 * 3000)  # BTC + ETH current values
+            expected_individual_value = 15500 + (0.1 * 52000)  # Bank + Personal Bitcoin
+            expected_total = expected_portfolio_value + expected_individual_value
+            
+            if abs(total_assets_value - expected_total) < 100:  # Allow small tolerance
+                self.log_test(
+                    "Portfolio value included in total_assets_value",
+                    True,
+                    f"Total assets: ${total_assets_value}, Expected: ~${expected_total}"
+                )
+            else:
+                self.log_test(
+                    "Portfolio value included in total_assets_value",
+                    False,
+                    f"Total assets: ${total_assets_value}, Expected: ~${expected_total}"
+                )
+            
+            # Test 4: Portfolio value in asset_values_separate
+            asset_values_separate = summary.get('asset_values_separate', {})
+            portfolio_value_separate = asset_values_separate.get('portfolio', 0)
+            if abs(portfolio_value_separate - expected_portfolio_value) < 10:
+                self.log_test(
+                    "Portfolio value in asset_values_separate",
+                    True,
+                    f"Portfolio value: ${portfolio_value_separate}, Expected: ~${expected_portfolio_value}"
+                )
+            else:
+                self.log_test(
+                    "Portfolio value in asset_values_separate",
+                    False,
+                    f"Portfolio value: ${portfolio_value_separate}, Expected: ~${expected_portfolio_value}"
+                )
+            
+            # Test 5: Net worth calculation includes portfolio
+            net_worth = summary.get('net_worth', 0)
+            if abs(net_worth - expected_total) < 100:
+                self.log_test(
+                    "Net worth calculation includes portfolio value",
+                    True,
+                    f"Net worth: ${net_worth}, Expected: ~${expected_total}"
+                )
+            else:
+                self.log_test(
+                    "Net worth calculation includes portfolio value",
+                    False,
+                    f"Net worth: ${net_worth}, Expected: ~${expected_total}"
+                )
+            
+            # Test 6: Portfolio counted in diversification metrics
+            validation = summary.get('validation', {})
+            includes_portfolios = validation.get('includes_portfolios', False)
+            if includes_portfolios:
+                self.log_test(
+                    "Portfolio counted in diversification metrics",
+                    True,
+                    "Validation confirms portfolios included"
+                )
+            else:
+                self.log_test(
+                    "Portfolio counted in diversification metrics",
+                    False,
+                    "Validation does not confirm portfolio inclusion"
+                )
+            
+            print(f"   Total Assets: ${total_assets_value}")
+            print(f"   Total Portfolios: {total_portfolios}")
+            print(f"   Portfolio Value: ${portfolio_value_separate}")
+            print(f"   Net Worth: ${net_worth}")
+        
+        # Cleanup
+        for asset_id in created_asset_ids:
+            if asset_id:
+                self.run_test(
+                    f"Cleanup individual asset {asset_id}",
+                    "DELETE",
+                    f"assets/{asset_id}",
+                    200
+                )
+        
+        if portfolio_id:
+            self.run_test(
+                "Cleanup portfolio",
+                "DELETE",
+                f"portfolio-assets/{portfolio_id}",
+                200
+            )
+
+    def test_portfolio_integration_ai_insights(self):
+        """Test Portfolio Integration - AI Insights"""
+        print("\n🤖 Testing Portfolio Integration - AI Insights...")
+        
+        # Clean up existing data
+        self.cleanup_user_data()
+        
+        # Step 1: Create individual assets
+        individual_assets = [
+            {
+                "type": "stock",
+                "name": "Apple Stock",
+                "quantity": 50,
+                "unit_price": 150,
+                "current_unit_price": 175,
+                "symbol": "AAPL",
+                "purchase_currency": "USD"
+            }
+        ]
+        
+        created_asset_ids = []
+        for asset in individual_assets:
+            created_asset = self.run_test(
+                f"Create individual {asset['type']} asset for AI test: {asset['name']}",
+                "POST",
+                "assets",
+                200,
+                asset
+            )
+            if created_asset:
+                created_asset_ids.append(created_asset.get('id'))
+        
+        # Step 2: Create portfolio with holdings
+        portfolio_data = {
+            "name": "My Investment Portfolio",
+            "provider_name": "robinhood",
+            "provider_type": "stock_broker",
+            "purchase_currency": "USD"
+        }
+        
+        created_portfolio = self.run_test(
+            "Create portfolio for AI insights test",
+            "POST",
+            "portfolio-assets",
+            200,
+            portfolio_data
+        )
+        
+        portfolio_id = None
+        if created_portfolio:
+            portfolio_id = created_portfolio.get('id')
+        
+        # Add holdings to portfolio
+        if portfolio_id:
+            holdings = [
+                {
+                    "symbol": "TSLA",
+                    "name": "Tesla",
+                    "quantity": 10,
+                    "purchase_price": 200,
+                    "purchase_date": "2024-01-10",
+                    "purchase_currency": "USD",
+                    "current_price": 250,
+                    "asset_type": "stock"
+                },
+                {
+                    "symbol": "GOOGL",
+                    "name": "Google",
+                    "quantity": 5,
+                    "purchase_price": 2800,
+                    "purchase_date": "2024-01-15",
+                    "purchase_currency": "USD",
+                    "current_price": 3000,
+                    "asset_type": "stock"
+                }
+            ]
+            
+            for holding in holdings:
+                self.run_test(
+                    f"Add {holding['symbol']} holding for AI test",
+                    "POST",
+                    f"portfolio-assets/{portfolio_id}/holdings",
+                    200,
+                    holding
+                )
+        
+        # Step 3: Generate AI insights
+        insights = self.run_test(
+            "Generate AI insights with portfolio integration",
+            "POST",
+            "insights/generate",
+            200
+        )
+        
+        if insights:
+            print(f"   🤖 AI Insights Integration Test Results:")
+            
+            # Test 1: Portfolio holdings mentioned in analysis
+            portfolio_summary = insights.get('portfolio_summary', '')
+            asset_distribution_analysis = insights.get('asset_distribution_analysis', '')
+            
+            # Check if portfolio-related terms appear in the analysis
+            portfolio_keywords = ['portfolio', 'holdings', 'robinhood', 'TSLA', 'GOOGL', 'Tesla', 'Google']
+            found_keywords = []
+            
+            full_analysis = f"{portfolio_summary} {asset_distribution_analysis}".lower()
+            for keyword in portfolio_keywords:
+                if keyword.lower() in full_analysis:
+                    found_keywords.append(keyword)
+            
+            if len(found_keywords) >= 2:  # At least 2 portfolio-related keywords
+                self.log_test(
+                    "AI analysis mentions portfolio holdings",
+                    True,
+                    f"Found keywords: {found_keywords}"
+                )
+            else:
+                self.log_test(
+                    "AI analysis mentions portfolio holdings",
+                    False,
+                    f"Only found keywords: {found_keywords} in analysis"
+                )
+            
+            # Test 2: Analysis considers both individual assets and portfolio holdings
+            individual_keywords = ['apple', 'aapl', 'individual', 'stock']
+            found_individual = []
+            
+            for keyword in individual_keywords:
+                if keyword.lower() in full_analysis:
+                    found_individual.append(keyword)
+            
+            if len(found_individual) >= 1 and len(found_keywords) >= 1:
+                self.log_test(
+                    "AI analysis considers both individual assets and portfolios",
+                    True,
+                    f"Individual: {found_individual}, Portfolio: {found_keywords}"
+                )
+            else:
+                self.log_test(
+                    "AI analysis considers both individual assets and portfolios",
+                    False,
+                    f"Individual: {found_individual}, Portfolio: {found_keywords}"
+                )
+            
+            # Test 3: Total holdings across portfolios mentioned
+            if 'total' in full_analysis and ('holding' in full_analysis or 'asset' in full_analysis):
+                self.log_test(
+                    "AI mentions total holdings across portfolios",
+                    True,
+                    "Analysis includes total holdings discussion"
+                )
+            else:
+                self.log_test(
+                    "AI mentions total holdings across portfolios",
+                    False,
+                    "No mention of total holdings found"
+                )
+            
+            print(f"   Portfolio Summary Length: {len(portfolio_summary)} chars")
+            print(f"   Asset Distribution Analysis Length: {len(asset_distribution_analysis)} chars")
+            print(f"   Portfolio Keywords Found: {found_keywords}")
+            print(f"   Individual Asset Keywords Found: {found_individual}")
+        
+        # Cleanup
+        for asset_id in created_asset_ids:
+            if asset_id:
+                self.run_test(
+                    f"Cleanup individual asset {asset_id}",
+                    "DELETE",
+                    f"assets/{asset_id}",
+                    200
+                )
+        
+        if portfolio_id:
+            self.run_test(
+                "Cleanup AI test portfolio",
+                "DELETE",
+                f"portfolio-assets/{portfolio_id}",
+                200
+            )
+
+    def test_portfolio_integration_networth_snapshots(self):
+        """Test Portfolio Integration - Net Worth Snapshots"""
+        print("\n📈 Testing Portfolio Integration - Net Worth Snapshots...")
+        
+        # Clean up existing data
+        self.cleanup_user_data()
+        
+        # Step 1: Create individual assets
+        individual_assets = [
+            {
+                "type": "bank",
+                "name": "Checking Account",
+                "total_value": 5000,
+                "current_total_value": 5200,
+                "purchase_currency": "USD"
+            }
+        ]
+        
+        created_asset_ids = []
+        for asset in individual_assets:
+            created_asset = self.run_test(
+                f"Create individual {asset['type']} asset for snapshot test: {asset['name']}",
+                "POST",
+                "assets",
+                200,
+                asset
+            )
+            if created_asset:
+                created_asset_ids.append(created_asset.get('id'))
+        
+        # Step 2: Create portfolio with holdings
+        portfolio_data = {
+            "name": "My Crypto Portfolio",
+            "provider_name": "coinbase",
+            "provider_type": "crypto_exchange",
+            "purchase_currency": "USD"
+        }
+        
+        created_portfolio = self.run_test(
+            "Create portfolio for snapshot test",
+            "POST",
+            "portfolio-assets",
+            200,
+            portfolio_data
+        )
+        
+        portfolio_id = None
+        if created_portfolio:
+            portfolio_id = created_portfolio.get('id')
+        
+        # Add holdings to portfolio
+        if portfolio_id:
+            holdings = [
+                {
+                    "symbol": "BTC",
+                    "name": "Bitcoin",
+                    "quantity": 0.25,
+                    "purchase_price": 50000,
+                    "purchase_date": "2024-01-01",
+                    "purchase_currency": "USD",
+                    "current_price": 60000,
+                    "asset_type": "crypto"
+                }
+            ]
+            
+            for holding in holdings:
+                self.run_test(
+                    f"Add {holding['symbol']} holding for snapshot test",
+                    "POST",
+                    f"portfolio-assets/{portfolio_id}/holdings",
+                    200,
+                    holding
+                )
+        
+        # Step 3: Create a net worth snapshot
+        snapshot_data = {
+            "snapshot_date": "2024-01-15",
+            "currency": "USD"
+        }
+        
+        snapshot_result = self.run_test(
+            "Create net worth snapshot with portfolio integration",
+            "POST",
+            "networth/snapshot",
+            200,
+            snapshot_data
+        )
+        
+        if snapshot_result:
+            print(f"   📈 Net Worth Snapshot Integration Test Results:")
+            
+            # Test 1: Snapshot includes portfolio values in asset breakdown
+            asset_breakdown = snapshot_result.get('asset_breakdown', {})
+            portfolio_value_in_breakdown = asset_breakdown.get('portfolio', 0)
+            expected_portfolio_value = 0.25 * 60000  # BTC current value
+            
+            if abs(portfolio_value_in_breakdown - expected_portfolio_value) < 10:
+                self.log_test(
+                    "Snapshot includes portfolio values in asset breakdown",
+                    True,
+                    f"Portfolio value in breakdown: ${portfolio_value_in_breakdown}, Expected: ~${expected_portfolio_value}"
+                )
+            else:
+                self.log_test(
+                    "Snapshot includes portfolio values in asset breakdown",
+                    False,
+                    f"Portfolio value in breakdown: ${portfolio_value_in_breakdown}, Expected: ~${expected_portfolio_value}"
+                )
+            
+            # Test 2: Total assets includes portfolios
+            total_assets = snapshot_result.get('total_assets', 0)
+            expected_total = 5200 + expected_portfolio_value  # Bank + Portfolio
+            
+            if abs(total_assets - expected_total) < 50:
+                self.log_test(
+                    "Snapshot total assets includes portfolios",
+                    True,
+                    f"Total assets: ${total_assets}, Expected: ~${expected_total}"
+                )
+            else:
+                self.log_test(
+                    "Snapshot total assets includes portfolios",
+                    False,
+                    f"Total assets: ${total_assets}, Expected: ~${expected_total}"
+                )
+            
+            # Test 3: Net worth calculation is correct
+            net_worth = snapshot_result.get('net_worth', 0)
+            expected_net_worth = expected_total  # No liabilities in this test
+            
+            if abs(net_worth - expected_net_worth) < 50:
+                self.log_test(
+                    "Snapshot net worth calculation includes portfolios",
+                    True,
+                    f"Net worth: ${net_worth}, Expected: ~${expected_net_worth}"
+                )
+            else:
+                self.log_test(
+                    "Snapshot net worth calculation includes portfolios",
+                    False,
+                    f"Net worth: ${net_worth}, Expected: ~${expected_net_worth}"
+                )
+            
+            # Test 4: Currency conversions work for portfolios
+            currency = snapshot_result.get('currency', '')
+            if currency == 'USD':
+                self.log_test(
+                    "Currency conversions work for portfolios",
+                    True,
+                    f"Snapshot currency: {currency}"
+                )
+            else:
+                self.log_test(
+                    "Currency conversions work for portfolios",
+                    False,
+                    f"Expected USD currency, got: {currency}"
+                )
+            
+            print(f"   Total Assets: ${total_assets}")
+            print(f"   Portfolio Value in Breakdown: ${portfolio_value_in_breakdown}")
+            print(f"   Net Worth: ${net_worth}")
+            print(f"   Asset Breakdown: {asset_breakdown}")
+        
+        # Cleanup
+        for asset_id in created_asset_ids:
+            if asset_id:
+                self.run_test(
+                    f"Cleanup individual asset {asset_id}",
+                    "DELETE",
+                    f"assets/{asset_id}",
+                    200
+                )
+        
+        if portfolio_id:
+            self.run_test(
+                "Cleanup snapshot test portfolio",
+                "DELETE",
+                f"portfolio-assets/{portfolio_id}",
+                200
+            )
+
     def run_all_tests(self):
         """Run all backend tests"""
         print("🚀 Starting Asset Management Backend API Tests")
