@@ -657,21 +657,44 @@ async def get_loan_schedule(asset_id: str, user: User = Depends(require_auth)):
     }
 
 # Nominee Routes  
+@api_router.get("/nominees", response_model=List[Nominee])
+async def get_nominees(user: User = Depends(require_auth)):
+    """Get all nominees for the user, sorted by priority"""
+    nominees = await db.nominees.find({"user_id": user.id}, {"_id": 0}).to_list(100)
+    for nominee in nominees:
+        if isinstance(nominee.get('created_at'), str):
+            nominee['created_at'] = datetime.fromisoformat(nominee['created_at'])
+    # Sort by priority (lower number = higher priority)
+    nominees.sort(key=lambda x: x.get('priority', 999))
+    return [Nominee(**n) for n in nominees]
+
 @api_router.get("/nominee", response_model=Optional[Nominee])
 async def get_nominee(user: User = Depends(require_auth)):
-    nominee = await db.nominees.find_one({"user_id": user.id}, {"_id": 0})
+    """Legacy endpoint - returns first nominee for backward compatibility"""
+    nominee = await db.nominees.find_one({"user_id": user.id}, {"_id": 0}, sort=[("priority", 1)])
     if nominee:
         if isinstance(nominee.get('created_at'), str):
             nominee['created_at'] = datetime.fromisoformat(nominee['created_at'])
         return Nominee(**nominee)
     return None
 
-@api_router.post("/nominee", response_model=Nominee)
-async def create_or_update_nominee(nominee_data: NomineeCreate, user: User = Depends(require_auth)):
-    existing = await db.nominees.find_one({"user_id": user.id})
+@api_router.post("/nominees", response_model=Nominee)
+async def create_nominee(nominee_data: NomineeCreate, user: User = Depends(require_auth)):
+    """Create a new nominee"""
+    nominee = Nominee(user_id=user.id, **nominee_data.model_dump())
+    nominee_dict = nominee.model_dump()
+    nominee_dict['created_at'] = nominee_dict['created_at'].isoformat()
+    await db.nominees.insert_one(nominee_dict)
+    return nominee
+
+@api_router.put("/nominees/{nominee_id}", response_model=Nominee)
+async def update_nominee(nominee_id: str, nominee_data: NomineeCreate, user: User = Depends(require_auth)):
+    """Update an existing nominee"""
+    existing = await db.nominees.find_one({"id": nominee_id, "user_id": user.id})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Nominee not found")
     
-    if existing:
-        await db.nominees.update_one(
+    await db.nominees.update_one(
             {"user_id": user.id},
             {"$set": nominee_data.model_dump()}
         )
