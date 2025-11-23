@@ -265,11 +265,8 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Snapshot Auto-creation from Purchase Dates"
-    - "AI Insights Storage and Persistence"
-    - "Dashboard Layout Reorganization"
-    - "Net Worth Chart Backfill Feature"
-    - "Enhanced AI Insights Page"
+    - "Admin Panel Backend"
+    - "Admin Panel Frontend"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
