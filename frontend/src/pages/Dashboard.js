@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
-import { DollarSign, TrendingUp, Shield, AlertCircle, Plus, Sparkles, BookOpen, TrendingDown } from 'lucide-react';
+import { DollarSign, TrendingUp, Shield, AlertCircle, Plus, Sparkles, BookOpen, TrendingDown, Clock } from 'lucide-react';
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
