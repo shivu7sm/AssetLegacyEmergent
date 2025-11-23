@@ -2140,7 +2140,7 @@ async def log_audit(user: User, action: str, resource_type: str, resource_id: st
 async def create_snapshot_for_date(user_id: str, snapshot_date: str, currency: str = "USD"):
     """
     Helper function to create a net worth snapshot for a specific date.
-    IMPORTANT: Only includes assets purchased ON or BEFORE the snapshot date for accurate historical tracking.
+    IMPORTANT: Only includes assets AND portfolios created ON or BEFORE the snapshot date for accurate historical tracking.
     """
     # Get all assets for this user
     all_assets = await db.assets.find({"user_id": user_id}).to_list(1000)
@@ -2157,6 +2157,26 @@ async def create_snapshot_for_date(user_id: str, snapshot_date: str, currency: s
             # Include assets without purchase date (assume they existed)
             assets.append(asset)
     
+    # Get all portfolios for this user
+    all_portfolios = await db.portfolio_assets.find({"user_id": user_id}).to_list(1000)
+    
+    # Filter portfolios: only include those created on or before snapshot date
+    portfolios = []
+    for portfolio in all_portfolios:
+        created_at = portfolio.get("created_at")
+        if created_at:
+            # Parse created_at and compare
+            if isinstance(created_at, str):
+                created_date = created_at.split('T')[0]  # Get date part
+            else:
+                created_date = created_at.date().isoformat()
+            
+            if created_date <= snapshot_date:
+                portfolios.append(portfolio)
+        else:
+            # Include portfolios without created_at (assume they existed)
+            portfolios.append(portfolio)
+    
     # Define liability types
     liability_types = {'loan', 'credit_card'}
     
@@ -2165,6 +2185,7 @@ async def create_snapshot_for_date(user_id: str, snapshot_date: str, currency: s
     asset_breakdown = {}
     liability_breakdown = {}
     
+    # Process individual assets
     for asset in assets:
         asset_type = asset["type"]
         is_liability = asset_type in liability_types
