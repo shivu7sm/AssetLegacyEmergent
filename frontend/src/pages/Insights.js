@@ -331,7 +331,10 @@ export default function Insights() {
                       {insights.allocation_recommendations.slice(0, expandedSections.recommendations ? undefined : 2).map((rec, index) => (
                         <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: '#16001e', borderLeft: '2px solid #a855f7'}}>
                           <span className="text-lg">💡</span>
-                          <p style={{color: '#cbd5e1', lineHeight: '1.6', fontSize: '14px'}}>{rec}</p>
+                          <p 
+                            style={{color: '#cbd5e1', lineHeight: '1.6', fontSize: '14px'}}
+                            dangerouslySetInnerHTML={{__html: formatText(rec)}}
+                          />
                         </li>
                       ))}
                     </ul>
