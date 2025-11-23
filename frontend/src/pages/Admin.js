@@ -18,8 +18,10 @@ export default function Admin() {
   const [users, setUsers] = useState([]);
   const [scheduledMessages, setScheduledMessages] = useState([]);
   const [dmsReminders, setDmsReminders] = useState([]);
+  const [analytics, setAnalytics] = useState(null);
+  const [auditLogs, setAuditLogs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('overview'); // overview, users, jobs
+  const [activeTab, setActiveTab] = useState('overview'); // overview, users, jobs, analytics, audit
 
   useEffect(() => {
     fetchAllData();
