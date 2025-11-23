@@ -880,12 +880,38 @@ export default function Assets() {
                         return formatCurrency(totalValue, selectedCurrency, currencyFormat);
                       })()}
                     </div>
-                    <div className="text-sm text-white/70 mt-1">
+                    <div className="flex gap-4 mt-2">
                       {(() => {
                         const displayAssets = filteredAssets.length > 0 ? filteredAssets : assets;
                         const assetCount = displayAssets.filter(a => !getAssetTypeInfo(a.type).isLiability).length;
                         const liabilityCount = displayAssets.filter(a => getAssetTypeInfo(a.type).isLiability).length;
-                        return `${assetCount} asset${assetCount !== 1 ? 's' : ''} ${liabilityCount > 0 ? `• ${liabilityCount} liabilit${liabilityCount !== 1 ? 'ies' : 'y'}` : ''}`;
+                        const assetsValue = displayAssets
+                          .filter(a => !getAssetTypeInfo(a.type).isLiability)
+                          .reduce((sum, a) => sum + (calculateAssetValue(a, true) || calculateAssetValue(a, false)), 0);
+                        const liabilitiesValue = displayAssets
+                          .filter(a => getAssetTypeInfo(a.type).isLiability)
+                          .reduce((sum, a) => sum + (calculateAssetValue(a, true) || calculateAssetValue(a, false)), 0);
+                        
+                        return (
+                          <>
+                            {assetCount > 0 && (
+                              <div className="text-sm">
+                                <span style={{color: '#10b981', fontWeight: 600}}>↑ {assetCount} Asset{assetCount !== 1 ? 's' : ''}</span>
+                                <div style={{color: 'rgba(255,255,255,0.6)', fontSize: '0.75rem'}}>
+                                  {formatCurrency(assetsValue, selectedCurrency, currencyFormat)}
+                                </div>
+                              </div>
+                            )}
+                            {liabilityCount > 0 && (
+                              <div className="text-sm">
+                                <span style={{color: '#ef4444', fontWeight: 600}}>↓ {liabilityCount} Debt{liabilityCount !== 1 ? 's' : ''}</span>
+                                <div style={{color: 'rgba(255,255,255,0.6)', fontSize: '0.75rem'}}>
+                                  {formatCurrency(liabilitiesValue, selectedCurrency, currencyFormat)}
+                                </div>
+                              </div>
+                            )}
+                          </>
+                        );
                       })()}
                     </div>
                   </div>
