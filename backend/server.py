@@ -1258,6 +1258,8 @@ async def get_subscription(user: User = Depends(require_auth)):
             
             if subscriptions.data and len(subscriptions.data) > 0:
                 sub = subscriptions.data[0]  # Get most recent subscription
+                logger.info(f"Subscription object type: {type(sub)}")
+                logger.info(f"Subscription dir: {[attr for attr in dir(sub) if not attr.startswith('_')]}")
                 
                 # Get payment method
                 payment_method_info = None
