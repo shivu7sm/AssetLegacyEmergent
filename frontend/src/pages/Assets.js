@@ -174,6 +174,11 @@ export default function Assets() {
     filterAndSortAssets();
   }, [assets, filterType, sortBy]);
 
+  // Save viewMode to sessionStorage when changed
+  useEffect(() => {
+    sessionStorage.setItem('assetsViewMode', viewMode);
+  }, [viewMode]);
+
   const fetchAssets = async () => {
     try {
       const response = await axios.get(`${API}/assets`, { withCredentials: true });
