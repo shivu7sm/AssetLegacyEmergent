@@ -361,6 +361,308 @@ print('Test user and session created successfully');
             print(f"   Has nominee: {summary.get('has_nominee', False)}")
             print(f"   Has DMS: {summary.get('has_dms', False)}")
 
+    def test_phase1_asset_liability_calculation(self):
+        """Test Phase 1: Asset vs Liability Calculation"""
+        print("\n🏦 Testing Phase 1: Asset vs Liability Calculation...")
+        
+        # Clean up any existing assets first
+        existing_assets = self.run_test(
+            "Get existing assets for cleanup",
+            "GET",
+            "assets",
+            200
+        )
+        
+        if existing_assets:
+            for asset in existing_assets:
+                asset_id = asset.get('id')
+                if asset_id:
+                    self.run_test(
+                        f"Delete existing asset {asset_id}",
+                        "DELETE",
+                        f"assets/{asset_id}",
+                        200
+                    )
+        
+        # Create test assets (positive values)
+        test_assets = [
+            {
+                "type": "property",
+                "name": "Family Home",
+                "area": 2000,
+                "area_unit": "sqft",
+                "price_per_area": 150,
+                "current_price_per_area": 180,
+                "purchase_currency": "USD",
+                "location": {"address": "123 Main St", "lat": 40.7128, "lng": -74.0060}
+            },
+            {
+                "type": "crypto",
+                "name": "Bitcoin Investment",
+                "quantity": 0.5,
+                "unit_price": 45000,
+                "current_unit_price": 52000,
+                "symbol": "BTC",
+                "purchase_currency": "USD"
+            },
+            {
+                "type": "stock",
+                "name": "Apple Stock",
+                "quantity": 100,
+                "unit_price": 150,
+                "current_unit_price": 175,
+                "symbol": "AAPL",
+                "purchase_currency": "USD"
+            },
+            {
+                "type": "bank",
+                "name": "Savings Account",
+                "total_value": 25000,
+                "current_total_value": 25500,
+                "purchase_currency": "USD"
+            }
+        ]
+        
+        # Create test liabilities (should be counted separately)
+        test_liabilities = [
+            {
+                "type": "loan",
+                "name": "Home Mortgage",
+                "principal_amount": 200000,
+                "outstanding_balance": 180000,
+                "interest_rate": 3.5,
+                "tenure_months": 240,
+                "emi_amount": 1200,
+                "purchase_currency": "USD"
+            },
+            {
+                "type": "credit_card",
+                "name": "Credit Card Debt",
+                "outstanding_balance": 5000,
+                "interest_rate": 18.5,
+                "purchase_currency": "USD"
+            }
+        ]
+        
+        created_asset_ids = []
+        created_liability_ids = []
+        
+        # Create assets
+        for asset in test_assets:
+            created_asset = self.run_test(
+                f"Create {asset['type']} asset: {asset['name']}",
+                "POST",
+                "assets",
+                200,
+                asset
+            )
+            if created_asset:
+                created_asset_ids.append(created_asset.get('id'))
+        
+        # Create liabilities
+        for liability in test_liabilities:
+            created_liability = self.run_test(
+                f"Create {liability['type']} liability: {liability['name']}",
+                "POST",
+                "assets",
+                200,
+                liability
+            )
+            if created_liability:
+                created_liability_ids.append(created_liability.get('id'))
+        
+        # Test dashboard summary with mixed assets and liabilities
+        summary = self.run_test(
+            "Get dashboard summary with assets and liabilities",
+            "GET",
+            "dashboard/summary",
+            200
+        )
+        
+        if summary:
+            print(f"   📊 Dashboard Summary Results:")
+            print(f"   Total Assets Count: {summary.get('total_assets', 0)}")
+            print(f"   Total Assets Value: ${summary.get('total_assets_value', 0)}")
+            print(f"   Total Liabilities Value: ${summary.get('total_liabilities_value', 0)}")
+            print(f"   Net Worth: ${summary.get('net_worth', 0)}")
+            
+            # Verify required fields exist
+            required_fields = [
+                'total_assets_value', 'total_liabilities_value', 'net_worth',
+                'asset_values_separate', 'liability_values_separate'
+            ]
+            
+            missing_fields = []
+            for field in required_fields:
+                if field not in summary:
+                    missing_fields.append(field)
+            
+            if missing_fields:
+                self.log_test(
+                    "Dashboard summary has all required Phase 1 fields",
+                    False,
+                    f"Missing fields: {missing_fields}"
+                )
+            else:
+                self.log_test(
+                    "Dashboard summary has all required Phase 1 fields",
+                    True,
+                    "All Phase 1 fields present"
+                )
+            
+            # Verify calculations
+            asset_values_separate = summary.get('asset_values_separate', {})
+            liability_values_separate = summary.get('liability_values_separate', {})
+            
+            print(f"   Asset Values by Type: {asset_values_separate}")
+            print(f"   Liability Values by Type: {liability_values_separate}")
+            
+            # Calculate expected values
+            expected_property_value = 2000 * 180  # area * current_price_per_area
+            expected_crypto_value = 0.5 * 52000   # quantity * current_unit_price
+            expected_stock_value = 100 * 175      # quantity * current_unit_price
+            expected_bank_value = 25500           # current_total_value
+            expected_total_assets = expected_property_value + expected_crypto_value + expected_stock_value + expected_bank_value
+            
+            expected_loan_value = 180000          # outstanding_balance
+            expected_credit_card_value = 5000     # outstanding_balance
+            expected_total_liabilities = expected_loan_value + expected_credit_card_value
+            
+            expected_net_worth = expected_total_assets - expected_total_liabilities
+            
+            print(f"   Expected Total Assets: ${expected_total_assets}")
+            print(f"   Expected Total Liabilities: ${expected_total_liabilities}")
+            print(f"   Expected Net Worth: ${expected_net_worth}")
+            
+            # Verify calculations (with some tolerance for rounding)
+            actual_assets = summary.get('total_assets_value', 0)
+            actual_liabilities = summary.get('total_liabilities_value', 0)
+            actual_net_worth = summary.get('net_worth', 0)
+            
+            assets_correct = abs(actual_assets - expected_total_assets) < 1
+            liabilities_correct = abs(actual_liabilities - expected_total_liabilities) < 1
+            net_worth_correct = abs(actual_net_worth - expected_net_worth) < 1
+            
+            self.log_test(
+                "Asset calculation accuracy",
+                assets_correct,
+                f"Expected: ${expected_total_assets}, Actual: ${actual_assets}"
+            )
+            
+            self.log_test(
+                "Liability calculation accuracy", 
+                liabilities_correct,
+                f"Expected: ${expected_total_liabilities}, Actual: ${actual_liabilities}"
+            )
+            
+            self.log_test(
+                "Net worth calculation accuracy",
+                net_worth_correct,
+                f"Expected: ${expected_net_worth}, Actual: ${actual_net_worth}"
+            )
+        
+        # Clean up created test data
+        for asset_id in created_asset_ids + created_liability_ids:
+            if asset_id:
+                self.run_test(
+                    f"Cleanup test asset/liability {asset_id}",
+                    "DELETE",
+                    f"assets/{asset_id}",
+                    200
+                )
+
+    def test_real_estate_extended_fields(self):
+        """Test Real Estate with Extended Fields"""
+        print("\n🏠 Testing Real Estate Extended Fields...")
+        
+        # Test real estate asset with current_price_per_area
+        real_estate_asset = {
+            "type": "property",
+            "name": "Investment Property",
+            "area": 1500,
+            "area_unit": "sqft",
+            "price_per_area": 200,
+            "current_price_per_area": 250,
+            "purchase_currency": "USD",
+            "location": {
+                "address": "456 Investment Ave",
+                "lat": 40.7589,
+                "lng": -73.9851
+            }
+        }
+        
+        created_property = self.run_test(
+            "Create real estate with current_price_per_area",
+            "POST",
+            "assets",
+            200,
+            real_estate_asset
+        )
+        
+        property_id = None
+        if created_property:
+            property_id = created_property.get('id')
+            print(f"   Created property ID: {property_id}")
+            
+            # Verify the property has the new fields
+            if 'current_price_per_area' in created_property:
+                self.log_test(
+                    "Real estate has current_price_per_area field",
+                    True,
+                    f"Value: ${created_property['current_price_per_area']}"
+                )
+            else:
+                self.log_test(
+                    "Real estate has current_price_per_area field",
+                    False,
+                    "Field missing from response"
+                )
+        
+        # Test dashboard calculation uses current_price_per_area
+        summary = self.run_test(
+            "Get dashboard summary for real estate calculation test",
+            "GET",
+            "dashboard/summary",
+            200
+        )
+        
+        if summary and property_id:
+            asset_values = summary.get('asset_values_separate', {})
+            property_value = asset_values.get('property', 0)
+            expected_value = 1500 * 250  # area * current_price_per_area
+            
+            calculation_correct = abs(property_value - expected_value) < 1
+            self.log_test(
+                "Dashboard uses current_price_per_area for calculation",
+                calculation_correct,
+                f"Expected: ${expected_value}, Actual: ${property_value}"
+            )
+        
+        # Update property to test field updates
+        if property_id:
+            updated_property = {
+                **real_estate_asset,
+                "current_price_per_area": 275,
+                "name": "Updated Investment Property"
+            }
+            
+            self.run_test(
+                "Update real estate current_price_per_area",
+                "PUT",
+                f"assets/{property_id}",
+                200,
+                updated_property
+            )
+        
+        # Clean up
+        if property_id:
+            self.run_test(
+                "Cleanup real estate test asset",
+                "DELETE",
+                f"assets/{property_id}",
+                200
+            )
+
     def test_price_endpoints(self):
         """Test price API endpoints"""
         print("\n💹 Testing Price API Endpoints...")
