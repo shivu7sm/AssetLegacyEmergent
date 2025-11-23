@@ -83,19 +83,45 @@ export default function Subscription() {
       return;
     }
 
+    if (planName === 'Free') {
+      handleCancelSubscription();
+      return;
+    }
+
     setLoading(true);
     try {
-      // In a real app, this would integrate with Stripe
       const response = await axios.post(
-        `${API}/subscription/subscribe`,
+        `${API}/subscription/create-checkout-session`,
         { plan: planName },
         { withCredentials: true }
       );
-      setCurrentPlan(planName);
-      toast.success(`Successfully subscribed to ${planName} plan!`);
+      
+      // Redirect to Stripe checkout
+      if (response.data.url) {
+        window.location.href = response.data.url;
+      } else {
+        toast.error('Failed to create checkout session');
+      }
     } catch (error) {
       console.error('Failed to subscribe:', error);
       toast.error('Subscription failed. Please try again.');
+      setLoading(false);
+    }
+  };
+
+  const handleCancelSubscription = async () => {
+    if (!confirm('Are you sure you want to cancel your subscription? You will lose access to premium features at the end of your billing period.')) {
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await axios.post(`${API}/subscription/cancel`, {}, { withCredentials: true });
+      toast.success('Subscription will be canceled at period end');
+      fetchSubscription();
+    } catch (error) {
+      console.error('Failed to cancel:', error);
+      toast.error('Failed to cancel subscription');
     } finally {
       setLoading(false);
     }
