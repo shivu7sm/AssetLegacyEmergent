@@ -263,83 +263,65 @@ export default function Dashboard() {
               </CardContent>
             </Card>
 
-          <Card 
-            data-testid="net-worth-card" 
-            className={`overflow-hidden transition-all hover:shadow-lg card ${dashboardTheme === 'modern' ? 'net-worth-hero' : ''}`}
-            style={dashboardTheme === 'standard' ? {
-              background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', 
-              borderColor: isPositive ? '#10b981' : '#ef4444', 
-              borderWidth: '2px'
-            } : {}}
-          >
-            <CardContent className={dashboardTheme === 'modern' ? 'p-0' : 'p-6'}>
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <p className={`text-sm font-medium mb-3 ${dashboardTheme === 'modern' ? 'stat-label' : ''}`} style={dashboardTheme === 'standard' ? {color: '#94a3b8', letterSpacing: '0.5px'} : {}}>NET WORTH</p>
-                  <div 
-                    className={`${dashboardTheme === 'modern' ? 'text-5xl' : 'text-3xl'} font-bold mb-2 ${dashboardTheme === 'modern' ? 'stat-value' : ''} ${dashboardTheme === 'modern' ? (isPositive ? 'positive' : 'negative') : ''}`}
-                    style={dashboardTheme === 'standard' ? {color: isPositive ? '#10b981' : '#ef4444', fontFamily: 'Inter, sans-serif'} : {}} 
-                    data-testid="net-worth-value"
-                  >
-                    {formatCurrency(netWorthValue, selectedCurrency, currencyFormat)}
-                  </div>
-                  <div className="flex items-center gap-2 mt-3">
-                    <div className={`px-3 py-1 rounded-full text-xs font-semibold ${dashboardTheme === 'modern' ? 'backdrop-blur-sm' : ''}`} style={dashboardTheme === 'modern' ? {
-                      background: isPositive ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)',
-                      color: isPositive ? '#059669' : '#dc2626',
-                      border: `1px solid ${isPositive ? 'rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`
-                    } : {color: '#64748b'}}>
-                      {selectedCurrency} equivalent
+            <Card 
+              data-testid="net-worth-card" 
+              className="overflow-hidden transition-all hover:shadow-lg card"
+              style={{
+                background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', 
+                borderColor: isPositive ? '#10b981' : '#ef4444', 
+                borderWidth: '2px'
+              }}
+            >
+              <CardContent className="p-6">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <p className="text-sm font-medium mb-2" style={{color: '#94a3b8', letterSpacing: '0.5px'}}>NET WORTH</p>
+                    <div 
+                      className="text-3xl font-bold mb-1"
+                      style={{color: isPositive ? '#10b981' : '#ef4444', fontFamily: 'Inter, sans-serif'}} 
+                      data-testid="net-worth-value"
+                    >
+                      {formatCurrency(netWorthValue, selectedCurrency, currencyFormat)}
                     </div>
-                    {dashboardTheme === 'modern' && (
-                      <div className="px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm" style={{
-                        background: 'rgba(59, 130, 246, 0.15)',
-                        color: '#2563eb',
-                        border: '1px solid rgba(59, 130, 246, 0.3)'
-                      }}>
-                        {isPositive ? 'Healthy' : 'Needs Attention'}
-                      </div>
+                    <p className="text-xs" style={{color: '#64748b'}}>
+                      {selectedCurrency} equivalent
+                    </p>
+                  </div>
+                  <div className="p-3 rounded-xl" style={{background: isPositive ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)'}}>
+                    {isPositive ? (
+                      <TrendingUp className="w-8 h-8" style={{color: '#10b981'}} />
+                    ) : (
+                      <TrendingDown className="w-8 h-8" style={{color: '#ef4444'}} />
                     )}
                   </div>
                 </div>
-                <div className={`${dashboardTheme === 'modern' ? 'w-20 h-20' : 'w-16 h-16'} rounded-2xl ${dashboardTheme === 'modern' ? 'stat-icon' : ''} ${dashboardTheme === 'modern' ? (isPositive ? 'positive' : 'negative') : ''} flex items-center justify-center`} style={dashboardTheme === 'standard' ? {background: isPositive ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)'} : {}}>
-                  {isPositive ? (
-                    <TrendingUp className={dashboardTheme === 'modern' ? 'w-10 h-10' : 'w-8 h-8'} style={{color: isPositive ? '#10b981' : '#ef4444'}} />
-                  ) : (
-                    <TrendingDown className={dashboardTheme === 'modern' ? 'w-10 h-10' : 'w-8 h-8'} style={{color: '#ef4444'}} />
-                  )}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
 
-          <Card 
-            data-testid="nominee-status-card" 
-            className={`overflow-hidden transition-all hover:shadow-lg card ${dashboardTheme === 'modern' ? 'stat-card' : ''}`}
-            style={dashboardTheme === 'standard' ? {background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: summary?.has_nominee ? '#10b981' : '#f59e0b'} : {}}
-          >
-            <CardContent className={dashboardTheme === 'modern' ? 'p-0' : 'p-6'}>
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <p className={`text-sm font-medium mb-2 ${dashboardTheme === 'modern' ? 'stat-label' : ''}`} style={dashboardTheme === 'standard' ? {color: '#94a3b8', letterSpacing: '0.5px'} : {}}>NOMINEE</p>
-                  <div className={`${dashboardTheme === 'modern' ? 'text-3xl' : 'text-2xl'} font-bold mb-1 ${dashboardTheme === 'modern' ? 'stat-value' : ''}`} style={dashboardTheme === 'standard' ? {color: summary?.has_nominee ? '#10b981' : '#f59e0b', fontFamily: 'Inter, sans-serif'} : dashboardTheme === 'modern' ? {
-                    background: summary?.has_nominee ? 'linear-gradient(135deg, #059669 0%, #10b981 100%)' : 'linear-gradient(135deg, #d97706 0%, #f59e0b 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text'
-                  } : {}} data-testid="nominee-status">
-                    {summary?.has_nominee ? '✓ Configured' : 'Not Set'}
+            <Card 
+              data-testid="nominee-status-card" 
+              className="overflow-hidden transition-all hover:shadow-lg card"
+              style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: summary?.has_nominee ? '#10b981' : '#f59e0b'}}
+            >
+              <CardContent className="p-6">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <p className="text-sm font-medium mb-2" style={{color: '#94a3b8', letterSpacing: '0.5px'}}>NOMINEE</p>
+                    <div className="text-2xl font-bold mb-1" style={{color: summary?.has_nominee ? '#10b981' : '#f59e0b', fontFamily: 'Inter, sans-serif'}} data-testid="nominee-status">
+                      {summary?.has_nominee ? '✓ Configured' : 'Not Set'}
+                    </div>
+                    <p className="text-xs" style={{color: '#64748b'}}>
+                      {summary?.has_nominee ? 'Protection active' : 'Setup required'}
+                    </p>
                   </div>
-                  <p className="text-xs" style={{color: '#64748b'}}>
-                    {summary?.has_nominee ? 'Protection active' : 'Setup required'}
-                  </p>
+                  <div className="p-3 rounded-xl" style={{background: summary?.has_nominee ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)'}}>
+                    <Shield className="w-8 h-8" style={{color: summary?.has_nominee ? '#10b981' : '#f59e0b'}} />
+                  </div>
                 </div>
-                <div className={`${dashboardTheme === 'modern' ? 'stat-icon' : 'p-3 rounded-xl'} ${dashboardTheme === 'modern' ? (summary?.has_nominee ? 'positive' : 'orange') : ''}`} style={dashboardTheme === 'standard' ? {background: summary?.has_nominee ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)'} : {}}>
-                  <Shield className={dashboardTheme === 'modern' ? 'w-10 h-10' : 'w-8 h-8'} style={{color: summary?.has_nominee ? '#10b981' : '#f59e0b'}} />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </div>
+        )}
 
           <Card 
             data-testid="dms-status-card" 
