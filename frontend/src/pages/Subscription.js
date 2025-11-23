@@ -375,7 +375,7 @@ export default function Subscription() {
                       )}
                     </Button>
                     
-                    {isCurrentPlan && currentPlan !== 'Free' && !subDetails?.cancel_at_period_end && (
+                    {isCurrentPlan && currentPlan !== 'Free' && !subDetails?.cancel_at && !subDetails?.cancel_at_period_end && (
                       <Button
                         onClick={handleCancelSubscription}
                         disabled={loading}
@@ -384,6 +384,18 @@ export default function Subscription() {
                         style={{borderColor: '#ef4444', color: '#ef4444'}}
                       >
                         Cancel Subscription
+                      </Button>
+                    )}
+                    
+                    {isCurrentPlan && currentPlan !== 'Free' && (subDetails?.cancel_at || subDetails?.cancel_at_period_end) && (
+                      <Button
+                        onClick={handleReactivateSubscription}
+                        disabled={loading}
+                        variant="outline"
+                        className="w-full rounded-full"
+                        style={{borderColor: '#10b981', color: '#10b981'}}
+                      >
+                        Reactivate Subscription
                       </Button>
                     )}
                   </div>
