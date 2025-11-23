@@ -2142,6 +2142,77 @@ async def delete_user(user_id: str, admin: User = Depends(require_admin)):
         logger.error(f"Failed to delete user: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to delete user")
 
+@api_router.get("/admin/subscription-analytics")
+async def get_subscription_analytics(admin: User = Depends(require_admin)):
+    """Get subscription and revenue analytics."""
+    try:
+        # Subscription plan pricing
+        PLAN_PRICING = {
+            "Free": 0,
+            "Pro": 9.99,
+            "Family": 19.99
+        }
+        
+        # Get all users with subscription info
+        users = await db.users.find({}, {"subscription_plan": 1, "created_at": 1, "stripe_subscription_id": 1}).to_list(10000)
+        
+        # Current subscription breakdown
+        current_subscriptions = {}
+        monthly_revenue = 0
+        
+        for user in users:
+            plan = user.get("subscription_plan", "Free")
+            current_subscriptions[plan] = current_subscriptions.get(plan, 0) + 1
+            monthly_revenue += PLAN_PRICING.get(plan, 0)
+        
+        # Calculate last 12 months revenue trend (simulated based on user growth)
+        twelve_months_ago = datetime.now(timezone.utc) - timedelta(days=365)
+        monthly_revenue_trend = []
+        
+        for i in range(12):
+            month_start = twelve_months_ago + timedelta(days=30 * i)
+            month_end = month_start + timedelta(days=30)
+            
+            # Count users who joined before or during this month
+            users_by_month = [u for u in users if isinstance(u.get('created_at'), str) and 
+                            datetime.fromisoformat(u['created_at']) <= month_end]
+            
+            month_revenue = sum([PLAN_PRICING.get(u.get("subscription_plan", "Free"), 0) for u in users_by_month])
+            
+            monthly_revenue_trend.append({
+                "month": month_start.strftime("%b %Y"),
+                "revenue": round(month_revenue, 2),
+                "subscribers": len([u for u in users_by_month if u.get("subscription_plan") != "Free"])
+            })
+        
+        # Recent subscriptions (last 30 days)
+        thirty_days_ago = datetime.now(timezone.utc) - timedelta(days=30)
+        recent_paid_subscriptions = len([
+            u for u in users 
+            if u.get("subscription_plan") not in ["Free", None] and
+            isinstance(u.get('created_at'), str) and
+            datetime.fromisoformat(u['created_at']) >= thirty_days_ago
+        ])
+        
+        # Calculate churn (users who downgraded/cancelled) - simplified version
+        # In production, this would track actual subscription changes
+        total_paid = sum([count for plan, count in current_subscriptions.items() if plan != "Free"])
+        estimated_churn = 0  # Would need subscription change tracking
+        
+        return {
+            "current_subscriptions": current_subscriptions,
+            "monthly_recurring_revenue": round(monthly_revenue, 2),
+            "annual_recurring_revenue": round(monthly_revenue * 12, 2),
+            "recent_subscriptions_30d": recent_paid_subscriptions,
+            "estimated_churn_rate": estimated_churn,
+            "total_paid_subscribers": total_paid,
+            "revenue_trend_12_months": monthly_revenue_trend,
+            "average_revenue_per_user": round(monthly_revenue / len(users) if users else 0, 2)
+        }
+    except Exception as e:
+        logger.error(f"Failed to get subscription analytics: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to fetch subscription analytics")
+
 app.include_router(api_router)
 
 app.add_middleware(
