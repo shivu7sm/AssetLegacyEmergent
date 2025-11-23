@@ -14,6 +14,7 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 const ASSET_COLORS = {
+  // Assets - Green/Blue positive tones
   bank: '#10b981',
   insurance: '#3b82f6',
   investment: '#8b5cf6',
@@ -24,8 +25,9 @@ const ASSET_COLORS = {
   locker: '#6366f1',
   property: '#14b8a6',
   stock: '#06b6d4',
-  loan: '#ef4444',
-  credit_card: '#f87171'
+  // Liabilities - Red negative tones
+  loan: '#dc2626',
+  credit_card: '#ef4444'
 };
 
 // CustomTooltip will be created inside the component to access selectedCurrency and currencyFormat
