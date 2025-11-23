@@ -328,6 +328,40 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Security Message Section */}
+      <section className="py-16" style={{background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%)', borderTop: '1px solid #2d1f3d', borderBottom: '1px solid #2d1f3d'}}>
+        <div className="container mx-auto px-6">
+          <div className="max-w-4xl mx-auto">
+            <div className="flex items-start gap-6 p-8 rounded-2xl" style={{background: '#131835', border: '2px solid #ef4444'}}>
+              <div className="flex-shrink-0">
+                <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{background: 'rgba(239, 68, 68, 0.2)'}}>
+                  <ShieldCheck className="w-8 h-8" style={{color: '#ef4444'}} />
+                </div>
+              </div>
+              <div>
+                <h4 className="text-2xl font-bold mb-4" style={{color: '#f8fafc'}}>
+                  🔒 What We DON'T Store (And You Shouldn't Either)
+                </h4>
+                <p className="text-lg mb-4 leading-relaxed" style={{color: '#cbd5e1'}}>
+                  <span style={{color: '#ef4444', fontWeight: 700}}>NEVER store passwords, PINs, or bank login credentials anywhere—including AssetVault.</span> 
+                  {' '}Your family doesn't need them to claim your assets.
+                </p>
+                <div className="p-4 rounded-lg mb-4" style={{background: 'rgba(168, 85, 247, 0.1)', borderLeft: '3px solid #a855f7'}}>
+                  <p className="text-base" style={{color: '#cbd5e1'}}>
+                    <strong style={{color: '#a855f7'}}>What AssetVault Does:</strong> We help you document WHAT assets you have and WHERE they are located. 
+                    Your family can then legally claim these assets through proper channels with death certificates and legal documentation.
+                  </p>
+                </div>
+                <p className="text-base" style={{color: '#94a3b8'}}>
+                  Think of AssetVault as an organized inventory map—not a key safe. Banks, insurance companies, and investment firms have legal processes 
+                  for rightful heirs to claim assets. They just need to know those assets exist!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Pricing Section */}
       <section className="py-20">
         <div className="container mx-auto px-6">
@@ -341,77 +375,139 @@ export default function LandingPage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {/* Basic Plan */}
+            {/* Free Plan */}
             <div className="p-8 rounded-2xl" style={{background: '#1a1229', border: '1px solid #2d1f3d'}}>
-              <div className="text-sm font-semibold mb-2" style={{color: '#94a3b8'}}>BASIC</div>
+              <div className="text-sm font-semibold mb-2" style={{color: '#94a3b8'}}>FREE</div>
               <div className="mb-6">
-                <span className="text-4xl font-bold" style={{color: '#f8fafc'}}>$5</span>
-                <span style={{color: '#94a3b8'}}>/month</span>
+                <span className="text-4xl font-bold" style={{color: '#f8fafc'}}>$0</span>
+                <span style={{color: '#94a3b8'}}>/forever</span>
               </div>
               <ul className="space-y-3 mb-8" style={{color: '#cbd5e1'}}>
-                <li>✓ Up to 20 assets</li>
-                <li>✓ Basic dead man switch</li>
-                <li>✓ 1 nominee</li>
-                <li>✓ Digital will</li>
-                <li>✓ Document vault (500MB)</li>
-                <li>✓ Email support</li>
+                <li className="flex items-start gap-2">
+                  <span style={{color: '#10b981'}}>✓</span>
+                  <span>Track up to <strong>10 assets</strong></span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span style={{color: '#10b981'}}>✓</span>
+                  <span>Basic dashboard</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span style={{color: '#10b981'}}>✓</span>
+                  <span>One nominee</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span style={{color: '#10b981'}}>✓</span>
+                  <span>Dead man switch (90 days)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span style={{color: '#10b981'}}>✓</span>
+                  <span>Document vault (<strong>50MB</strong>)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span style={{color: '#10b981'}}>✓</span>
+                  <span>Email notifications</span>
+                </li>
               </ul>
-              <Button onClick={handleLogin} className="w-full text-white" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}>
-                Get Started
+              <Button onClick={handleLogin} variant="outline" className="w-full" style={{borderColor: '#a855f7', color: '#a855f7'}}>
+                Start Free
               </Button>
             </div>
 
-            {/* Premium Plan - Featured */}
+            {/* Pro Plan - Featured */}
             <div className="p-8 rounded-2xl relative" style={{background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%)', border: '2px solid #ec4899'}}>
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 px-4 py-1 rounded-full text-xs font-semibold" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: 'white'}}>
                 MOST POPULAR
               </div>
-              <div className="text-sm font-semibold mb-2" style={{color: '#ec4899'}}>PREMIUM</div>
+              <div className="text-sm font-semibold mb-2" style={{color: '#ec4899'}}>PRO</div>
               <div className="mb-6">
-                <span className="text-4xl font-bold" style={{color: '#f8fafc'}}>$12</span>
+                <span className="text-4xl font-bold" style={{color: '#f8fafc'}}>$9.99</span>
                 <span style={{color: '#94a3b8'}}>/month</span>
               </div>
               <ul className="space-y-3 mb-8" style={{color: '#cbd5e1'}}>
-                <li>✓ Unlimited assets</li>
-                <li>✓ Advanced dead man switch</li>
-                <li>✓ Up to 5 nominees</li>
-                <li>✓ Digital will + beneficiary distribution</li>
-                <li>✓ Document vault (5GB)</li>
-                <li>✓ Real-time price tracking</li>
-                <li>✓ Priority support</li>
-                <li>✓ Export reports</li>
+                <li className="flex items-start gap-2">
+                  <span style={{color: '#10b981'}}>✓</span>
+                  <span><strong>100 assets</strong> tracking</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span style={{color: '#10b981'}}>✓</span>
+                  <span>Advanced analytics dashboard</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span style={{color: '#10b981'}}>✓</span>
+                  <span>Multiple nominees</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span style={{color: '#10b981'}}>✓</span>
+                  <span>Custom DMS timing</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span style={{color: '#10b981'}}>✓</span>
+                  <span>AI financial insights</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span style={{color: '#10b981'}}>✓</span>
+                  <span>Document vault (<strong>5GB</strong>)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span style={{color: '#10b981'}}>✓</span>
+                  <span>Priority support</span>
+                </li>
               </ul>
               <Button onClick={handleLogin} className="w-full text-white" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}>
-                Get Started
+                Start Pro Plan
               </Button>
             </div>
 
-            {/* Enterprise Plan */}
+            {/* Family Plan */}
             <div className="p-8 rounded-2xl" style={{background: '#1a1229', border: '1px solid #2d1f3d'}}>
-              <div className="text-sm font-semibold mb-2" style={{color: '#94a3b8'}}>ENTERPRISE</div>
+              <div className="text-sm font-semibold mb-2" style={{color: '#94a3b8'}}>FAMILY</div>
               <div className="mb-6">
-                <span className="text-4xl font-bold" style={{color: '#f8fafc'}}>$25</span>
+                <span className="text-4xl font-bold" style={{color: '#f8fafc'}}>$24.99</span>
                 <span style={{color: '#94a3b8'}}>/month</span>
               </div>
               <ul className="space-y-3 mb-8" style={{color: '#cbd5e1'}}>
-                <li>✓ Everything in Premium</li>
-                <li>✓ Family plan (up to 5 users)</li>
-                <li>✓ Unlimited nominees</li>
-                <li>✓ Document vault (20GB)</li>
-                <li>✓ White-label option</li>
-                <li>✓ Dedicated support</li>
-                <li>✓ Custom integrations</li>
-                <li>✓ API access</li>
+                <li className="flex items-start gap-2">
+                  <span style={{color: '#10b981'}}>✓</span>
+                  <span><strong>Everything in Pro</strong></span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span style={{color: '#10b981'}}>✓</span>
+                  <span>Up to <strong>5 family members</strong></span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span style={{color: '#10b981'}}>✓</span>
+                  <span>Shared asset tracking</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span style={{color: '#10b981'}}>✓</span>
+                  <span>Family financial planning</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span style={{color: '#10b981'}}>✓</span>
+                  <span>Document vault (<strong>50GB</strong>)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span style={{color: '#10b981'}}>✓</span>
+                  <span>Scheduled messages</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span style={{color: '#10b981'}}>✓</span>
+                  <span>24/7 premium support</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span style={{color: '#10b981'}}>✓</span>
+                  <span>Custom integrations</span>
+                </li>
               </ul>
               <Button onClick={handleLogin} className="w-full text-white" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}>
-                Get Started
+                Start Family Plan
               </Button>
             </div>
           </div>
 
           <div className="text-center mt-12">
             <p className="text-sm" style={{color: '#64748b'}}>
-              All plans include 14-day free trial. No credit card required. Cancel anytime.
+              Free plan available forever. No credit card required. Upgrade or cancel anytime.
             </p>
           </div>
         </div>
