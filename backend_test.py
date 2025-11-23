@@ -1283,6 +1283,735 @@ print('Test user and session created successfully');
                     f"Latest: {latest_timestamp}, Expected: {second_timestamp}"
                 )
 
+    def create_admin_user(self):
+        """Create admin user for admin panel testing"""
+        print("\n🔧 Creating admin user for admin panel tests...")
+        
+        timestamp = int(time.time())
+        self.admin_user_id = f"admin-user-{timestamp}"
+        self.admin_session_token = f"admin_session_{timestamp}"
+        
+        # MongoDB commands to create admin user and session
+        mongo_commands = f"""
+use('test_database');
+var adminUserId = '{self.admin_user_id}';
+var adminSessionToken = '{self.admin_session_token}';
+var expiresAt = new Date(Date.now() + 7*24*60*60*1000);
+
+// Create admin user (shivu7sm@gmail.com should get admin role automatically)
+db.users.insertOne({{
+  id: adminUserId,
+  email: 'shivu7sm@gmail.com',
+  name: 'Admin User Test',
+  picture: 'https://via.placeholder.com/150',
+  role: 'admin',
+  last_activity: new Date(),
+  created_at: new Date()
+}});
+
+// Create admin session
+db.user_sessions.insertOne({{
+  user_id: adminUserId,
+  session_token: adminSessionToken,
+  expires_at: expiresAt,
+  created_at: new Date()
+}});
+
+print('Admin user and session created successfully');
+"""
+        
+        try:
+            import subprocess
+            result = subprocess.run(
+                ['mongosh', '--eval', mongo_commands],
+                capture_output=True,
+                text=True,
+                timeout=30
+            )
+            
+            if result.returncode == 0:
+                print(f"✅ Admin user created: {self.admin_user_id}")
+                print(f"✅ Admin session token: {self.admin_session_token}")
+                return True
+            else:
+                print(f"❌ Failed to create admin user: {result.stderr}")
+                return False
+                
+        except Exception as e:
+            print(f"❌ Error creating admin user: {str(e)}")
+            return False
+
+    def test_admin_role_assignment(self):
+        """Test Admin Role Assignment"""
+        print("\n👑 Testing Admin Role Assignment...")
+        
+        # Test with admin user
+        old_token = self.session_token
+        self.session_token = self.admin_session_token
+        
+        user_data = self.run_test(
+            "Get admin user profile (/auth/me)",
+            "GET",
+            "auth/me",
+            200
+        )
+        
+        if user_data:
+            user_role = user_data.get('role')
+            user_email = user_data.get('email')
+            
+            if user_email == 'shivu7sm@gmail.com' and user_role == 'admin':
+                self.log_test(
+                    "Admin user has correct role assignment",
+                    True,
+                    f"Email: {user_email}, Role: {user_role}"
+                )
+            else:
+                self.log_test(
+                    "Admin user has correct role assignment",
+                    False,
+                    f"Expected: shivu7sm@gmail.com with admin role, Got: {user_email} with {user_role}"
+                )
+        
+        self.session_token = old_token
+
+    def test_admin_authorization_middleware(self):
+        """Test Admin Authorization Middleware"""
+        print("\n🔒 Testing Admin Authorization Middleware...")
+        
+        # Test with non-admin user (should get 403)
+        self.run_test(
+            "Access admin endpoint with non-admin user (should fail)",
+            "GET",
+            "admin/stats",
+            403
+        )
+        
+        # Test with admin user (should work)
+        old_token = self.session_token
+        self.session_token = self.admin_session_token
+        
+        self.run_test(
+            "Access admin endpoint with admin user (should work)",
+            "GET",
+            "admin/stats",
+            200
+        )
+        
+        self.session_token = old_token
+
+    def test_admin_statistics_dashboard(self):
+        """Test Admin Statistics Dashboard"""
+        print("\n📊 Testing Admin Statistics Dashboard...")
+        
+        # Switch to admin user
+        old_token = self.session_token
+        self.session_token = self.admin_session_token
+        
+        # Create some test data for meaningful statistics
+        self.create_test_data_for_admin_stats()
+        
+        stats = self.run_test(
+            "Get admin statistics dashboard",
+            "GET",
+            "admin/stats",
+            200
+        )
+        
+        if stats:
+            # Verify required fields exist
+            required_fields = [
+                'users', 'assets', 'scheduled_messages', 
+                'dead_man_switches', 'ai_insights'
+            ]
+            
+            missing_fields = []
+            for field in required_fields:
+                if field not in stats:
+                    missing_fields.append(field)
+            
+            if not missing_fields:
+                self.log_test(
+                    "Admin stats has all required sections",
+                    True,
+                    f"All sections present: {required_fields}"
+                )
+            else:
+                self.log_test(
+                    "Admin stats has all required sections",
+                    False,
+                    f"Missing sections: {missing_fields}"
+                )
+            
+            # Verify users section structure
+            users_section = stats.get('users', {})
+            if isinstance(users_section, dict):
+                users_fields = ['total', 'recent_30_days', 'by_subscription']
+                users_missing = [f for f in users_fields if f not in users_section]
+                
+                if not users_missing:
+                    self.log_test(
+                        "Admin stats users section has correct structure",
+                        True,
+                        f"Users: {users_section.get('total', 0)} total, {users_section.get('recent_30_days', 0)} recent"
+                    )
+                else:
+                    self.log_test(
+                        "Admin stats users section has correct structure",
+                        False,
+                        f"Missing user fields: {users_missing}"
+                    )
+            
+            # Verify assets section structure
+            assets_section = stats.get('assets', {})
+            if isinstance(assets_section, dict):
+                assets_fields = ['total', 'by_type']
+                assets_missing = [f for f in assets_fields if f not in assets_section]
+                
+                if not assets_missing:
+                    self.log_test(
+                        "Admin stats assets section has correct structure",
+                        True,
+                        f"Assets: {assets_section.get('total', 0)} total"
+                    )
+                else:
+                    self.log_test(
+                        "Admin stats assets section has correct structure",
+                        False,
+                        f"Missing asset fields: {assets_missing}"
+                    )
+            
+            print(f"   📈 Statistics Summary:")
+            print(f"   Total Users: {stats.get('users', {}).get('total', 0)}")
+            print(f"   Total Assets: {stats.get('assets', {}).get('total', 0)}")
+            print(f"   Scheduled Messages: {stats.get('scheduled_messages', {}).get('total', 0)}")
+            print(f"   Dead Man Switches: {stats.get('dead_man_switches', {}).get('total', 0)}")
+            print(f"   AI Insights: {stats.get('ai_insights', {}).get('total_generated', 0)}")
+        
+        self.session_token = old_token
+
+    def test_admin_list_all_users(self):
+        """Test List All Users"""
+        print("\n👥 Testing Admin List All Users...")
+        
+        # Switch to admin user
+        old_token = self.session_token
+        self.session_token = self.admin_session_token
+        
+        users_response = self.run_test(
+            "Get all users list",
+            "GET",
+            "admin/users?skip=0&limit=50",
+            200
+        )
+        
+        if users_response:
+            # Verify response structure
+            required_fields = ['users', 'total', 'skip', 'limit']
+            missing_fields = [f for f in required_fields if f not in users_response]
+            
+            if not missing_fields:
+                self.log_test(
+                    "Admin users list has correct response structure",
+                    True,
+                    f"Response has all required fields: {required_fields}"
+                )
+            else:
+                self.log_test(
+                    "Admin users list has correct response structure",
+                    False,
+                    f"Missing fields: {missing_fields}"
+                )
+            
+            # Verify user objects structure
+            users = users_response.get('users', [])
+            if users and len(users) > 0:
+                first_user = users[0]
+                user_fields = ['id', 'email', 'name', 'role', 'subscription_plan', 'created_at', 'asset_count']
+                user_missing = [f for f in user_fields if f not in first_user]
+                
+                if not user_missing:
+                    self.log_test(
+                        "Admin users list has correct user object structure",
+                        True,
+                        f"User objects have all required fields: {user_fields}"
+                    )
+                else:
+                    self.log_test(
+                        "Admin users list has correct user object structure",
+                        False,
+                        f"Missing user fields: {user_missing}"
+                    )
+                
+                print(f"   👤 Found {len(users)} users")
+                print(f"   Total users in system: {users_response.get('total', 0)}")
+        
+        self.session_token = old_token
+
+    def test_admin_update_user_role(self):
+        """Test Update User Role"""
+        print("\n🔄 Testing Admin Update User Role...")
+        
+        # Switch to admin user
+        old_token = self.session_token
+        self.session_token = self.admin_session_token
+        
+        # First get a regular user to update
+        users_response = self.run_test(
+            "Get users for role update test",
+            "GET",
+            "admin/users?skip=0&limit=50",
+            200
+        )
+        
+        target_user_id = None
+        if users_response and users_response.get('users'):
+            # Find a non-admin user
+            for user in users_response['users']:
+                if user.get('role') != 'admin' and user.get('id') != self.admin_user_id:
+                    target_user_id = user.get('id')
+                    break
+        
+        if not target_user_id:
+            # Use our test user
+            target_user_id = self.user_id
+        
+        if target_user_id:
+            # Test updating user role to readonly
+            self.run_test(
+                "Update user role to readonly",
+                "PUT",
+                f"admin/users/{target_user_id}/role",
+                200,
+                {"role": "readonly"}
+            )
+            
+            # Test updating user role back to user
+            self.run_test(
+                "Update user role back to user",
+                "PUT",
+                f"admin/users/{target_user_id}/role",
+                200,
+                {"role": "user"}
+            )
+            
+            # Test invalid role (should fail)
+            self.run_test(
+                "Update user role to invalid role (should fail)",
+                "PUT",
+                f"admin/users/{target_user_id}/role",
+                400,
+                {"role": "invalid_role"}
+            )
+            
+            # Test admin trying to update own role (should fail)
+            self.run_test(
+                "Admin trying to update own role (should fail)",
+                "PUT",
+                f"admin/users/{self.admin_user_id}/role",
+                400,
+                {"role": "user"}
+            )
+        else:
+            self.log_test(
+                "Could not find user for role update test",
+                False,
+                "No suitable user found for testing role updates"
+            )
+        
+        self.session_token = old_token
+
+    def test_admin_scheduled_messages_status(self):
+        """Test Scheduled Messages Status"""
+        print("\n📅 Testing Admin Scheduled Messages Status...")
+        
+        # Switch to admin user
+        old_token = self.session_token
+        self.session_token = self.admin_session_token
+        
+        # Create a test scheduled message first
+        self.session_token = old_token  # Switch back to regular user to create message
+        
+        test_message = {
+            "recipient_name": "John Doe",
+            "recipient_email": "john.doe@example.com",
+            "subject": "Test Scheduled Message",
+            "message": "This is a test message for admin monitoring",
+            "send_date": "2024-12-31",
+            "occasion": "New Year"
+        }
+        
+        self.run_test(
+            "Create test scheduled message for admin monitoring",
+            "POST",
+            "scheduled-messages",
+            200,
+            test_message
+        )
+        
+        # Switch back to admin
+        self.session_token = self.admin_session_token
+        
+        messages_response = self.run_test(
+            "Get scheduled messages status",
+            "GET",
+            "admin/jobs/scheduled-messages",
+            200
+        )
+        
+        if messages_response:
+            # Verify response structure
+            required_fields = ['messages', 'total']
+            missing_fields = [f for f in required_fields if f not in messages_response]
+            
+            if not missing_fields:
+                self.log_test(
+                    "Admin scheduled messages has correct response structure",
+                    True,
+                    f"Response has all required fields: {required_fields}"
+                )
+            else:
+                self.log_test(
+                    "Admin scheduled messages has correct response structure",
+                    False,
+                    f"Missing fields: {missing_fields}"
+                )
+            
+            # Verify message objects structure
+            messages = messages_response.get('messages', [])
+            if messages and len(messages) > 0:
+                first_message = messages[0]
+                message_fields = ['id', 'user_id', 'recipient_name', 'recipient_email', 'subject', 'send_date', 'status', 'created_at']
+                message_missing = [f for f in message_fields if f not in first_message]
+                
+                if not message_missing:
+                    self.log_test(
+                        "Admin scheduled messages have correct structure",
+                        True,
+                        f"Message objects have all required fields: {message_fields}"
+                    )
+                else:
+                    self.log_test(
+                        "Admin scheduled messages have correct structure",
+                        False,
+                        f"Missing message fields: {message_missing}"
+                    )
+                
+                print(f"   📨 Found {len(messages)} scheduled messages")
+                print(f"   Total messages in system: {messages_response.get('total', 0)}")
+        
+        self.session_token = old_token
+
+    def test_admin_dms_reminders_monitoring(self):
+        """Test DMS Reminders Monitoring"""
+        print("\n⏰ Testing Admin DMS Reminders Monitoring...")
+        
+        # Switch to admin user
+        old_token = self.session_token
+        self.session_token = self.admin_session_token
+        
+        # Create a test DMS first
+        self.session_token = old_token  # Switch back to regular user to create DMS
+        
+        test_dms = {
+            "inactivity_days": 90,
+            "reminder_1_days": 60,
+            "reminder_2_days": 75,
+            "reminder_3_days": 85
+        }
+        
+        self.run_test(
+            "Create test DMS for admin monitoring",
+            "POST",
+            "dms",
+            200,
+            test_dms
+        )
+        
+        # Switch back to admin
+        self.session_token = self.admin_session_token
+        
+        dms_response = self.run_test(
+            "Get DMS reminders status",
+            "GET",
+            "admin/jobs/dms-reminders",
+            200
+        )
+        
+        if dms_response:
+            # Verify response structure
+            required_fields = ['dms_reminders', 'total']
+            missing_fields = [f for f in required_fields if f not in dms_response]
+            
+            if not missing_fields:
+                self.log_test(
+                    "Admin DMS reminders has correct response structure",
+                    True,
+                    f"Response has all required fields: {required_fields}"
+                )
+            else:
+                self.log_test(
+                    "Admin DMS reminders has correct response structure",
+                    False,
+                    f"Missing fields: {missing_fields}"
+                )
+            
+            # Verify DMS objects structure
+            dms_reminders = dms_response.get('dms_reminders', [])
+            if dms_reminders and len(dms_reminders) > 0:
+                first_dms = dms_reminders[0]
+                dms_fields = ['id', 'user_id', 'user_email', 'user_name', 'days_inactive', 'days_until_trigger', 'reminders_sent', 'is_active']
+                dms_missing = [f for f in dms_fields if f not in first_dms]
+                
+                if not dms_missing:
+                    self.log_test(
+                        "Admin DMS reminders have correct structure",
+                        True,
+                        f"DMS objects have all required fields: {dms_fields}"
+                    )
+                else:
+                    self.log_test(
+                        "Admin DMS reminders have correct structure",
+                        False,
+                        f"Missing DMS fields: {dms_missing}"
+                    )
+                
+                print(f"   ⏰ Found {len(dms_reminders)} DMS configurations")
+                print(f"   Total DMS in system: {dms_response.get('total', 0)}")
+        
+        self.session_token = old_token
+
+    def test_admin_delete_user(self):
+        """Test Delete User (Comprehensive Cleanup)"""
+        print("\n🗑️ Testing Admin Delete User...")
+        
+        # Switch to admin user
+        old_token = self.session_token
+        self.session_token = self.admin_session_token
+        
+        # Create a test user with some data
+        timestamp = int(time.time())
+        test_user_id = f"delete-test-user-{timestamp}"
+        test_session_token = f"delete_test_session_{timestamp}"
+        
+        # Create test user in database
+        mongo_commands = f"""
+use('test_database');
+var testUserId = '{test_user_id}';
+var testSessionToken = '{test_session_token}';
+var expiresAt = new Date(Date.now() + 7*24*60*60*1000);
+
+// Create test user
+db.users.insertOne({{
+  id: testUserId,
+  email: 'delete.test.{timestamp}@example.com',
+  name: 'Delete Test User',
+  picture: 'https://via.placeholder.com/150',
+  role: 'user',
+  last_activity: new Date(),
+  created_at: new Date()
+}});
+
+// Create session
+db.user_sessions.insertOne({{
+  user_id: testUserId,
+  session_token: testSessionToken,
+  expires_at: expiresAt,
+  created_at: new Date()
+}});
+
+// Create some test data for this user
+db.assets.insertOne({{
+  id: 'test-asset-' + testUserId,
+  user_id: testUserId,
+  type: 'bank',
+  name: 'Test Bank Account for Deletion',
+  total_value: 1000,
+  purchase_currency: 'USD',
+  created_at: new Date(),
+  updated_at: new Date()
+}});
+
+db.nominees.insertOne({{
+  id: 'test-nominee-' + testUserId,
+  user_id: testUserId,
+  name: 'Test Nominee',
+  email: 'nominee@example.com',
+  created_at: new Date()
+}});
+
+print('Test user with data created for deletion test');
+"""
+        
+        try:
+            import subprocess
+            result = subprocess.run(
+                ['mongosh', '--eval', mongo_commands],
+                capture_output=True,
+                text=True,
+                timeout=30
+            )
+            
+            if result.returncode == 0:
+                print(f"✅ Test user created for deletion: {test_user_id}")
+                
+                # Test admin trying to delete own account (should fail)
+                self.run_test(
+                    "Admin trying to delete own account (should fail)",
+                    "DELETE",
+                    f"admin/users/{self.admin_user_id}",
+                    400
+                )
+                
+                # Test deleting the test user (should work)
+                delete_response = self.run_test(
+                    "Delete test user and all associated data",
+                    "DELETE",
+                    f"admin/users/{test_user_id}",
+                    200
+                )
+                
+                if delete_response:
+                    # Verify user and all associated data is deleted
+                    verification_commands = f"""
+use('test_database');
+var testUserId = '{test_user_id}';
+
+var userCount = db.users.countDocuments({{id: testUserId}});
+var sessionCount = db.user_sessions.countDocuments({{user_id: testUserId}});
+var assetCount = db.assets.countDocuments({{user_id: testUserId}});
+var nomineeCount = db.nominees.countDocuments({{user_id: testUserId}});
+
+print('Verification results:');
+print('Users: ' + userCount);
+print('Sessions: ' + sessionCount);
+print('Assets: ' + assetCount);
+print('Nominees: ' + nomineeCount);
+
+if (userCount === 0 && sessionCount === 0 && assetCount === 0 && nomineeCount === 0) {{
+    print('SUCCESS: All data deleted');
+}} else {{
+    print('FAILURE: Some data remains');
+}}
+"""
+                    
+                    verification_result = subprocess.run(
+                        ['mongosh', '--eval', verification_commands],
+                        capture_output=True,
+                        text=True,
+                        timeout=30
+                    )
+                    
+                    if "SUCCESS: All data deleted" in verification_result.stdout:
+                        self.log_test(
+                            "User deletion removes all associated data",
+                            True,
+                            "User and all related data successfully deleted"
+                        )
+                    else:
+                        self.log_test(
+                            "User deletion removes all associated data",
+                            False,
+                            f"Some data may remain: {verification_result.stdout}"
+                        )
+            else:
+                self.log_test(
+                    "Could not create test user for deletion test",
+                    False,
+                    f"Database error: {result.stderr}"
+                )
+                
+        except Exception as e:
+            self.log_test(
+                "Error in user deletion test setup",
+                False,
+                f"Error: {str(e)}"
+            )
+        
+        self.session_token = old_token
+
+    def create_test_data_for_admin_stats(self):
+        """Create test data for meaningful admin statistics"""
+        # Switch to regular user to create some test data
+        old_token = self.session_token
+        self.session_token = old_token
+        
+        # Create a test asset
+        test_asset = {
+            "type": "bank",
+            "name": "Test Bank for Admin Stats",
+            "total_value": 5000,
+            "purchase_currency": "USD"
+        }
+        
+        self.run_test(
+            "Create test asset for admin stats",
+            "POST",
+            "assets",
+            200,
+            test_asset
+        )
+        
+        # Create a scheduled message
+        test_message = {
+            "recipient_name": "Stats Test Recipient",
+            "recipient_email": "stats.test@example.com",
+            "subject": "Test Message for Stats",
+            "message": "This is for admin stats testing",
+            "send_date": "2024-12-25"
+        }
+        
+        self.run_test(
+            "Create test scheduled message for admin stats",
+            "POST",
+            "scheduled-messages",
+            200,
+            test_message
+        )
+
+    def cleanup_admin_test_data(self):
+        """Clean up admin test data"""
+        if hasattr(self, 'admin_user_id') and self.admin_user_id:
+            mongo_cleanup = f"""
+use('test_database');
+db.users.deleteOne({{id: '{self.admin_user_id}'}});
+db.user_sessions.deleteOne({{user_id: '{self.admin_user_id}'}});
+print('Admin test data cleaned up');
+"""
+            
+            try:
+                import subprocess
+                subprocess.run(['mongosh', '--eval', mongo_cleanup], timeout=30)
+                print("✅ Admin test data cleaned up")
+            except Exception as e:
+                print(f"⚠️  Admin cleanup warning: {str(e)}")
+
+    def test_admin_panel_backend(self):
+        """Test all Admin Panel Backend features"""
+        print("\n🛡️ Testing Admin Panel Backend Features...")
+        
+        # Create admin user for testing
+        if not self.create_admin_user():
+            print("❌ Failed to create admin user. Cannot proceed with admin tests.")
+            return False
+        
+        try:
+            # Run all admin tests
+            self.test_admin_role_assignment()
+            self.test_admin_authorization_middleware()
+            self.test_admin_statistics_dashboard()
+            self.test_admin_list_all_users()
+            self.test_admin_update_user_role()
+            self.test_admin_scheduled_messages_status()
+            self.test_admin_dms_reminders_monitoring()
+            self.test_admin_delete_user()
+            
+        finally:
+            # Cleanup admin test data
+            self.cleanup_admin_test_data()
+        
+        return True
+
     def cleanup_user_data(self):
         """Clean up all user data including snapshots and insights"""
         if not self.user_id:
