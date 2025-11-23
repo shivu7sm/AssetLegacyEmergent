@@ -944,8 +944,13 @@ print('Test user and session created successfully');
         )
         
         if history:
-            snapshots = history.get('snapshots', [])
-            snapshot_dates = [s.get('snapshot_date') for s in snapshots]
+            # Handle both list and dict responses
+            if isinstance(history, list):
+                snapshots = history
+            else:
+                snapshots = history.get('snapshots', [])
+            
+            snapshot_dates = [s.get('snapshot_date') if isinstance(s, dict) else str(s) for s in snapshots]
             
             expected_dates = ["2024-01-20", "2024-02-25"]
             found_dates = [date for date in expected_dates if date in snapshot_dates]
