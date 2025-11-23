@@ -2093,8 +2093,8 @@ async def update_user_role(user_id: str, role_data: dict, admin: User = Depends(
     """Update a user's role."""
     new_role = role_data.get("role")
     
-    if new_role not in ["admin", "user", "readonly"]:
-        raise HTTPException(status_code=400, detail="Invalid role. Must be 'admin', 'user', or 'readonly'")
+    if new_role not in ["admin", "customer", "readonly"]:
+        raise HTTPException(status_code=400, detail="Invalid role. Must be 'admin', 'customer', or 'readonly'")
     
     # Prevent changing own role
     if user_id == admin.id:
