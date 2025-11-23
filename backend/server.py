@@ -1258,12 +1258,13 @@ async def get_subscription(user: User = Depends(require_auth)):
             
             if subscriptions.data and len(subscriptions.data) > 0:
                 sub = subscriptions.data[0]  # Get most recent subscription
-                logger.info(f"Subscription object type: {type(sub)}")
-                logger.info(f"Subscription dir: {[attr for attr in dir(sub) if not attr.startswith('_')]}")
+                
+                # Convert Stripe object to dict for easier access
+                sub_dict = sub.to_dict()
                 
                 # Get payment method
                 payment_method_info = None
-                default_pm = getattr(sub, 'default_payment_method', None)
+                default_pm = sub_dict.get('default_payment_method')
                 if default_pm:
                     try:
                         pm = stripe.PaymentMethod.retrieve(default_pm)
@@ -1280,20 +1281,20 @@ async def get_subscription(user: User = Depends(require_auth)):
                 
                 try:
                     subscription_details = {
-                        "subscription_id": sub.id,
-                        "status": sub.status,
-                        "current_period_start": datetime.fromtimestamp(getattr(sub, 'current_period_start', 0)).isoformat(),
-                        "current_period_end": datetime.fromtimestamp(getattr(sub, 'current_period_end', 0)).isoformat(),
-                        "cancel_at_period_end": getattr(sub, 'cancel_at_period_end', False),
-                        "canceled_at": datetime.fromtimestamp(sub.canceled_at).isoformat() if getattr(sub, 'canceled_at', None) else None,
-                        "created": datetime.fromtimestamp(getattr(sub, 'created', 0)).isoformat(),
+                        "subscription_id": sub_dict.get('id'),
+                        "status": sub_dict.get('status'),
+                        "current_period_start": datetime.fromtimestamp(sub_dict.get('current_period_start', 0)).isoformat(),
+                        "current_period_end": datetime.fromtimestamp(sub_dict.get('current_period_end', 0)).isoformat(),
+                        "cancel_at_period_end": sub_dict.get('cancel_at_period_end', False),
+                        "canceled_at": datetime.fromtimestamp(sub_dict['canceled_at']).isoformat() if sub_dict.get('canceled_at') else None,
+                        "created": datetime.fromtimestamp(sub_dict.get('created', 0)).isoformat(),
                         "payment_method": payment_method_info,
-                        "amount": sub.items.data[0].price.unit_amount / 100 if sub.items and sub.items.data else 0,
-                        "currency": sub.items.data[0].price.currency.upper() if sub.items and sub.items.data else "USD",
-                        "interval": sub.items.data[0].price.recurring.interval if sub.items and sub.items.data else "month"
+                        "amount": sub_dict['items']['data'][0]['price']['unit_amount'] / 100 if sub_dict.get('items') and sub_dict['items'].get('data') else 0,
+                        "currency": sub_dict['items']['data'][0]['price']['currency'].upper() if sub_dict.get('items') and sub_dict['items'].get('data') else "USD",
+                        "interval": sub_dict['items']['data'][0]['price']['recurring']['interval'] if sub_dict.get('items') and sub_dict['items'].get('data') else "month"
                     }
-                except AttributeError as attr_err:
-                    logger.error(f"Failed to parse subscription details: {str(attr_err)}")
+                except (KeyError, IndexError, TypeError) as parse_err:
+                    logger.error(f"Failed to parse subscription details: {str(parse_err)}")
                     subscription_details = None
         except Exception as e:
             logger.error(f"Failed to fetch Stripe subscription details: {str(e)}")
