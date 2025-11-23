@@ -201,20 +201,33 @@ export default function NetWorthChart() {
       {/* Chart */}
       <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
         <CardHeader>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center flex-wrap gap-3">
             <div>
               <CardTitle style={{color: '#f8fafc'}}>Net Worth Trend</CardTitle>
               <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Historical net worth over time</p>
             </div>
-            <Button
-              onClick={createSnapshot}
-              size="sm"
-              className="text-white rounded-full"
-              style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
-            >
-              <Calendar className="w-4 h-4 mr-2" />
-              Add Snapshot
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                onClick={backfillSnapshots}
+                disabled={loading}
+                size="sm"
+                variant="outline"
+                className="rounded-full"
+                style={{borderColor: '#a855f7', color: '#a855f7'}}
+              >
+                <Calendar className="w-4 h-4 mr-2" />
+                Backfill
+              </Button>
+              <Button
+                onClick={createSnapshot}
+                size="sm"
+                className="text-white rounded-full"
+                style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
+              >
+                <Calendar className="w-4 h-4 mr-2" />
+                Add Snapshot
+              </Button>
+            </div>
           </div>
         </CardHeader>
         <CardContent>
