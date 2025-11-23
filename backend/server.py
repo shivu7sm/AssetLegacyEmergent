@@ -1309,11 +1309,27 @@ async def stripe_webhook(request: Request):
 async def cancel_subscription(user: User = Depends(require_auth)):
     try:
         subscription_id = getattr(user, 'stripe_subscription_id', None)
+        
+        # If no subscription ID, user might be on Free plan or subscription was already reset
         if not subscription_id:
-            raise HTTPException(status_code=400, detail="No active subscription")
+            # Reset to Free plan just in case
+            await db.users.update_one(
+                {"id": user.id},
+                {"$set": {"subscription_plan": "Free"}, "$unset": {"stripe_customer_id": "", "stripe_subscription_id": ""}}
+            )
+            return {"success": True, "message": "Already on Free plan"}
         
         # Cancel subscription in Stripe
-        stripe.Subscription.modify(subscription_id, cancel_at_period_end=True)
+        try:
+            stripe.Subscription.modify(subscription_id, cancel_at_period_end=True)
+        except stripe.error.InvalidRequestError as e:
+            # Subscription doesn't exist in Stripe, clean up local DB
+            logger.warning(f"Subscription {subscription_id} not found in Stripe, cleaning up: {str(e)}")
+            await db.users.update_one(
+                {"id": user.id},
+                {"$set": {"subscription_plan": "Free"}, "$unset": {"stripe_customer_id": "", "stripe_subscription_id": ""}}
+            )
+            return {"success": True, "message": "Subscription reset to Free plan"}
         
         await db.users.update_one(
             {"id": user.id},
