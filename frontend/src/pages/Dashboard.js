@@ -39,6 +39,30 @@ export default function Dashboard() {
   const { selectedCurrency, currencyFormat } = useApp();
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [comparisonChartType, setComparisonChartType] = useState(() => {
+    return sessionStorage.getItem('comparisonChartType') || 'pie';
+  });
+  const [assetDistChartType, setAssetDistChartType] = useState(() => {
+    return sessionStorage.getItem('assetDistChartType') || 'pie';
+  });
+  const [liabilityDistChartType, setLiabilityDistChartType] = useState(() => {
+    return sessionStorage.getItem('liabilityDistChartType') || 'pie';
+  });
+
+  const handleComparisonChartChange = (type) => {
+    setComparisonChartType(type);
+    sessionStorage.setItem('comparisonChartType', type);
+  };
+
+  const handleAssetDistChartChange = (type) => {
+    setAssetDistChartType(type);
+    sessionStorage.setItem('assetDistChartType', type);
+  };
+
+  const handleLiabilityDistChartChange = (type) => {
+    setLiabilityDistChartType(type);
+    sessionStorage.setItem('liabilityDistChartType', type);
+  };
 
   useEffect(() => {
     fetchSummary();
