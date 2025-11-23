@@ -526,6 +526,37 @@ export default function Assets() {
           </Dialog>
         </div>
 
+        {/* Filters and Sort */}
+        {assets.length > 0 && (
+          <div className="flex flex-wrap gap-4 mb-6">
+            <Select value={filterType} onValueChange={setFilterType}>
+              <SelectTrigger className="w-48" style={{background: '#1a1229', borderColor: '#2d1f3d', color: '#f8fafc'}}>
+                <Filter className="w-4 h-4 mr-2" />
+                <SelectValue placeholder="Filter by type" />
+              </SelectTrigger>
+              <SelectContent style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                <SelectItem value="all" style={{color: '#f8fafc'}}>All Assets</SelectItem>
+                {ASSET_TYPES.map(type => (
+                  <SelectItem key={type.value} value={type.value} style={{color: '#f8fafc'}}>
+                    {type.icon} {type.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select value={sortBy} onValueChange={setSortBy}>
+              <SelectTrigger className="w-48" style={{background: '#1a1229', borderColor: '#2d1f3d', color: '#f8fafc'}}>
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                <SelectItem value="date" style={{color: '#f8fafc'}}>Date Added</SelectItem>
+                <SelectItem value="value" style={{color: '#f8fafc'}}>Value (High to Low)</SelectItem>
+                <SelectItem value="name" style={{color: '#f8fafc'}}>Name (A-Z)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        )}
+
         {assets.length === 0 ? (
           <Card data-testid="no-assets-card" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
             <CardContent className="py-16">
