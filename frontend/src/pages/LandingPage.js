@@ -238,6 +238,169 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* The Hard Truth Section */}
+      <section className="py-20" style={{background: 'linear-gradient(135deg, #1a0b2e 0%, #0a0e27 100%)'}}>
+        <div className="container mx-auto px-6">
+          <div className="max-w-5xl mx-auto">
+            {/* Title */}
+            <div className="text-center mb-12">
+              <h3 className="text-3xl sm:text-4xl font-bold mb-4" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
+                The Uncomfortable Truth About Your Money
+              </h3>
+              <p className="text-lg" style={{color: '#94a3b8'}}>
+                Financial institutions only remember you when you owe them money
+              </p>
+            </div>
+
+            {/* Two Column Comparison */}
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* They WILL Contact You - Red Side */}
+              <div className="rounded-2xl p-8" style={{background: 'rgba(239, 68, 68, 0.1)', border: '2px solid rgba(239, 68, 68, 0.3)'}}>
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{background: 'rgba(239, 68, 68, 0.2)'}}>
+                    <span className="text-2xl">📞</span>
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-bold" style={{color: '#ef4444'}}>They WILL Call You</h4>
+                    <p className="text-sm" style={{color: '#94a3b8'}}>For liabilities</p>
+                  </div>
+                </div>
+                <ul className="space-y-4">
+                  <li className="flex items-start gap-3">
+                    <AlertCircle className="w-5 h-5 mt-1 flex-shrink-0" style={{color: '#ef4444'}} />
+                    <div>
+                      <p className="font-semibold mb-1" style={{color: '#f8fafc'}}>Loan EMIs</p>
+                      <p className="text-sm" style={{color: '#cbd5e1'}}>Daily reminders before and after due date</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <AlertCircle className="w-5 h-5 mt-1 flex-shrink-0" style={{color: '#ef4444'}} />
+                    <div>
+                      <p className="font-semibold mb-1" style={{color: '#f8fafc'}}>Credit Card Bills</p>
+                      <p className="text-sm" style={{color: '#cbd5e1'}}>Multiple calls, SMS, and emails</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <AlertCircle className="w-5 h-5 mt-1 flex-shrink-0" style={{color: '#ef4444'}} />
+                    <div>
+                      <p className="font-semibold mb-1" style={{color: '#f8fafc'}}>Mortgage Payments</p>
+                      <p className="text-sm" style={{color: '#cbd5e1'}}>Legal notices if you miss payments</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <AlertCircle className="w-5 h-5 mt-1 flex-shrink-0" style={{color: '#ef4444'}} />
+                    <div>
+                      <p className="font-semibold mb-1" style={{color: '#f8fafc'}}>Outstanding Debts</p>
+                      <p className="text-sm" style={{color: '#cbd5e1'}}>They'll track down your family if needed</p>
+                    </div>
+                  </li>
+                </ul>
+                <div className="mt-6 p-4 rounded-lg" style={{background: 'rgba(239, 68, 68, 0.1)'}}>
+                  <p className="text-sm font-semibold" style={{color: '#ef4444'}}>
+                    💡 They have entire departments dedicated to recovering what you owe
+                  </p>
+                </div>
+              </div>
+
+              {/* They WON'T Contact You - Gray Side */}
+              <div className="rounded-2xl p-8" style={{background: 'rgba(100, 116, 139, 0.1)', border: '2px solid rgba(100, 116, 139, 0.3)'}}>
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{background: 'rgba(100, 116, 139, 0.2)'}}>
+                    <span className="text-2xl">🤐</span>
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-bold" style={{color: '#94a3b8'}}>They WON'T Call You</h4>
+                    <p className="text-sm" style={{color: '#64748b'}}>For assets</p>
+                  </div>
+                </div>
+                <ul className="space-y-4 opacity-60">
+                  <li className="flex items-start gap-3">
+                    <div className="w-5 h-5 mt-1 flex-shrink-0 rounded-full" style={{background: 'rgba(100, 116, 139, 0.3)'}}></div>
+                    <div>
+                      <p className="font-semibold mb-1" style={{color: '#cbd5e1'}}>Savings Accounts</p>
+                      <p className="text-sm" style={{color: '#94a3b8'}}>Dormant after 10 years of inactivity</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-5 h-5 mt-1 flex-shrink-0 rounded-full" style={{background: 'rgba(100, 116, 139, 0.3)'}}></div>
+                    <div>
+                      <p className="font-semibold mb-1" style={{color: '#cbd5e1'}}>Fixed Deposits</p>
+                      <p className="text-sm" style={{color: '#94a3b8'}}>Maturity notices? Maybe one letter</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-5 h-5 mt-1 flex-shrink-0 rounded-full" style={{background: 'rgba(100, 116, 139, 0.3)'}}></div>
+                    <div>
+                      <p className="font-semibold mb-1" style={{color: '#cbd5e1'}}>Insurance Policies</p>
+                      <p className="text-sm" style={{color: '#94a3b8'}}>Unclaimed policies worth billions</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-5 h-5 mt-1 flex-shrink-0 rounded-full" style={{background: 'rgba(100, 116, 139, 0.3)'}}></div>
+                    <div>
+                      <p className="font-semibold mb-1" style={{color: '#cbd5e1'}}>Mutual Funds & Stocks</p>
+                      <p className="text-sm" style={{color: '#94a3b8'}}>Forgotten in demat accounts</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-5 h-5 mt-1 flex-shrink-0 rounded-full" style={{background: 'rgba(100, 116, 139, 0.3)'}}></div>
+                    <div>
+                      <p className="font-semibold mb-1" style={{color: '#cbd5e1'}}>Locker Contents</p>
+                      <p className="text-sm" style={{color: '#94a3b8'}}>Your family won't even know they exist</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-5 h-5 mt-1 flex-shrink-0 rounded-full" style={{background: 'rgba(100, 116, 139, 0.3)'}}></div>
+                    <div>
+                      <p className="font-semibold mb-1" style={{color: '#cbd5e1'}}>Provident Fund</p>
+                      <p className="text-sm" style={{color: '#94a3b8'}}>Millions in unclaimed EPF</p>
+                    </div>
+                  </li>
+                </ul>
+                <div className="mt-6 p-4 rounded-lg" style={{background: 'rgba(100, 116, 139, 0.1)'}}>
+                  <p className="text-sm font-semibold" style={{color: '#94a3b8'}}>
+                    🚫 No one is looking out for your assets except you
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Shocking Statistics */}
+            <div className="mt-12 grid md:grid-cols-3 gap-6">
+              <div className="text-center p-6 rounded-xl" style={{background: 'rgba(168, 85, 247, 0.1)', border: '1px solid rgba(168, 85, 247, 0.3)'}}>
+                <div className="text-4xl font-bold mb-2" style={{color: '#a855f7'}}>₹35,000 Cr+</div>
+                <p className="text-sm" style={{color: '#cbd5e1'}}>Unclaimed deposits in Indian banks</p>
+              </div>
+              <div className="text-center p-6 rounded-xl" style={{background: 'rgba(168, 85, 247, 0.1)', border: '1px solid rgba(168, 85, 247, 0.3)'}}>
+                <div className="text-4xl font-bold mb-2" style={{color: '#a855f7'}}>₹25,000 Cr+</div>
+                <p className="text-sm" style={{color: '#cbd5e1'}}>Unclaimed insurance policies in India</p>
+              </div>
+              <div className="text-center p-6 rounded-xl" style={{background: 'rgba(168, 85, 247, 0.1)', border: '1px solid rgba(168, 85, 247, 0.3)'}}>
+                <div className="text-4xl font-bold mb-2" style={{color: '#a855f7'}}>10+ Years</div>
+                <p className="text-sm" style={{color: '#cbd5e1'}}>Average time before accounts go dormant</p>
+              </div>
+            </div>
+
+            {/* Call to Action */}
+            <div className="mt-12 text-center p-8 rounded-2xl" style={{background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%)', border: '2px solid rgba(168, 85, 247, 0.3)'}}>
+              <h4 className="text-2xl font-bold mb-4" style={{color: '#f8fafc'}}>
+                Don't Let Your Hard-Earned Money Disappear
+              </h4>
+              <p className="text-lg mb-6 max-w-3xl mx-auto" style={{color: '#cbd5e1'}}>
+                While banks chase you for every rupee you owe, your savings, investments, and policies sit forgotten. 
+                <span style={{color: '#a855f7', fontWeight: 600}}> Your family deserves to know what you've built for them.</span>
+              </p>
+              <Button onClick={handleLogin} size="lg" className="px-10 py-6 text-lg rounded-full" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: 'white', border: 'none'}}>
+                Protect Your Assets Today - It's Free
+              </Button>
+              <p className="text-sm mt-4" style={{color: '#64748b'}}>
+                No credit card required • Setup in 10 minutes • Bank-level security
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* How It Works Section */}
       <section id="how-it-works" className="py-20" style={{background: '#0a0e27'}}>
         <div className="container mx-auto px-6">
