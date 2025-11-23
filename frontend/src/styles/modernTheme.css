@@ -1,26 +1,31 @@
-/* Modern Dashboard Theme - Creative & Beautiful */
+/* Modern Dashboard Theme - Professional SaaS Design */
 .modern-theme {
-  --bg-primary: #f8fafc;
-  --bg-secondary: #f1f5f9;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
-  --accent-blue: #3b82f6;
-  --accent-purple: #8b5cf6;
-  --accent-pink: #ec4899;
-  --accent-green: #10b981;
-  --accent-orange: #f59e0b;
-  --positive: #10b981;
-  --negative: #ef4444;
+  --bg-primary: #fafbfc;
+  --bg-secondary: #f6f8fa;
+  --bg-card: #ffffff;
+  --bg-card-hover: #ffffff;
+  --border-light: #e1e4e8;
+  --border-medium: #d1d5da;
+  --text-primary: #1a1f36;
+  --text-secondary: #697386;
+  --text-tertiary: #8792a2;
+  --accent-blue: #0066ff;
+  --accent-purple: #7c3aed;
+  --accent-green: #00d4aa;
+  --accent-orange: #ff6b35;
+  --accent-red: #ff4757;
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.12);
 }
 
-/* Background with animated gradient mesh */
+/* Clean, professional background */
 .modern-theme {
   position: relative;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f0f9ff 0%, #faf5ff 25%, #fef3c7 50%, #fce7f3 75%, #f0f9ff 100%);
-  background-size: 400% 400%;
-  animation: gradientShift 15s ease infinite;
+  background: var(--bg-primary);
 }
 
 @keyframes gradientShift {
