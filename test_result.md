@@ -107,27 +107,33 @@ user_problem_statement: "AssetVault app - Phase 1 Implementation: Fix asset/liab
 backend:
   - task: "Asset vs Liability Calculation"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Updated dashboard summary endpoint to distinguish between assets and liabilities. Added liability_types set, separate tracking for total_assets_value and total_liabilities_value, and calculated net_worth. Assets show as positive, liabilities as negative."
+      - working: true
+        agent: "testing"
+        comment: "✅ PASSED - Comprehensive testing completed. Dashboard summary correctly distinguishes between assets and liabilities. Created test portfolio with 4 assets (property: $360K, crypto: $26K, stock: $17.5K, bank: $25.5K) and 2 liabilities (loan: $180K, credit card: $5K). Calculations are accurate: Total Assets: $429K, Total Liabilities: $185K, Net Worth: $244K. All required Phase 1 fields present: total_assets_value, total_liabilities_value, net_worth, asset_values_separate, liability_values_separate. Asset/liability segregation working perfectly."
   
   - task: "Extended Real Estate Fields"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Added current_price_per_area field to both Asset and AssetCreate models. Updated dashboard summary calculation to prefer current_price_per_area over price_per_area when calculating real estate values."
+      - working: true
+        agent: "testing"
+        comment: "✅ PASSED - Real estate extended fields working correctly. Successfully created property with current_price_per_area field ($250/sqft). Dashboard calculation correctly uses current_price_per_area over price_per_area (1500 sqft × $250 = $375K). Field updates work properly. Asset and AssetCreate models both support the new field."
 
 frontend:
   - task: "Grid View Summary Card"
