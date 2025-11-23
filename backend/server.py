@@ -1229,6 +1229,7 @@ async def get_dashboard_summary(user: User = Depends(require_auth), target_curre
     
     return {
         "total_assets": total_assets_count,
+        "total_portfolios": total_portfolios_count,
         "asset_types": asset_types,
         "asset_values": asset_values,
         "asset_values_separate": asset_values_separate,
@@ -1245,7 +1246,8 @@ async def get_dashboard_summary(user: User = Depends(require_auth), target_curre
         # Debug info (remove in production)
         "validation": {
             "individual_count": len(individual_values),
-            "calculated_sum": round(calculated_sum, 2)
+            "calculated_sum": round(calculated_sum, 2),
+            "includes_portfolios": total_portfolios_count > 0
         }
     }
 
