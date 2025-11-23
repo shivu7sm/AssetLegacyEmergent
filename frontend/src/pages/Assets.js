@@ -229,6 +229,7 @@ export default function Assets() {
 
   useEffect(() => {
     fetchAssets();
+    fetchPortfolios();
   }, []);
 
   useEffect(() => {
