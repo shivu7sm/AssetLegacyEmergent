@@ -86,7 +86,16 @@ export default function Assets() {
     try {
       const payload = {
         ...formData,
-        purchase_price: formData.purchase_price ? parseFloat(formData.purchase_price) : null
+        quantity: formData.quantity ? parseFloat(formData.quantity) : null,
+        unit_price: formData.unit_price ? parseFloat(formData.unit_price) : null,
+        total_value: formData.total_value ? parseFloat(formData.total_value) : null,
+        weight: formData.weight ? parseFloat(formData.weight) : null,
+        area: formData.area ? parseFloat(formData.area) : null,
+        price_per_area: formData.price_per_area ? parseFloat(formData.price_per_area) : null,
+        principal_amount: formData.principal_amount ? parseFloat(formData.principal_amount) : null,
+        interest_rate: formData.interest_rate ? parseFloat(formData.interest_rate) : null,
+        tenure_months: formData.tenure_months ? parseInt(formData.tenure_months) : null,
+        expected_return: formData.expected_return ? parseFloat(formData.expected_return) : null
       };
 
       if (editingAsset) {
@@ -95,9 +104,7 @@ export default function Assets() {
       } else {
         await axios.post(`${API}/assets`, payload, { withCredentials: true });
         toast.success('Asset added successfully');
-      }
-      
-      setDialogOpen(false);
+      } setDialogOpen(false);
       resetForm();
       fetchAssets();
     } catch (error) {
