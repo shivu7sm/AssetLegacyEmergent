@@ -149,20 +149,41 @@ backend:
         comment: "✅ PASSED - Real estate extended fields working correctly. Successfully created property with current_price_per_area field ($250/sqft). Dashboard calculation correctly uses current_price_per_area over price_per_area (1500 sqft × $250 = $375K). Field updates work properly. Asset and AssetCreate models both support the new field."
 
 frontend:
-  - task: "Grid View Summary Card"
+  - task: "Dashboard Layout Reorganization"
     implemented: true
-    working: true
-    file: "/app/frontend/src/pages/Assets.js"
+    working: "NA"
+    file: "/app/frontend/src/pages/Dashboard.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Added a prominent summary card above the grid view showing total portfolio value with red-purple gradient background. Displays total value, asset count, and liability count. Correctly handles assets as positive and liabilities as negative values."
-      - working: true
-        agent: "testing"
-        comment: "✅ PASSED - Grid View Summary Card working correctly. Confirmed red-purple gradient background with linear-gradient(135deg, #ef4444 0%, #a855f7 100%). Shows 'Total Portfolio Value' text, asset/liability counts, and properly displays when assets are present. Empty state shows correctly when no assets exist. Summary card appears above grid view as expected."
+        comment: "Moved NetWorthChart component below pie charts section. Added data table cards next to each pie chart (Assets vs Liabilities comparison table, Asset Distribution table, Liability Distribution table when present). Tables show category name, value in selected currency, and percentage. Improved layout structure with proper spacing."
+  
+  - task: "Net Worth Chart Backfill Feature"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/NetWorthChart.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added backfillSnapshots() function that calls /networth/backfill endpoint. Added 'Backfill from Assets' button in empty state and 'Backfill' button when chart has data. Provides user feedback on number of snapshots created."
+  
+  - task: "Enhanced AI Insights Page"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/Insights.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Complete rewrite of Insights page. Added persistence: fetches latest insight on load via /insights/latest. Shows 'Last updated' timestamp with clock icon. Refresh button to regenerate insights. Concise summary by default with 'View Detailed Analysis' button opening modal. Modal shows comprehensive analysis with all sections. Quick insights cards with collapsible sections (top 2 items shown, expandable). Better formatting with proper headings, icons, colors for different sections (recommendations, advantages, risks, actions)."
   
   - task: "Real Estate Extended Fields Form"
     implemented: true
