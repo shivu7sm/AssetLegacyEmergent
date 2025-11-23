@@ -4,7 +4,7 @@ import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
-import { Check, Crown, Zap, Loader2 } from 'lucide-react';
+import { Check, Crown, Zap, Loader2, CreditCard, Calendar, RefreshCw, AlertCircle, CheckCircle2, XCircle } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -63,6 +63,7 @@ const PLANS = [
 export default function Subscription() {
   const [currentPlan, setCurrentPlan] = useState('Free');
   const [loading, setLoading] = useState(false);
+  const [subscriptionInfo, setSubscriptionInfo] = useState(null);
 
   useEffect(() => {
     // Check if returning from Stripe success
@@ -107,6 +108,7 @@ export default function Subscription() {
     try {
       const response = await axios.get(`${API}/subscription/current`, { withCredentials: true });
       setCurrentPlan(response.data.plan || 'Free');
+      setSubscriptionInfo(response.data);
     } catch (error) {
       console.error('Failed to fetch subscription:', error);
     }
@@ -132,11 +134,9 @@ export default function Subscription() {
       );
       
       // Redirect to Stripe Checkout using the URL (new method)
-      // The old stripe.redirectToCheckout() is deprecated as of 2025-09-30
       if (response.data.url) {
         window.location.href = response.data.url;
       } else if (response.data.sessionId) {
-        // Fallback: construct URL manually if only sessionId is provided
         window.location.href = `https://checkout.stripe.com/c/pay/${response.data.sessionId}`;
       } else {
         toast.error('Failed to create checkout session');
@@ -168,6 +168,28 @@ export default function Subscription() {
     }
   };
 
+  const formatDate = (dateStr) => {
+    return new Date(dateStr).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+  const getStatusIcon = (status) => {
+    switch(status) {
+      case 'active':
+        return <CheckCircle2 className="w-5 h-5" style={{color: '#10b981'}} />;
+      case 'canceled':
+        return <XCircle className="w-5 h-5" style={{color: '#ef4444'}} />;
+      default:
+        return <AlertCircle className="w-5 h-5" style={{color: '#f59e0b'}} />;
+    }
+  };
+
+  const subDetails = subscriptionInfo?.subscription_details;
+  const hasActiveSubscription = currentPlan !== 'Free' && subDetails;
+
   return (
     <Layout>
       <div className="space-y-8">
@@ -178,13 +200,100 @@ export default function Subscription() {
           <p style={{color: '#94a3b8'}}>Choose the plan that fits your needs</p>
         </div>
 
-        {/* Current Plan Banner */}
+        {/* Current Plan Banner with Detailed Info */}
         <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#a855f7'}}>
           <CardContent className="py-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm" style={{color: '#94a3b8'}}>Current Plan</p>
-                <h3 className="text-2xl font-bold" style={{color: '#f8fafc'}}>{currentPlan}</h3>
+            <div className="flex items-start justify-between flex-wrap gap-6">
+              <div className="flex-1">
+                <div className="flex items-center gap-3 mb-4">
+                  <p className="text-sm" style={{color: '#94a3b8'}}>Current Plan</p>
+                  {hasActiveSubscription && getStatusIcon(subDetails.status)}
+                </div>
+                <h3 className="text-2xl font-bold mb-2" style={{color: '#f8fafc'}}>{currentPlan}</h3>
+                
+                {hasActiveSubscription && (
+                  <div className="space-y-3 mt-4">
+                    {/* Subscription Status */}
+                    <div className="flex items-center gap-2 text-sm">
+                      <span style={{color: '#94a3b8'}}>Status:</span>
+                      <span className="px-2 py-1 rounded text-xs font-semibold" style={{
+                        background: subDetails.status === 'active' ? '#10b98120' : '#ef444420',
+                        color: subDetails.status === 'active' ? '#10b981' : '#ef4444'
+                      }}>
+                        {subDetails.status === 'active' ? 'Active' : subDetails.cancel_at_period_end ? 'Canceling' : 'Inactive'}
+                      </span>
+                    </div>
+
+                    {/* Subscription Start Date */}
+                    <div className="flex items-center gap-2 text-sm">
+                      <Calendar className="w-4 h-4" style={{color: '#94a3b8'}} />
+                      <span style={{color: '#94a3b8'}}>Started:</span>
+                      <span style={{color: '#f8fafc'}}>{formatDate(subDetails.created)}</span>
+                    </div>
+
+                    {/* Current Billing Period */}
+                    <div className="flex items-center gap-2 text-sm">
+                      <Calendar className="w-4 h-4" style={{color: '#94a3b8'}} />
+                      <span style={{color: '#94a3b8'}}>Current Period:</span>
+                      <span style={{color: '#f8fafc'}}>
+                        {formatDate(subDetails.current_period_start)} - {formatDate(subDetails.current_period_end)}
+                      </span>
+                    </div>
+
+                    {/* Next Renewal Date */}
+                    {!subDetails.cancel_at_period_end && (
+                      <div className="flex items-center gap-2 text-sm">
+                        <RefreshCw className="w-4 h-4" style={{color: '#94a3b8'}} />
+                        <span style={{color: '#94a3b8'}}>Next Renewal:</span>
+                        <span style={{color: '#10b981', fontWeight: 600}}>
+                          {formatDate(subDetails.current_period_end)}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Cancelation Notice */}
+                    {subDetails.cancel_at_period_end && (
+                      <div className="flex items-center gap-2 p-3 rounded" style={{background: '#ef444410', borderLeft: '3px solid #ef4444'}}>
+                        <AlertCircle className="w-5 h-5" style={{color: '#ef4444'}} />
+                        <div>
+                          <p className="text-sm font-semibold" style={{color: '#ef4444'}}>Subscription Canceling</p>
+                          <p className="text-xs" style={{color: '#94a3b8'}}>Access until {formatDate(subDetails.current_period_end)}</p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Auto Renewal Status */}
+                    <div className="flex items-center gap-2 text-sm">
+                      <RefreshCw className="w-4 h-4" style={{color: '#94a3b8'}} />
+                      <span style={{color: '#94a3b8'}}>Auto-Renewal:</span>
+                      <span style={{color: subDetails.cancel_at_period_end ? '#ef4444' : '#10b981', fontWeight: 600}}>
+                        {subDetails.cancel_at_period_end ? 'Disabled' : 'Enabled'}
+                      </span>
+                    </div>
+
+                    {/* Payment Method */}
+                    {subDetails.payment_method && (
+                      <div className="flex items-center gap-2 text-sm">
+                        <CreditCard className="w-4 h-4" style={{color: '#94a3b8'}} />
+                        <span style={{color: '#94a3b8'}}>Payment Method:</span>
+                        <span style={{color: '#f8fafc'}}>
+                          {subDetails.payment_method.brand.toUpperCase()} •••• {subDetails.payment_method.last4}
+                        </span>
+                        <span className="text-xs" style={{color: '#64748b'}}>
+                          (Expires {subDetails.payment_method.exp_month}/{subDetails.payment_method.exp_year})
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Billing Amount */}
+                    <div className="flex items-center gap-2 text-sm">
+                      <span style={{color: '#94a3b8'}}>Amount:</span>
+                      <span className="text-lg font-bold" style={{color: '#a855f7'}}>
+                        {subDetails.currency} ${subDetails.amount}/{subDetails.interval}
+                      </span>
+                    </div>
+                  </div>
+                )}
               </div>
               <Crown className="w-12 h-12" style={{color: '#a855f7'}} />
             </div>
@@ -249,10 +358,14 @@ export default function Subscription() {
                             : plan.color
                       }}
                     >
-                      {isCurrentPlan ? 'Current Plan' : plan.name === 'Free' ? 'Downgrade to Free' : `Upgrade to ${plan.name}`}
+                      {loading ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        isCurrentPlan ? 'Current Plan' : plan.name === 'Free' ? 'Downgrade to Free' : `Upgrade to ${plan.name}`
+                      )}
                     </Button>
                     
-                    {isCurrentPlan && currentPlan !== 'Free' && (
+                    {isCurrentPlan && currentPlan !== 'Free' && !subDetails?.cancel_at_period_end && (
                       <Button
                         onClick={handleCancelSubscription}
                         disabled={loading}
@@ -270,6 +383,81 @@ export default function Subscription() {
           })}
         </div>
 
+        {/* Usage Stats */}
+        {subscriptionInfo && (
+          <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+            <CardHeader>
+              <CardTitle style={{color: '#f8fafc'}}>Current Usage</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Assets Usage */}
+                <div>
+                  <div className="flex justify-between text-sm mb-2">
+                    <span style={{color: '#94a3b8'}}>Assets</span>
+                    <span style={{color: '#f8fafc', fontWeight: 600}}>
+                      {subscriptionInfo.usage.assets} / {subscriptionInfo.features.max_assets > 0 ? subscriptionInfo.features.max_assets : '∞'}
+                    </span>
+                  </div>
+                  <div className="w-full h-2 rounded-full" style={{background: '#16001e'}}>
+                    <div 
+                      className="h-full rounded-full transition-all"
+                      style={{
+                        width: subscriptionInfo.features.max_assets > 0 
+                          ? `${Math.min((subscriptionInfo.usage.assets / subscriptionInfo.features.max_assets) * 100, 100)}%`
+                          : '50%',
+                        background: 'linear-gradient(90deg, #10b981 0%, #3b82f6 100%)'
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Documents Usage */}
+                <div>
+                  <div className="flex justify-between text-sm mb-2">
+                    <span style={{color: '#94a3b8'}}>Documents</span>
+                    <span style={{color: '#f8fafc', fontWeight: 600}}>
+                      {subscriptionInfo.usage.documents} / {subscriptionInfo.features.max_documents > 0 ? subscriptionInfo.features.max_documents : '∞'}
+                    </span>
+                  </div>
+                  <div className="w-full h-2 rounded-full" style={{background: '#16001e'}}>
+                    <div 
+                      className="h-full rounded-full transition-all"
+                      style={{
+                        width: subscriptionInfo.features.max_documents > 0 
+                          ? `${Math.min((subscriptionInfo.usage.documents / subscriptionInfo.features.max_documents) * 100, 100)}%`
+                          : '50%',
+                        background: 'linear-gradient(90deg, #10b981 0%, #3b82f6 100%)'
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Storage Usage */}
+                <div>
+                  <div className="flex justify-between text-sm mb-2">
+                    <span style={{color: '#94a3b8'}}>Storage</span>
+                    <span style={{color: '#f8fafc', fontWeight: 600}}>
+                      {subscriptionInfo.usage.storage_mb.toFixed(1)} MB / {subscriptionInfo.features.storage_mb} MB
+                    </span>
+                  </div>
+                  <div className="w-full h-2 rounded-full" style={{background: '#16001e'}}>
+                    <div 
+                      className="h-full rounded-full transition-all"
+                      style={{
+                        width: `${Math.min((subscriptionInfo.usage.storage_mb / subscriptionInfo.features.storage_mb) * 100, 100)}%`,
+                        background: subscriptionInfo.usage.storage_mb / subscriptionInfo.features.storage_mb > 0.8 
+                          ? 'linear-gradient(90deg, #ef4444 0%, #dc2626 100%)'
+                          : 'linear-gradient(90deg, #10b981 0%, #3b82f6 100%)'
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* FAQ Section */}
         <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
           <CardHeader>
@@ -283,11 +471,19 @@ export default function Subscription() {
               </div>
               <div>
                 <h4 className="font-semibold mb-2" style={{color: '#f8fafc'}}>What payment methods do you accept?</h4>
-                <p style={{color: '#94a3b8'}}>We accept all major credit cards, debit cards, and PayPal.</p>
+                <p style={{color: '#94a3b8'}}>We accept all major credit cards, debit cards, and PayPal through Stripe.</p>
               </div>
               <div>
                 <h4 className="font-semibold mb-2" style={{color: '#f8fafc'}}>Is there a free trial?</h4>
                 <p style={{color: '#94a3b8'}}>The Free plan is available forever with no credit card required. You can upgrade anytime.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold mb-2" style={{color: '#f8fafc'}}>What happens when I cancel?</h4>
+                <p style={{color: '#94a3b8'}}>You'll retain access to premium features until the end of your current billing period. After that, you'll be automatically moved to the Free plan.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold mb-2" style={{color: '#f8fafc'}}>How do I update my payment method?</h4>
+                <p style={{color: '#94a3b8'}}>Payment methods are managed through Stripe's secure portal. Contact support for assistance updating your payment details.</p>
               </div>
             </div>
           </CardContent>
