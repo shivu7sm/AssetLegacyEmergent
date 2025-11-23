@@ -73,6 +73,10 @@ export default function Assets() {
     fetchAssets();
   }, []);
 
+  useEffect(() => {
+    filterAndSortAssets();
+  }, [assets, filterType, sortBy]);
+
   const fetchAssets = async () => {
     try {
       const response = await axios.get(`${API}/assets`, { withCredentials: true });
