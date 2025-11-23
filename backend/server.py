@@ -1252,7 +1252,21 @@ async def create_checkout_session(data: Dict[str, Any], user: User = Depends(req
             )
         
         # Create checkout session
-        frontend_url = os.environ.get('CORS_ORIGINS', '').split(',')[0] or 'http://localhost:3000'
+        # Get frontend URL - use FRONTEND_URL env var or derive from request
+        frontend_url = os.environ.get('FRONTEND_URL')
+        if not frontend_url:
+            # Fallback: try to get from CORS_ORIGINS if it's not '*'
+            cors_origins = os.environ.get('CORS_ORIGINS', '')
+            if cors_origins and cors_origins != '*':
+                frontend_url = cors_origins.split(',')[0]
+            else:
+                # Last resort: use the backend URL domain (they're usually the same in preview)
+                frontend_url = 'https://asset-manager-137.preview.emergentagent.com'
+        
+        # Ensure URL has scheme
+        if not frontend_url.startswith('http'):
+            frontend_url = f"https://{frontend_url}"
+        
         session = stripe.checkout.Session.create(
             customer=stripe_customer_id,
             payment_method_types=['card'],
