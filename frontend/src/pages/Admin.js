@@ -357,7 +357,7 @@ export default function Admin() {
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="user">User</SelectItem>
+                              <SelectItem value="customer">Customer</SelectItem>
                               <SelectItem value="admin">Admin</SelectItem>
                               <SelectItem value="readonly">Readonly</SelectItem>
                             </SelectContent>
