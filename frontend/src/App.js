@@ -12,6 +12,7 @@ import Insights from "./pages/Insights";
 import Subscription from "./pages/Subscription";
 import ScheduleMessages from "./pages/ScheduleMessages";
 import { Toaster } from "@/components/ui/sonner";
+import { AppProvider } from "./context/AppContext";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
