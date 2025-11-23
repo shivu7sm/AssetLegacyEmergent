@@ -551,13 +551,14 @@ export default function Assets() {
                       </div>
                     )}
 
-                    <div className="flex gap-2 pt-4 border-t border-slate-700">
+                    <div className="flex gap-2 pt-4" style={{borderTop: '1px solid #2d1f3d'}}>
                       <Button 
                         data-testid={`edit-asset-${asset.id}`}
                         onClick={() => handleEdit(asset)}
                         variant="outline"
                         size="sm"
-                        className="flex-1 border-slate-600 text-slate-300 hover:bg-slate-700"
+                        className="flex-1"
+                        style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
                       >
                         <Edit className="w-4 h-4 mr-2" />
                         Edit
@@ -567,7 +568,8 @@ export default function Assets() {
                         onClick={() => handleDelete(asset.id)}
                         variant="outline"
                         size="sm"
-                        className="flex-1 border-red-600/50 text-red-400 hover:bg-red-900/20"
+                        className="flex-1"
+                        style={{borderColor: '#ef4444', color: '#ef4444'}}
                       >
                         <Trash2 className="w-4 h-4 mr-2" />
                         Delete
