@@ -154,15 +154,17 @@ export default function Assets() {
         ...formData,
         quantity: formData.quantity ? parseFloat(formData.quantity) : null,
         unit_price: formData.unit_price ? parseFloat(formData.unit_price) : null,
+        current_unit_price: formData.current_unit_price ? parseFloat(formData.current_unit_price) : null,
         total_value: formData.total_value ? parseFloat(formData.total_value) : null,
+        current_total_value: formData.current_total_value ? parseFloat(formData.current_total_value) : null,
         weight: formData.weight ? parseFloat(formData.weight) : null,
         area: formData.area ? parseFloat(formData.area) : null,
         price_per_area: formData.price_per_area ? parseFloat(formData.price_per_area) : null,
+        current_price_per_area: formData.current_price_per_area ? parseFloat(formData.current_price_per_area) : null,
         principal_amount: formData.principal_amount ? parseFloat(formData.principal_amount) : null,
         interest_rate: formData.interest_rate ? parseFloat(formData.interest_rate) : null,
         tenure_months: formData.tenure_months ? parseInt(formData.tenure_months) : null,
-        expected_return: formData.expected_return ? parseFloat(formData.expected_return) : null,
-        current_price: formData.current_price ? parseFloat(formData.current_price) : null
+        expected_return: formData.expected_return ? parseFloat(formData.expected_return) : null
       };
 
       if (editingAsset) {
