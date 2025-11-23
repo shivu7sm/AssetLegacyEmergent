@@ -1018,6 +1018,26 @@ Provide:
             "action_items": []
         }
 
+# Currency Conversion Routes
+@api_router.get("/prices/currency/{from_currency}/{to_currency}")
+async def get_currency_rate(from_currency: str, to_currency: str):
+    if from_currency == to_currency:
+        return {"rate": 1.0}
+    
+    try:
+        response = requests.get(
+            f"https://api.exchangerate-api.com/v4/latest/{from_currency.upper()}",
+            timeout=5
+        )
+        if response.status_code == 200:
+            data = response.json()
+            rate = data["rates"].get(to_currency.upper(), 1.0)
+            return {"rate": rate}
+    except:
+        pass
+    
+    return {"rate": 1.0}
+
 # Exchange Connection Routes
 @api_router.get("/exchange-connections")
 async def get_exchange_connections(user: User = Depends(require_auth)):
