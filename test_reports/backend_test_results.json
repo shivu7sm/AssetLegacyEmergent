@@ -1,0 +1,110 @@
+{
+  "timestamp": "2025-11-23T04:04:12.955944",
+  "total_tests": 17,
+  "passed_tests": 4,
+  "success_rate": 23.52941176470588,
+  "test_details": [
+    {
+      "test": "Get current user (/auth/me)",
+      "success": false,
+      "details": "Status: 500, Expected: 200, Response: Internal Server Error",
+      "timestamp": "2025-11-23T04:04:11.612894"
+    },
+    {
+      "test": "Get user without auth (should fail)",
+      "success": true,
+      "details": "Status: 401",
+      "timestamp": "2025-11-23T04:04:11.650874"
+    },
+    {
+      "test": "Get assets list",
+      "success": false,
+      "details": "Status: 500, Expected: 200, Response: Internal Server Error",
+      "timestamp": "2025-11-23T04:04:11.690724"
+    },
+    {
+      "test": "Create new asset",
+      "success": false,
+      "details": "Status: 500, Expected: 200, Response: Internal Server Error",
+      "timestamp": "2025-11-23T04:04:11.732530"
+    },
+    {
+      "test": "Get assets after creation",
+      "success": false,
+      "details": "Status: 500, Expected: 200, Response: Internal Server Error",
+      "timestamp": "2025-11-23T04:04:11.772943"
+    },
+    {
+      "test": "Get nominee (initially empty)",
+      "success": false,
+      "details": "Status: 500, Expected: 200, Response: Internal Server Error",
+      "timestamp": "2025-11-23T04:04:11.810954"
+    },
+    {
+      "test": "Create nominee",
+      "success": false,
+      "details": "Status: 500, Expected: 200, Response: Internal Server Error",
+      "timestamp": "2025-11-23T04:04:11.856297"
+    },
+    {
+      "test": "Update nominee",
+      "success": false,
+      "details": "Status: 500, Expected: 200, Response: Internal Server Error",
+      "timestamp": "2025-11-23T04:04:11.898078"
+    },
+    {
+      "test": "Get DMS config (initially empty)",
+      "success": false,
+      "details": "Status: 500, Expected: 200, Response: Internal Server Error",
+      "timestamp": "2025-11-23T04:04:11.944528"
+    },
+    {
+      "test": "Create DMS configuration",
+      "success": false,
+      "details": "Status: 500, Expected: 200, Response: Internal Server Error",
+      "timestamp": "2025-11-23T04:04:11.983104"
+    },
+    {
+      "test": "Reset DMS timer",
+      "success": false,
+      "details": "Status: 500, Expected: 200, Response: Internal Server Error",
+      "timestamp": "2025-11-23T04:04:12.022441"
+    },
+    {
+      "test": "Update DMS configuration",
+      "success": false,
+      "details": "Status: 500, Expected: 200, Response: Internal Server Error",
+      "timestamp": "2025-11-23T04:04:12.061117"
+    },
+    {
+      "test": "Create asset for dashboard test",
+      "success": false,
+      "details": "Status: 500, Expected: 200, Response: Internal Server Error",
+      "timestamp": "2025-11-23T04:04:12.100283"
+    },
+    {
+      "test": "Get dashboard summary",
+      "success": false,
+      "details": "Status: 500, Expected: 200, Response: Internal Server Error",
+      "timestamp": "2025-11-23T04:04:12.137973"
+    },
+    {
+      "test": "Get Bitcoin price",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T04:04:12.284820"
+    },
+    {
+      "test": "Get gold price",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T04:04:12.327223"
+    },
+    {
+      "test": "Get USD to EUR conversion",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T04:04:12.590101"
+    }
+  ]
+}
