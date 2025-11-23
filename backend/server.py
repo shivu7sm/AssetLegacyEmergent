@@ -1288,6 +1288,9 @@ async def create_checkout_session(data: dict, user: User = Depends(require_auth)
     except stripe.error.StripeError as e:
         logger.error(f"Stripe error: {str(e)}")
         raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Unexpected error in checkout session: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to create checkout session: {str(e)}")
 
 @api_router.post("/subscription/webhook")
 async def stripe_webhook(request: Request):
