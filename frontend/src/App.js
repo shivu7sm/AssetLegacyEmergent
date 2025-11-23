@@ -1,52 +1,115 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import LandingPage from "./pages/LandingPage";
+import Dashboard from "./pages/Dashboard";
+import Assets from "./pages/Assets";
+import Settings from "./pages/Settings";
+import { Toaster } from "@/components/ui/sonner";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
+function AuthHandler() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    helloWorldApi();
-  }, []);
+    const handleAuth = async () => {
+      // Check if session_id is in URL fragment
+      const hash = location.hash;
+      const params = new URLSearchParams(hash.substring(1));
+      const sessionId = params.get('session_id');
 
-  return (
-    <div>
-      <header className="App-header">
-        <a
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
-    </div>
-  );
-};
+      if (sessionId) {
+        try {
+          // Exchange session_id for session_token
+          await axios.post(`${API}/auth/session`, {}, {
+            headers: { 'X-Session-ID': sessionId },
+            withCredentials: true
+          });
+          
+          // Clear the hash
+          window.location.hash = '';
+          navigate('/dashboard', { replace: true });
+        } catch (error) {
+          console.error('Auth failed:', error);
+          setLoading(false);
+        }
+        return;
+      }
+
+      // Check if already authenticated
+      try {
+        const response = await axios.get(`${API}/auth/me`, { withCredentials: true });
+        setUser(response.data);
+        setLoading(false);
+      } catch (error) {
+        setUser(null);
+        setLoading(false);
+      }
+    };
+
+    handleAuth();
+  }, [location, navigate]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-950">
+        <div className="text-white text-xl">Loading...</div>
+      </div>
+    );
+  }
+
+  return { user, setUser };
+}
+
+function ProtectedRoute({ children }) {
+  const { user } = AuthHandler();
+  
+  if (!user) {
+    return <Navigate to="/" replace />;
+  }
+  
+  return children;
+}
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
+          <Route path="/" element={<LandingPage />} />
+          <Route 
+            path="/dashboard" 
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/assets" 
+            element={
+              <ProtectedRoute>
+                <Assets />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/settings" 
+            element={
+              <ProtectedRoute>
+                <Settings />
+              </ProtectedRoute>
+            } 
+          />
         </Routes>
       </BrowserRouter>
+      <Toaster position="top-right" />
     </div>
   );
 }
