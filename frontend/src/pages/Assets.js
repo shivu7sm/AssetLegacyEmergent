@@ -1022,14 +1022,22 @@ export default function Assets() {
                     </tbody>
                     <tfoot style={{background: '#16001e', borderTop: '2px solid #2d1f3d'}}>
                       <tr>
-                        <td colSpan="3" className="p-4" style={{color: '#f8fafc', fontWeight: 600}}>Total</td>
+                        <td colSpan="3" className="p-4" style={{color: '#f8fafc', fontWeight: 600}}>Net Total</td>
                         <td className="p-4 text-right" style={{color: '#f8fafc', fontWeight: 600}}>
-                          {displayCurrency} {(filteredAssets.length > 0 ? filteredAssets : assets).reduce((sum, asset) => sum + calculateAssetValue(asset), 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                          {displayCurrency} {(filteredAssets.length > 0 ? filteredAssets : assets).reduce((sum, asset) => {
+                            const typeInfo = getAssetTypeInfo(asset.type);
+                            const value = calculateAssetValue(asset);
+                            return sum + (typeInfo.isLiability ? -value : value);
+                          }, 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                         </td>
                         <td className="p-4 text-right" style={{color: '#ec4899', fontWeight: 700, fontSize: '1.1rem'}}>
-                          {displayCurrency} {(filteredAssets.length > 0 ? filteredAssets : assets).reduce((sum, asset) => sum + (asset.current_price || calculateAssetValue(asset)), 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                          {displayCurrency} {(filteredAssets.length > 0 ? filteredAssets : assets).reduce((sum, asset) => {
+                            const typeInfo = getAssetTypeInfo(asset.type);
+                            const value = calculateAssetValue(asset, true) || calculateAssetValue(asset);
+                            return sum + (typeInfo.isLiability ? -value : value);
+                          }, 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                         </td>
-                        <td></td>
+                        <td colSpan="2"></td>
                       </tr>
                     </tfoot>
                   </table>
