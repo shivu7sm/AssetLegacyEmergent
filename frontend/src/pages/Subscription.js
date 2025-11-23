@@ -240,8 +240,16 @@ export default function Subscription() {
                       </span>
                     </div>
 
-                    {/* Next Renewal Date */}
-                    {!subDetails.cancel_at_period_end && (
+                    {/* Next Renewal Date or Cancel Date */}
+                    {subDetails.cancel_at ? (
+                      <div className="flex items-center gap-2 text-sm">
+                        <AlertCircle className="w-4 h-4" style={{color: '#f59e0b'}} />
+                        <span style={{color: '#94a3b8'}}>Scheduled to Cancel:</span>
+                        <span style={{color: '#f59e0b', fontWeight: 600}}>
+                          {formatDate(subDetails.cancel_at)}
+                        </span>
+                      </div>
+                    ) : (
                       <div className="flex items-center gap-2 text-sm">
                         <RefreshCw className="w-4 h-4" style={{color: '#94a3b8'}} />
                         <span style={{color: '#94a3b8'}}>Next Renewal:</span>
@@ -252,12 +260,14 @@ export default function Subscription() {
                     )}
 
                     {/* Cancelation Notice */}
-                    {subDetails.cancel_at_period_end && (
+                    {(subDetails.cancel_at_period_end || subDetails.cancel_at) && (
                       <div className="flex items-center gap-2 p-3 rounded" style={{background: '#ef444410', borderLeft: '3px solid #ef4444'}}>
                         <AlertCircle className="w-5 h-5" style={{color: '#ef4444'}} />
-                        <div>
+                        <div className="flex-1">
                           <p className="text-sm font-semibold" style={{color: '#ef4444'}}>Subscription Canceling</p>
-                          <p className="text-xs" style={{color: '#94a3b8'}}>Access until {formatDate(subDetails.current_period_end)}</p>
+                          <p className="text-xs" style={{color: '#94a3b8'}}>
+                            Access until {formatDate(subDetails.cancel_at || subDetails.current_period_end)}
+                          </p>
                         </div>
                       </div>
                     )}
