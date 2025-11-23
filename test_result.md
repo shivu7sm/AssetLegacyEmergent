@@ -300,14 +300,14 @@ frontend:
 
 metadata:
   created_by: "main_agent"
-  version: "2.0"
-  test_sequence: 2
+  version: "3.0"
+  test_sequence: 3
   run_ui: false
 
 test_plan:
   current_focus:
-    - "Admin Panel Backend"
-    - "Admin Panel Frontend"
+    - "Landing Page Background Color Fix"
+    - "Portfolio Management UI"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
