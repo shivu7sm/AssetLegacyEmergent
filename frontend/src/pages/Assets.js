@@ -675,22 +675,57 @@ export default function Assets() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
           <div>
             <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
-              Assets
+              {pageMode === 'assets' ? 'Assets' : 'Portfolios'}
             </h1>
-            <p style={{color: '#94a3b8'}}>Track and manage all your financial assets</p>
+            <p style={{color: '#94a3b8'}}>
+              {pageMode === 'assets' 
+                ? 'Track and manage all your financial assets' 
+                : 'Manage your exchange and broker accounts'}
+            </p>
           </div>
           
           <div className="flex items-center gap-3">
-            <Button
-              onClick={() => setViewMode(viewMode === 'grid' ? 'table' : 'grid')}
-              variant="outline"
-              style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
-            >
-              {viewMode === 'grid' ? <List className="w-4 h-4 mr-2" /> : <Grid className="w-4 h-4 mr-2" />}
-              {viewMode === 'grid' ? 'Table View' : 'Grid View'}
-            </Button>
+            {/* Page Mode Toggle */}
+            <div className="flex rounded-lg overflow-hidden border" style={{borderColor: '#2d1f3d'}}>
+              <Button
+                onClick={() => setPageMode('assets')}
+                variant={pageMode === 'assets' ? 'default' : 'ghost'}
+                size="sm"
+                style={{
+                  background: pageMode === 'assets' ? 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)' : 'transparent',
+                  color: pageMode === 'assets' ? '#fff' : '#94a3b8',
+                  borderRadius: 0
+                }}
+              >
+                Individual Assets
+              </Button>
+              <Button
+                onClick={() => setPageMode('portfolios')}
+                variant={pageMode === 'portfolios' ? 'default' : 'ghost'}
+                size="sm"
+                style={{
+                  background: pageMode === 'portfolios' ? 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)' : 'transparent',
+                  color: pageMode === 'portfolios' ? '#fff' : '#94a3b8',
+                  borderRadius: 0
+                }}
+              >
+                📊 Portfolios
+              </Button>
+            </div>
 
-            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+            {pageMode === 'assets' && (
+              <Button
+                onClick={() => setViewMode(viewMode === 'grid' ? 'table' : 'grid')}
+                variant="outline"
+                style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+              >
+                {viewMode === 'grid' ? <List className="w-4 h-4 mr-2" /> : <Grid className="w-4 h-4 mr-2" />}
+                {viewMode === 'grid' ? 'Table View' : 'Grid View'}
+              </Button>
+            )}
+
+            {pageMode === 'assets' ? (
+              <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
               <DialogTrigger asChild>
                 <Button 
                   data-testid="add-asset-dialog-btn"
