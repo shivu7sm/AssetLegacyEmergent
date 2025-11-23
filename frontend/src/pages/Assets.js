@@ -859,14 +859,14 @@ export default function Assets() {
                   <div>
                     <div className="text-sm font-medium text-white/80 mb-1">Total Portfolio Value</div>
                     <div className="text-4xl font-bold text-white">
-                      {displayCurrency} {(() => {
+                      {(() => {
                         const displayAssets = filteredAssets.length > 0 ? filteredAssets : assets;
                         const totalValue = displayAssets.reduce((sum, asset) => {
                           const assetType = getAssetTypeInfo(asset.type);
                           const value = calculateAssetValue(asset, true) || calculateAssetValue(asset, false);
                           return sum + (assetType.isLiability ? -value : value);
                         }, 0);
-                        return totalValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                        return formatCurrency(totalValue, selectedCurrency, currencyFormat);
                       })()}
                     </div>
                     <div className="text-sm text-white/70 mt-1">
