@@ -1006,16 +1006,19 @@ async def get_dashboard_summary(user: User = Depends(require_auth), target_curre
     """
     Get dashboard summary with all values converted to target currency.
     This ensures consistent calculation across the app.
+    Includes both individual assets and portfolio holdings.
     """
     assets = await db.assets.find({"user_id": user.id}).to_list(1000)
+    portfolios = await db.portfolio_assets.find({"user_id": user.id}).to_list(1000)
     
     # Define liability types
     liability_types = {'loan', 'credit_card'}
     
-    # Define liquid asset types
-    liquid_asset_types = {'bank', 'crypto', 'stock'}
+    # Define liquid asset types (portfolios are also liquid since they contain stocks/crypto)
+    liquid_asset_types = {'bank', 'crypto', 'stock', 'portfolio'}
     
     total_assets_count = len(assets)
+    total_portfolios_count = len(portfolios)
     asset_types = {}
     asset_values = {}
     total_assets_value = 0.0
@@ -1028,6 +1031,7 @@ async def get_dashboard_summary(user: User = Depends(require_auth), target_curre
     # Validation tracking
     individual_values = []
     
+    # Process individual assets
     for asset in assets:
         asset_type = asset["type"]
         asset_types[asset_type] = asset_types.get(asset_type, 0) + 1
