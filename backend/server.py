@@ -248,18 +248,58 @@ class ExchangeConnection(BaseModel):
     model_config = ConfigDict(extra="ignore")
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     user_id: str
-    exchange_name: str  # binance, gemini, etoro
+    exchange_name: str  # binance, gemini, etoro, zerodha, robinhood
+    provider_type: str  # crypto_exchange, stock_broker, bank
     api_key: str
     api_secret: Optional[str] = None
     is_active: bool = True
     last_synced: Optional[datetime] = None
+    sync_status: str = "pending"  # pending, success, failed
+    error_message: Optional[str] = None
     holdings: Dict[str, Any] = {}
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class ExchangeConnectionCreate(BaseModel):
     exchange_name: str
+    provider_type: str
     api_key: str
     api_secret: Optional[str] = None
+
+class PortfolioHolding(BaseModel):
+    """Individual holding within a portfolio asset"""
+    symbol: str
+    name: str
+    quantity: float
+    purchase_price: float
+    purchase_date: str
+    purchase_currency: str
+    current_price: Optional[float] = None
+    current_value: Optional[float] = None
+    asset_type: str  # stock, crypto, bond, etc
+
+class PortfolioAsset(BaseModel):
+    """Portfolio/Exchange account with multiple holdings"""
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    type: str = "portfolio"  # New asset type
+    name: str
+    provider_name: str  # Binance, Zerodha, Robinhood, etc
+    provider_type: str  # crypto_exchange, stock_broker
+    connection_id: Optional[str] = None  # Link to ExchangeConnection
+    total_value: float = 0.0
+    purchase_currency: str = "USD"
+    holdings: List[PortfolioHolding] = []
+    last_synced: Optional[datetime] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class PortfolioAssetCreate(BaseModel):
+    name: str
+    provider_name: str
+    provider_type: str
+    connection_id: Optional[str] = None
+    purchase_currency: Optional[str] = "USD"
 
 class NetWorthSnapshot(BaseModel):
     model_config = ConfigDict(extra="ignore")
