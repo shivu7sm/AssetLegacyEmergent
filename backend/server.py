@@ -318,6 +318,29 @@ class NetWorthSnapshotCreate(BaseModel):
     snapshot_date: str
     currency: Optional[str] = "USD"
 
+class AIInsight(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    portfolio_summary: str
+    allocation_recommendations: List[str] = []
+    risk_analysis: List[str] = []
+    action_items: List[str] = []
+    advantages: List[str] = []
+    risks: List[str] = []
+    asset_distribution_analysis: str = ""
+    generated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    
+class AIInsightResponse(BaseModel):
+    portfolio_summary: str
+    allocation_recommendations: List[str] = []
+    risk_analysis: List[str] = []
+    action_items: List[str] = []
+    advantages: List[str] = []
+    risks: List[str] = []
+    asset_distribution_analysis: str = ""
+    generated_at: Optional[str] = None
+
 # Auth Helper
 async def get_current_user(request: Request) -> Optional[User]:
     session_token = request.cookies.get("session_token")
