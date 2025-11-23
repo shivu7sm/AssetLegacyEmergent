@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { LayoutDashboard, Wallet, Settings, LogOut, ShieldCheck } from 'lucide-react';
+import { LayoutDashboard, Wallet, Settings, LogOut, ShieldCheck, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 
@@ -25,16 +25,17 @@ export default function Layout({ children }) {
   const navItems = [
     { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, testId: 'nav-dashboard' },
     { path: '/assets', label: 'Assets', icon: Wallet, testId: 'nav-assets' },
+    { path: '/will', label: 'Digital Will', icon: FileText, testId: 'nav-will' },
     { path: '/settings', label: 'Settings', icon: Settings, testId: 'nav-settings' }
   ];
 
   return (
-    <div className="min-h-screen" style={{background: '#0a0e27'}}>
+    <div className="min-h-screen" style={{background: 'linear-gradient(135deg, #1a0b2e 0%, #16001e 50%, #2d0e3e 100%)'}}>
       {/* Header */}
-      <header className="backdrop-blur-xl sticky top-0 z-50" style={{borderBottom: '1px solid #1e293b', background: 'rgba(10, 14, 39, 0.8)'}}>
+      <header className="backdrop-blur-xl sticky top-0 z-50" style={{borderBottom: '1px solid #2d1f3d', background: 'rgba(15, 10, 30, 0.9)'}}>
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <ShieldCheck className="w-8 h-8" style={{color: '#60a5fa'}} />
+            <ShieldCheck className="w-8 h-8" style={{color: '#ec4899'}} />
             <h1 className="text-2xl font-bold" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>AssetVault</h1>
           </div>
           
@@ -49,7 +50,7 @@ export default function Layout({ children }) {
                   onClick={() => navigate(item.path)}
                   className="flex items-center gap-2 px-4 py-2 rounded-lg transition-all"
                   style={{
-                    background: isActive ? 'linear-gradient(135deg, #2563eb 0%, #7c3aed 100%)' : 'transparent',
+                    background: isActive ? 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)' : 'transparent',
                     color: isActive ? '#f8fafc' : '#94a3b8'
                   }}
                 >
@@ -64,7 +65,7 @@ export default function Layout({ children }) {
             data-testid="logout-btn"
             onClick={handleLogout} 
             variant="outline" 
-            style={{borderColor: '#1e293b', color: '#94a3b8'}}
+            style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
           >
             <LogOut className="w-4 h-4 mr-2" />
             Logout
@@ -73,7 +74,7 @@ export default function Layout({ children }) {
       </header>
 
       {/* Mobile Navigation */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50" style={{background: '#131835', borderTop: '1px solid #1e293b'}}>
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50" style={{background: '#1a1229', borderTop: '1px solid #2d1f3d'}}>
         <div className="flex justify-around items-center py-3">
           {navItems.map((item) => {
             const Icon = item.icon;
@@ -84,7 +85,7 @@ export default function Layout({ children }) {
                 data-testid={`${item.testId}-mobile`}
                 onClick={() => navigate(item.path)}
                 className="flex flex-col items-center gap-1 px-4 py-2 rounded-lg"
-                style={{color: isActive ? '#60a5fa' : '#94a3b8'}}
+                style={{color: isActive ? '#ec4899' : '#94a3b8'}}
               >
                 <Icon className="w-6 h-6" />
                 <span className="text-xs">{item.label}</span>
