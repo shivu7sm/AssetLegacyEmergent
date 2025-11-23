@@ -82,7 +82,11 @@ async def check_dms_and_send_reminders():
                 # Send first reminder to user
                 logger.info(f"Sending reminder to {user['email']} - {days_inactive} days inactive")
                 
-                # TODO: Send email reminder to user
+                # MOCK EMAIL: Send email reminder to user
+                logger.info(f"📧 [MOCK EMAIL] Sending DMS Reminder to {user['email']}")
+                logger.info(f"   Subject: Activity Reminder - Dead Man Switch")
+                logger.info(f"   Message: You've been inactive for {days_inactive} days")
+                logger.info(f"   Warning: DMS will trigger in {inactivity_days - days_inactive} days")
                 
                 # Update reminders sent count
                 await db.dead_man_switches.update_one(
