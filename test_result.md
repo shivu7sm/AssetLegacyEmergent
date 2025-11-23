@@ -109,20 +109,29 @@ user_problem_statement: "AssetVault app - New Phase Implementation:
 4. Focus AI analysis on asset distribution, investment diversification, risks vs advantages"
 
 backend:
-  - task: "Asset vs Liability Calculation"
+  - task: "Snapshot Auto-creation from Purchase Dates"
     implemented: true
-    working: true
+    working: "NA"
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Updated dashboard summary endpoint to distinguish between assets and liabilities. Added liability_types set, separate tracking for total_assets_value and total_liabilities_value, and calculated net_worth. Assets show as positive, liabilities as negative."
-      - working: true
-        agent: "testing"
-        comment: "✅ PASSED - Comprehensive testing completed. Dashboard summary correctly distinguishes between assets and liabilities. Created test portfolio with 4 assets (property: $360K, crypto: $26K, stock: $17.5K, bank: $25.5K) and 2 liabilities (loan: $180K, credit card: $5K). Calculations are accurate: Total Assets: $429K, Total Liabilities: $185K, Net Worth: $244K. All required Phase 1 fields present: total_assets_value, total_liabilities_value, net_worth, asset_values_separate, liability_values_separate. Asset/liability segregation working perfectly."
+        comment: "Added helper function create_snapshot_for_date() to create snapshots for specific dates. Modified asset create/update endpoints to auto-create snapshots when purchase_date is provided or changed. Added /networth/backfill endpoint to backfill all snapshots from existing asset purchase dates."
+  
+  - task: "AI Insights Storage and Persistence"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Created AIInsight model to store insights in database. Updated /insights/generate endpoint to provide structured data (portfolio_summary, asset_distribution_analysis, allocation_recommendations, advantages, risks, action_items) and store in DB with timestamp. Added /insights/latest endpoint to retrieve most recent insight. AI now focuses on asset distribution, diversification, risks, and advantages."
   
   - task: "Extended Real Estate Fields"
     implemented: true
