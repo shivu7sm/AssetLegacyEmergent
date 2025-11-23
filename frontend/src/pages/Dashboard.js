@@ -199,13 +199,14 @@ export default function Dashboard() {
                   </PieChart>
                 </ResponsiveContainer>
               ) : (
-                <div className="h-[300px] flex items-center justify-center text-slate-400">
+                <div className="h-[300px] flex items-center justify-center" style={{color: '#94a3b8'}}>
                   <div className="text-center">
                     <p className="mb-4">No assets tracked yet</p>
                     <Button 
                       data-testid="add-first-asset-btn"
                       onClick={() => navigate('/assets')} 
-                      className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-full"
+                      className="text-white rounded-full"
+                      style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
                     >
                       <Plus className="w-4 h-4 mr-2" />
                       Add Your First Asset
@@ -216,23 +217,62 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
-          {/* Quick Actions */}
-          <Card className="bg-slate-800/50 border-slate-700" data-testid="quick-actions-card">
+          {/* Value by Asset Type (Bar Chart) */}
+          <Card data-testid="value-by-type-card" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
             <CardHeader>
-              <CardTitle className="text-white">Quick Actions</CardTitle>
+              <CardTitle style={{color: '#f8fafc'}}>Value by Asset Type</CardTitle>
+              <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Ranked by total value</p>
             </CardHeader>
             <CardContent>
-              <div className="space-y-3">
-                <Button 
-                  data-testid="add-asset-btn"
-                  onClick={() => navigate('/assets')} 
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white justify-start rounded-xl h-14"
-                >
-                  <Plus className="w-5 h-5 mr-3" />
-                  Add New Asset
-                </Button>
-                
-                <Button 
+              {barChartData.length > 0 ? (
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={barChartData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#2d1f3d" />
+                    <XAxis dataKey="name" stroke="#94a3b8" />
+                    <YAxis stroke="#94a3b8" tickFormatter={(value) => `$${(value/1000).toFixed(0)}k`} />
+                    <Tooltip 
+                      contentStyle={{ 
+                        background: '#1a1229', 
+                        border: '1px solid #2d1f3d',
+                        borderRadius: '8px',
+                        color: '#f8fafc'
+                      }}
+                      formatter={(value) => [`$${value.toLocaleString()}`, 'Value']}
+                    />
+                    <Bar dataKey="value" radius={[8, 8, 0, 0]}>
+                      {barChartData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="h-[300px] flex items-center justify-center" style={{color: '#94a3b8'}}>
+                  <p>No data available</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Quick Actions */}
+        <Card data-testid="quick-actions-card" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+          <CardHeader>
+            <CardTitle style={{color: '#f8fafc'}}>Quick Actions</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <Button 
+                data-testid="add-asset-btn"
+                onClick={() => navigate('/assets')} 
+                className="text-white justify-start rounded-xl h-14"
+                style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
+              >
+                <Plus className="w-5 h-5 mr-3" />
+                Add New Asset
+              </Button>
+              
+              <Button 
                   data-testid="view-assets-btn"
                   onClick={() => navigate('/assets')} 
                   variant="outline"
