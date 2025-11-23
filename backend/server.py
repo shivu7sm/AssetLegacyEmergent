@@ -261,6 +261,23 @@ class ExchangeConnectionCreate(BaseModel):
     api_key: str
     api_secret: Optional[str] = None
 
+class NetWorthSnapshot(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    snapshot_date: str  # YYYY-MM-DD format
+    total_assets: float
+    total_liabilities: float
+    net_worth: float
+    currency: str
+    asset_breakdown: Dict[str, float] = {}
+    liability_breakdown: Dict[str, float] = {}
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class NetWorthSnapshotCreate(BaseModel):
+    snapshot_date: str
+    currency: Optional[str] = "USD"
+
 # Auth Helper
 async def get_current_user(request: Request) -> Optional[User]:
     session_token = request.cookies.get("session_token")
