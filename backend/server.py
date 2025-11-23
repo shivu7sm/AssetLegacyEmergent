@@ -1680,14 +1680,15 @@ async def get_latest_insight(user: User = Depends(require_auth)):
 
 @api_router.post("/insights/generate", response_model=AIInsightResponse)
 async def generate_insights(user: User = Depends(require_auth)):
-    """Generate fresh AI insights and store them."""
+    """Generate fresh AI insights and store them. Includes portfolio holdings."""
     try:
         from emergentintegrations.llm.chat import LlmChat, UserMessage
         
-        # Fetch user's assets
+        # Fetch user's assets and portfolios
         assets = await db.assets.find({"user_id": user.id}).to_list(1000)
+        portfolios = await db.portfolio_assets.find({"user_id": user.id}).to_list(1000)
         
-        if not assets:
+        if not assets and not portfolios:
             basic_insight = AIInsight(
                 user_id=user.id,
                 portfolio_summary="No assets found in your portfolio yet.",
