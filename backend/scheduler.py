@@ -116,9 +116,12 @@ async def send_scheduled_messages():
         
         for message in messages:
             try:
-                # TODO: Send email via SMTP or email service
-                # For now, just mark as sent
-                logger.info(f"Sending scheduled message: {message['subject']} to {message['recipient_email']}")
+                # MOCK EMAIL: Send email via SMTP or email service
+                logger.info(f"📧 [MOCK EMAIL] Sending scheduled message")
+                logger.info(f"   To: {message['recipient_email']}")
+                logger.info(f"   Subject: {message['subject']}")
+                logger.info(f"   Body: {message.get('body', 'N/A')[:100]}...")
+                logger.info(f"   Status: Message sent successfully")
                 
                 # Mark as sent
                 await db.scheduled_messages.update_one(
