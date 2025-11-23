@@ -313,7 +313,10 @@ export default function Documents() {
                     <div className="flex justify-between text-sm mb-1">
                       <span style={{color: '#94a3b8'}}>Storage Used</span>
                       <span style={{color: '#f8fafc', fontWeight: 600}}>
-                        {storageInfo.usage.storage_mb.toFixed(1)} MB / {storageInfo.features.storage_mb} MB
+                        {storageInfo.features.storage_mb >= 1024 
+                          ? `${(storageInfo.usage.storage_mb / 1024).toFixed(2)} GB / ${(storageInfo.features.storage_mb / 1024).toFixed(0)} GB`
+                          : `${storageInfo.usage.storage_mb.toFixed(1)} MB / ${storageInfo.features.storage_mb} MB`
+                        }
                       </span>
                     </div>
                     <div className="w-full h-2 rounded-full" style={{background: '#16001e'}}>
