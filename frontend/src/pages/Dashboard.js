@@ -41,6 +41,7 @@ const ASSET_COLORS = {
 export default function Dashboard() {
   const navigate = useNavigate();
   const { selectedCurrency, currencyFormat } = useApp();
+  const { dashboardTheme } = useTheme();
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
   const [comparisonChartType, setComparisonChartType] = useState(() => {
