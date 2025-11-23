@@ -665,6 +665,8 @@ async def get_dashboard_summary(user: User = Depends(require_auth)):
             value = asset['quantity'] * asset['current_unit_price']
         elif asset.get('quantity') and asset.get('unit_price'):
             value = asset['quantity'] * asset['unit_price']
+        elif asset.get('area') and asset.get('current_price_per_area'):
+            value = asset['area'] * asset['current_price_per_area']
         elif asset.get('area') and asset.get('price_per_area'):
             value = asset['area'] * asset['price_per_area']
         elif asset.get('weight') and asset.get('current_unit_price'):
