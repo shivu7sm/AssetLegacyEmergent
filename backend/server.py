@@ -1726,6 +1726,237 @@ async def backfill_snapshots_from_assets(user: User = Depends(require_auth), cur
         logger.error(f"Backfill failed: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to backfill snapshots")
 
+# Admin Routes
+@api_router.get("/admin/stats")
+async def get_admin_stats(user: User = Depends(require_admin)):
+    """Get overall platform statistics for admin dashboard."""
+    try:
+        # Get all users count
+        total_users = await db.users.count_documents({})
+        
+        # Count users by subscription plan
+        subscription_stats = {}
+        async for user_doc in db.users.find({}, {"subscription_plan": 1}):
+            plan = user_doc.get("subscription_plan", "Free")
+            subscription_stats[plan] = subscription_stats.get(plan, 0) + 1
+        
+        # Get total assets count across all users
+        total_assets = await db.assets.count_documents({})
+        
+        # Count assets by type
+        asset_type_stats = {}
+        async for asset in db.assets.find({}, {"type": 1}):
+            asset_type = asset.get("type", "unknown")
+            asset_type_stats[asset_type] = asset_type_stats.get(asset_type, 0) + 1
+        
+        # Get scheduled messages stats
+        scheduled_messages_total = await db.scheduled_messages.count_documents({})
+        scheduled_messages_sent = await db.scheduled_messages.count_documents({"status": "sent"})
+        scheduled_messages_pending = await db.scheduled_messages.count_documents({"status": "scheduled"})
+        scheduled_messages_failed = await db.scheduled_messages.count_documents({"status": "failed"})
+        
+        # Get DMS stats
+        total_dms = await db.dead_man_switches.count_documents({})
+        active_dms = await db.dead_man_switches.count_documents({"is_active": True})
+        
+        # Get recent registrations (last 30 days)
+        thirty_days_ago = datetime.now(timezone.utc) - timedelta(days=30)
+        recent_registrations = await db.users.count_documents({
+            "created_at": {"$gte": thirty_days_ago.isoformat()}
+        })
+        
+        # Get AI insights generated count
+        total_insights = await db.ai_insights.count_documents({})
+        
+        return {
+            "users": {
+                "total": total_users,
+                "recent_30_days": recent_registrations,
+                "by_subscription": subscription_stats
+            },
+            "assets": {
+                "total": total_assets,
+                "by_type": asset_type_stats
+            },
+            "scheduled_messages": {
+                "total": scheduled_messages_total,
+                "sent": scheduled_messages_sent,
+                "pending": scheduled_messages_pending,
+                "failed": scheduled_messages_failed
+            },
+            "dead_man_switches": {
+                "total": total_dms,
+                "active": active_dms
+            },
+            "ai_insights": {
+                "total_generated": total_insights
+            }
+        }
+    except Exception as e:
+        logger.error(f"Failed to get admin stats: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to fetch statistics")
+
+@api_router.get("/admin/users")
+async def get_all_users(admin: User = Depends(require_admin), skip: int = 0, limit: int = 50):
+    """Get paginated list of all users with their details."""
+    try:
+        users = await db.users.find(
+            {},
+            {"_id": 0}
+        ).skip(skip).limit(limit).to_list(limit)
+        
+        # Convert datetime fields
+        for user_doc in users:
+            if isinstance(user_doc.get('last_activity'), str):
+                user_doc['last_activity'] = datetime.fromisoformat(user_doc['last_activity'])
+            if isinstance(user_doc.get('created_at'), str):
+                user_doc['created_at'] = datetime.fromisoformat(user_doc['created_at'])
+        
+        # Get asset counts for each user
+        user_data = []
+        for user_doc in users:
+            asset_count = await db.assets.count_documents({"user_id": user_doc["id"]})
+            user_data.append({
+                **user_doc,
+                "asset_count": asset_count
+            })
+        
+        total_users = await db.users.count_documents({})
+        
+        return {
+            "users": user_data,
+            "total": total_users,
+            "skip": skip,
+            "limit": limit
+        }
+    except Exception as e:
+        logger.error(f"Failed to get users: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to fetch users")
+
+@api_router.put("/admin/users/{user_id}/role")
+async def update_user_role(user_id: str, role_data: dict, admin: User = Depends(require_admin)):
+    """Update a user's role."""
+    new_role = role_data.get("role")
+    
+    if new_role not in ["admin", "user", "readonly"]:
+        raise HTTPException(status_code=400, detail="Invalid role. Must be 'admin', 'user', or 'readonly'")
+    
+    # Prevent changing own role
+    if user_id == admin.id:
+        raise HTTPException(status_code=400, detail="Cannot change your own role")
+    
+    result = await db.users.update_one(
+        {"id": user_id},
+        {"$set": {"role": new_role}}
+    )
+    
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    return {"success": True, "message": f"User role updated to {new_role}"}
+
+@api_router.get("/admin/jobs/scheduled-messages")
+async def get_scheduled_messages_status(admin: User = Depends(require_admin)):
+    """Get all scheduled messages with their status."""
+    try:
+        messages = await db.scheduled_messages.find({}, {"_id": 0}).sort("send_date", -1).to_list(100)
+        
+        for msg in messages:
+            if isinstance(msg.get('created_at'), str):
+                msg['created_at'] = datetime.fromisoformat(msg['created_at'])
+        
+        return {
+            "messages": messages,
+            "total": len(messages)
+        }
+    except Exception as e:
+        logger.error(f"Failed to get scheduled messages: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to fetch scheduled messages")
+
+@api_router.get("/admin/jobs/dms-reminders")
+async def get_dms_reminders_status(admin: User = Depends(require_admin)):
+    """Get Dead Man Switch reminders status."""
+    try:
+        dms_list = await db.dead_man_switches.find({}, {"_id": 0}).to_list(100)
+        
+        # Get user info for each DMS
+        dms_with_users = []
+        for dms in dms_list:
+            if isinstance(dms.get('last_reset'), str):
+                dms['last_reset'] = datetime.fromisoformat(dms['last_reset'])
+            if isinstance(dms.get('created_at'), str):
+                dms['created_at'] = datetime.fromisoformat(dms['created_at'])
+            
+            user_doc = await db.users.find_one({"id": dms["user_id"]}, {"email": 1, "name": 1})
+            
+            # Calculate days since last activity
+            if user_doc:
+                user_activity = await db.users.find_one({"id": dms["user_id"]}, {"last_activity": 1})
+                last_activity = user_activity.get("last_activity")
+                if isinstance(last_activity, str):
+                    last_activity = datetime.fromisoformat(last_activity)
+                
+                days_inactive = (datetime.now(timezone.utc) - last_activity).days if last_activity else 0
+                
+                dms_with_users.append({
+                    **dms,
+                    "user_email": user_doc.get("email"),
+                    "user_name": user_doc.get("name"),
+                    "days_inactive": days_inactive,
+                    "days_until_trigger": max(0, dms["inactivity_days"] - days_inactive)
+                })
+        
+        return {
+            "dms_reminders": dms_with_users,
+            "total": len(dms_with_users)
+        }
+    except Exception as e:
+        logger.error(f"Failed to get DMS reminders: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to fetch DMS reminders")
+
+@api_router.delete("/admin/users/{user_id}")
+async def delete_user(user_id: str, admin: User = Depends(require_admin)):
+    """Delete a user and all their data."""
+    # Prevent deleting own account
+    if user_id == admin.id:
+        raise HTTPException(status_code=400, detail="Cannot delete your own account")
+    
+    try:
+        # Delete user's assets
+        await db.assets.delete_many({"user_id": user_id})
+        
+        # Delete user's documents
+        await db.documents.delete_many({"user_id": user_id})
+        
+        # Delete user's DMS
+        await db.dead_man_switches.delete_many({"user_id": user_id})
+        
+        # Delete user's nominees
+        await db.nominees.delete_many({"user_id": user_id})
+        
+        # Delete user's scheduled messages
+        await db.scheduled_messages.delete_many({"user_id": user_id})
+        
+        # Delete user's AI insights
+        await db.ai_insights.delete_many({"user_id": user_id})
+        
+        # Delete user's net worth snapshots
+        await db.networth_snapshots.delete_many({"user_id": user_id})
+        
+        # Delete user's sessions
+        await db.user_sessions.delete_many({"user_id": user_id})
+        
+        # Finally delete the user
+        result = await db.users.delete_one({"id": user_id})
+        
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        return {"success": True, "message": "User and all associated data deleted"}
+    except Exception as e:
+        logger.error(f"Failed to delete user: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to delete user")
+
 app.include_router(api_router)
 
 app.add_middleware(
