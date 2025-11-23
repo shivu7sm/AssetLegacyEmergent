@@ -165,6 +165,7 @@ export default function Assets() {
     return preferences?.default_asset_view || 'grid';
   };
   const [viewMode, setViewMode] = useState(getInitialView());
+  const [pageMode, setPageMode] = useState('assets'); // 'assets' or 'portfolios'
   
   const [filterType, setFilterType] = useState('all');
   const [sortBy, setSortBy] = useState('date');
@@ -173,6 +174,13 @@ export default function Assets() {
   const [portfolioTotal, setPortfolioTotal] = useState(null);
   const [assetsTotal, setAssetsTotal] = useState(null);
   const [liabilitiesTotal, setLiabilitiesTotal] = useState(null);
+  
+  // Portfolio-specific state
+  const [portfolios, setPortfolios] = useState([]);
+  const [selectedPortfolio, setSelectedPortfolio] = useState(null);
+  const [portfolioDialogOpen, setPortfolioDialogOpen] = useState(false);
+  const [holdingDialogOpen, setHoldingDialogOpen] = useState(false);
+  const [editingHolding, setEditingHolding] = useState(null);
   const [formData, setFormData] = useState({
     type: 'crypto',
     name: '',
