@@ -323,29 +323,7 @@ export default function Dashboard() {
           </div>
         )}
 
-          <Card 
-            data-testid="dms-status-card" 
-            className="overflow-hidden transition-all hover:shadow-lg"
-            style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: summary?.has_dms ? '#a855f7' : '#f59e0b'}}
-          >
-            <CardContent className="p-6">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <p className="text-sm font-medium mb-2" style={{color: '#94a3b8', letterSpacing: '0.5px'}}>DEAD MAN SWITCH</p>
-                  <div className="text-2xl font-bold mb-1" style={{color: summary?.has_dms ? '#a855f7' : '#f59e0b', fontFamily: 'Inter, sans-serif'}} data-testid="dms-status">
-                    {summary?.has_dms ? '✓ Active' : 'Inactive'}
-                  </div>
-                  <p className="text-xs" style={{color: '#64748b'}}>
-                    {summary?.has_dms ? 'Monitoring enabled' : 'Setup required'}
-                  </p>
-                </div>
-                <div className="p-3 rounded-xl" style={{background: summary?.has_dms ? 'rgba(168, 85, 247, 0.1)' : 'rgba(245, 158, 11, 0.1)'}}>
-                  <AlertCircle className="w-8 h-8" style={{color: summary?.has_dms ? '#a855f7' : '#f59e0b'}} />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+        {/* Stats section completed */}
 
         {/* Financial Health Ratios */}
         {summary?.financial_ratios && (
