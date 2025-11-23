@@ -245,14 +245,19 @@ export default function Dashboard() {
 
           <Card 
             data-testid="nominee-status-card" 
-            className="overflow-hidden transition-all hover:shadow-lg"
-            style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: summary?.has_nominee ? '#10b981' : '#f59e0b'}}
+            className={`overflow-hidden transition-all hover:shadow-lg card ${dashboardTheme === 'modern' ? 'stat-card' : ''}`}
+            style={dashboardTheme === 'standard' ? {background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: summary?.has_nominee ? '#10b981' : '#f59e0b'} : {}}
           >
-            <CardContent className="p-6">
+            <CardContent className={dashboardTheme === 'modern' ? 'p-0' : 'p-6'}>
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <p className="text-sm font-medium mb-2" style={{color: '#94a3b8', letterSpacing: '0.5px'}}>NOMINEE</p>
-                  <div className="text-2xl font-bold mb-1" style={{color: summary?.has_nominee ? '#10b981' : '#f59e0b', fontFamily: 'Inter, sans-serif'}} data-testid="nominee-status">
+                  <p className={`text-sm font-medium mb-2 ${dashboardTheme === 'modern' ? 'stat-label' : ''}`} style={dashboardTheme === 'standard' ? {color: '#94a3b8', letterSpacing: '0.5px'} : {}}>NOMINEE</p>
+                  <div className={`${dashboardTheme === 'modern' ? 'text-3xl' : 'text-2xl'} font-bold mb-1 ${dashboardTheme === 'modern' ? 'stat-value' : ''}`} style={dashboardTheme === 'standard' ? {color: summary?.has_nominee ? '#10b981' : '#f59e0b', fontFamily: 'Inter, sans-serif'} : dashboardTheme === 'modern' ? {
+                    background: summary?.has_nominee ? 'linear-gradient(135deg, #059669 0%, #10b981 100%)' : 'linear-gradient(135deg, #d97706 0%, #f59e0b 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text'
+                  } : {}} data-testid="nominee-status">
                     {summary?.has_nominee ? '✓ Configured' : 'Not Set'}
                   </div>
                   <p className="text-xs" style={{color: '#64748b'}}>
