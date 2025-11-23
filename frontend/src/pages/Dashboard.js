@@ -59,6 +59,7 @@ const CustomTooltip = ({ active, payload, label }) => {
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const { selectedCurrency, currencyFormat } = useApp();
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
 
