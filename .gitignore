@@ -184,3 +184,7 @@ STRIPE_SETUP.md
 *API_KEYS*
 *credentials*
 *secrets*
+-e 
+# Environment files
+*.env
+*.env.*
