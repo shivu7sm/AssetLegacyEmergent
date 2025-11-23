@@ -28,34 +28,7 @@ const ASSET_COLORS = {
   credit_card: '#f87171'
 };
 
-const formatCurrency = (value, currency = 'USD') => {
-  if (currency === 'INR') {
-    // Indian numbering system
-    const absValue = Math.abs(value);
-    if (absValue >= 10000000) {
-      return `₹${(value / 10000000).toFixed(2)} Cr`;
-    } else if (absValue >= 100000) {
-      return `₹${(value / 100000).toFixed(2)} L`;
-    } else {
-      return `₹${value.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-    }
-  }
-  return `$${value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-};
-
-const CustomTooltip = ({ active, payload, label }) => {
-  if (active && payload && payload.length) {
-    return (
-      <div style={{ background: '#1a1229', border: '1px solid #2d1f3d', borderRadius: '8px', padding: '12px' }}>
-        <p style={{ color: '#f8fafc', fontWeight: 600, marginBottom: '4px' }}>{label || payload[0].name}</p>
-        <p style={{ color: '#ec4899', fontSize: '14px' }}>
-          {payload[0].name === 'percentage' ? `${payload[0].value}%` : formatCurrency(payload[0].value)}
-        </p>
-      </div>
-    );
-  }
-  return null;
-};
+// CustomTooltip will be created inside the component to access selectedCurrency and currencyFormat
 
 export default function Dashboard() {
   const navigate = useNavigate();
