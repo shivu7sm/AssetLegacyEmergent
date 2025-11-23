@@ -466,7 +466,10 @@ export default function Insights() {
                       {insights.action_items.slice(0, expandedSections.actions ? undefined : 2).map((action, index) => (
                         <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: '#16001e', borderLeft: '2px solid #ec4899'}}>
                           <span className="text-lg">✅</span>
-                          <p style={{color: '#cbd5e1', lineHeight: '1.6', fontSize: '14px'}}>{action}</p>
+                          <p 
+                            style={{color: '#cbd5e1', lineHeight: '1.6', fontSize: '14px'}}
+                            dangerouslySetInnerHTML={{__html: formatText(action)}}
+                          />
                         </li>
                       ))}
                     </ul>
