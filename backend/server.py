@@ -223,6 +223,7 @@ class DocumentCreate(BaseModel):
     file_size: int
     tags: List[str] = []
     share_with_nominee: bool = False
+    linked_asset_id: Optional[str] = None
 
 class UserPreferences(BaseModel):
     measurement_unit: str = "imperial"
