@@ -683,6 +683,102 @@ export default function Assets() {
               );
             })}
           </div>
+        ) : (
+          <div>
+            <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+              <CardContent className="p-0">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead style={{background: '#16001e', borderBottom: '1px solid #2d1f3d'}}>
+                      <tr>
+                        <th className="text-left p-4" style={{color: '#94a3b8', fontWeight: 600}}>Asset</th>
+                        <th className="text-left p-4" style={{color: '#94a3b8', fontWeight: 600}}>Type</th>
+                        <th className="text-right p-4" style={{color: '#94a3b8', fontWeight: 600}}>Quantity/Details</th>
+                        <th className="text-right p-4" style={{color: '#94a3b8', fontWeight: 600}}>Purchase Value</th>
+                        <th className="text-right p-4" style={{color: '#94a3b8', fontWeight: 600}}>Current Value</th>
+                        <th className="text-right p-4" style={{color: '#94a3b8', fontWeight: 600}}>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {(filteredAssets.length > 0 ? filteredAssets : assets).map((asset) => {
+                        const typeInfo = getAssetTypeInfo(asset.type);
+                        const purchaseValue = calculateAssetValue(asset);
+                        const currentValue = asset.current_price || purchaseValue;
+                        const gain = currentValue - purchaseValue;
+                        const gainPercent = purchaseValue ? ((gain / purchaseValue) * 100).toFixed(2) : 0;
+                        
+                        return (
+                          <tr key={asset.id} style={{borderBottom: '1px solid #2d1f3d'}}>
+                            <td className="p-4">
+                              <div className="flex items-center gap-3">
+                                <span className="text-2xl">{typeInfo.icon}</span>
+                                <div>
+                                  <div style={{color: '#f8fafc', fontWeight: 500}}>{asset.name}</div>
+                                  {asset.symbol && <div className="text-xs" style={{color: '#94a3b8'}}>{asset.symbol}</div>}
+                                </div>
+                              </div>
+                            </td>
+                            <td className="p-4" style={{color: '#94a3b8'}}>{typeInfo.label}</td>
+                            <td className="p-4 text-right" style={{color: '#94a3b8'}}>
+                              {asset.quantity && `${asset.quantity} units`}
+                              {asset.weight && `${asset.weight} ${asset.weight_unit}`}
+                              {asset.area && `${asset.area} ${asset.area_unit}`}
+                              {!asset.quantity && !asset.weight && !asset.area && '-'}
+                            </td>
+                            <td className="p-4 text-right" style={{color: '#f8fafc'}}>
+                              {displayCurrency} {purchaseValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                            </td>
+                            <td className="p-4 text-right">
+                              <div style={{color: '#ec4899', fontWeight: 600}}>
+                                {displayCurrency} {currentValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                              </div>
+                              {gain !== 0 && (
+                                <div className="text-xs" style={{color: gain > 0 ? '#22c55e' : '#ef4444'}}>
+                                  {gain > 0 ? '+' : ''}{gain.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} ({gainPercent}%)
+                                </div>
+                              )}
+                            </td>
+                            <td className="p-4 text-right">
+                              <div className="flex justify-end gap-2">
+                                <Button 
+                                  onClick={() => handleEdit(asset)}
+                                  variant="outline"
+                                  size="sm"
+                                  style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+                                >
+                                  <Edit className="w-4 h-4" />
+                                </Button>
+                                <Button 
+                                  onClick={() => handleDelete(asset.id)}
+                                  variant="outline"
+                                  size="sm"
+                                  style={{borderColor: '#ef4444', color: '#ef4444'}}
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                    <tfoot style={{background: '#16001e', borderTop: '2px solid #2d1f3d'}}>
+                      <tr>
+                        <td colSpan="3" className="p-4" style={{color: '#f8fafc', fontWeight: 600}}>Total</td>
+                        <td className="p-4 text-right" style={{color: '#f8fafc', fontWeight: 600}}>
+                          {displayCurrency} {(filteredAssets.length > 0 ? filteredAssets : assets).reduce((sum, asset) => sum + calculateAssetValue(asset), 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                        </td>
+                        <td className="p-4 text-right" style={{color: '#ec4899', fontWeight: 700, fontSize: '1.1rem'}}>
+                          {displayCurrency} {(filteredAssets.length > 0 ? filteredAssets : assets).reduce((sum, asset) => sum + (asset.current_price || calculateAssetValue(asset)), 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                        </td>
+                        <td></td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         )}
       </div>
     </Layout>
