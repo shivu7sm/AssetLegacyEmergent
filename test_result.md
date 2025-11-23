@@ -202,6 +202,30 @@ backend:
         comment: "✅ PASSED - Real estate extended fields working correctly. Successfully created property with current_price_per_area field ($250/sqft). Dashboard calculation correctly uses current_price_per_area over price_per_area (1500 sqft × $250 = $375K). Field updates work properly. Asset and AssetCreate models both support the new field."
 
 frontend:
+  - task: "Net Worth Growth Rate Calculation Fix"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Fixed net worth growth rate calculation. Changed from comparing last 2 snapshots to comparing current net worth with last snapshot. This gives accurate real-time growth rate showing how much net worth has changed since the last saved snapshot."
+  
+  - task: "Dashboard Setup Requirements Banner"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/Dashboard.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added prominent setup requirements banner at top of dashboard for new users. Shows if nominee and/or dead man's switch are not configured. Features: 1) Conditional display - only shows if has_nominee or has_dms is false 2) Two clickable cards with icons for Nominee and DMS setup 3) Direct navigation to Settings with specific tab (nominees or dms) 4) Styled for both Modern and Standard themes 5) Includes explanatory text about importance 6) 'Set Up Now' buttons for quick access"
+  
   - task: "Landing Page Background Color Fix"
     implemented: true
     working: "NA"
