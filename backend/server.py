@@ -548,6 +548,49 @@ async def create_or_update_will(will_data: DigitalWillCreate, user: User = Depen
         result['updated_at'] = datetime.fromisoformat(result['updated_at'])
     return DigitalWill(**result)
 
+# Document Routes
+@api_router.get("/documents")
+async def get_documents(user: User = Depends(require_auth)):
+    documents = await db.documents.find({"user_id": user.id}, {"_id": 0, "file_data": 0}).to_list(1000)
+    for doc in documents:
+        if isinstance(doc.get('created_at'), str):
+            doc['created_at'] = datetime.fromisoformat(doc['created_at'])
+        if isinstance(doc.get('updated_at'), str):
+            doc['updated_at'] = datetime.fromisoformat(doc['updated_at'])
+    return documents
+
+@api_router.get("/documents/{doc_id}")
+async def get_document(doc_id: str, user: User = Depends(require_auth)):
+    document = await db.documents.find_one({"id": doc_id, "user_id": user.id}, {"_id": 0})
+    if not document:
+        raise HTTPException(status_code=404, detail="Document not found")
+    if isinstance(document.get('created_at'), str):
+        document['created_at'] = datetime.fromisoformat(document['created_at'])
+    if isinstance(document.get('updated_at'), str):
+        document['updated_at'] = datetime.fromisoformat(document['updated_at'])
+    return document
+
+@api_router.post("/documents")
+async def create_document(doc_data: DocumentCreate, user: User = Depends(require_auth)):
+    document = Document(user_id=user.id, **doc_data.model_dump())
+    doc_dict = document.model_dump()
+    doc_dict['created_at'] = doc_dict['created_at'].isoformat()
+    doc_dict['updated_at'] = doc_dict['updated_at'].isoformat()
+    await db.documents.insert_one(doc_dict)
+    
+    # Return without file_data for list view
+    doc_dict.pop('file_data')
+    doc_dict['created_at'] = datetime.fromisoformat(doc_dict['created_at'])
+    doc_dict['updated_at'] = datetime.fromisoformat(doc_dict['updated_at'])
+    return doc_dict
+
+@api_router.delete("/documents/{doc_id}")
+async def delete_document(doc_id: str, user: User = Depends(require_auth)):
+    result = await db.documents.delete_one({"id": doc_id, "user_id": user.id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Document not found")
+    return {"success": True}
+
 # Price API Routes
 @api_router.get("/prices/crypto/{symbol}")
 async def get_crypto_price(symbol: str, currency: str = "usd"):
