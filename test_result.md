@@ -111,7 +111,7 @@ user_problem_statement: "AssetVault app - Current Phase Implementation:
    - Display portfolio summary with total value and holdings count"
 
 backend:
-  - task: "Snapshot Auto-creation from Purchase Dates"
+  - task: "Portfolio Backend APIs"
     implemented: true
     working: true
     file: "/app/backend/server.py"
@@ -119,12 +119,9 @@ backend:
     priority: "high"
     needs_retesting: false
     status_history:
-      - working: "NA"
-        agent: "main"
-        comment: "Added helper function create_snapshot_for_date() to create snapshots for specific dates. Modified asset create/update endpoints to auto-create snapshots when purchase_date is provided or changed. Added /networth/backfill endpoint to backfill all snapshots from existing asset purchase dates."
       - working: true
-        agent: "testing"
-        comment: "✅ PASSED - Net worth snapshot auto-creation working correctly. Tested: 1) Asset creation with purchase_date auto-creates snapshot for that date. 2) Backfill endpoint successfully creates snapshots from existing asset purchase dates (created 3 snapshots for 3 different dates). 3) Asset update with purchase_date change creates new snapshot for new date. All endpoints return proper response structure with snapshots_created count and dates_processed list."
+        agent: "main"
+        comment: "Backend APIs already exist and are working. Endpoints confirmed: GET /portfolio-assets (list all), POST /portfolio-assets (create), GET /portfolio-assets/{id} (details), POST /portfolio-assets/{id}/holdings (add holding), PUT /portfolio-assets/{id}/holdings/{symbol} (update holding), DELETE /portfolio-assets/{id}/holdings/{symbol} (delete holding), DELETE /portfolio-assets/{id} (delete portfolio). All models (PortfolioAsset, PortfolioHolding) are properly defined."
   
   - task: "AI Insights Storage and Persistence"
     implemented: true
