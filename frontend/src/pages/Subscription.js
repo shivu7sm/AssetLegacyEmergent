@@ -4,7 +4,8 @@ import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
-import { Check, Crown, Zap } from 'lucide-react';
+import { Check, Crown, Zap, Loader2 } from 'lucide-react';
+import { loadStripe } from '@stripe/stripe-js';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
