@@ -1382,22 +1382,34 @@ async def generate_insights(user: User = Depends(require_auth)):
             
             return AIInsightResponse(**response_data)
         
-        # Calculate portfolio summary
+        # Calculate portfolio summary with proper currency conversion
         asset_types = {}
         liability_types = {'loan', 'credit_card'}
         total_assets_value = 0
         total_liabilities_value = 0
         
+        # Get user's preferred currency
+        target_currency = user.selected_currency or "USD"
+        
         for asset in assets:
             asset_type = asset['type']
             asset_types[asset_type] = asset_types.get(asset_type, 0) + 1
             
-            value = calculate_asset_current_value(asset)
+            # Calculate value in original currency
+            value_in_original_currency = calculate_asset_current_value(asset)
+            original_currency = asset.get("purchase_currency", "USD")
+            
+            # Convert to target currency
+            value_in_target_currency = convert_currency(
+                value_in_original_currency,
+                original_currency,
+                target_currency
+            )
             
             if asset_type in liability_types:
-                total_liabilities_value += value
+                total_liabilities_value += value_in_target_currency
             else:
-                total_assets_value += value
+                total_assets_value += value_in_target_currency
         
         net_worth = total_assets_value - total_liabilities_value
         
