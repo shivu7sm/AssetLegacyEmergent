@@ -748,29 +748,26 @@ export default function Dashboard() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
                 <CardHeader>
-                  <CardTitle style={{color: '#f8fafc'}}>Liability Distribution</CardTitle>
-                  <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Breakdown by debt type</p>
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <CardTitle style={{color: '#f8fafc'}}>Liability Distribution</CardTitle>
+                      <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Breakdown by debt type</p>
+                    </div>
+                    <ChartTypeSwitcher 
+                      currentType={liabilityDistChartType} 
+                      onChange={handleLiabilityDistChartChange}
+                      availableTypes={['pie', 'donut', 'bar']}
+                    />
+                  </div>
                 </CardHeader>
                 <CardContent>
-                  <ResponsiveContainer width="100%" height={300}>
-                    <PieChart>
-                      <Pie
-                        data={liabilityDistributionData}
-                        cx="50%"
-                        cy="50%"
-                        labelLine={false}
-                        label={({ name, percentage }) => `${name} ${percentage}%`}
-                        outerRadius={80}
-                        fill="#8884d8"
-                        dataKey="value"
-                      >
-                        {liabilityDistributionData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                      </Pie>
-                      <Tooltip content={<CustomTooltip />} />
-                    </PieChart>
-                  </ResponsiveContainer>
+                  <FlexibleChart
+                    data={liabilityDistributionData}
+                    chartType={liabilityDistChartType}
+                    colors={[]}
+                    CustomTooltip={CustomTooltip}
+                    labelFormatter={({ name, percentage }) => `${name} ${percentage}%`}
+                  />
                 </CardContent>
               </Card>
 
