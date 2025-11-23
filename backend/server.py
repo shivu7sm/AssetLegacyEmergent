@@ -226,6 +226,7 @@ class UserPreferences(BaseModel):
     weight_unit: str = "ounce"
     currency_format: Optional[str] = "standard"
     selected_currency: Optional[str] = "USD"
+    default_currency: Optional[str] = "USD"
     default_asset_view: Optional[str] = "grid"
     marketing_consent: Optional[bool] = None
     communication_consent: Optional[bool] = None
