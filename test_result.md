@@ -141,15 +141,18 @@ backend:
   
   - task: "Admin Panel Backend"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Added role field to User model (admin, user, readonly). Created require_admin middleware. Auto-assigns admin role to shivu7sm@gmail.com on first login or updates existing user. Added admin endpoints: GET /admin/stats (dashboard statistics), GET /admin/users (list all users with pagination), PUT /admin/users/{user_id}/role (update user role), GET /admin/jobs/scheduled-messages (scheduled messages with status), GET /admin/jobs/dms-reminders (DMS status with user info and days inactive), DELETE /admin/users/{user_id} (delete user and all data). Statistics include: total users, recent registrations, subscription breakdown, total assets by type, scheduled messages status, DMS status, AI insights generated."
+      - working: true
+        agent: "testing"
+        comment: "✅ PASSED - Admin Panel Backend fully functional. Comprehensive testing completed: 1) Admin role assignment: shivu7sm@gmail.com automatically gets admin role ✅ 2) Authorization middleware: Non-admin users get 403 Forbidden, admin users get access ✅ 3) Admin statistics dashboard: Returns accurate counts for users (6), assets (17), scheduled messages (3), DMS (2), AI insights (16) with proper structure ✅ 4) List all users: Returns paginated user list with all required fields (id, email, name, role, subscription_plan, created_at, asset_count) ✅ 5) Update user role: Successfully updates user roles (user→readonly→user), prevents invalid roles, prevents admin self-role-change ✅ 6) Scheduled messages monitoring: Returns all scheduled messages with proper structure (id, user_id, recipient_name, recipient_email, subject, send_date, status, created_at) ✅ 7) DMS reminders monitoring: Returns DMS configurations with user info, days_inactive, days_until_trigger, reminders_sent, is_active ✅ 8) Delete user: Comprehensive cleanup removes user and all associated data (assets, nominees, sessions, etc.), prevents admin self-deletion ✅ All admin endpoints working correctly with proper authorization, data validation, and error handling."
   
   - task: "Extended Real Estate Fields"
     implemented: true
