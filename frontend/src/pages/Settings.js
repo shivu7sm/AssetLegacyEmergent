@@ -701,12 +701,409 @@ export default function Settings() {
           </div>
         );
 
+      case 'nominees':
+        return (
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-2xl font-bold mb-2 flex items-center gap-2" style={{color: '#f8fafc'}}>
+                <Users className="w-7 h-7" />
+                Nominees
+              </h2>
+              <p style={{color: '#94a3b8'}}>Designate trusted individuals to inherit your assets and receive notifications</p>
+            </div>
+
+            {/* Add/Edit Nominee Form */}
+            <form onSubmit={handleNomineeSubmit}>
+              <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                <CardHeader>
+                  <CardTitle style={{color: '#f8fafc'}}>
+                    {editingNomineeId ? 'Edit Nominee' : 'Add New Nominee'}
+                  </CardTitle>
+                  <CardDescription style={{color: '#94a3b8'}}>
+                    Nominees will be contacted in priority order if you're inactive or in case of emergency
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label className="text-slate-300">Name *</Label>
+                      <Input
+                        value={nomineeForm.name}
+                        onChange={(e) => setNomineeForm({ ...nomineeForm, name: e.target.value })}
+                        placeholder="John Doe"
+                        required
+                        className="bg-slate-800 border-slate-700 text-white"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-slate-300">Email *</Label>
+                      <Input
+                        type="email"
+                        value={nomineeForm.email}
+                        onChange={(e) => setNomineeForm({ ...nomineeForm, email: e.target.value })}
+                        placeholder="john@example.com"
+                        required
+                        className="bg-slate-800 border-slate-700 text-white"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-slate-300">Phone</Label>
+                      <Input
+                        type="tel"
+                        value={nomineeForm.phone}
+                        onChange={(e) => setNomineeForm({ ...nomineeForm, phone: e.target.value })}
+                        placeholder="+1 234 567 8900"
+                        className="bg-slate-800 border-slate-700 text-white"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-slate-300">Relationship</Label>
+                      <Select 
+                        value={nomineeForm.relationship} 
+                        onValueChange={(value) => setNomineeForm({ ...nomineeForm, relationship: value })}
+                      >
+                        <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
+                          <SelectValue placeholder="Select relationship" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-slate-800 border-slate-700">
+                          <SelectItem value="spouse" className="text-white">Spouse</SelectItem>
+                          <SelectItem value="parent" className="text-white">Parent</SelectItem>
+                          <SelectItem value="child" className="text-white">Child</SelectItem>
+                          <SelectItem value="sibling" className="text-white">Sibling</SelectItem>
+                          <SelectItem value="friend" className="text-white">Friend</SelectItem>
+                          <SelectItem value="lawyer" className="text-white">Lawyer</SelectItem>
+                          <SelectItem value="other" className="text-white">Other</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  
+                  <div className="flex gap-3">
+                    <Button type="submit" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: '#fff'}}>
+                      {editingNomineeId ? 'Update Nominee' : 'Add Nominee'}
+                    </Button>
+                    {editingNomineeId && (
+                      <Button 
+                        type="button" 
+                        variant="outline"
+                        onClick={() => {
+                          setEditingNomineeId(null);
+                          setNomineeForm({ name: '', email: '', phone: '', relationship: '', priority: nominees.length + 1 });
+                        }}
+                        style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+                      >
+                        Cancel
+                      </Button>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </form>
+
+            {/* Nominees List */}
+            {nominees.length > 0 && (
+              <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                <CardHeader>
+                  <CardTitle style={{color: '#f8fafc'}}>Your Nominees ({nominees.length})</CardTitle>
+                  <CardDescription style={{color: '#94a3b8'}}>
+                    Nominees are listed in priority order. They will be contacted sequentially.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {nominees.map((nominee, index) => (
+                      <div 
+                        key={nominee.id}
+                        className="flex items-center justify-between p-4 rounded-lg"
+                        style={{background: '#131835', border: '1px solid #1e293b'}}
+                      >
+                        <div className="flex items-center gap-4 flex-1">
+                          <div 
+                            className="w-10 h-10 rounded-full flex items-center justify-center font-bold"
+                            style={{background: '#2d0e3e', color: '#a855f7'}}
+                          >
+                            #{index + 1}
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2">
+                              <span className="font-semibold" style={{color: '#f8fafc'}}>{nominee.name}</span>
+                              {nominee.relationship && (
+                                <span 
+                                  className="text-xs px-2 py-0.5 rounded-full"
+                                  style={{background: '#2d1f3d', color: '#94a3b8'}}
+                                >
+                                  {nominee.relationship}
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-sm" style={{color: '#94a3b8'}}>
+                              {nominee.email}
+                              {nominee.phone && ` • ${nominee.phone}`}
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-2">
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => handleMovePriority(nominee.id, 'up')}
+                            disabled={index === 0}
+                            style={{color: '#94a3b8'}}
+                          >
+                            <ChevronUp className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => handleMovePriority(nominee.id, 'down')}
+                            disabled={index === nominees.length - 1}
+                            style={{color: '#94a3b8'}}
+                          >
+                            <ChevronDown className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => handleEditNominee(nominee)}
+                            style={{color: '#3b82f6'}}
+                          >
+                            <User className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => handleDeleteNominee(nominee.id)}
+                            style={{color: '#ef4444'}}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Info Card */}
+            <Card style={{background: 'linear-gradient(135deg, #2d0e1e 0%, #3d1828 100%)', borderColor: '#ef4444', borderLeftWidth: '4px'}}>
+              <CardContent className="py-6">
+                <div className="flex items-start gap-4">
+                  <Heart className="w-6 h-6 flex-shrink-0" style={{color: '#fca5a5'}} />
+                  <div>
+                    <h3 className="font-semibold mb-2" style={{color: '#fca5a5'}}>Why Multiple Nominees?</h3>
+                    <p className="text-sm leading-relaxed" style={{color: '#cbd5e1'}}>
+                      Having multiple nominees with priority order ensures that if your primary nominee is unavailable, 
+                      the system will automatically reach out to your backup nominees. This redundancy protects your 
+                      family's access to your financial information.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        );
+
+      case 'dms':
+        return (
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-2xl font-bold mb-2 flex items-center gap-2" style={{color: '#f8fafc'}}>
+                <Clock className="w-7 h-7" />
+                Dead Man's Switch
+              </h2>
+              <p style={{color: '#94a3b8'}}>Automatic notifications if you become inactive</p>
+            </div>
+
+            {/* Visual Explanation */}
+            <Card style={{background: 'linear-gradient(135deg, #1a0b2e 0%, #2d0e3e 100%)', borderColor: '#a855f7', borderWidth: '2px'}}>
+              <CardContent className="py-8">
+                <div className="flex flex-col items-center text-center">
+                  <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4" style={{background: 'rgba(168, 85, 247, 0.2)'}}>
+                    <AlertTriangle className="w-10 h-10" style={{color: '#a855f7'}} />
+                  </div>
+                  <h3 className="text-xl font-bold mb-3" style={{color: '#f8fafc'}}>How Dead Man's Switch Works</h3>
+                  <p className="text-sm max-w-2xl mb-6" style={{color: '#cbd5e1'}}>
+                    A safeguard that protects your family by automatically alerting them if you're inactive for an extended period.
+                  </p>
+                  
+                  {/* Timeline Visual */}
+                  <div className="w-full max-w-3xl">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                      {[
+                        { day: dmsForm.inactivity_days, label: 'Inactive Days', icon: Clock, color: '#64748b' },
+                        { day: dmsForm.reminder_1_days, label: 'First Reminder', icon: Bell, color: '#f59e0b' },
+                        { day: dmsForm.reminder_2_days, label: 'Second Reminder', icon: Bell, color: '#ef4444' },
+                        { day: dmsForm.reminder_3_days, label: 'Final Alert & Notify Nominees', icon: AlertTriangle, color: '#dc2626' }
+                      ].map((step, index) => {
+                        const StepIcon = step.icon;
+                        return (
+                          <div key={index} className="text-center">
+                            <div 
+                              className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3"
+                              style={{background: `${step.color}20`, border: `2px solid ${step.color}`}}
+                            >
+                              <StepIcon className="w-8 h-8" style={{color: step.color}} />
+                            </div>
+                            <div className="text-2xl font-bold mb-1" style={{color: step.color}}>
+                              Day {step.day}
+                            </div>
+                            <div className="text-xs" style={{color: '#94a3b8'}}>
+                              {step.label}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* DMS Configuration */}
+            <form onSubmit={handleDmsSubmit}>
+              <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                <CardHeader>
+                  <CardTitle style={{color: '#f8fafc'}}>Configure Timing</CardTitle>
+                  <CardDescription style={{color: '#94a3b8'}}>
+                    Set when you should receive reminders and when nominees should be notified
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <Label className="text-slate-300 flex items-center gap-2 mb-2">
+                        <Clock className="w-4 h-4" />
+                        Inactivity Threshold (days) *
+                      </Label>
+                      <Input
+                        type="number"
+                        value={dmsForm.inactivity_days}
+                        onChange={(e) => setDmsForm({ ...dmsForm, inactivity_days: parseInt(e.target.value) })}
+                        min="30"
+                        max="365"
+                        required
+                        className="bg-slate-800 border-slate-700 text-white"
+                      />
+                      <p className="text-xs mt-1" style={{color: '#64748b'}}>
+                        Number of days of inactivity before triggering alerts
+                      </p>
+                    </div>
+                    
+                    <div>
+                      <Label className="text-slate-300 flex items-center gap-2 mb-2">
+                        <Bell className="w-4 h-4" style={{color: '#f59e0b'}} />
+                        First Reminder (days)
+                      </Label>
+                      <Input
+                        type="number"
+                        value={dmsForm.reminder_1_days}
+                        onChange={(e) => setDmsForm({ ...dmsForm, reminder_1_days: parseInt(e.target.value) })}
+                        min="1"
+                        max={dmsForm.inactivity_days - 1}
+                        required
+                        className="bg-slate-800 border-slate-700 text-white"
+                      />
+                      <p className="text-xs mt-1" style={{color: '#64748b'}}>
+                        Email reminder to check in
+                      </p>
+                    </div>
+                    
+                    <div>
+                      <Label className="text-slate-300 flex items-center gap-2 mb-2">
+                        <Bell className="w-4 h-4" style={{color: '#ef4444'}} />
+                        Second Reminder (days)
+                      </Label>
+                      <Input
+                        type="number"
+                        value={dmsForm.reminder_2_days}
+                        onChange={(e) => setDmsForm({ ...dmsForm, reminder_2_days: parseInt(e.target.value) })}
+                        min={dmsForm.reminder_1_days + 1}
+                        max={dmsForm.inactivity_days - 1}
+                        required
+                        className="bg-slate-800 border-slate-700 text-white"
+                      />
+                      <p className="text-xs mt-1" style={{color: '#64748b'}}>
+                        Urgent reminder to check in
+                      </p>
+                    </div>
+                    
+                    <div>
+                      <Label className="text-slate-300 flex items-center gap-2 mb-2">
+                        <AlertTriangle className="w-4 h-4" style={{color: '#dc2626'}} />
+                        Final Warning (days)
+                      </Label>
+                      <Input
+                        type="number"
+                        value={dmsForm.reminder_3_days}
+                        onChange={(e) => setDmsForm({ ...dmsForm, reminder_3_days: parseInt(e.target.value) })}
+                        min={dmsForm.reminder_2_days + 1}
+                        max={dmsForm.inactivity_days - 1}
+                        required
+                        className="bg-slate-800 border-slate-700 text-white"
+                      />
+                      <p className="text-xs mt-1" style={{color: '#64748b'}}>
+                        Last chance before notifying nominees
+                      </p>
+                    </div>
+                  </div>
+
+                  {dms && (
+                    <div className="p-4 rounded-lg" style={{background: '#131835', border: '1px solid #1e293b'}}>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm font-semibold mb-1" style={{color: '#f8fafc'}}>Last Activity</p>
+                          <p className="text-sm" style={{color: '#94a3b8'}}>
+                            {dms.last_reset ? new Date(dms.last_reset).toLocaleString() : 'Never'}
+                          </p>
+                        </div>
+                        <Button
+                          type="button"
+                          onClick={resetLastActivity}
+                          size="sm"
+                          style={{background: '#3b82f6', color: '#fff'}}
+                        >
+                          <RefreshCw className="w-4 h-4 mr-2" />
+                          I'm Active
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                  
+                  <Button type="submit" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: '#fff'}}>
+                    Save Configuration
+                  </Button>
+                </CardContent>
+              </Card>
+            </form>
+
+            {/* Info Card */}
+            <Card style={{background: 'linear-gradient(135deg, #2d0e1e 0%, #3d1828 100%)', borderColor: '#ef4444', borderLeftWidth: '4px'}}>
+              <CardContent className="py-6">
+                <div className="flex items-start gap-4">
+                  <Shield className="w-6 h-6 flex-shrink-0" style={{color: '#fca5a5'}} />
+                  <div>
+                    <h3 className="font-semibold mb-2" style={{color: '#fca5a5'}}>Why This Matters</h3>
+                    <ul className="text-sm space-y-2" style={{color: '#cbd5e1'}}>
+                      <li>• <strong>Life is unpredictable:</strong> Accidents, health emergencies, or sudden events can happen anytime</li>
+                      <li>• <strong>Protect your legacy:</strong> Without this, your assets could be lost forever to your family</li>
+                      <li>• <strong>Peace of mind:</strong> Know that your loved ones will be notified and can access important information</li>
+                      <li>• <strong>You stay in control:</strong> Simply log in to reset the timer and prevent false alarms</li>
+                    </ul>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        );
+
       case 'security':
         return (
           <div className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold mb-2" style={{color: '#f8fafc'}}>Security Settings</h2>
-              <p style={{color: '#94a3b8'}}>Protect your assets and data</p>
+              <p style={{color: '#94a3b8'}}>Protect your account and data</p>
             </div>
             
             <form onSubmit={handleNomineeSubmit}>
