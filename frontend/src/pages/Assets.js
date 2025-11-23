@@ -967,7 +967,7 @@ export default function Assets() {
                               <div className="text-sm">
                                 <span style={{color: '#ef4444', fontWeight: 600}}>↓ {liabilityCount} Debt{liabilityCount !== 1 ? 's' : ''}</span>
                                 <div style={{color: 'rgba(255,255,255,0.6)', fontSize: '0.75rem'}}>
-                                  {formatCurrency(liabilitiesValue, selectedCurrency, currencyFormat)}
+                                  {liabilitiesTotal !== null ? formatCurrency(liabilitiesTotal, selectedCurrency, currencyFormat) : 'Calculating...'}
                                 </div>
                               </div>
                             )}
