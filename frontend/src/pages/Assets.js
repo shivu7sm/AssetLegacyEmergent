@@ -455,16 +455,17 @@ export default function Assets() {
         </div>
 
         {assets.length === 0 ? (
-          <Card className="bg-slate-800/30 border-slate-700" data-testid="no-assets-card">
+          <Card data-testid="no-assets-card" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
             <CardContent className="py-16">
               <div className="text-center">
-                <DollarSign className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-slate-300 mb-2">No assets yet</h3>
-                <p className="text-slate-400 mb-6">Start tracking your wealth by adding your first asset</p>
+                <DollarSign className="w-16 h-16 mx-auto mb-4" style={{color: '#2d1f3d'}} />
+                <h3 className="text-xl font-semibold mb-2" style={{color: '#f8fafc'}}>No assets yet</h3>
+                <p className="mb-6" style={{color: '#94a3b8'}}>Start tracking your wealth by adding your first asset</p>
                 <Button 
                   data-testid="add-first-asset-empty-btn"
                   onClick={() => setDialogOpen(true)}
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-full"
+                  className="text-white rounded-full"
+                  style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   Add Your First Asset
