@@ -202,8 +202,97 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Pricing Section */}
+      <section className="py-20">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h3 className="text-3xl sm:text-4xl font-bold mb-4" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
+              Simple, Transparent Pricing
+            </h3>
+            <p className="text-base sm:text-lg" style={{color: '#94a3b8'}}>
+              Choose the plan that fits your needs
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {/* Basic Plan */}
+            <div className="p-8 rounded-2xl" style={{background: '#1a1229', border: '1px solid #2d1f3d'}}>
+              <div className="text-sm font-semibold mb-2" style={{color: '#94a3b8'}}>BASIC</div>
+              <div className="mb-6">
+                <span className="text-4xl font-bold" style={{color: '#f8fafc'}}>$5</span>
+                <span style={{color: '#94a3b8'}}>/month</span>
+              </div>
+              <ul className="space-y-3 mb-8" style={{color: '#cbd5e1'}}>
+                <li>✓ Up to 20 assets</li>
+                <li>✓ Basic dead man switch</li>
+                <li>✓ 1 nominee</li>
+                <li>✓ Digital will</li>
+                <li>✓ Document vault (500MB)</li>
+                <li>✓ Email support</li>
+              </ul>
+              <Button onClick={handleLogin} className="w-full text-white" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}>
+                Get Started
+              </Button>
+            </div>
+
+            {/* Premium Plan - Featured */}
+            <div className="p-8 rounded-2xl relative" style={{background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%)', border: '2px solid #ec4899'}}>
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 px-4 py-1 rounded-full text-xs font-semibold" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: 'white'}}>
+                MOST POPULAR
+              </div>
+              <div className="text-sm font-semibold mb-2" style={{color: '#ec4899'}}>PREMIUM</div>
+              <div className="mb-6">
+                <span className="text-4xl font-bold" style={{color: '#f8fafc'}}>$12</span>
+                <span style={{color: '#94a3b8'}}>/month</span>
+              </div>
+              <ul className="space-y-3 mb-8" style={{color: '#cbd5e1'}}>
+                <li>✓ Unlimited assets</li>
+                <li>✓ Advanced dead man switch</li>
+                <li>✓ Up to 5 nominees</li>
+                <li>✓ Digital will + beneficiary distribution</li>
+                <li>✓ Document vault (5GB)</li>
+                <li>✓ Real-time price tracking</li>
+                <li>✓ Priority support</li>
+                <li>✓ Export reports</li>
+              </ul>
+              <Button onClick={handleLogin} className="w-full text-white" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}>
+                Get Started
+              </Button>
+            </div>
+
+            {/* Enterprise Plan */}
+            <div className="p-8 rounded-2xl" style={{background: '#1a1229', border: '1px solid #2d1f3d'}}>
+              <div className="text-sm font-semibold mb-2" style={{color: '#94a3b8'}}>ENTERPRISE</div>
+              <div className="mb-6">
+                <span className="text-4xl font-bold" style={{color: '#f8fafc'}}>$25</span>
+                <span style={{color: '#94a3b8'}}>/month</span>
+              </div>
+              <ul className="space-y-3 mb-8" style={{color: '#cbd5e1'}}>
+                <li>✓ Everything in Premium</li>
+                <li>✓ Family plan (up to 5 users)</li>
+                <li>✓ Unlimited nominees</li>
+                <li>✓ Document vault (20GB)</li>
+                <li>✓ White-label option</li>
+                <li>✓ Dedicated support</li>
+                <li>✓ Custom integrations</li>
+                <li>✓ API access</li>
+              </ul>
+              <Button onClick={handleLogin} className="w-full text-white" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}>
+                Get Started
+              </Button>
+            </div>
+          </div>
+
+          <div className="text-center mt-12">
+            <p className="text-sm" style={{color: '#64748b'}}>
+              All plans include 14-day free trial. No credit card required. Cancel anytime.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
-      <section className="py-20" style={{background: 'linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%)', borderTop: '1px solid #1e293b', borderBottom: '1px solid #1e293b'}}>
+      <section className="py-20" style={{background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%)', borderTop: '1px solid #2d1f3d', borderBottom: '1px solid #2d1f3d'}}>
         <div className="container mx-auto px-6 text-center">
           <h3 className="text-3xl sm:text-4xl font-bold mb-6" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
             Secure Your Family's Future Today
@@ -211,7 +300,7 @@ export default function LandingPage() {
           <p className="text-base sm:text-lg mb-8 max-w-2xl mx-auto" style={{color: '#94a3b8'}}>
             Join thousands protecting their wealth and ensuring it reaches their loved ones.
           </p>
-          <Button data-testid="cta-get-started-btn" onClick={handleLogin} size="lg" className="px-8 py-6 text-lg rounded-full" style={{background: 'linear-gradient(135deg, #2563eb 0%, #7c3aed 100%)', color: 'white', border: 'none'}}>
+          <Button data-testid="cta-get-started-btn" onClick={handleLogin} size="lg" className="px-8 py-6 text-lg rounded-full" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: 'white', border: 'none'}}>
             Start Protecting Your Assets
           </Button>
         </div>
