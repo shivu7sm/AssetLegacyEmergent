@@ -102,7 +102,11 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "AssetVault app - Phase 1 Implementation: Fix asset/liability calculations, add grid view summary card, and extend current value fields to Real Estate and Precious Metals"
+user_problem_statement: "AssetVault app - New Phase Implementation:
+1. Use asset purchase dates to create historical net worth snapshots (with backfill for existing assets)
+2. Reorganize dashboard: move net worth chart below pie charts, add data tables next to pie charts showing breakdown
+3. Enhance AI insights: better formatting, persistence with timestamp, detailed view modal, refresh button
+4. Focus AI analysis on asset distribution, investment diversification, risks vs advantages"
 
 backend:
   - task: "Asset vs Liability Calculation"
