@@ -39,7 +39,18 @@ export default function LandingPage() {
           </div>
           
           {/* Navigation Links */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-6">
+            <a 
+              href="#truth" 
+              className="text-sm font-medium hover:text-purple-400 transition-colors"
+              style={{color: '#cbd5e1'}}
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('truth')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              The Truth
+            </a>
             <a 
               href="#how-it-works" 
               className="text-sm font-medium hover:text-purple-400 transition-colors"
