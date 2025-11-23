@@ -41,13 +41,13 @@ function AssetTableRow({ asset, typeInfo, purchaseValueOriginal, currentValueOri
   useEffect(() => {
     const convert = async () => {
       setLoading(true);
-      const rate = await getConversionRate(asset.purchase_currency, displayCurrency);
+      const rate = await getConversionRate(asset.purchase_currency, selectedCurrency);
       setPurchaseConverted(purchaseValueOriginal * rate);
       setCurrentConverted(currentValueOriginal * rate);
       setLoading(false);
     };
     convert();
-  }, [asset.purchase_currency, displayCurrency, purchaseValueOriginal, currentValueOriginal]);
+  }, [asset.purchase_currency, selectedCurrency, purchaseValueOriginal, currentValueOriginal]);
 
   const gain = currentConverted - purchaseConverted;
   const gainPercent = purchaseConverted ? ((gain / purchaseConverted) * 100).toFixed(2) : 0;
