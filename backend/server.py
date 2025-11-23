@@ -14,6 +14,7 @@ import requests
 from pycoingecko import CoinGeckoAPI
 import asyncio
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+import stripe
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
