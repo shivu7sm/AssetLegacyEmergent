@@ -1017,7 +1017,8 @@ export default function Assets() {
                             typeInfo={typeInfo}
                             purchaseValueOriginal={purchaseValueOriginal}
                             currentValueOriginal={currentValueOriginal}
-                            displayCurrency={displayCurrency}
+                            selectedCurrency={selectedCurrency}
+                            currencyFormat={currencyFormat}
                             getConversionRate={getConversionRate}
                             handleEdit={handleEdit}
                             handleDelete={handleDelete}
