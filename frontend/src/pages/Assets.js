@@ -1347,6 +1347,494 @@ export default function Assets() {
             </Card>
           </div>
         )}
+        </>
+        ) : (
+          /* PORTFOLIOS VIEW */
+          <div>
+            {portfolios.length === 0 ? (
+              <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                <CardContent className="py-16">
+                  <div className="text-center">
+                    <div className="text-6xl mb-4">📊</div>
+                    <h3 className="text-xl font-semibold mb-2" style={{color: '#f8fafc'}}>No Portfolios Yet</h3>
+                    <p className="mb-6" style={{color: '#94a3b8'}}>
+                      Create a portfolio to track holdings across exchanges and brokers
+                    </p>
+                    <Button 
+                      onClick={() => setPortfolioDialogOpen(true)}
+                      className="text-white rounded-full"
+                      style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
+                    >
+                      <Plus className="w-4 h-4 mr-2" />
+                      Create Your First Portfolio
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {portfolios.map((portfolio) => (
+                  <Card 
+                    key={portfolio.id}
+                    className="cursor-pointer hover:border-purple-500 transition-all"
+                    style={{background: '#1a1229', borderColor: '#2d1f3d'}}
+                    onClick={() => fetchPortfolioDetails(portfolio.id)}
+                  >
+                    <CardHeader>
+                      <CardTitle className="flex items-center justify-between" style={{color: '#f8fafc'}}>
+                        <div className="flex items-center gap-2">
+                          <span className="text-2xl">📊</span>
+                          <span>{portfolio.name}</span>
+                        </div>
+                        <span 
+                          className="text-xs px-2 py-1 rounded-full"
+                          style={{background: '#2d0e3e', color: '#a855f7'}}
+                        >
+                          {portfolio.provider_name}
+                        </span>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-2">
+                        <div className="flex justify-between items-center">
+                          <span style={{color: '#94a3b8', fontSize: '0.875rem'}}>Holdings</span>
+                          <span style={{color: '#f8fafc', fontWeight: 600}}>
+                            {portfolio.holdings?.length || 0}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span style={{color: '#94a3b8', fontSize: '0.875rem'}}>Total Value</span>
+                          <span style={{color: '#ec4899', fontWeight: 700, fontSize: '1.125rem'}}>
+                            {formatCurrency(portfolio.total_value || 0, portfolio.purchase_currency, currencyFormat)}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center text-xs">
+                          <span style={{color: '#64748b'}}>Type</span>
+                          <span style={{color: '#94a3b8'}}>
+                            {portfolio.provider_type.replace('_', ' ')}
+                          </span>
+                        </div>
+                      </div>
+                      <Button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeletePortfolio(portfolio.id);
+                        }}
+                        variant="outline"
+                        size="sm"
+                        className="w-full mt-4"
+                        style={{borderColor: '#ef4444', color: '#ef4444'}}
+                      >
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        Delete
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
+
+            {/* Portfolio Details Dialog */}
+            <Dialog open={selectedPortfolio !== null} onOpenChange={(open) => !open && setSelectedPortfolio(null)}>
+              <DialogContent className="text-white max-w-4xl max-h-[90vh] overflow-y-auto" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                <DialogHeader>
+                  <DialogTitle className="text-2xl flex items-center gap-2">
+                    <span>📊</span>
+                    {selectedPortfolio?.name}
+                    <span 
+                      className="text-sm px-3 py-1 rounded-full"
+                      style={{background: '#2d0e3e', color: '#a855f7'}}
+                    >
+                      {selectedPortfolio?.provider_name}
+                    </span>
+                  </DialogTitle>
+                </DialogHeader>
+
+                <div className="space-y-6">
+                  {/* Portfolio Summary */}
+                  <Card style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', border: 'none'}}>
+                    <CardContent className="py-6">
+                      <div className="grid grid-cols-2 gap-4 text-white">
+                        <div>
+                          <div className="text-sm opacity-80">Total Holdings</div>
+                          <div className="text-3xl font-bold">
+                            {selectedPortfolio?.holdings?.length || 0}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-sm opacity-80">Total Value</div>
+                          <div className="text-3xl font-bold">
+                            {formatCurrency(
+                              selectedPortfolio?.total_value || 0,
+                              selectedPortfolio?.purchase_currency || 'USD',
+                              currencyFormat
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Add Holding Button */}
+                  <Button
+                    onClick={() => {
+                      setEditingHolding(null);
+                      setHoldingForm({
+                        symbol: '',
+                        name: '',
+                        quantity: '',
+                        purchase_price: '',
+                        purchase_date: '',
+                        purchase_currency: selectedPortfolio?.purchase_currency || 'USD',
+                        current_price: '',
+                        asset_type: selectedPortfolio?.provider_type === 'crypto_exchange' ? 'crypto' : 'stock'
+                      });
+                      setHoldingDialogOpen(true);
+                    }}
+                    className="w-full text-white"
+                    style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Holding
+                  </Button>
+
+                  {/* Holdings List */}
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-semibold" style={{color: '#f8fafc'}}>Holdings</h3>
+                    {selectedPortfolio?.holdings && selectedPortfolio.holdings.length > 0 ? (
+                      selectedPortfolio.holdings.map((holding, index) => {
+                        const purchaseValue = holding.quantity * holding.purchase_price;
+                        const currentValue = holding.current_price 
+                          ? holding.quantity * holding.current_price 
+                          : purchaseValue;
+                        const gain = currentValue - purchaseValue;
+                        const gainPercent = purchaseValue ? ((gain / purchaseValue) * 100).toFixed(2) : 0;
+
+                        return (
+                          <Card 
+                            key={index}
+                            style={{background: '#131835', borderColor: '#1e293b'}}
+                          >
+                            <CardContent className="py-4">
+                              <div className="flex justify-between items-start">
+                                <div className="flex-1">
+                                  <div className="flex items-center gap-2 mb-2">
+                                    <span style={{color: '#f8fafc', fontWeight: 600, fontSize: '1.125rem'}}>
+                                      {holding.name}
+                                    </span>
+                                    <span 
+                                      className="text-xs px-2 py-0.5 rounded"
+                                      style={{background: '#2d1f3d', color: '#94a3b8'}}
+                                    >
+                                      {holding.symbol}
+                                    </span>
+                                    <span 
+                                      className="text-xs px-2 py-0.5 rounded"
+                                      style={{background: '#2d0e3e', color: '#a855f7'}}
+                                    >
+                                      {holding.asset_type}
+                                    </span>
+                                  </div>
+                                  
+                                  <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
+                                    <div>
+                                      <span style={{color: '#64748b'}}>Quantity: </span>
+                                      <span style={{color: '#cbd5e1'}}>{holding.quantity}</span>
+                                    </div>
+                                    <div>
+                                      <span style={{color: '#64748b'}}>Purchase Price: </span>
+                                      <span style={{color: '#cbd5e1'}}>
+                                        {formatCurrency(holding.purchase_price, holding.purchase_currency, currencyFormat)}
+                                      </span>
+                                    </div>
+                                    <div>
+                                      <span style={{color: '#64748b'}}>Current Price: </span>
+                                      <span style={{color: '#cbd5e1'}}>
+                                        {holding.current_price 
+                                          ? formatCurrency(holding.current_price, holding.purchase_currency, currencyFormat)
+                                          : 'N/A'}
+                                      </span>
+                                    </div>
+                                    <div>
+                                      <span style={{color: '#64748b'}}>Current Value: </span>
+                                      <span style={{color: '#ec4899', fontWeight: 600}}>
+                                        {formatCurrency(currentValue, holding.purchase_currency, currencyFormat)}
+                                      </span>
+                                    </div>
+                                    <div>
+                                      <span style={{color: '#64748b'}}>Gain/Loss: </span>
+                                      <span style={{color: gain >= 0 ? '#10b981' : '#ef4444', fontWeight: 600}}>
+                                        {gain >= 0 ? '+' : ''}{formatCurrency(gain, holding.purchase_currency, currencyFormat)}
+                                        {' '}({gain >= 0 ? '+' : ''}{gainPercent}%)
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div className="flex gap-2 ml-4">
+                                  <Button
+                                    onClick={() => {
+                                      setEditingHolding(holding);
+                                      setHoldingForm({
+                                        symbol: holding.symbol,
+                                        name: holding.name,
+                                        quantity: holding.quantity.toString(),
+                                        purchase_price: holding.purchase_price.toString(),
+                                        purchase_date: holding.purchase_date,
+                                        purchase_currency: holding.purchase_currency,
+                                        current_price: holding.current_price?.toString() || '',
+                                        asset_type: holding.asset_type
+                                      });
+                                      setHoldingDialogOpen(true);
+                                    }}
+                                    size="sm"
+                                    variant="outline"
+                                    style={{borderColor: '#2d1f3d', color: '#a855f7'}}
+                                  >
+                                    <Edit className="w-4 h-4" />
+                                  </Button>
+                                  <Button
+                                    onClick={() => handleDeleteHolding(selectedPortfolio.id, holding.symbol)}
+                                    size="sm"
+                                    variant="outline"
+                                    style={{borderColor: '#ef4444', color: '#ef4444'}}
+                                  >
+                                    <Trash2 className="w-4 h-4" />
+                                  </Button>
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        );
+                      })
+                    ) : (
+                      <Card style={{background: '#131835', borderColor: '#1e293b'}}>
+                        <CardContent className="py-8 text-center">
+                          <p style={{color: '#64748b'}}>No holdings yet. Add your first holding above.</p>
+                        </CardContent>
+                      </Card>
+                    )}
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+
+            {/* Create/Edit Portfolio Dialog */}
+            <Dialog open={portfolioDialogOpen} onOpenChange={setPortfolioDialogOpen}>
+              <DialogContent className="text-white" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                <DialogHeader>
+                  <DialogTitle className="text-2xl">Create New Portfolio</DialogTitle>
+                </DialogHeader>
+                <form onSubmit={handleCreatePortfolio} className="space-y-4">
+                  <div>
+                    <Label className="text-slate-300">Portfolio Name *</Label>
+                    <Input
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      placeholder="e.g., My Binance Account"
+                      required
+                      className="bg-slate-800 border-slate-700 text-white"
+                    />
+                  </div>
+
+                  <div>
+                    <Label className="text-slate-300">Provider/Exchange *</Label>
+                    <Select 
+                      value={formData.provider_name} 
+                      onValueChange={(value) => {
+                        const provider = PORTFOLIO_PROVIDERS.find(p => p.value === value);
+                        setFormData({ 
+                          ...formData, 
+                          provider_name: value,
+                          provider_type: provider?.type || 'other'
+                        });
+                      }}
+                    >
+                      <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
+                        <SelectValue placeholder="Select provider" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-slate-800 border-slate-700">
+                        {PORTFOLIO_PROVIDERS.map(provider => (
+                          <SelectItem key={provider.value} value={provider.value} className="text-white">
+                            {provider.label} ({provider.type.replace('_', ' ')})
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <Label className="text-slate-300">Base Currency</Label>
+                    <Select value={formData.purchase_currency} onValueChange={(value) => setFormData({ ...formData, purchase_currency: value })}>
+                      <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-slate-800 border-slate-700">
+                        {CURRENCIES.map((curr) => (
+                          <SelectItem key={curr} value={curr} className="text-white">{curr}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="flex gap-3 pt-4">
+                    <Button 
+                      type="submit" 
+                      className="flex-1 text-white"
+                      style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
+                    >
+                      Create Portfolio
+                    </Button>
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      onClick={() => setPortfolioDialogOpen(false)}
+                      style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </form>
+              </DialogContent>
+            </Dialog>
+
+            {/* Add/Edit Holding Dialog */}
+            <Dialog open={holdingDialogOpen} onOpenChange={setHoldingDialogOpen}>
+              <DialogContent className="text-white" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                <DialogHeader>
+                  <DialogTitle className="text-2xl">
+                    {editingHolding ? 'Edit Holding' : 'Add New Holding'}
+                  </DialogTitle>
+                </DialogHeader>
+                <form onSubmit={handleAddHolding} className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label className="text-slate-300">Asset Type</Label>
+                      <Select value={holdingForm.asset_type} onValueChange={(value) => setHoldingForm({ ...holdingForm, asset_type: value })}>
+                        <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-slate-800 border-slate-700">
+                          <SelectItem value="crypto" className="text-white">Cryptocurrency</SelectItem>
+                          <SelectItem value="stock" className="text-white">Stock</SelectItem>
+                          <SelectItem value="bond" className="text-white">Bond</SelectItem>
+                          <SelectItem value="etf" className="text-white">ETF</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label className="text-slate-300">Symbol *</Label>
+                      <Input
+                        value={holdingForm.symbol}
+                        onChange={(e) => setHoldingForm({ ...holdingForm, symbol: e.target.value })}
+                        placeholder="BTC, AAPL, etc."
+                        required
+                        disabled={!!editingHolding}
+                        className="bg-slate-800 border-slate-700 text-white"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <Label className="text-slate-300">Name *</Label>
+                    <Input
+                      value={holdingForm.name}
+                      onChange={(e) => setHoldingForm({ ...holdingForm, name: e.target.value })}
+                      placeholder="Bitcoin, Apple Inc., etc."
+                      required
+                      className="bg-slate-800 border-slate-700 text-white"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label className="text-slate-300">Quantity *</Label>
+                      <Input
+                        type="number"
+                        step="any"
+                        value={holdingForm.quantity}
+                        onChange={(e) => setHoldingForm({ ...holdingForm, quantity: e.target.value })}
+                        placeholder="10"
+                        required
+                        className="bg-slate-800 border-slate-700 text-white"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-slate-300">Purchase Price *</Label>
+                      <Input
+                        type="number"
+                        step="any"
+                        value={holdingForm.purchase_price}
+                        onChange={(e) => setHoldingForm({ ...holdingForm, purchase_price: e.target.value })}
+                        placeholder="50000"
+                        required
+                        className="bg-slate-800 border-slate-700 text-white"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label className="text-slate-300">Current Price (Optional)</Label>
+                      <Input
+                        type="number"
+                        step="any"
+                        value={holdingForm.current_price}
+                        onChange={(e) => setHoldingForm({ ...holdingForm, current_price: e.target.value })}
+                        placeholder="55000"
+                        className="bg-slate-800 border-slate-700 text-white"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-slate-300">Currency</Label>
+                      <Select value={holdingForm.purchase_currency} onValueChange={(value) => setHoldingForm({ ...holdingForm, purchase_currency: value })}>
+                        <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-slate-800 border-slate-700">
+                          {CURRENCIES.map((curr) => (
+                            <SelectItem key={curr} value={curr} className="text-white">{curr}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <Label className="text-slate-300">Purchase Date</Label>
+                    <Input
+                      type="date"
+                      value={holdingForm.purchase_date}
+                      onChange={(e) => setHoldingForm({ ...holdingForm, purchase_date: e.target.value })}
+                      className="bg-slate-800 border-slate-700 text-white"
+                    />
+                  </div>
+
+                  <div className="flex gap-3 pt-4">
+                    <Button 
+                      type="submit" 
+                      className="flex-1 text-white"
+                      style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
+                    >
+                      {editingHolding ? 'Update Holding' : 'Add Holding'}
+                    </Button>
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      onClick={() => {
+                        setHoldingDialogOpen(false);
+                        setEditingHolding(null);
+                      }}
+                      style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </form>
+              </DialogContent>
+            </Dialog>
+          </div>
+        )}
       </div>
     </Layout>
   );
