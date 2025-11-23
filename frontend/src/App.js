@@ -191,7 +191,9 @@ function App() {
       <BrowserRouter>
         <AuthProvider>
           <AppProvider>
-            <AppRoutes />
+            <ThemeProvider>
+              <AppRoutes />
+            </ThemeProvider>
           </AppProvider>
         </AuthProvider>
       </BrowserRouter>
