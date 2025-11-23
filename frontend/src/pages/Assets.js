@@ -37,6 +37,7 @@ function AssetTableRow({ asset, typeInfo, purchaseValueOriginal, currentValueOri
   const [purchaseConverted, setPurchaseConverted] = useState(purchaseValueOriginal);
   const [currentConverted, setCurrentConverted] = useState(currentValueOriginal);
   const [loading, setLoading] = useState(true);
+  const isLiability = typeInfo.isLiability;
 
   useEffect(() => {
     const convert = async () => {
@@ -53,17 +54,30 @@ function AssetTableRow({ asset, typeInfo, purchaseValueOriginal, currentValueOri
   const gainPercent = purchaseConverted ? ((gain / purchaseConverted) * 100).toFixed(2) : 0;
 
   return (
-    <tr style={{borderBottom: '1px solid #2d1f3d'}}>
+    <tr style={{
+      borderBottom: '1px solid #2d1f3d',
+      background: isLiability ? 'rgba(220, 38, 38, 0.05)' : 'transparent'
+    }}>
       <td className="p-4">
         <div className="flex items-center gap-3">
           <span className="text-2xl">{typeInfo.icon}</span>
           <div>
-            <div style={{color: '#f8fafc', fontWeight: 500}}>{asset.name}</div>
+            <div className="flex items-center gap-2">
+              <span style={{color: isLiability ? '#ef4444' : '#f8fafc', fontWeight: 500}}>{asset.name}</span>
+              {isLiability && (
+                <span 
+                  className="text-xs px-2 py-0.5 rounded-full font-semibold"
+                  style={{background: '#dc2626', color: '#fff'}}
+                >
+                  DEBT
+                </span>
+              )}
+            </div>
             {asset.symbol && <div className="text-xs" style={{color: '#94a3b8'}}>{asset.symbol}</div>}
           </div>
         </div>
       </td>
-      <td className="p-4" style={{color: '#94a3b8'}}>{typeInfo.label}</td>
+      <td className="p-4" style={{color: isLiability ? '#f87171' : '#94a3b8'}}>{typeInfo.label}</td>
       <td className="p-4 text-right" style={{color: '#94a3b8'}}>
         {asset.quantity && `${asset.quantity} units`}
         {asset.weight && `${asset.weight} ${asset.weight_unit}`}
@@ -71,18 +85,20 @@ function AssetTableRow({ asset, typeInfo, purchaseValueOriginal, currentValueOri
         {!asset.quantity && !asset.weight && !asset.area && '-'}
       </td>
       <td className="p-4 text-right" style={{color: '#cbd5e1'}}>
-        <div className="font-semibold">{asset.purchase_currency} {purchaseValueOriginal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+        <div className="font-semibold">
+          {isLiability ? '-' : ''}{asset.purchase_currency} {purchaseValueOriginal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+        </div>
       </td>
-      <td className="p-4 text-right" style={{color: '#f8fafc'}}>
-        {loading ? '...' : formatCurrency(purchaseConverted, selectedCurrency, currencyFormat)}
+      <td className="p-4 text-right" style={{color: isLiability ? '#ef4444' : '#f8fafc'}}>
+        {loading ? '...' : (isLiability ? '-' : '') + formatCurrency(purchaseConverted, selectedCurrency, currencyFormat)}
       </td>
       <td className="p-4 text-right">
-        <div style={{color: '#ec4899', fontWeight: 600}}>
-          {loading ? '...' : formatCurrency(currentConverted, selectedCurrency, currencyFormat)}
+        <div style={{color: isLiability ? '#dc2626' : '#ec4899', fontWeight: 600}}>
+          {loading ? '...' : (isLiability ? '-' : '') + formatCurrency(currentConverted, selectedCurrency, currencyFormat)}
         </div>
       </td>
       <td className="p-4 text-right">
-        {!loading && gain !== 0 && (
+        {!isLiability && !loading && gain !== 0 && (
           <div>
             <div style={{color: gain > 0 ? '#22c55e' : '#ef4444', fontWeight: 600}}>
               {gain > 0 ? '+' : ''}{gain.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
@@ -90,6 +106,11 @@ function AssetTableRow({ asset, typeInfo, purchaseValueOriginal, currentValueOri
             <div className="text-xs" style={{color: gain > 0 ? '#22c55e' : '#ef4444'}}>
               ({gainPercent}%)
             </div>
+          </div>
+        )}
+        {isLiability && !loading && (
+          <div style={{color: '#94a3b8', fontSize: '0.875rem'}}>
+            Liability
           </div>
         )}
       </td>
