@@ -193,7 +193,11 @@ async def get_current_user(request: Request) -> Optional[User]:
     if not session:
         return None
     
-    if datetime.fromisoformat(session["expires_at"]) < datetime.now(timezone.utc):
+    expires_at = session["expires_at"]
+    if isinstance(expires_at, str):
+        expires_at = datetime.fromisoformat(expires_at)
+    
+    if expires_at < datetime.now(timezone.utc):
         await db.user_sessions.delete_one({"session_token": session_token})
         return None
     
