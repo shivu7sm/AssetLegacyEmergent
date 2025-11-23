@@ -513,6 +513,15 @@ async def update_asset(asset_id: str, asset_data: AssetCreate, user: User = Depe
         {"$set": update_data}
     )
     
+    # Auto-create snapshot for purchase date if it changed
+    old_purchase_date = existing.get('purchase_date')
+    new_purchase_date = asset_data.purchase_date
+    if new_purchase_date and new_purchase_date != old_purchase_date:
+        try:
+            await create_snapshot_for_date(user.id, new_purchase_date, asset_data.purchase_currency)
+        except Exception as e:
+            logger.warning(f"Failed to auto-create snapshot for asset update: {str(e)}")
+    
     updated = await db.assets.find_one({"id": asset_id}, {"_id": 0})
     if isinstance(updated.get('created_at'), str):
         updated['created_at'] = datetime.fromisoformat(updated['created_at'])
