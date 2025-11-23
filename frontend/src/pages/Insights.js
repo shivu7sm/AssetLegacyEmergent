@@ -287,7 +287,10 @@ export default function Insights() {
                                 {insights.action_items.map((action, index) => (
                                   <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: '#16001e'}}>
                                     <span className="text-xl">✅</span>
-                                    <p style={{color: '#cbd5e1', lineHeight: '1.6'}}>{action}</p>
+                                    <p 
+                                      style={{color: '#cbd5e1', lineHeight: '1.6'}}
+                                      dangerouslySetInnerHTML={{__html: formatText(action)}}
+                                    />
                                   </li>
                                 ))}
                               </ul>
