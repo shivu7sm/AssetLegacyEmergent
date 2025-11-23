@@ -1,482 +1,656 @@
 {
-  "timestamp": "2025-11-23T10:31:46.545945",
-  "total_tests": 79,
-  "passed_tests": 78,
-  "success_rate": 98.73417721518987,
+  "timestamp": "2025-11-23T10:53:18.417365",
+  "total_tests": 108,
+  "passed_tests": 105,
+  "success_rate": 97.22222222222221,
   "test_details": [
     {
       "test": "Get current user (/auth/me)",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:24.561861"
+      "timestamp": "2025-11-23T10:52:39.957185"
     },
     {
       "test": "Get user without auth (should fail)",
       "success": true,
       "details": "Status: 401",
-      "timestamp": "2025-11-23T10:31:24.595450"
+      "timestamp": "2025-11-23T10:52:39.997730"
     },
     {
       "test": "Get assets list",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:24.634086"
+      "timestamp": "2025-11-23T10:52:40.079671"
     },
     {
       "test": "Create new asset",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:24.674409"
+      "timestamp": "2025-11-23T10:52:40.123488"
     },
     {
       "test": "Update asset",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:24.712017"
+      "timestamp": "2025-11-23T10:52:40.159012"
     },
     {
       "test": "Get assets after creation",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:24.751577"
+      "timestamp": "2025-11-23T10:52:40.196487"
     },
     {
       "test": "Delete asset",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:24.787602"
+      "timestamp": "2025-11-23T10:52:40.234577"
     },
     {
       "test": "Get nominee (initially empty)",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:24.822912"
+      "timestamp": "2025-11-23T10:52:40.275895"
     },
     {
       "test": "Create nominee",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:24.861479"
+      "timestamp": "2025-11-23T10:52:40.317003"
     },
     {
       "test": "Update nominee",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:24.898652"
+      "timestamp": "2025-11-23T10:52:40.357749"
     },
     {
       "test": "Get DMS config (initially empty)",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:24.934158"
+      "timestamp": "2025-11-23T10:52:40.402002"
     },
     {
       "test": "Create DMS configuration",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:24.970817"
+      "timestamp": "2025-11-23T10:52:40.444383"
     },
     {
       "test": "Reset DMS timer",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:25.009670"
+      "timestamp": "2025-11-23T10:52:40.479241"
     },
     {
       "test": "Update DMS configuration",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:25.047204"
+      "timestamp": "2025-11-23T10:52:40.520110"
     },
     {
       "test": "Create asset for dashboard test",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:25.083306"
+      "timestamp": "2025-11-23T10:52:40.564941"
     },
     {
       "test": "Get dashboard summary",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:25.123423"
+      "timestamp": "2025-11-23T10:52:40.605649"
     },
     {
       "test": "Get existing assets for cleanup",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:25.159943"
+      "timestamp": "2025-11-23T10:52:40.645510"
     },
     {
-      "test": "Delete existing asset a432615d-7f42-4853-a538-45767a040f76",
+      "test": "Delete existing asset 0a30f0d2-9171-416f-bedd-7cb1061f1e1c",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:25.195942"
+      "timestamp": "2025-11-23T10:52:40.682063"
     },
     {
       "test": "Create property asset: Family Home",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:25.232073"
+      "timestamp": "2025-11-23T10:52:40.717786"
     },
     {
       "test": "Create crypto asset: Bitcoin Investment",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:25.268492"
+      "timestamp": "2025-11-23T10:52:40.756280"
     },
     {
       "test": "Create stock asset: Apple Stock",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:25.307127"
+      "timestamp": "2025-11-23T10:52:40.794252"
     },
     {
       "test": "Create bank asset: Savings Account",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:25.382327"
+      "timestamp": "2025-11-23T10:52:40.832118"
     },
     {
       "test": "Create loan liability: Home Mortgage",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:25.422701"
+      "timestamp": "2025-11-23T10:52:40.869369"
     },
     {
       "test": "Create credit_card liability: Credit Card Debt",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:25.500800"
+      "timestamp": "2025-11-23T10:52:40.906623"
     },
     {
       "test": "Get dashboard summary with assets and liabilities",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:25.539001"
+      "timestamp": "2025-11-23T10:52:40.946769"
     },
     {
       "test": "Dashboard summary has all required Phase 1 fields",
       "success": true,
       "details": "All Phase 1 fields present",
-      "timestamp": "2025-11-23T10:31:25.539447"
+      "timestamp": "2025-11-23T10:52:40.947411"
     },
     {
       "test": "Asset calculation accuracy",
       "success": true,
       "details": "Expected: $429000.0, Actual: $429000.0",
-      "timestamp": "2025-11-23T10:31:25.539472"
+      "timestamp": "2025-11-23T10:52:40.947437"
     },
     {
       "test": "Liability calculation accuracy",
       "success": true,
       "details": "Expected: $185000, Actual: $185000.0",
-      "timestamp": "2025-11-23T10:31:25.539476"
+      "timestamp": "2025-11-23T10:52:40.947441"
     },
     {
       "test": "Net worth calculation accuracy",
       "success": true,
       "details": "Expected: $244000.0, Actual: $244000.0",
-      "timestamp": "2025-11-23T10:31:25.539479"
+      "timestamp": "2025-11-23T10:52:40.947444"
     },
     {
-      "test": "Cleanup test asset/liability 7f9a1596-be75-499c-a8f0-ad81db85d061",
+      "test": "Cleanup test asset/liability 8667bd7f-7864-460a-8428-d3a8cbcbafab",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:25.573698"
+      "timestamp": "2025-11-23T10:52:40.984708"
     },
     {
-      "test": "Cleanup test asset/liability 47683528-c213-40eb-8f0b-cad00707b795",
+      "test": "Cleanup test asset/liability 25935e3e-69a1-483c-9d18-6d8a7b0f86a2",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:25.608007"
+      "timestamp": "2025-11-23T10:52:41.066595"
     },
     {
-      "test": "Cleanup test asset/liability 9693c4fd-0dbc-41bd-93d2-a3933a8f4ae9",
+      "test": "Cleanup test asset/liability 721909a0-252e-42fd-884e-037dfeba74c3",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:25.641346"
+      "timestamp": "2025-11-23T10:52:41.104608"
     },
     {
-      "test": "Cleanup test asset/liability f4d50f11-6174-42b1-adf1-514f236c6c97",
+      "test": "Cleanup test asset/liability 9f3abfe8-46cf-4959-a636-7c69e6accbb9",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:25.677660"
+      "timestamp": "2025-11-23T10:52:41.142860"
     },
     {
-      "test": "Cleanup test asset/liability 69fc630e-fc3b-4fb1-8e2b-88b7954e6a66",
+      "test": "Cleanup test asset/liability 61c5a978-dbd5-4e07-9705-738ba4f308c1",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:25.720827"
+      "timestamp": "2025-11-23T10:52:41.178910"
     },
     {
-      "test": "Cleanup test asset/liability 7549ed8c-90bb-403f-8b05-2951ac5b2e9a",
+      "test": "Cleanup test asset/liability 3b66d3f5-7d26-482e-94c8-ead7769938d4",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:25.759163"
+      "timestamp": "2025-11-23T10:52:41.257724"
     },
     {
       "test": "Create real estate with current_price_per_area",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:25.792803"
+      "timestamp": "2025-11-23T10:52:41.298952"
     },
     {
       "test": "Real estate has current_price_per_area field",
       "success": true,
       "details": "Value: $250.0",
-      "timestamp": "2025-11-23T10:31:25.793333"
+      "timestamp": "2025-11-23T10:52:41.299707"
     },
     {
       "test": "Get dashboard summary for real estate calculation test",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:25.831143"
+      "timestamp": "2025-11-23T10:52:41.337890"
     },
     {
       "test": "Dashboard uses current_price_per_area for calculation",
       "success": true,
       "details": "Expected: $375000, Actual: $375000.0",
-      "timestamp": "2025-11-23T10:31:25.831567"
+      "timestamp": "2025-11-23T10:52:41.338477"
     },
     {
       "test": "Update real estate current_price_per_area",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:25.866213"
+      "timestamp": "2025-11-23T10:52:41.376300"
     },
     {
       "test": "Cleanup real estate test asset",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:25.900867"
+      "timestamp": "2025-11-23T10:52:41.414872"
     },
     {
       "test": "Get Bitcoin price",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:25.959921"
+      "timestamp": "2025-11-23T10:52:41.579305"
     },
     {
       "test": "Get gold price",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:25.992114"
+      "timestamp": "2025-11-23T10:52:41.614742"
     },
     {
       "test": "Get USD to EUR conversion",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:26.254663"
+      "timestamp": "2025-11-23T10:52:41.849392"
     },
     {
       "test": "Create asset with purchase_date (should auto-create snapshot)",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:26.658715"
+      "timestamp": "2025-11-23T10:52:42.257585"
     },
     {
       "test": "Get net worth history to verify auto-created snapshot",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:26.698240"
+      "timestamp": "2025-11-23T10:52:42.294537"
     },
     {
       "test": "Snapshot auto-created for asset purchase date",
       "success": true,
       "details": "Found snapshot for 2024-01-15 in ['2024-01-15']",
-      "timestamp": "2025-11-23T10:31:26.698685"
+      "timestamp": "2025-11-23T10:52:42.295300"
     },
     {
       "test": "Cleanup snapshot test asset",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:26.735439"
+      "timestamp": "2025-11-23T10:52:42.333207"
     },
     {
       "test": "Create crypto asset for backfill: Bitcoin for Backfill Test",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:27.143454"
+      "timestamp": "2025-11-23T10:52:42.737793"
     },
     {
       "test": "Create stock asset for backfill: Tesla Stock for Backfill Test",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:27.179577"
+      "timestamp": "2025-11-23T10:52:42.775319"
     },
     {
       "test": "Create bank asset for backfill: Savings for Backfill Test",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:27.215985"
+      "timestamp": "2025-11-23T10:52:42.814818"
     },
     {
       "test": "Call networth backfill endpoint",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:27.256175"
+      "timestamp": "2025-11-23T10:52:42.853345"
     },
     {
       "test": "Backfill endpoint returns proper response structure",
       "success": true,
       "details": "Created 3 snapshots for dates: ['2024-01-10', '2024-02-15', '2024-03-01']",
-      "timestamp": "2025-11-23T10:31:27.256611"
+      "timestamp": "2025-11-23T10:52:42.854064"
     },
     {
       "test": "Get net worth history after backfill",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:27.330617"
+      "timestamp": "2025-11-23T10:52:42.891645"
     },
     {
       "test": "Backfill created snapshots for all purchase dates",
       "success": true,
       "details": "Found snapshots for: ['2024-01-10', '2024-02-15', '2024-03-01']",
-      "timestamp": "2025-11-23T10:31:27.331140"
+      "timestamp": "2025-11-23T10:52:42.892406"
     },
     {
-      "test": "Cleanup backfill test asset a61a02b4-40d8-4047-a30b-92d9e2c88947",
+      "test": "Cleanup backfill test asset e8c75517-f93c-4b7b-8755-fc1aa3d066e9",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:27.364089"
+      "timestamp": "2025-11-23T10:52:42.969658"
     },
     {
-      "test": "Cleanup backfill test asset bd63d86f-35dc-41fc-a716-562b871137bd",
+      "test": "Cleanup backfill test asset b160acec-1432-4411-813b-e56ec2ca7258",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:27.441125"
+      "timestamp": "2025-11-23T10:52:43.009054"
     },
     {
-      "test": "Cleanup backfill test asset 2f856027-fe55-4ac1-aa60-08753d4bf0bf",
+      "test": "Cleanup backfill test asset 04f3b1f3-d7af-4b6c-86f3-12be1d21faff",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:27.477660"
+      "timestamp": "2025-11-23T10:52:43.047748"
     },
     {
       "test": "Create asset with initial purchase_date",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:27.881437"
+      "timestamp": "2025-11-23T10:52:43.567370"
     },
     {
       "test": "Update asset with new purchase_date (should auto-create snapshot)",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:27.960297"
+      "timestamp": "2025-11-23T10:52:43.768679"
     },
     {
       "test": "Get net worth history after purchase date update",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:27.996697"
+      "timestamp": "2025-11-23T10:52:43.972034"
     },
     {
       "test": "Asset update with date change creates new snapshot",
       "success": true,
       "details": "Found snapshots for both dates: ['2024-01-20', '2024-02-25']",
-      "timestamp": "2025-11-23T10:31:27.997193"
+      "timestamp": "2025-11-23T10:52:43.972642"
     },
     {
       "test": "Cleanup date change test asset",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:28.033072"
+      "timestamp": "2025-11-23T10:52:44.157061"
     },
     {
       "test": "Create stock asset for AI insights: Apple Stock for AI Test",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:28.436815"
+      "timestamp": "2025-11-23T10:52:44.609881"
     },
     {
       "test": "Create crypto asset for AI insights: Bitcoin for AI Test",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:28.467984"
+      "timestamp": "2025-11-23T10:52:44.969175"
     },
     {
       "test": "Create property asset for AI insights: Investment Property for AI Test",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:28.502637"
+      "timestamp": "2025-11-23T10:52:45.020281"
     },
     {
       "test": "Generate AI insights",
       "success": false,
       "details": "Error: HTTPSConnectionPool(host='asset-manager-137.preview.emergentagent.com', port=443): Read timed out. (read timeout=10)",
-      "timestamp": "2025-11-23T10:31:38.539155"
+      "timestamp": "2025-11-23T10:52:55.051731"
     },
     {
-      "test": "Cleanup AI insights test asset 0ed54fb4-59c0-4e2c-8ac5-8b68bd628055",
-      "success": true,
-      "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:43.906242"
+      "test": "Cleanup AI insights test asset 987e8b06-446d-4400-87bc-7bb73e1f5203",
+      "success": false,
+      "details": "Error: HTTPSConnectionPool(host='asset-manager-137.preview.emergentagent.com', port=443): Read timed out. (read timeout=10)",
+      "timestamp": "2025-11-23T10:53:05.102952"
     },
     {
-      "test": "Cleanup AI insights test asset ab046bcd-185a-453d-8414-494494e5eb6b",
+      "test": "Cleanup AI insights test asset 0ca9083c-ea86-44ec-affc-3dbbcaad52e8",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:43.954859"
+      "timestamp": "2025-11-23T10:53:13.510896"
     },
     {
-      "test": "Cleanup AI insights test asset 46710729-c390-4f6d-8fb6-cf2339bd6de6",
+      "test": "Cleanup AI insights test asset f5bf7279-0c71-44e9-95a9-22058d3cd329",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:43.991075"
+      "timestamp": "2025-11-23T10:53:13.579567"
     },
     {
       "test": "Generate insights for retrieval test",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:44.026585"
+      "timestamp": "2025-11-23T10:53:13.617856"
     },
     {
       "test": "Get latest AI insights",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:44.064290"
+      "timestamp": "2025-11-23T10:53:13.660634"
     },
     {
       "test": "Latest insights matches generated insights timestamp",
       "success": true,
-      "details": "Timestamp: 2025-11-23T10:31:44.023483+00:00",
-      "timestamp": "2025-11-23T10:31:44.064866"
+      "details": "Timestamp: 2025-11-23T10:53:13.613857+00:00",
+      "timestamp": "2025-11-23T10:53:13.661328"
     },
     {
       "test": "Latest insights has all required fields",
       "success": true,
       "details": "All fields present",
-      "timestamp": "2025-11-23T10:31:44.064878"
+      "timestamp": "2025-11-23T10:53:13.661339"
     },
     {
       "test": "Generate first AI insights",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:44.100130"
+      "timestamp": "2025-11-23T10:53:13.697311"
     },
     {
       "test": "Generate second AI insights (refresh)",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:46.138350"
+      "timestamp": "2025-11-23T10:53:15.735378"
     },
     {
       "test": "Second insights has more recent timestamp",
       "success": true,
-      "details": "Time difference: 2.038218 seconds",
-      "timestamp": "2025-11-23T10:31:46.138951"
+      "details": "Time difference: 2.037228 seconds",
+      "timestamp": "2025-11-23T10:53:15.736048"
     },
     {
       "test": "Get latest insights after refresh",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T10:31:46.174447"
+      "timestamp": "2025-11-23T10:53:15.814477"
     },
     {
       "test": "Latest insights returns most recent insight",
       "success": true,
-      "details": "Latest timestamp matches second generation: 2025-11-23T10:31:46.135046+00:00",
-      "timestamp": "2025-11-23T10:31:46.175013"
+      "details": "Latest timestamp matches second generation: 2025-11-23T10:53:15.731338+00:00",
+      "timestamp": "2025-11-23T10:53:15.815145"
+    },
+    {
+      "test": "Get admin user profile (/auth/me)",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T10:53:16.206362"
+    },
+    {
+      "test": "Admin user has correct role assignment",
+      "success": true,
+      "details": "Email: shivu7sm@gmail.com, Role: admin",
+      "timestamp": "2025-11-23T10:53:16.207024"
+    },
+    {
+      "test": "Access admin endpoint with non-admin user (should fail)",
+      "success": true,
+      "details": "Status: 403",
+      "timestamp": "2025-11-23T10:53:16.242890"
+    },
+    {
+      "test": "Access admin endpoint with admin user (should work)",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T10:53:16.286369"
+    },
+    {
+      "test": "Create test asset for admin stats",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T10:53:16.325456"
+    },
+    {
+      "test": "Create test scheduled message for admin stats",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T10:53:16.365699"
+    },
+    {
+      "test": "Get admin statistics dashboard",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T10:53:16.407103"
+    },
+    {
+      "test": "Admin stats has all required sections",
+      "success": true,
+      "details": "All sections present: ['users', 'assets', 'scheduled_messages', 'dead_man_switches', 'ai_insights']",
+      "timestamp": "2025-11-23T10:53:16.407721"
+    },
+    {
+      "test": "Admin stats users section has correct structure",
+      "success": true,
+      "details": "Users: 7 total, 2 recent",
+      "timestamp": "2025-11-23T10:53:16.407732"
+    },
+    {
+      "test": "Admin stats assets section has correct structure",
+      "success": true,
+      "details": "Assets: 17 total",
+      "timestamp": "2025-11-23T10:53:16.407737"
+    },
+    {
+      "test": "Get all users list",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T10:53:16.449447"
+    },
+    {
+      "test": "Admin users list has correct response structure",
+      "success": true,
+      "details": "Response has all required fields: ['users', 'total', 'skip', 'limit']",
+      "timestamp": "2025-11-23T10:53:16.450196"
+    },
+    {
+      "test": "Admin users list has correct user object structure",
+      "success": false,
+      "details": "Missing user fields: ['role']",
+      "timestamp": "2025-11-23T10:53:16.450209"
+    },
+    {
+      "test": "Get users for role update test",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T10:53:16.489196"
+    },
+    {
+      "test": "Update user role to readonly",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T10:53:16.528960"
+    },
+    {
+      "test": "Update user role back to user",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T10:53:16.568084"
+    },
+    {
+      "test": "Update user role to invalid role (should fail)",
+      "success": true,
+      "details": "Status: 400",
+      "timestamp": "2025-11-23T10:53:16.605729"
+    },
+    {
+      "test": "Admin trying to update own role (should fail)",
+      "success": true,
+      "details": "Status: 400",
+      "timestamp": "2025-11-23T10:53:16.683508"
+    },
+    {
+      "test": "Create test scheduled message for admin monitoring",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T10:53:16.721029"
+    },
+    {
+      "test": "Get scheduled messages status",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T10:53:16.758154"
+    },
+    {
+      "test": "Admin scheduled messages has correct response structure",
+      "success": true,
+      "details": "Response has all required fields: ['messages', 'total']",
+      "timestamp": "2025-11-23T10:53:16.758889"
+    },
+    {
+      "test": "Admin scheduled messages have correct structure",
+      "success": true,
+      "details": "Message objects have all required fields: ['id', 'user_id', 'recipient_name', 'recipient_email', 'subject', 'send_date', 'status', 'created_at']",
+      "timestamp": "2025-11-23T10:53:16.758902"
+    },
+    {
+      "test": "Create test DMS for admin monitoring",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T10:53:16.796635"
+    },
+    {
+      "test": "Get DMS reminders status",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T10:53:16.833705"
+    },
+    {
+      "test": "Admin DMS reminders has correct response structure",
+      "success": true,
+      "details": "Response has all required fields: ['dms_reminders', 'total']",
+      "timestamp": "2025-11-23T10:53:16.834331"
+    },
+    {
+      "test": "Admin DMS reminders have correct structure",
+      "success": true,
+      "details": "DMS objects have all required fields: ['id', 'user_id', 'user_email', 'user_name', 'days_inactive', 'days_until_trigger', 'reminders_sent', 'is_active']",
+      "timestamp": "2025-11-23T10:53:16.834344"
+    },
+    {
+      "test": "Admin trying to delete own account (should fail)",
+      "success": true,
+      "details": "Status: 400",
+      "timestamp": "2025-11-23T10:53:17.273815"
+    },
+    {
+      "test": "Delete test user and all associated data",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T10:53:17.315792"
+    },
+    {
+      "test": "User deletion removes all associated data",
+      "success": true,
+      "details": "User and all related data successfully deleted",
+      "timestamp": "2025-11-23T10:53:17.684940"
     }
   ]
 }
