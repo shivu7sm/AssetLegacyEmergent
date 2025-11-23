@@ -139,6 +139,18 @@ backend:
         agent: "testing"
         comment: "✅ PASSED - AI insights generation and storage working correctly. Tested: 1) POST /api/insights/generate returns structured insight with all required fields (portfolio_summary, asset_distribution_analysis, allocation_recommendations, advantages, risks, action_items, generated_at). 2) GET /api/insights/latest retrieves most recent insight with correct timestamp. 3) Multiple insights refresh scenario works - second generation has more recent timestamp and latest endpoint returns most recent. Fixed datetime serialization issue during testing. Minor: One timeout occurred during testing but functionality is confirmed working."
   
+  - task: "Admin Panel Backend"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added role field to User model (admin, user, readonly). Created require_admin middleware. Auto-assigns admin role to shivu7sm@gmail.com on first login or updates existing user. Added admin endpoints: GET /admin/stats (dashboard statistics), GET /admin/users (list all users with pagination), PUT /admin/users/{user_id}/role (update user role), GET /admin/jobs/scheduled-messages (scheduled messages with status), GET /admin/jobs/dms-reminders (DMS status with user info and days inactive), DELETE /admin/users/{user_id} (delete user and all data). Statistics include: total users, recent registrations, subscription breakdown, total assets by type, scheduled messages status, DMS status, AI insights generated."
+  
   - task: "Extended Real Estate Fields"
     implemented: true
     working: true
