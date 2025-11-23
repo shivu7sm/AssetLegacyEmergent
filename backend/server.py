@@ -1127,6 +1127,10 @@ async def get_latest_insight(user: User = Depends(require_auth)):
     if isinstance(insight.get('generated_at'), str):
         insight['generated_at'] = datetime.fromisoformat(insight['generated_at'])
     
+    # Convert datetime back to string for response
+    if isinstance(insight.get('generated_at'), datetime):
+        insight['generated_at'] = insight['generated_at'].isoformat()
+    
     return AIInsightResponse(**insight)
 
 @api_router.post("/insights/generate", response_model=AIInsightResponse)
