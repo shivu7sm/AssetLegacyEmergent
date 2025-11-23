@@ -161,38 +161,40 @@ export default function Dashboard() {
           </Card>
         )}
 
-        {/* Charts and Assets */}
+        {/* Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Asset Distribution */}
-          <Card className="bg-slate-800/50 border-slate-700" data-testid="asset-distribution-card">
+          {/* Asset Distribution by Value */}
+          <Card data-testid="asset-distribution-card" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
             <CardHeader>
-              <CardTitle className="text-white">Asset Distribution</CardTitle>
+              <CardTitle style={{color: '#f8fafc'}}>Asset Distribution by Value</CardTitle>
+              <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Portfolio allocation by USD value</p>
             </CardHeader>
             <CardContent>
-              {chartData.length > 0 ? (
+              {pieChartData.length > 0 ? (
                 <ResponsiveContainer width="100%" height={300}>
                   <PieChart>
                     <Pie
-                      data={chartData}
+                      data={pieChartData}
                       cx="50%"
                       cy="50%"
                       labelLine={false}
-                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                      label={({ name, percentage }) => `${name} ${percentage}%`}
                       outerRadius={80}
                       fill="#8884d8"
                       dataKey="value"
                     >
-                      {chartData.map((entry, index) => (
+                      {pieChartData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
                     <Tooltip 
                       contentStyle={{ 
-                        backgroundColor: '#1e293b', 
-                        border: '1px solid #334155',
+                        background: '#1a1229', 
+                        border: '1px solid #2d1f3d',
                         borderRadius: '8px',
-                        color: '#e2e8f0'
+                        color: '#f8fafc'
                       }}
+                      formatter={(value) => `$${value.toLocaleString()}`}
                     />
                   </PieChart>
                 </ResponsiveContainer>
