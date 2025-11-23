@@ -1791,7 +1791,9 @@ Portfolio Overview:
 - Net Worth: {target_currency} {net_worth:,.2f}
 - Currency: {target_currency}
 - Asset Distribution: {asset_distribution_str}
-- Total number of assets/liabilities: {len(assets)}
+- Total number of individual assets: {len(assets)}
+- Total number of portfolios: {len(portfolios)}
+- Total holdings across portfolios: {len(holdings_details)}{holdings_summary}
 
 Please provide a comprehensive analysis in the following structure:
 
