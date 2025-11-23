@@ -261,26 +261,46 @@ export default function Assets() {
   return (
     <Layout>
       <div className="space-y-8" data-testid="assets-container">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
           <div>
             <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
               Assets
             </h1>
-            <p style={{color: '#94a3b8'}}>Manage all your financial assets</p>
+            <p style={{color: '#94a3b8'}}>Track and manage all your financial assets</p>
           </div>
           
-          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-            <DialogTrigger asChild>
-              <Button 
-                data-testid="add-asset-dialog-btn"
-                onClick={() => { resetForm(); setDialogOpen(true); }}
-                className="text-white rounded-full"
-                style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Add Asset
-              </Button>
-            </DialogTrigger>
+          <div className="flex items-center gap-3">
+            <Select value={displayCurrency} onValueChange={setDisplayCurrency}>
+              <SelectTrigger className="w-32" style={{background: '#1a1229', borderColor: '#2d1f3d', color: '#f8fafc'}}>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                {CURRENCIES.map(curr => (
+                  <SelectItem key={curr} value={curr} style={{color: '#f8fafc'}}>{curr}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Button
+              onClick={() => setViewMode(viewMode === 'grid' ? 'table' : 'grid')}
+              variant="outline"
+              style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+            >
+              {viewMode === 'grid' ? <List className="w-4 h-4" /> : <Grid className="w-4 h-4" />}
+            </Button>
+
+            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+              <DialogTrigger asChild>
+                <Button 
+                  data-testid="add-asset-dialog-btn"
+                  onClick={() => { resetForm(); setDialogOpen(true); }}
+                  className="text-white rounded-full"
+                  style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Asset
+                </Button>
+              </DialogTrigger>
             <DialogContent className="text-white max-w-2xl max-h-[90vh] overflow-y-auto" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
               <DialogHeader>
                 <DialogTitle className="text-2xl">
