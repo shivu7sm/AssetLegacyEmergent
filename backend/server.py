@@ -37,6 +37,11 @@ class User(BaseModel):
     last_activity: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     measurement_unit: str = "imperial"  # imperial or metric
     weight_unit: str = "ounce"  # ounce or gram
+    currency_format: str = "standard"  # standard or indian
+    default_asset_view: str = "grid"  # grid or table
+    subscription_plan: str = "Free"  # Free, Pro, Family
+    marketing_consent: bool = False
+    communication_consent: bool = True
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class UserSession(BaseModel):
