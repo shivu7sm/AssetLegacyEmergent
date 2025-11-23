@@ -2232,7 +2232,7 @@ SUBSCRIPTION_FEATURES = {
     "Pro": {
         "max_assets": 100,
         "max_documents": 50,
-        "storage_mb": 500,  # 500 MB
+        "storage_mb": 5120,  # 5 GB
         "ai_insights": True,
         "scheduled_messages": True,
         "dms": True,
@@ -2241,7 +2241,7 @@ SUBSCRIPTION_FEATURES = {
     "Family": {
         "max_assets": -1,  # Unlimited
         "max_documents": -1,  # Unlimited
-        "storage_mb": 2000,  # 2 GB
+        "storage_mb": 51200,  # 50 GB
         "ai_insights": True,
         "scheduled_messages": True,
         "dms": True,
