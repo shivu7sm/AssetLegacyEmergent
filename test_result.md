@@ -329,6 +329,7 @@ test_plan:
   current_focus:
     - "Landing Page Background Color Fix"
     - "Portfolio Management UI"
+    - "Portfolio Integration Across All Views"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
