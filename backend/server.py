@@ -529,6 +529,18 @@ async def get_assets(user: User = Depends(require_auth)):
 
 @api_router.post("/assets", response_model=Asset)
 async def create_asset(asset_data: AssetCreate, user: User = Depends(require_auth), request: Request = None):
+    # Check subscription limits
+    plan = getattr(user, 'subscription_plan', 'Free')
+    features = SUBSCRIPTION_FEATURES.get(plan, SUBSCRIPTION_FEATURES["Free"])
+    
+    if features["max_assets"] > 0:
+        current_count = await db.assets.count_documents({"user_id": user.id})
+        if current_count >= features["max_assets"]:
+            raise HTTPException(
+                status_code=403,
+                detail=f"Asset limit reached. Your {plan} plan allows {features['max_assets']} assets. Upgrade to add more."
+            )
+    
     asset = Asset(user_id=user.id, **asset_data.model_dump())
     asset_dict = asset.model_dump()
     asset_dict['created_at'] = asset_dict['created_at'].isoformat()
