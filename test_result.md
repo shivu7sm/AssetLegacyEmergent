@@ -113,9 +113,9 @@ user_problem_statement: "AssetVault app - Current Phase Implementation:
 backend:
   - task: "Portfolio Backend APIs"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/server.py"
-    stuck_count: 1
+    stuck_count: 0
     priority: "high"
     needs_retesting: false
     status_history:
@@ -125,6 +125,9 @@ backend:
       - working: false
         agent: "testing"
         comment: "❌ FAILED - Portfolio Management APIs not working due to authentication issues. All portfolio endpoints (GET /api/portfolio-assets, POST /api/portfolio-assets, etc.) returning 401 Unauthorized. Issue: Session token was cleared during test cleanup process, causing authentication failures. Backend endpoints exist and are properly implemented, but authentication middleware is blocking access. Need to fix test session management or investigate authentication flow for portfolio endpoints specifically."
+      - working: true
+        agent: "testing"
+        comment: "✅ PASSED - Portfolio Management APIs working perfectly! All 29 tests passed (100% success rate). Comprehensive testing completed: 1) GET /api/portfolio-assets - Lists portfolios correctly (empty initially). 2) POST /api/portfolio-assets - Creates portfolio with proper response structure. 3) GET /api/portfolio-assets/{id} - Returns portfolio details with all required fields. 4) POST /api/portfolio-assets/{id}/holdings - Adds holdings (BTC, ETH) successfully. 5) PUT /api/portfolio-assets/{id}/holdings/{symbol} - Updates holding prices correctly. 6) DELETE /api/portfolio-assets/{id}/holdings/{symbol} - Removes holdings properly. 7) DELETE /api/portfolio-assets/{id} - Deletes entire portfolio. Total value calculations work correctly, auto-recalculating after updates. All CRUD operations functional. Previous auth issue was due to test session management, not API implementation."
   
   - task: "AI Insights Storage and Persistence"
     implemented: true
