@@ -25,6 +25,10 @@ db = client[os.environ['DB_NAME']]
 
 cg = CoinGeckoAPI()
 
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 # Stripe configuration
 stripe.api_key = os.environ.get('STRIPE_SECRET_KEY', 'sk_test_placeholder')
 
