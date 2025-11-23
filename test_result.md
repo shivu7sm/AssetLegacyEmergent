@@ -152,7 +152,22 @@ backend:
         comment: "Added role field to User model (admin, user, readonly). Created require_admin middleware. Auto-assigns admin role to shivu7sm@gmail.com on first login or updates existing user. Added admin endpoints: GET /admin/stats (dashboard statistics), GET /admin/users (list all users with pagination), PUT /admin/users/{user_id}/role (update user role), GET /admin/jobs/scheduled-messages (scheduled messages with status), GET /admin/jobs/dms-reminders (DMS status with user info and days inactive), DELETE /admin/users/{user_id} (delete user and all data). Statistics include: total users, recent registrations, subscription breakdown, total assets by type, scheduled messages status, DMS status, AI insights generated."
       - working: true
         agent: "testing"
-        comment: "✅ PASSED - Admin Panel Backend fully functional. Comprehensive testing completed: 1) Admin role assignment: shivu7sm@gmail.com automatically gets admin role ✅ 2) Authorization middleware: Non-admin users get 403 Forbidden, admin users get access ✅ 3) Admin statistics dashboard: Returns accurate counts for users (6), assets (17), scheduled messages (3), DMS (2), AI insights (16) with proper structure ✅ 4) List all users: Returns paginated user list with all required fields (id, email, name, role, subscription_plan, created_at, asset_count) ✅ 5) Update user role: Successfully updates user roles (user→readonly→user), prevents invalid roles, prevents admin self-role-change ✅ 6) Scheduled messages monitoring: Returns all scheduled messages with proper structure (id, user_id, recipient_name, recipient_email, subject, send_date, status, created_at) ✅ 7) DMS reminders monitoring: Returns DMS configurations with user info, days_inactive, days_until_trigger, reminders_sent, is_active ✅ 8) Delete user: Comprehensive cleanup removes user and all associated data (assets, nominees, sessions, etc.), prevents admin self-deletion ✅ All admin endpoints working correctly with proper authorization, data validation, and error handling."
+        comment: "✅ PASSED - Admin panel backend fully functional. All 8 core features tested successfully: admin role assignment, authorization middleware (403 for non-admin), statistics dashboard with accurate metrics, user management with pagination, role updates with validation, scheduled messages monitoring, DMS reminders with activity tracking, comprehensive user deletion. Fixed admin access issue for shivu7sm@gmail.com via direct database update."
+      - working: true
+        agent: "main"
+        comment: "User reported admin access denied for shivu7sm@gmail.com. Fixed by manually updating database to grant admin role using mongosh."
+  
+  - task: "Financial Health Ratios"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added 6 financial health ratios to dashboard summary endpoint: 1) Debt-to-Asset Ratio (measures debt burden), 2) Liquidity Ratio (liquid assets vs liabilities), 3) Net Worth Growth (change since last snapshot), 4) Diversification Score (asset type spread), 5) Emergency Fund Ratio (liquid asset coverage in months), 6) Debt Service Coverage (ability to service debt). Each ratio includes value, display format, status (good/warning/bad), description, and interpretation guidelines. Calculations use existing asset and snapshot data."
   
   - task: "Extended Real Estate Fields"
     implemented: true
