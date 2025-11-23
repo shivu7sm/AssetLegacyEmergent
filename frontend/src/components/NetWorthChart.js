@@ -119,15 +119,30 @@ export default function NetWorthChart() {
           <div className="text-center">
             <Calendar className="w-16 h-16 mx-auto mb-4" style={{color: '#2d1f3d'}} />
             <h3 className="text-xl font-semibold mb-2" style={{color: '#f8fafc'}}>No Historical Data</h3>
-            <p className="mb-6" style={{color: '#94a3b8'}}>Create your first snapshot to start tracking net worth over time</p>
-            <Button
-              onClick={createSnapshot}
-              className="text-white rounded-full"
-              style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
-            >
-              <Calendar className="w-4 h-4 mr-2" />
-              Create Snapshot
-            </Button>
+            <p className="mb-6" style={{color: '#94a3b8'}}>Create snapshots to start tracking net worth over time</p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Button
+                onClick={backfillSnapshots}
+                disabled={loading}
+                className="text-white rounded-full"
+                style={{background: 'linear-gradient(135deg, #a855f7 0%, #3b82f6 100%)'}}
+              >
+                <Calendar className="w-4 h-4 mr-2" />
+                {loading ? 'Creating...' : 'Backfill from Assets'}
+              </Button>
+              <Button
+                onClick={createSnapshot}
+                variant="outline"
+                className="rounded-full"
+                style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+              >
+                <Calendar className="w-4 h-4 mr-2" />
+                Create Snapshot for Today
+              </Button>
+            </div>
+            <p className="mt-4 text-xs" style={{color: '#64748b'}}>
+              💡 Backfill automatically creates snapshots from your asset purchase dates
+            </p>
           </div>
         </CardContent>
       </Card>
