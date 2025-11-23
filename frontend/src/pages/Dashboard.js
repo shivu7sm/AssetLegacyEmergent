@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 import { useApp } from '@/context/AppContext';
 import { formatCurrency } from '@/utils/currencyConversion';
 import NetWorthChart from '@/components/NetWorthChart';
+import ChartTypeSwitcher from '@/components/ChartTypeSwitcher';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
