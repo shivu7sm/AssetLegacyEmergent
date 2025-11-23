@@ -157,9 +157,12 @@ export default function Dashboard() {
     );
   }
 
+  const netWorthValue = summary?.net_worth || 0;
+  const isPositive = netWorthValue >= 0;
+  
   return (
     <Layout>
-      <div className="space-y-8" data-testid="dashboard-container">
+      <div className={`space-y-8 ${dashboardTheme}-theme`} data-testid="dashboard-container">
         <div>
           <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
             Dashboard
