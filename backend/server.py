@@ -1276,19 +1276,23 @@ async def get_subscription(user: User = Depends(require_auth)):
                     except Exception as pm_error:
                         logger.warning(f"Failed to fetch payment method: {str(pm_error)}")
                 
-                subscription_details = {
-                    "subscription_id": sub.id,
-                    "status": sub.status,
-                    "current_period_start": datetime.fromtimestamp(sub.current_period_start).isoformat(),
-                    "current_period_end": datetime.fromtimestamp(sub.current_period_end).isoformat(),
-                    "cancel_at_period_end": sub.cancel_at_period_end,
-                    "canceled_at": datetime.fromtimestamp(sub.canceled_at).isoformat() if getattr(sub, 'canceled_at', None) else None,
-                    "created": datetime.fromtimestamp(sub.created).isoformat(),
-                    "payment_method": payment_method_info,
-                    "amount": sub.items.data[0].price.unit_amount / 100,
-                    "currency": sub.items.data[0].price.currency.upper(),
-                    "interval": sub.items.data[0].price.recurring.interval
-                }
+                try:
+                    subscription_details = {
+                        "subscription_id": sub.id,
+                        "status": sub.status,
+                        "current_period_start": datetime.fromtimestamp(getattr(sub, 'current_period_start', 0)).isoformat(),
+                        "current_period_end": datetime.fromtimestamp(getattr(sub, 'current_period_end', 0)).isoformat(),
+                        "cancel_at_period_end": getattr(sub, 'cancel_at_period_end', False),
+                        "canceled_at": datetime.fromtimestamp(sub.canceled_at).isoformat() if getattr(sub, 'canceled_at', None) else None,
+                        "created": datetime.fromtimestamp(getattr(sub, 'created', 0)).isoformat(),
+                        "payment_method": payment_method_info,
+                        "amount": sub.items.data[0].price.unit_amount / 100 if sub.items and sub.items.data else 0,
+                        "currency": sub.items.data[0].price.currency.upper() if sub.items and sub.items.data else "USD",
+                        "interval": sub.items.data[0].price.recurring.interval if sub.items and sub.items.data else "month"
+                    }
+                except AttributeError as attr_err:
+                    logger.error(f"Failed to parse subscription details: {str(attr_err)}")
+                    subscription_details = None
         except Exception as e:
             logger.error(f"Failed to fetch Stripe subscription details: {str(e)}")
     
