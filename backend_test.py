@@ -691,6 +691,602 @@ print('Test user and session created successfully');
             200
         )
 
+    def test_networth_snapshot_auto_creation(self):
+        """Test Net Worth Snapshot Auto-Creation from Assets"""
+        print("\n📈 Testing Net Worth Snapshot Auto-Creation...")
+        
+        # Clean up existing assets and snapshots
+        self.cleanup_user_data()
+        
+        # Create asset with purchase_date
+        test_asset = {
+            "type": "stock",
+            "name": "Apple Stock for Snapshot Test",
+            "quantity": 50,
+            "unit_price": 150,
+            "current_unit_price": 175,
+            "symbol": "AAPL",
+            "purchase_currency": "USD",
+            "purchase_date": "2024-01-15"
+        }
+        
+        created_asset = self.run_test(
+            "Create asset with purchase_date (should auto-create snapshot)",
+            "POST",
+            "assets",
+            200,
+            test_asset
+        )
+        
+        asset_id = None
+        if created_asset:
+            asset_id = created_asset.get('id')
+            print(f"   Created asset ID: {asset_id}")
+        
+        # Verify snapshot was auto-created for purchase date
+        history = self.run_test(
+            "Get net worth history to verify auto-created snapshot",
+            "GET",
+            "networth/history?currency=USD",
+            200
+        )
+        
+        if history:
+            snapshots = history.get('snapshots', [])
+            snapshot_dates = [s.get('snapshot_date') for s in snapshots]
+            
+            if "2024-01-15" in snapshot_dates:
+                self.log_test(
+                    "Snapshot auto-created for asset purchase date",
+                    True,
+                    f"Found snapshot for 2024-01-15 in {snapshot_dates}"
+                )
+            else:
+                self.log_test(
+                    "Snapshot auto-created for asset purchase date",
+                    False,
+                    f"No snapshot found for 2024-01-15. Available dates: {snapshot_dates}"
+                )
+        
+        # Clean up
+        if asset_id:
+            self.run_test(
+                "Cleanup snapshot test asset",
+                "DELETE",
+                f"assets/{asset_id}",
+                200
+            )
+
+    def test_networth_backfill_snapshots(self):
+        """Test Snapshot Backfill from Existing Assets"""
+        print("\n🔄 Testing Net Worth Snapshot Backfill...")
+        
+        # Clean up existing data
+        self.cleanup_user_data()
+        
+        # Create multiple assets with different purchase dates
+        test_assets = [
+            {
+                "type": "crypto",
+                "name": "Bitcoin for Backfill Test",
+                "quantity": 0.5,
+                "unit_price": 45000,
+                "current_unit_price": 52000,
+                "symbol": "BTC",
+                "purchase_currency": "USD",
+                "purchase_date": "2024-01-10"
+            },
+            {
+                "type": "stock",
+                "name": "Tesla Stock for Backfill Test",
+                "quantity": 25,
+                "unit_price": 200,
+                "current_unit_price": 250,
+                "symbol": "TSLA",
+                "purchase_currency": "USD",
+                "purchase_date": "2024-02-15"
+            },
+            {
+                "type": "bank",
+                "name": "Savings for Backfill Test",
+                "total_value": 10000,
+                "current_total_value": 10500,
+                "purchase_currency": "USD",
+                "purchase_date": "2024-03-01"
+            }
+        ]
+        
+        created_asset_ids = []
+        expected_dates = ["2024-01-10", "2024-02-15", "2024-03-01"]
+        
+        # Create assets
+        for asset in test_assets:
+            created_asset = self.run_test(
+                f"Create {asset['type']} asset for backfill: {asset['name']}",
+                "POST",
+                "assets",
+                200,
+                asset
+            )
+            if created_asset:
+                created_asset_ids.append(created_asset.get('id'))
+        
+        # Call backfill endpoint
+        backfill_result = self.run_test(
+            "Call networth backfill endpoint",
+            "POST",
+            "networth/backfill?currency=USD",
+            200
+        )
+        
+        if backfill_result:
+            snapshots_created = backfill_result.get('snapshots_created', 0)
+            dates_processed = backfill_result.get('dates_processed', [])
+            
+            print(f"   Snapshots created: {snapshots_created}")
+            print(f"   Dates processed: {dates_processed}")
+            
+            # Verify response structure
+            if snapshots_created >= 0 and isinstance(dates_processed, list):
+                self.log_test(
+                    "Backfill endpoint returns proper response structure",
+                    True,
+                    f"Created {snapshots_created} snapshots for dates: {dates_processed}"
+                )
+            else:
+                self.log_test(
+                    "Backfill endpoint returns proper response structure",
+                    False,
+                    f"Invalid response structure: {backfill_result}"
+                )
+        
+        # Verify snapshots were created
+        history = self.run_test(
+            "Get net worth history after backfill",
+            "GET",
+            "networth/history?currency=USD",
+            200
+        )
+        
+        if history:
+            snapshots = history.get('snapshots', [])
+            snapshot_dates = [s.get('snapshot_date') for s in snapshots]
+            
+            found_dates = [date for date in expected_dates if date in snapshot_dates]
+            
+            if len(found_dates) >= len(expected_dates):
+                self.log_test(
+                    "Backfill created snapshots for all purchase dates",
+                    True,
+                    f"Found snapshots for: {found_dates}"
+                )
+            else:
+                self.log_test(
+                    "Backfill created snapshots for all purchase dates",
+                    False,
+                    f"Expected: {expected_dates}, Found: {found_dates}"
+                )
+        
+        # Clean up
+        for asset_id in created_asset_ids:
+            if asset_id:
+                self.run_test(
+                    f"Cleanup backfill test asset {asset_id}",
+                    "DELETE",
+                    f"assets/{asset_id}",
+                    200
+                )
+
+    def test_asset_update_purchase_date_change(self):
+        """Test Asset Update with Purchase Date Change"""
+        print("\n📅 Testing Asset Update with Purchase Date Change...")
+        
+        # Clean up existing data
+        self.cleanup_user_data()
+        
+        # Create asset with initial purchase date
+        initial_asset = {
+            "type": "stock",
+            "name": "Microsoft Stock for Date Change Test",
+            "quantity": 30,
+            "unit_price": 300,
+            "current_unit_price": 350,
+            "symbol": "MSFT",
+            "purchase_currency": "USD",
+            "purchase_date": "2024-01-20"
+        }
+        
+        created_asset = self.run_test(
+            "Create asset with initial purchase_date",
+            "POST",
+            "assets",
+            200,
+            initial_asset
+        )
+        
+        asset_id = None
+        if created_asset:
+            asset_id = created_asset.get('id')
+            print(f"   Created asset ID: {asset_id}")
+        
+        # Update asset with new purchase date
+        if asset_id:
+            updated_asset = {
+                **initial_asset,
+                "purchase_date": "2024-02-25",
+                "name": "Microsoft Stock - Updated Date"
+            }
+            
+            self.run_test(
+                "Update asset with new purchase_date (should auto-create snapshot)",
+                "PUT",
+                f"assets/{asset_id}",
+                200,
+                updated_asset
+            )
+        
+        # Verify snapshots exist for both dates
+        history = self.run_test(
+            "Get net worth history after purchase date update",
+            "GET",
+            "networth/history?currency=USD",
+            200
+        )
+        
+        if history:
+            snapshots = history.get('snapshots', [])
+            snapshot_dates = [s.get('snapshot_date') for s in snapshots]
+            
+            expected_dates = ["2024-01-20", "2024-02-25"]
+            found_dates = [date for date in expected_dates if date in snapshot_dates]
+            
+            if len(found_dates) >= 2:
+                self.log_test(
+                    "Asset update with date change creates new snapshot",
+                    True,
+                    f"Found snapshots for both dates: {found_dates}"
+                )
+            else:
+                self.log_test(
+                    "Asset update with date change creates new snapshot",
+                    False,
+                    f"Expected snapshots for {expected_dates}, found: {found_dates}"
+                )
+        
+        # Clean up
+        if asset_id:
+            self.run_test(
+                "Cleanup date change test asset",
+                "DELETE",
+                f"assets/{asset_id}",
+                200
+            )
+
+    def test_ai_insights_generation_and_storage(self):
+        """Test AI Insights Generation and Storage"""
+        print("\n🤖 Testing AI Insights Generation and Storage...")
+        
+        # Clean up existing data
+        self.cleanup_user_data()
+        
+        # Create some assets for meaningful insights
+        test_assets = [
+            {
+                "type": "stock",
+                "name": "Apple Stock for AI Test",
+                "quantity": 100,
+                "unit_price": 150,
+                "current_unit_price": 175,
+                "symbol": "AAPL",
+                "purchase_currency": "USD"
+            },
+            {
+                "type": "crypto",
+                "name": "Bitcoin for AI Test",
+                "quantity": 0.25,
+                "unit_price": 50000,
+                "current_unit_price": 55000,
+                "symbol": "BTC",
+                "purchase_currency": "USD"
+            },
+            {
+                "type": "property",
+                "name": "Investment Property for AI Test",
+                "area": 1200,
+                "area_unit": "sqft",
+                "price_per_area": 200,
+                "current_price_per_area": 220,
+                "purchase_currency": "USD"
+            }
+        ]
+        
+        created_asset_ids = []
+        
+        # Create assets
+        for asset in test_assets:
+            created_asset = self.run_test(
+                f"Create {asset['type']} asset for AI insights: {asset['name']}",
+                "POST",
+                "assets",
+                200,
+                asset
+            )
+            if created_asset:
+                created_asset_ids.append(created_asset.get('id'))
+        
+        # Generate AI insights
+        insights = self.run_test(
+            "Generate AI insights",
+            "POST",
+            "insights/generate",
+            200
+        )
+        
+        if insights:
+            # Verify response structure
+            required_fields = [
+                'portfolio_summary',
+                'asset_distribution_analysis', 
+                'allocation_recommendations',
+                'advantages',
+                'risks',
+                'action_items',
+                'generated_at'
+            ]
+            
+            missing_fields = []
+            for field in required_fields:
+                if field not in insights:
+                    missing_fields.append(field)
+            
+            if not missing_fields:
+                self.log_test(
+                    "AI insights has all required fields",
+                    True,
+                    f"All required fields present: {required_fields}"
+                )
+            else:
+                self.log_test(
+                    "AI insights has all required fields",
+                    False,
+                    f"Missing fields: {missing_fields}"
+                )
+            
+            # Verify generated_at is a valid timestamp
+            generated_at = insights.get('generated_at')
+            if generated_at:
+                try:
+                    # Try to parse the timestamp
+                    if isinstance(generated_at, str):
+                        datetime.fromisoformat(generated_at.replace('Z', '+00:00'))
+                    self.log_test(
+                        "AI insights has valid generated_at timestamp",
+                        True,
+                        f"Timestamp: {generated_at}"
+                    )
+                except:
+                    self.log_test(
+                        "AI insights has valid generated_at timestamp",
+                        False,
+                        f"Invalid timestamp format: {generated_at}"
+                    )
+            
+            # Verify list fields are actually lists
+            list_fields = ['allocation_recommendations', 'advantages', 'risks', 'action_items']
+            for field in list_fields:
+                field_value = insights.get(field, [])
+                if isinstance(field_value, list):
+                    self.log_test(
+                        f"AI insights {field} is a list",
+                        True,
+                        f"Contains {len(field_value)} items"
+                    )
+                else:
+                    self.log_test(
+                        f"AI insights {field} is a list",
+                        False,
+                        f"Expected list, got {type(field_value)}"
+                    )
+            
+            print(f"   Portfolio Summary: {insights.get('portfolio_summary', '')[:100]}...")
+            print(f"   Recommendations: {len(insights.get('allocation_recommendations', []))} items")
+            print(f"   Advantages: {len(insights.get('advantages', []))} items")
+            print(f"   Risks: {len(insights.get('risks', []))} items")
+            print(f"   Action Items: {len(insights.get('action_items', []))} items")
+        
+        # Clean up
+        for asset_id in created_asset_ids:
+            if asset_id:
+                self.run_test(
+                    f"Cleanup AI insights test asset {asset_id}",
+                    "DELETE",
+                    f"assets/{asset_id}",
+                    200
+                )
+
+    def test_ai_insights_retrieval_latest(self):
+        """Test AI Insights Retrieval (Latest)"""
+        print("\n📊 Testing AI Insights Retrieval (Latest)...")
+        
+        # First, generate insights (prerequisite)
+        insights_generated = self.run_test(
+            "Generate insights for retrieval test",
+            "POST",
+            "insights/generate",
+            200
+        )
+        
+        if not insights_generated:
+            self.log_test(
+                "Cannot test latest insights retrieval",
+                False,
+                "Failed to generate insights first"
+            )
+            return
+        
+        # Get latest insights
+        latest_insights = self.run_test(
+            "Get latest AI insights",
+            "GET",
+            "insights/latest",
+            200
+        )
+        
+        if latest_insights:
+            # Verify structure matches generation response
+            if insights_generated.get('generated_at') == latest_insights.get('generated_at'):
+                self.log_test(
+                    "Latest insights matches generated insights timestamp",
+                    True,
+                    f"Timestamp: {latest_insights.get('generated_at')}"
+                )
+            else:
+                self.log_test(
+                    "Latest insights matches generated insights timestamp",
+                    False,
+                    f"Generated: {insights_generated.get('generated_at')}, Latest: {latest_insights.get('generated_at')}"
+                )
+            
+            # Verify all fields are present
+            required_fields = [
+                'portfolio_summary',
+                'asset_distribution_analysis',
+                'allocation_recommendations',
+                'advantages',
+                'risks', 
+                'action_items',
+                'generated_at'
+            ]
+            
+            missing_fields = []
+            for field in required_fields:
+                if field not in latest_insights:
+                    missing_fields.append(field)
+            
+            if not missing_fields:
+                self.log_test(
+                    "Latest insights has all required fields",
+                    True,
+                    "All fields present"
+                )
+            else:
+                self.log_test(
+                    "Latest insights has all required fields",
+                    False,
+                    f"Missing fields: {missing_fields}"
+                )
+        
+        # Test when no insights exist (clean user)
+        # Note: We can't easily test this without creating a new user, so we'll skip this edge case
+
+    def test_multiple_insights_refresh_scenario(self):
+        """Test Multiple Insights (Refresh Scenario)"""
+        print("\n🔄 Testing Multiple Insights Refresh Scenario...")
+        
+        # Generate first insight
+        first_insights = self.run_test(
+            "Generate first AI insights",
+            "POST",
+            "insights/generate",
+            200
+        )
+        
+        if not first_insights:
+            self.log_test(
+                "Cannot test multiple insights refresh",
+                False,
+                "Failed to generate first insights"
+            )
+            return
+        
+        first_timestamp = first_insights.get('generated_at')
+        print(f"   First insights timestamp: {first_timestamp}")
+        
+        # Wait 2 seconds
+        print("   Waiting 2 seconds...")
+        time.sleep(2)
+        
+        # Generate second insight
+        second_insights = self.run_test(
+            "Generate second AI insights (refresh)",
+            "POST",
+            "insights/generate",
+            200
+        )
+        
+        if second_insights:
+            second_timestamp = second_insights.get('generated_at')
+            print(f"   Second insights timestamp: {second_timestamp}")
+            
+            # Verify timestamps are different and second is more recent
+            if first_timestamp and second_timestamp:
+                try:
+                    first_dt = datetime.fromisoformat(first_timestamp.replace('Z', '+00:00'))
+                    second_dt = datetime.fromisoformat(second_timestamp.replace('Z', '+00:00'))
+                    
+                    if second_dt > first_dt:
+                        self.log_test(
+                            "Second insights has more recent timestamp",
+                            True,
+                            f"Time difference: {(second_dt - first_dt).total_seconds()} seconds"
+                        )
+                    else:
+                        self.log_test(
+                            "Second insights has more recent timestamp",
+                            False,
+                            f"First: {first_timestamp}, Second: {second_timestamp}"
+                        )
+                except Exception as e:
+                    self.log_test(
+                        "Could not compare timestamps",
+                        False,
+                        f"Error: {str(e)}"
+                    )
+        
+        # Get latest insight and verify it's the second one
+        latest_insights = self.run_test(
+            "Get latest insights after refresh",
+            "GET",
+            "insights/latest",
+            200
+        )
+        
+        if latest_insights and second_insights:
+            latest_timestamp = latest_insights.get('generated_at')
+            second_timestamp = second_insights.get('generated_at')
+            
+            if latest_timestamp == second_timestamp:
+                self.log_test(
+                    "Latest insights returns most recent insight",
+                    True,
+                    f"Latest timestamp matches second generation: {latest_timestamp}"
+                )
+            else:
+                self.log_test(
+                    "Latest insights returns most recent insight",
+                    False,
+                    f"Latest: {latest_timestamp}, Expected: {second_timestamp}"
+                )
+
+    def cleanup_user_data(self):
+        """Clean up all user data including snapshots and insights"""
+        if not self.user_id:
+            return
+            
+        mongo_cleanup = f"""
+use('test_database');
+db.assets.deleteMany({{user_id: '{self.user_id}'}});
+db.networth_snapshots.deleteMany({{user_id: '{self.user_id}'}});
+db.ai_insights.deleteMany({{user_id: '{self.user_id}'}});
+print('User data cleaned up');
+"""
+        
+        try:
+            import subprocess
+            subprocess.run(['mongosh', '--eval', mongo_cleanup], timeout=30)
+        except Exception as e:
+            print(f"⚠️  Cleanup warning: {str(e)}")
+
     def cleanup_test_data(self):
         """Clean up test data"""
         print("\n🧹 Cleaning up test data...")
