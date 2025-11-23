@@ -521,12 +521,15 @@ async def get_assets(user: User = Depends(require_auth)):
     return assets
 
 @api_router.post("/assets", response_model=Asset)
-async def create_asset(asset_data: AssetCreate, user: User = Depends(require_auth)):
+async def create_asset(asset_data: AssetCreate, user: User = Depends(require_auth), request: Request = None):
     asset = Asset(user_id=user.id, **asset_data.model_dump())
     asset_dict = asset.model_dump()
     asset_dict['created_at'] = asset_dict['created_at'].isoformat()
     asset_dict['updated_at'] = asset_dict['updated_at'].isoformat()
     await db.assets.insert_one(asset_dict)
+    
+    # Log audit event
+    await log_audit(user, "CREATE", "asset", asset.id, {"name": asset.name, "type": asset.type}, request)
     
     # Auto-create snapshot for purchase date if provided
     if asset.purchase_date:
