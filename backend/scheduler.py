@@ -63,8 +63,11 @@ async def check_dms_and_send_reminders():
                 # Get nominee info
                 nominee = await db.nominees.find_one({"user_id": user_id})
                 if nominee:
-                    # TODO: Send email to nominee with asset information
-                    logger.info(f"Alerting nominee {nominee['email']} for user {user['email']}")
+                    # MOCK EMAIL: Send email to nominee with asset information
+                    logger.info(f"📧 [MOCK EMAIL] Sending DMS Alert to nominee {nominee['email']}")
+                    logger.info(f"   Subject: Important Alert from {user['name']}")
+                    logger.info(f"   Message: Dead Man Switch activated for {user['email']}")
+                    logger.info(f"   Action: Providing access to asset information")
                     
                     # Mark DMS as triggered
                     await db.dead_man_switches.update_one(
