@@ -197,7 +197,23 @@ export default function Assets() {
     locker_number: '',
     purchase_currency: 'USD',
     purchase_date: '',
-    details: {}
+    details: {},
+    // Portfolio-specific fields
+    provider_name: '',
+    provider_type: 'crypto_exchange'
+  });
+
+  // Portfolio holdings state
+  const [portfolioHoldings, setPortfolioHoldings] = useState([]);
+  const [holdingForm, setHoldingForm] = useState({
+    symbol: '',
+    name: '',
+    quantity: '',
+    purchase_price: '',
+    purchase_date: '',
+    purchase_currency: 'USD',
+    current_price: '',
+    asset_type: 'crypto'
   });
 
   useEffect(() => {
