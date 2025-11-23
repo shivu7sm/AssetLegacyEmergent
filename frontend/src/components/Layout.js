@@ -26,6 +26,15 @@ export default function Layout({ children }) {
   const navigate = useNavigate();
   const location = useLocation();
   const { selectedCurrency, setSelectedCurrency } = useApp();
+  const { user } = useAuth();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    // Check if user is admin
+    if (user && user.role === 'admin') {
+      setIsAdmin(true);
+    }
+  }, [user]);
 
   const handleLogout = async () => {
     try {
@@ -40,7 +49,7 @@ export default function Layout({ children }) {
     }
   };
 
-  const navItems = [
+  const baseNavItems = [
     { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, testId: 'nav-dashboard' },
     { path: '/assets', label: 'Assets', icon: Wallet, testId: 'nav-assets' },
     { path: '/insights', label: 'AI Insights', icon: Sparkles, testId: 'nav-insights' },
@@ -50,6 +59,11 @@ export default function Layout({ children }) {
     { path: '/will', label: 'Will', icon: FileText, testId: 'nav-will' },
     { path: '/settings', label: 'Settings', icon: Settings, testId: 'nav-settings' }
   ];
+
+  // Add Admin link if user is admin
+  const navItems = isAdmin 
+    ? [...baseNavItems, { path: '/admin', label: 'Admin', icon: ShieldAlert, testId: 'nav-admin' }]
+    : baseNavItems;
 
   const handleCurrencyChange = async (currency) => {
     await setSelectedCurrency(currency);
