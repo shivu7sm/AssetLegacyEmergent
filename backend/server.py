@@ -1113,8 +1113,25 @@ async def delete_scheduled_message(message_id: str, user: User = Depends(require
     return {"success": True}
 
 # AI Insights Routes
-@api_router.post("/insights/generate")
+@api_router.get("/insights/latest")
+async def get_latest_insight(user: User = Depends(require_auth)):
+    """Get the most recent AI insight for the user."""
+    insight = await db.ai_insights.find_one(
+        {"user_id": user.id},
+        {"_id": 0}
+    , sort=[("generated_at", -1)])
+    
+    if not insight:
+        return None
+    
+    if isinstance(insight.get('generated_at'), str):
+        insight['generated_at'] = datetime.fromisoformat(insight['generated_at'])
+    
+    return AIInsightResponse(**insight)
+
+@api_router.post("/insights/generate", response_model=AIInsightResponse)
 async def generate_insights(user: User = Depends(require_auth)):
+    """Generate fresh AI insights and store them."""
     try:
         from emergentintegrations.llm.chat import LlmChat, UserMessage
         
@@ -1122,101 +1139,171 @@ async def generate_insights(user: User = Depends(require_auth)):
         assets = await db.assets.find({"user_id": user.id}).to_list(1000)
         
         if not assets:
-            return {
-                "portfolio_summary": "No assets found in your portfolio yet.",
-                "allocation_recommendations": [],
-                "risk_analysis": [],
-                "action_items": ["Start by adding your first asset to get personalized insights."]
-            }
+            basic_insight = AIInsight(
+                user_id=user.id,
+                portfolio_summary="No assets found in your portfolio yet.",
+                allocation_recommendations=[],
+                risk_analysis=[],
+                action_items=["Start by adding your first asset to get personalized insights."],
+                advantages=[],
+                risks=[],
+                asset_distribution_analysis=""
+            )
+            
+            insight_dict = basic_insight.model_dump()
+            insight_dict['generated_at'] = insight_dict['generated_at'].isoformat()
+            await db.ai_insights.insert_one(insight_dict)
+            
+            return AIInsightResponse(**basic_insight.model_dump())
         
         # Calculate portfolio summary
         asset_types = {}
-        total_value = 0
         liability_types = {'loan', 'credit_card'}
+        total_assets_value = 0
+        total_liabilities_value = 0
         
         for asset in assets:
             asset_type = asset['type']
             asset_types[asset_type] = asset_types.get(asset_type, 0) + 1
             
-            value = 0
-            if asset.get('current_total_value'):
-                value = asset['current_total_value']
-            elif asset.get('total_value'):
-                value = asset['total_value']
-            elif asset.get('quantity') and asset.get('current_unit_price'):
-                value = asset['quantity'] * asset['current_unit_price']
-            elif asset.get('quantity') and asset.get('unit_price'):
-                value = asset['quantity'] * asset['unit_price']
-            elif asset.get('area') and asset.get('current_price_per_area'):
-                value = asset['area'] * asset['current_price_per_area']
-            elif asset.get('area') and asset.get('price_per_area'):
-                value = asset['area'] * asset['price_per_area']
-            elif asset.get('weight') and asset.get('current_unit_price'):
-                value = asset['weight'] * asset['current_unit_price']
-            elif asset.get('weight') and asset.get('unit_price'):
-                value = asset['weight'] * asset['unit_price']
-            elif asset.get('outstanding_balance'):
-                value = asset['outstanding_balance']
-            elif asset.get('principal_amount'):
-                value = asset['principal_amount']
+            value = calculate_asset_current_value(asset)
             
-            if asset_type not in liability_types:
-                total_value += value
+            if asset_type in liability_types:
+                total_liabilities_value += value
+            else:
+                total_assets_value += value
         
-        # Create portfolio summary for AI
-        portfolio_context = f"""
-Analyze this investment portfolio:
-- Total portfolio value: ${total_value:,.2f}
-- Asset types: {dict(asset_types)}
-- Number of assets: {len(assets)}
+        net_worth = total_assets_value - total_liabilities_value
+        
+        # Create detailed portfolio context for AI
+        asset_distribution_str = ", ".join([f"{k}: {v} items" for k, v in asset_types.items()])
+        
+        portfolio_context = f"""Analyze this investment portfolio and provide structured insights:
 
-Provide:
-1. A brief portfolio summary (2-3 sentences)
-2. 3-5 specific asset allocation recommendations
-3. 2-4 risk analysis points
-4. 3-5 actionable items for improvement
-"""
+Portfolio Overview:
+- Total Assets Value: ${total_assets_value:,.2f}
+- Total Liabilities: ${total_liabilities_value:,.2f}
+- Net Worth: ${net_worth:,.2f}
+- Asset Distribution: {asset_distribution_str}
+- Total number of assets/liabilities: {len(assets)}
+
+Please provide a comprehensive analysis in the following structure:
+
+1. PORTFOLIO SUMMARY (2-3 sentences about overall health and composition)
+
+2. ASSET DISTRIBUTION ANALYSIS (Brief analysis of how assets are distributed and if diversification is adequate)
+
+3. ALLOCATION RECOMMENDATIONS (List 4-5 specific, actionable recommendations)
+
+4. ADVANTAGES (List 3-4 positive aspects or strengths of this portfolio)
+
+5. RISKS (List 3-4 potential risks or concerns, focusing on concentration, liquidity, or market risks)
+
+6. ACTION ITEMS (List 4-5 concrete next steps the user should take)
+
+Format your response clearly with these section headers."""
         
         # Initialize AI chat
         api_key = os.environ.get('EMERGENT_LLM_KEY')
         chat = LlmChat(
             api_key=api_key,
-            session_id=f"insights_{user.id}",
-            system_message="You are a professional financial advisor providing portfolio analysis and recommendations."
+            session_id=f"insights_{user.id}_{datetime.now(timezone.utc).timestamp()}",
+            system_message="You are an expert financial advisor specializing in portfolio analysis, asset allocation, and risk management. Provide clear, actionable, and personalized recommendations based on the user's portfolio composition. Focus on asset distribution, investment diversification, and identifying both opportunities and risks."
         ).with_model("openai", "gpt-4o-mini")
         
         # Send message
         user_message = UserMessage(text=portfolio_context)
         response = await chat.send_message(user_message)
         
-        # Parse response (simple parsing, can be improved)
-        lines = response.strip().split('\\n')
-        
-        return {
-            "portfolio_summary": f"Portfolio value: ${total_value:,.2f} across {len(assets)} assets. " + (lines[0] if lines else ""),
-            "allocation_recommendations": [
-                "Consider diversifying into international markets",
-                "Maintain 6 months emergency fund in liquid assets",
-                "Review and rebalance quarterly"
-            ],
-            "risk_analysis": [
-                "Monitor market volatility and adjust positions accordingly",
-                "Ensure adequate insurance coverage"
-            ],
-            "action_items": [
-                "Review and update asset valuations monthly",
-                "Consider tax-loss harvesting opportunities",
-                "Set up automatic portfolio rebalancing"
-            ]
+        # Parse AI response into structured sections
+        sections = {
+            "summary": "",
+            "distribution": "",
+            "recommendations": [],
+            "advantages": [],
+            "risks": [],
+            "actions": []
         }
+        
+        current_section = None
+        lines = response.strip().split('\n')
+        
+        for line in lines:
+            line = line.strip()
+            if not line:
+                continue
+            
+            # Detect section headers
+            upper_line = line.upper()
+            if "PORTFOLIO SUMMARY" in upper_line or "SUMMARY" in upper_line:
+                current_section = "summary"
+                continue
+            elif "DISTRIBUTION" in upper_line or "ASSET DISTRIBUTION" in upper_line:
+                current_section = "distribution"
+                continue
+            elif "ALLOCATION" in upper_line or "RECOMMENDATION" in upper_line:
+                current_section = "recommendations"
+                continue
+            elif "ADVANTAGE" in upper_line or "STRENGTH" in upper_line:
+                current_section = "advantages"
+                continue
+            elif "RISK" in upper_line or "CONCERN" in upper_line:
+                current_section = "risks"
+                continue
+            elif "ACTION" in upper_line or "NEXT STEP" in upper_line:
+                current_section = "actions"
+                continue
+            
+            # Add content to appropriate section
+            if current_section == "summary":
+                sections["summary"] += line + " "
+            elif current_section == "distribution":
+                sections["distribution"] += line + " "
+            elif current_section in ["recommendations", "advantages", "risks", "actions"]:
+                # Remove bullet points and numbering
+                cleaned = line.lstrip('-*•123456789.').strip()
+                if cleaned:
+                    sections[current_section].append(cleaned)
+        
+        # Create insight object
+        insight = AIInsight(
+            user_id=user.id,
+            portfolio_summary=sections["summary"].strip() or f"Portfolio net worth: ${net_worth:,.2f} across {len(assets)} holdings with diverse asset types.",
+            asset_distribution_analysis=sections["distribution"].strip() or f"Your portfolio includes {len(asset_types)} different asset types: {asset_distribution_str}.",
+            allocation_recommendations=sections["recommendations"][:5] or [
+                "Consider diversifying across multiple asset classes",
+                "Maintain adequate emergency fund in liquid assets",
+                "Review portfolio allocation quarterly",
+                "Balance growth assets with stable income generators"
+            ],
+            advantages=sections["advantages"][:4] or [
+                "Diverse asset ownership tracked in one place",
+                "Clear visibility of net worth",
+                "Comprehensive financial overview"
+            ],
+            risks=sections["risks"][:4] or [
+                "Monitor concentration risk in specific asset types",
+                "Consider liquidity needs for emergency situations",
+                "Stay aware of market volatility impact"
+            ],
+            action_items=sections["actions"][:5] or [
+                "Update current valuations for all assets",
+                "Review and rebalance portfolio quarterly",
+                "Set up automatic tracking for market-linked assets",
+                "Consider tax optimization strategies"
+            ],
+            risk_analysis=sections["risks"][:4] or []  # For backward compatibility
+        )
+        
+        # Store in database
+        insight_dict = insight.model_dump()
+        insight_dict['generated_at'] = insight_dict['generated_at'].isoformat()
+        await db.ai_insights.insert_one(insight_dict)
+        
+        return AIInsightResponse(**insight.model_dump())
     except Exception as e:
         logger.error(f"AI insights generation failed: {str(e)}")
-        return {
-            "portfolio_summary": "Unable to generate AI insights at this time.",
-            "allocation_recommendations": ["Please try again later"],
-            "risk_analysis": [],
-            "action_items": []
-        }
+        raise HTTPException(status_code=500, detail=f"Failed to generate insights: {str(e)}")
 
 # Currency Conversion Routes
 @api_router.get("/prices/currency/{from_currency}/{to_currency}")
