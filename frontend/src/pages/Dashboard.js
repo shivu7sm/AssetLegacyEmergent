@@ -228,6 +228,272 @@ export default function Dashboard() {
           </Card>
         </div>
 
+        {/* Financial Health Ratios */}
+        {summary?.financial_ratios && (
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-2xl font-bold" style={{color: '#f8fafc', fontFamily: 'Space Grotesk, sans-serif'}}>
+                Financial Health Indicators
+              </h2>
+              {/* Legend */}
+              <div className="flex gap-4 text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full" style={{background: '#10b981'}}></div>
+                  <span style={{color: '#94a3b8'}}>Good</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full" style={{background: '#f59e0b'}}></div>
+                  <span style={{color: '#94a3b8'}}>Caution</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full" style={{background: '#ef4444'}}></div>
+                  <span style={{color: '#94a3b8'}}>Alert</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {/* Debt-to-Asset Ratio */}
+              <Card 
+                className="overflow-hidden transition-all hover:shadow-lg"
+                style={{
+                  background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', 
+                  borderColor: summary.financial_ratios.debt_to_asset_ratio?.status === 'good' ? '#10b981' : 
+                               summary.financial_ratios.debt_to_asset_ratio?.status === 'warning' ? '#f59e0b' : '#ef4444'
+                }}
+              >
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-semibold" style={{color: '#94a3b8'}}>DEBT-TO-ASSET RATIO</h3>
+                    <div 
+                      className="w-3 h-3 rounded-full"
+                      style={{
+                        background: summary.financial_ratios.debt_to_asset_ratio?.status === 'good' ? '#10b981' : 
+                                   summary.financial_ratios.debt_to_asset_ratio?.status === 'warning' ? '#f59e0b' : '#ef4444'
+                      }}
+                    />
+                  </div>
+                  <div 
+                    className="text-4xl font-bold mb-2"
+                    style={{
+                      color: summary.financial_ratios.debt_to_asset_ratio?.status === 'good' ? '#10b981' : 
+                             summary.financial_ratios.debt_to_asset_ratio?.status === 'warning' ? '#f59e0b' : '#ef4444'
+                    }}
+                  >
+                    {summary.financial_ratios.debt_to_asset_ratio?.display}
+                  </div>
+                  <p className="text-xs leading-relaxed" style={{color: '#64748b'}}>
+                    {summary.financial_ratios.debt_to_asset_ratio?.description}
+                  </p>
+                  <p className="text-xs mt-2" style={{color: '#94a3b8', fontStyle: 'italic'}}>
+                    {summary.financial_ratios.debt_to_asset_ratio?.value < 30 ? '✓ Healthy level' : 
+                     summary.financial_ratios.debt_to_asset_ratio?.value < 50 ? '⚠ Monitor closely' : '⚠ High debt burden'}
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* Liquidity Ratio */}
+              <Card 
+                className="overflow-hidden transition-all hover:shadow-lg"
+                style={{
+                  background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', 
+                  borderColor: summary.financial_ratios.liquidity_ratio?.status === 'good' ? '#10b981' : 
+                               summary.financial_ratios.liquidity_ratio?.status === 'warning' ? '#f59e0b' : '#ef4444'
+                }}
+              >
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-semibold" style={{color: '#94a3b8'}}>LIQUIDITY RATIO</h3>
+                    <div 
+                      className="w-3 h-3 rounded-full"
+                      style={{
+                        background: summary.financial_ratios.liquidity_ratio?.status === 'good' ? '#10b981' : 
+                                   summary.financial_ratios.liquidity_ratio?.status === 'warning' ? '#f59e0b' : '#ef4444'
+                      }}
+                    />
+                  </div>
+                  <div 
+                    className="text-4xl font-bold mb-2"
+                    style={{
+                      color: summary.financial_ratios.liquidity_ratio?.status === 'good' ? '#10b981' : 
+                             summary.financial_ratios.liquidity_ratio?.status === 'warning' ? '#f59e0b' : '#ef4444'
+                    }}
+                  >
+                    {summary.financial_ratios.liquidity_ratio?.display}
+                  </div>
+                  <p className="text-xs leading-relaxed" style={{color: '#64748b'}}>
+                    {summary.financial_ratios.liquidity_ratio?.description}
+                  </p>
+                  <p className="text-xs mt-2" style={{color: '#94a3b8', fontStyle: 'italic'}}>
+                    {summary.financial_ratios.liquidity_ratio?.value >= 1.5 ? '✓ Strong liquidity' : 
+                     summary.financial_ratios.liquidity_ratio?.value >= 1.0 ? '⚠ Adequate liquidity' : '⚠ Low liquidity'}
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* Net Worth Growth */}
+              <Card 
+                className="overflow-hidden transition-all hover:shadow-lg"
+                style={{
+                  background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', 
+                  borderColor: summary.financial_ratios.net_worth_growth?.status === 'good' ? '#10b981' : 
+                               summary.financial_ratios.net_worth_growth?.status === 'warning' ? '#f59e0b' : 
+                               summary.financial_ratios.net_worth_growth?.status === 'neutral' ? '#64748b' : '#ef4444'
+                }}
+              >
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-semibold" style={{color: '#94a3b8'}}>NET WORTH GROWTH</h3>
+                    <div 
+                      className="w-3 h-3 rounded-full"
+                      style={{
+                        background: summary.financial_ratios.net_worth_growth?.status === 'good' ? '#10b981' : 
+                                   summary.financial_ratios.net_worth_growth?.status === 'warning' ? '#f59e0b' : 
+                                   summary.financial_ratios.net_worth_growth?.status === 'neutral' ? '#64748b' : '#ef4444'
+                      }}
+                    />
+                  </div>
+                  <div 
+                    className="text-4xl font-bold mb-2"
+                    style={{
+                      color: summary.financial_ratios.net_worth_growth?.status === 'good' ? '#10b981' : 
+                             summary.financial_ratios.net_worth_growth?.status === 'warning' ? '#f59e0b' : 
+                             summary.financial_ratios.net_worth_growth?.status === 'neutral' ? '#64748b' : '#ef4444'
+                    }}
+                  >
+                    {summary.financial_ratios.net_worth_growth?.display}
+                  </div>
+                  <p className="text-xs leading-relaxed" style={{color: '#64748b'}}>
+                    {summary.financial_ratios.net_worth_growth?.description}
+                  </p>
+                  <p className="text-xs mt-2" style={{color: '#94a3b8', fontStyle: 'italic'}}>
+                    {summary.financial_ratios.net_worth_growth?.value > 0 ? '✓ Positive growth' : 
+                     summary.financial_ratios.net_worth_growth?.display === 'N/A' ? 'ℹ Need more snapshots' : '⚠ Declining'}
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* Diversification Score */}
+              <Card 
+                className="overflow-hidden transition-all hover:shadow-lg"
+                style={{
+                  background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', 
+                  borderColor: summary.financial_ratios.diversification_score?.status === 'good' ? '#10b981' : 
+                               summary.financial_ratios.diversification_score?.status === 'warning' ? '#f59e0b' : '#ef4444'
+                }}
+              >
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-semibold" style={{color: '#94a3b8'}}>DIVERSIFICATION</h3>
+                    <div 
+                      className="w-3 h-3 rounded-full"
+                      style={{
+                        background: summary.financial_ratios.diversification_score?.status === 'good' ? '#10b981' : 
+                                   summary.financial_ratios.diversification_score?.status === 'warning' ? '#f59e0b' : '#ef4444'
+                      }}
+                    />
+                  </div>
+                  <div 
+                    className="text-4xl font-bold mb-2"
+                    style={{
+                      color: summary.financial_ratios.diversification_score?.status === 'good' ? '#10b981' : 
+                             summary.financial_ratios.diversification_score?.status === 'warning' ? '#f59e0b' : '#ef4444'
+                    }}
+                  >
+                    {summary.financial_ratios.diversification_score?.display}
+                  </div>
+                  <p className="text-xs leading-relaxed" style={{color: '#64748b'}}>
+                    {summary.financial_ratios.diversification_score?.description}
+                  </p>
+                  <p className="text-xs mt-2" style={{color: '#94a3b8', fontStyle: 'italic'}}>
+                    {summary.financial_ratios.diversification_score?.value >= 60 ? '✓ Well diversified' : 
+                     summary.financial_ratios.diversification_score?.value >= 30 ? '⚠ Add more variety' : '⚠ High concentration risk'}
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* Emergency Fund Ratio */}
+              <Card 
+                className="overflow-hidden transition-all hover:shadow-lg"
+                style={{
+                  background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', 
+                  borderColor: summary.financial_ratios.emergency_fund_ratio?.status === 'good' ? '#10b981' : 
+                               summary.financial_ratios.emergency_fund_ratio?.status === 'warning' ? '#f59e0b' : '#ef4444'
+                }}
+              >
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-semibold" style={{color: '#94a3b8'}}>EMERGENCY FUND</h3>
+                    <div 
+                      className="w-3 h-3 rounded-full"
+                      style={{
+                        background: summary.financial_ratios.emergency_fund_ratio?.status === 'good' ? '#10b981' : 
+                                   summary.financial_ratios.emergency_fund_ratio?.status === 'warning' ? '#f59e0b' : '#ef4444'
+                      }}
+                    />
+                  </div>
+                  <div 
+                    className="text-4xl font-bold mb-2"
+                    style={{
+                      color: summary.financial_ratios.emergency_fund_ratio?.status === 'good' ? '#10b981' : 
+                             summary.financial_ratios.emergency_fund_ratio?.status === 'warning' ? '#f59e0b' : '#ef4444'
+                    }}
+                  >
+                    {summary.financial_ratios.emergency_fund_ratio?.display}
+                  </div>
+                  <p className="text-xs leading-relaxed" style={{color: '#64748b'}}>
+                    {summary.financial_ratios.emergency_fund_ratio?.description}
+                  </p>
+                  <p className="text-xs mt-2" style={{color: '#94a3b8', fontStyle: 'italic'}}>
+                    {summary.financial_ratios.emergency_fund_ratio?.value >= 3 ? '✓ Safe coverage' : 
+                     summary.financial_ratios.emergency_fund_ratio?.value >= 1 ? '⚠ Build reserves' : '⚠ Critical shortage'}
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* Debt Service Coverage */}
+              <Card 
+                className="overflow-hidden transition-all hover:shadow-lg"
+                style={{
+                  background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', 
+                  borderColor: summary.financial_ratios.debt_service_coverage?.status === 'good' ? '#10b981' : 
+                               summary.financial_ratios.debt_service_coverage?.status === 'warning' ? '#f59e0b' : '#ef4444'
+                }}
+              >
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-semibold" style={{color: '#94a3b8'}}>DEBT COVERAGE</h3>
+                    <div 
+                      className="w-3 h-3 rounded-full"
+                      style={{
+                        background: summary.financial_ratios.debt_service_coverage?.status === 'good' ? '#10b981' : 
+                                   summary.financial_ratios.debt_service_coverage?.status === 'warning' ? '#f59e0b' : '#ef4444'
+                      }}
+                    />
+                  </div>
+                  <div 
+                    className="text-4xl font-bold mb-2"
+                    style={{
+                      color: summary.financial_ratios.debt_service_coverage?.status === 'good' ? '#10b981' : 
+                             summary.financial_ratios.debt_service_coverage?.status === 'warning' ? '#f59e0b' : '#ef4444'
+                    }}
+                  >
+                    {summary.financial_ratios.debt_service_coverage?.display}
+                  </div>
+                  <p className="text-xs leading-relaxed" style={{color: '#64748b'}}>
+                    {summary.financial_ratios.debt_service_coverage?.description}
+                  </p>
+                  <p className="text-xs mt-2" style={{color: '#94a3b8', fontStyle: 'italic'}}>
+                    {summary.financial_ratios.debt_service_coverage?.display === 'N/A' ? 'ℹ No debt obligations' :
+                     summary.financial_ratios.debt_service_coverage?.value >= 1.5 ? '✓ Strong coverage' : 
+                     summary.financial_ratios.debt_service_coverage?.value >= 1.0 ? '⚠ Adequate coverage' : '⚠ Payment stress'}
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        )}
+
         {/* Alerts */}
         {(!summary?.has_nominee || !summary?.has_dms) && (
           <Card data-testid="setup-alert" style={{background: 'rgba(251, 191, 36, 0.1)', borderColor: 'rgba(251, 191, 36, 0.3)'}}>
