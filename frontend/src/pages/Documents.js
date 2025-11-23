@@ -14,14 +14,19 @@ const API = `${BACKEND_URL}/api`;
 
 export default function Documents() {
   const [documents, setDocuments] = useState([]);
+  const [assets, setAssets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
+  const [selectedAssetFilter, setSelectedAssetFilter] = useState('all');
+  const [storageInfo, setStorageInfo] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     file: null,
-    share_with_nominee: false
+    share_with_nominee: false,
+    linked_asset_id: null
   });
 
   useEffect(() => {
