@@ -1419,9 +1419,10 @@ async def generate_insights(user: User = Depends(require_auth)):
         portfolio_context = f"""Analyze this investment portfolio and provide structured insights:
 
 Portfolio Overview:
-- Total Assets Value: ${total_assets_value:,.2f}
-- Total Liabilities: ${total_liabilities_value:,.2f}
-- Net Worth: ${net_worth:,.2f}
+- Total Assets Value: {target_currency} {total_assets_value:,.2f}
+- Total Liabilities: {target_currency} {total_liabilities_value:,.2f}
+- Net Worth: {target_currency} {net_worth:,.2f}
+- Currency: {target_currency}
 - Asset Distribution: {asset_distribution_str}
 - Total number of assets/liabilities: {len(assets)}
 
