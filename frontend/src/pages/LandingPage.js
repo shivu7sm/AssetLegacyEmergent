@@ -291,6 +291,127 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* FAQ Section */}
+      <section className="py-20">
+        <div className="container mx-auto px-6">
+          <div className="max-w-4xl mx-auto">
+            <h3 className="text-3xl sm:text-4xl font-bold text-center mb-4" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
+              Frequently Asked Questions
+            </h3>
+            <p className="text-center text-base sm:text-lg mb-12" style={{color: '#94a3b8'}}>
+              Everything you need to know about protecting your legacy
+            </p>
+
+            <div className="space-y-4">
+              {/* FAQ Item 1 */}
+              <details className="group rounded-xl p-6 transition-all" style={{background: '#131835', border: '1px solid #1e293b'}}>
+                <summary className="flex justify-between items-center cursor-pointer list-none">
+                  <h4 className="text-lg font-semibold" style={{color: '#f8fafc'}}>
+                    What happens to my assets if something unexpected happens to me?
+                  </h4>
+                  <svg className="w-5 h-5 transition-transform group-open:rotate-180" style={{color: '#a855f7'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <div className="mt-4" style={{color: '#cbd5e1'}}>
+                  <p>With AssetVault's Dead Man Switch, your designated nominees are automatically notified if you're inactive for a specified period (default 90 days). They'll receive access to your asset information and important documents, ensuring your wealth doesn't get lost in the system. You'll receive reminders before activation, so false triggers are prevented.</p>
+                </div>
+              </details>
+
+              {/* FAQ Item 2 */}
+              <details className="group rounded-xl p-6 transition-all" style={{background: '#131835', border: '1px solid #1e293b'}}>
+                <summary className="flex justify-between items-center cursor-pointer list-none">
+                  <h4 className="text-lg font-semibold" style={{color: '#f8fafc'}}>
+                    Is my financial data secure?
+                  </h4>
+                  <svg className="w-5 h-5 transition-transform group-open:rotate-180" style={{color: '#a855f7'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <div className="mt-4" style={{color: '#cbd5e1'}}>
+                  <p>Absolutely. We use bank-level encryption (256-bit SSL) for all data transmission and storage. Your sensitive documents are encrypted at rest, and we never share your information with third parties. Plus, you control exactly what information is shared with your nominees.</p>
+                </div>
+              </details>
+
+              {/* FAQ Item 3 */}
+              <details className="group rounded-xl p-6 transition-all" style={{background: '#131835', border: '1px solid #1e293b'}}>
+                <summary className="flex justify-between items-center cursor-pointer list-none">
+                  <h4 className="text-lg font-semibold" style={{color: '#f8fafc'}}>
+                    How is this different from a traditional will?
+                  </h4>
+                  <svg className="w-5 h-5 transition-transform group-open:rotate-180" style={{color: '#a855f7'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <div className="mt-4" style={{color: '#cbd5e1'}}>
+                  <p>AssetVault complements your will, it doesn't replace it. While a will handles legal ownership transfer (which can take months or years), AssetVault ensures your family knows what assets exist and how to access them immediately. Many assets are lost simply because families don't know they exist. We solve that problem.</p>
+                </div>
+              </details>
+
+              {/* FAQ Item 4 */}
+              <details className="group rounded-xl p-6 transition-all" style={{background: '#131835', border: '1px solid #1e293b'}}>
+                <summary className="flex justify-between items-center cursor-pointer list-none">
+                  <h4 className="text-lg font-semibold" style={{color: '#f8fafc'}}>
+                    Can I track assets in multiple currencies?
+                  </h4>
+                  <svg className="w-5 h-5 transition-transform group-open:rotate-180" style={{color: '#a855f7'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <div className="mt-4" style={{color: '#cbd5e1'}}>
+                  <p>Yes! AssetVault supports multiple currencies including USD, EUR, GBP, INR, and many more. Assets are automatically converted to your selected base currency using real-time exchange rates, giving you an accurate total net worth view across all your international holdings.</p>
+                </div>
+              </details>
+
+              {/* FAQ Item 5 */}
+              <details className="group rounded-xl p-6 transition-all" style={{background: '#131835', border: '1px solid #1e293b'}}>
+                <summary className="flex justify-between items-center cursor-pointer list-none">
+                  <h4 className="text-lg font-semibold" style={{color: '#f8fafc'}}>
+                    What if I forget to check in and the Dead Man Switch triggers by accident?
+                  </h4>
+                  <svg className="w-5 h-5 transition-transform group-open:rotate-180" style={{color: '#a855f7'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <div className="mt-4" style={{color: '#cbd5e1'}}>
+                  <p>We've designed multiple safeguards. You'll receive reminder emails at 60, 75, and 85 days of inactivity (customizable). Simply logging into AssetVault resets the timer. Even if you miss all reminders, you have a grace period after the trigger to deactivate the notification before your nominees are contacted.</p>
+                </div>
+              </details>
+
+              {/* FAQ Item 6 */}
+              <details className="group rounded-xl p-6 transition-all" style={{background: '#131835', border: '1px solid #1e293b'}}>
+                <summary className="flex justify-between items-center cursor-pointer list-none">
+                  <h4 className="text-lg font-semibold" style={{color: '#f8fafc'}}>
+                    Can I cancel my subscription anytime?
+                  </h4>
+                  <svg className="w-5 h-5 transition-transform group-open:rotate-180" style={{color: '#a855f7'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <div className="mt-4" style={{color: '#cbd5e1'}}>
+                  <p>Yes, absolutely. You can cancel anytime from your account settings. You'll retain access to premium features until the end of your current billing period. If you downgrade to the Free plan, your data remains accessible with basic features. You can always reactivate your subscription later.</p>
+                </div>
+              </details>
+
+              {/* FAQ Item 7 */}
+              <details className="group rounded-xl p-6 transition-all" style={{background: '#131835', border: '1px solid #1e293b'}}>
+                <summary className="flex justify-between items-center cursor-pointer list-none">
+                  <h4 className="text-lg font-semibold" style={{color: '#f8fafc'}}>
+                    How do I get started?
+                  </h4>
+                  <svg className="w-5 h-5 transition-transform group-open:rotate-180" style={{color: '#a855f7'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <div className="mt-4" style={{color: '#cbd5e1'}}>
+                  <p>It's simple! Click "Get Started Free" to create your account. Start by adding your first few assets (bank accounts, properties, investments). Then designate a nominee and set your Dead Man Switch preferences. The entire setup takes less than 10 minutes, and you can always add more assets later.</p>
+                </div>
+              </details>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-20" style={{background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%)', borderTop: '1px solid #2d1f3d', borderBottom: '1px solid #2d1f3d'}}>
         <div className="container mx-auto px-6 text-center">
