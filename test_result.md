@@ -184,17 +184,29 @@ backend:
         comment: "✅ PASSED - Real estate extended fields working correctly. Successfully created property with current_price_per_area field ($250/sqft). Dashboard calculation correctly uses current_price_per_area over price_per_area (1500 sqft × $250 = $375K). Field updates work properly. Asset and AssetCreate models both support the new field."
 
 frontend:
-  - task: "Dashboard Layout Reorganization"
+  - task: "Landing Page Background Color Fix"
     implemented: true
     working: "NA"
-    file: "/app/frontend/src/pages/Dashboard.js"
+    file: "/app/frontend/src/pages/LandingPage.js"
+    stuck_count: 0
+    priority: "low"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Changed video section background color from rgba(19, 24, 53, 0.5) to rgba(26, 11, 46, 0.3) which is lighter and matches the main gradient color scheme better."
+  
+  - task: "Portfolio Management UI"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/Assets.js"
     stuck_count: 0
     priority: "high"
     needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Moved NetWorthChart component below pie charts section. Added data table cards next to each pie chart (Assets vs Liabilities comparison table, Asset Distribution table, Liability Distribution table when present). Tables show category name, value in selected currency, and percentage. Improved layout structure with proper spacing."
+        comment: "Complete portfolio management UI implementation: 1) Added page mode toggle between 'Individual Assets' and 'Portfolios' 2) Created portfolio list view with cards showing provider, holdings count, total value 3) Implemented portfolio creation dialog with provider selection (Binance, Zerodha, Robinhood, etc.) 4) Built portfolio details modal showing all holdings with purchase/current prices, gains/losses 5) Created holding add/edit dialog with symbol, quantity, prices 6) Added delete functionality for both portfolios and holdings 7) Integrated with all backend APIs 8) Proper state management for portfolios, holdings, and dialogs"
   
   - task: "Net Worth Chart Backfill Feature"
     implemented: true
