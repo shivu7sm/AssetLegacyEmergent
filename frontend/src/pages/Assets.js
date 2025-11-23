@@ -796,9 +796,11 @@ export default function Assets() {
                       <tr>
                         <th className="text-left p-4" style={{color: '#94a3b8', fontWeight: 600}}>Asset</th>
                         <th className="text-left p-4" style={{color: '#94a3b8', fontWeight: 600}}>Type</th>
-                        <th className="text-right p-4" style={{color: '#94a3b8', fontWeight: 600}}>Quantity/Details</th>
-                        <th className="text-right p-4" style={{color: '#94a3b8', fontWeight: 600}}>Purchase Value</th>
-                        <th className="text-right p-4" style={{color: '#94a3b8', fontWeight: 600}}>Current Value</th>
+                        <th className="text-right p-4" style={{color: '#94a3b8', fontWeight: 600}}>Quantity</th>
+                        <th className="text-right p-4" style={{color: '#94a3b8', fontWeight: 600}}>Original Value</th>
+                        <th className="text-right p-4" style={{color: '#94a3b8', fontWeight: 600}}>Purchase ({displayCurrency})</th>
+                        <th className="text-right p-4" style={{color: '#94a3b8', fontWeight: 600}}>Current ({displayCurrency})</th>
+                        <th className="text-right p-4" style={{color: '#94a3b8', fontWeight: 600}}>Gain/Loss</th>
                         <th className="text-right p-4" style={{color: '#94a3b8', fontWeight: 600}}>Actions</th>
                       </tr>
                     </thead>
