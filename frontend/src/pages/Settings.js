@@ -358,40 +358,277 @@ export default function Settings() {
         );
 
       case 'subscription':
+        const subDetails = subscription?.subscription_details;
+        const currentPlan = subscription?.plan || 'Free';
+        const hasActiveSubscription = currentPlan !== 'Free' && subDetails;
+        
+        const formatDate = (dateStr) => {
+          return new Date(dateStr).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+        };
+
+        const getStatusIcon = (status) => {
+          const CheckCircle2 = () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>;
+          const XCircle = () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>;
+          const AlertCircle = () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>;
+          
+          switch(status) {
+            case 'active':
+              return <div style={{color: '#10b981'}}><CheckCircle2 /></div>;
+            case 'canceled':
+              return <div style={{color: '#ef4444'}}><XCircle /></div>;
+            default:
+              return <div style={{color: '#f59e0b'}}><AlertCircle /></div>;
+          }
+        };
+
         return (
           <div className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold mb-2" style={{color: '#f8fafc'}}>Subscription & Billing</h2>
-              <p style={{color: '#94a3b8'}}>Manage your subscription plan</p>
+              <p style={{color: '#94a3b8'}}>Manage your subscription plan and billing information</p>
             </div>
             
+            {/* Detailed Subscription Card */}
             <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#a855f7'}}>
               <CardContent className="py-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm" style={{color: '#94a3b8'}}>Current Plan</p>
-                    <h3 className="text-3xl font-bold mt-1" style={{color: '#f8fafc'}}>{subscription?.plan || 'Free'}</h3>
+                <div className="flex items-start justify-between flex-wrap gap-6">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-4">
+                      <p className="text-sm" style={{color: '#94a3b8'}}>Current Plan</p>
+                      {hasActiveSubscription && getStatusIcon(subDetails.status)}
+                    </div>
+                    <div className="flex items-center gap-3 mb-2">
+                      <h3 className="text-2xl font-bold" style={{color: '#f8fafc'}}>{currentPlan}</h3>
+                      {currentPlan !== 'Free' && (
+                        <span className="px-3 py-1 rounded-full text-xs font-semibold" style={{
+                          background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)',
+                          color: '#fff'
+                        }}>
+                          PREMIUM
+                        </span>
+                      )}
+                    </div>
+
+                    {hasActiveSubscription && (
+                      <div className="space-y-3 mt-4">
+                        {/* Subscription Status */}
+                        <div className="flex items-center gap-2 text-sm">
+                          <span style={{color: '#94a3b8'}}>Status:</span>
+                          <span className="px-2 py-1 rounded text-xs font-semibold" style={{
+                            background: subDetails.status === 'active' ? '#10b98120' : '#ef444420',
+                            color: subDetails.status === 'active' ? '#10b981' : '#ef4444'
+                          }}>
+                            {subDetails.status === 'active' ? 'Active' : subDetails.cancel_at ? 'Canceling' : 'Inactive'}
+                          </span>
+                        </div>
+
+                        {/* Subscription Start Date */}
+                        <div className="flex items-center gap-2 text-sm">
+                          <Clock className="w-4 h-4" style={{color: '#94a3b8'}} />
+                          <span style={{color: '#94a3b8'}}>Started:</span>
+                          <span style={{color: '#f8fafc'}}>{formatDate(subDetails.created)}</span>
+                        </div>
+
+                        {/* Current Billing Period */}
+                        <div className="flex items-center gap-2 text-sm">
+                          <Clock className="w-4 h-4" style={{color: '#94a3b8'}} />
+                          <span style={{color: '#94a3b8'}}>Current Period:</span>
+                          <span style={{color: '#f8fafc'}}>
+                            {formatDate(subDetails.current_period_start)} - {formatDate(subDetails.current_period_end)}
+                          </span>
+                        </div>
+
+                        {/* Next Renewal or Cancel Date */}
+                        {subDetails.cancel_at ? (
+                          <div className="flex items-center gap-2 p-3 rounded" style={{background: '#ef444410', borderLeft: '3px solid #ef4444'}}>
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{color: '#ef4444'}}>
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <div className="flex-1">
+                              <p className="text-sm font-semibold" style={{color: '#ef4444'}}>Subscription Canceling</p>
+                              <p className="text-xs" style={{color: '#94a3b8'}}>
+                                Access until {formatDate(subDetails.cancel_at)}
+                              </p>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-2 text-sm">
+                            <RefreshCw className="w-4 h-4" style={{color: '#94a3b8'}} />
+                            <span style={{color: '#94a3b8'}}>Next Renewal:</span>
+                            <span style={{color: '#10b981', fontWeight: 600}}>
+                              {formatDate(subDetails.current_period_end)}
+                            </span>
+                          </div>
+                        )}
+
+                        {/* Auto Renewal Status */}
+                        <div className="flex items-center gap-2 text-sm">
+                          <RefreshCw className="w-4 h-4" style={{color: '#94a3b8'}} />
+                          <span style={{color: '#94a3b8'}}>Auto-Renewal:</span>
+                          <span style={{color: subDetails.cancel_at ? '#ef4444' : '#10b981', fontWeight: 600}}>
+                            {subDetails.cancel_at ? 'Disabled' : 'Enabled'}
+                          </span>
+                        </div>
+
+                        {/* Payment Method */}
+                        {subDetails.payment_method && (
+                          <div className="flex items-center gap-2 text-sm">
+                            <CreditCard className="w-4 h-4" style={{color: '#94a3b8'}} />
+                            <span style={{color: '#94a3b8'}}>Payment Method:</span>
+                            <span style={{color: '#f8fafc'}}>
+                              {subDetails.payment_method.brand.toUpperCase()} ••••{subDetails.payment_method.last4}
+                            </span>
+                            <span className="text-xs" style={{color: '#64748b'}}>
+                              (Expires {subDetails.payment_method.exp_month}/{subDetails.payment_method.exp_year})
+                            </span>
+                          </div>
+                        )}
+
+                        {/* Billing Amount */}
+                        <div className="flex items-center gap-2 text-sm">
+                          <span style={{color: '#94a3b8'}}>Amount:</span>
+                          <span className="text-lg font-bold" style={{color: '#a855f7'}}>
+                            {subDetails.currency} ${subDetails.amount}/{subDetails.interval}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Action Buttons */}
+                    <div className="flex gap-3 mt-6 flex-wrap">
+                      <Button
+                        onClick={() => window.location.href = '/subscription'}
+                        variant="outline"
+                        style={{borderColor: '#a855f7', color: '#a855f7'}}
+                      >
+                        View All Plans
+                      </Button>
+                      
+                      {currentPlan !== 'Free' && !subDetails?.cancel_at && (
+                        <Button
+                          onClick={async () => {
+                            if (!confirm('Are you sure you want to cancel your subscription? You will lose access to premium features at the end of your billing period.')) return;
+                            try {
+                              await axios.post(`${API}/subscription/cancel`, {}, { withCredentials: true });
+                              toast.success('Subscription will be canceled at period end');
+                              loadSettings();
+                            } catch (error) {
+                              toast.error('Failed to cancel subscription');
+                            }
+                          }}
+                          variant="outline"
+                          style={{borderColor: '#ef4444', color: '#ef4444'}}
+                        >
+                          Cancel Subscription
+                        </Button>
+                      )}
+                      
+                      {currentPlan !== 'Free' && subDetails?.cancel_at && (
+                        <Button
+                          onClick={async () => {
+                            if (!confirm('Reactivate your subscription? Your payment method will be charged at the next billing cycle.')) return;
+                            try {
+                              await axios.post(`${API}/subscription/reactivate`, {}, { withCredentials: true });
+                              toast.success('Subscription reactivated successfully!');
+                              loadSettings();
+                            } catch (error) {
+                              toast.error('Failed to reactivate subscription');
+                            }
+                          }}
+                          variant="outline"
+                          style={{borderColor: '#10b981', color: '#10b981'}}
+                        >
+                          Reactivate Subscription
+                        </Button>
+                      )}
+                    </div>
                   </div>
                   <CreditCard className="w-12 h-12" style={{color: '#a855f7'}} />
                 </div>
               </CardContent>
             </Card>
 
-            <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
-              <CardHeader>
-                <CardTitle style={{color: '#f8fafc'}}>Plan Management</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="mb-4" style={{color: '#94a3b8'}}>View all available plans and manage your subscription</p>
-                <Button
-                  onClick={() => window.location.href = '/subscription'}
-                  className="text-white rounded-full"
-                  style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
-                >
-                  View Subscription Plans
-                </Button>
-              </CardContent>
-            </Card>
+            {/* Usage Stats */}
+            {subscription && (
+              <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                <CardHeader>
+                  <CardTitle style={{color: '#f8fafc'}}>Current Usage</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {/* Assets Usage */}
+                    <div>
+                      <div className="flex justify-between text-sm mb-2">
+                        <span style={{color: '#94a3b8'}}>Assets</span>
+                        <span style={{color: '#f8fafc', fontWeight: 600}}>
+                          {subscription.usage.assets} / {subscription.features.max_assets > 0 ? subscription.features.max_assets : '∞'}
+                        </span>
+                      </div>
+                      <div className="w-full h-2 rounded-full" style={{background: '#16001e'}}>
+                        <div 
+                          className="h-full rounded-full transition-all"
+                          style={{
+                            width: subscription.features.max_assets > 0 
+                              ? `${Math.min((subscription.usage.assets / subscription.features.max_assets) * 100, 100)}%`
+                              : '50%',
+                            background: 'linear-gradient(90deg, #10b981 0%, #3b82f6 100%)'
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Documents Usage */}
+                    <div>
+                      <div className="flex justify-between text-sm mb-2">
+                        <span style={{color: '#94a3b8'}}>Documents</span>
+                        <span style={{color: '#f8fafc', fontWeight: 600}}>
+                          {subscription.usage.documents} / {subscription.features.max_documents > 0 ? subscription.features.max_documents : '∞'}
+                        </span>
+                      </div>
+                      <div className="w-full h-2 rounded-full" style={{background: '#16001e'}}>
+                        <div 
+                          className="h-full rounded-full transition-all"
+                          style={{
+                            width: subscription.features.max_documents > 0 
+                              ? `${Math.min((subscription.usage.documents / subscription.features.max_documents) * 100, 100)}%`
+                              : '50%',
+                            background: 'linear-gradient(90deg, #10b981 0%, #3b82f6 100%)'
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Storage Usage */}
+                    <div>
+                      <div className="flex justify-between text-sm mb-2">
+                        <span style={{color: '#94a3b8'}}>Storage</span>
+                        <span style={{color: '#f8fafc', fontWeight: 600}}>
+                          {subscription.features.storage_mb >= 1024 
+                            ? `${(subscription.usage.storage_mb / 1024).toFixed(2)} GB / ${(subscription.features.storage_mb / 1024).toFixed(0)} GB`
+                            : `${subscription.usage.storage_mb.toFixed(1)} MB / ${subscription.features.storage_mb} MB`
+                          }
+                        </span>
+                      </div>
+                      <div className="w-full h-2 rounded-full" style={{background: '#16001e'}}>
+                        <div 
+                          className="h-full rounded-full transition-all"
+                          style={{
+                            width: `${Math.min((subscription.usage.storage_mb / subscription.features.storage_mb) * 100, 100)}%`,
+                            background: subscription.usage.storage_mb / subscription.features.storage_mb > 0.8 
+                              ? 'linear-gradient(90deg, #ef4444 0%, #dc2626 100%)'
+                              : 'linear-gradient(90deg, #10b981 0%, #3b82f6 100%)'
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </div>
         );
 
