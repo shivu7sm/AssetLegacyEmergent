@@ -41,6 +41,7 @@ export default function Assets() {
   const [sortBy, setSortBy] = useState('date');
   const [displayCurrency, setDisplayCurrency] = useState('USD');
   const [filteredAssets, setFilteredAssets] = useState([]);
+  const [conversionRates, setConversionRates] = useState({});
   const [formData, setFormData] = useState({
     type: 'crypto',
     name: '',
