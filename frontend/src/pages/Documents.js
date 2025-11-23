@@ -170,6 +170,32 @@ export default function Documents() {
               Document Vault
             </h1>
             <p style={{color: '#94a3b8'}}>Store important documents securely for your family</p>
+            {storageInfo && (
+              <div className="mt-3 flex items-center gap-4">
+                <div className="flex-1 max-w-md">
+                  <div className="flex justify-between text-sm mb-1">
+                    <span style={{color: '#94a3b8'}}>Storage Used</span>
+                    <span style={{color: '#f8fafc', fontWeight: 600}}>
+                      {storageInfo.usage.storage_mb.toFixed(1)} MB / {storageInfo.features.storage_mb} MB
+                    </span>
+                  </div>
+                  <div className="w-full h-2 rounded-full" style={{background: '#16001e'}}>
+                    <div 
+                      className="h-full rounded-full transition-all"
+                      style={{
+                        width: `${Math.min((storageInfo.usage.storage_mb / storageInfo.features.storage_mb) * 100, 100)}%`,
+                        background: storageInfo.usage.storage_mb / storageInfo.features.storage_mb > 0.8 
+                          ? 'linear-gradient(90deg, #ef4444 0%, #dc2626 100%)'
+                          : 'linear-gradient(90deg, #10b981 0%, #3b82f6 100%)'
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="text-xs" style={{color: '#64748b'}}>
+                  {storageInfo.usage.documents} / {storageInfo.features.max_documents > 0 ? storageInfo.features.max_documents : '∞'} docs
+                </div>
+              </div>
+            )}
           </div>
 
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
