@@ -233,6 +233,18 @@ frontend:
         agent: "main"
         comment: "Created comprehensive Admin.js page with 3 tabs: Overview (statistics cards showing users, assets, subscriptions, AI insights; asset distribution grid; scheduled messages & DMS status summary), Users (table with user management: view all users with email/name/role/plan/asset count/joined date, inline role editor dropdown, delete user button), Scheduled Jobs (scheduled messages table with recipient/subject/send date/status icons; DMS reminders table with user info/days inactive/days until trigger/reminders sent/active status). Added refresh button. Updated App.js to add /admin route. Updated Layout.js to show Admin link only for users with role='admin'. Imports useAuth hook to check user role."
   
+  - task: "Financial Health Ratios Frontend"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/Dashboard.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added Financial Health Indicators section to Dashboard below primary stats cards. Displays 6 ratio cards in 3-column grid: Debt-to-Asset Ratio, Liquidity Ratio, Net Worth Growth, Diversification Score, Emergency Fund Ratio, Debt Service Coverage. Each card shows: ratio value with dynamic color coding (green=good, yellow=warning, red=alert), status indicator dot, description, interpretation text. Added legend at top showing color meanings. Cards use gradient backgrounds matching app theme. All ratios pull from summary.financial_ratios backend data."
+  
   - task: "Real Estate Extended Fields Form"
     implemented: true
     working: true
