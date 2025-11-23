@@ -827,11 +827,21 @@ async def create_document(doc_data: DocumentCreate, user: User = Depends(require
     doc_dict['updated_at'] = doc_dict['updated_at'].isoformat()
     await db.documents.insert_one(doc_dict)
     
-    # Return without file_data for list view
-    doc_dict.pop('file_data')
-    doc_dict['created_at'] = datetime.fromisoformat(doc_dict['created_at'])
-    doc_dict['updated_at'] = datetime.fromisoformat(doc_dict['updated_at'])
-    return doc_dict
+    # Fetch the document back without _id and file_data
+    created_doc = await db.documents.find_one(
+        {"id": document.id, "user_id": user.id},
+        {"_id": 0, "file_data": 0}
+    )
+    
+    if created_doc:
+        # Convert datetime strings back to datetime objects for response
+        if isinstance(created_doc.get('created_at'), str):
+            created_doc['created_at'] = datetime.fromisoformat(created_doc['created_at'])
+        if isinstance(created_doc.get('updated_at'), str):
+            created_doc['updated_at'] = datetime.fromisoformat(created_doc['updated_at'])
+        return created_doc
+    
+    raise HTTPException(status_code=500, detail="Failed to create document")
 
 @api_router.delete("/documents/{doc_id}")
 async def delete_document(doc_id: str, user: User = Depends(require_auth)):
