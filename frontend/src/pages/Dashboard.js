@@ -162,8 +162,7 @@ export default function Dashboard() {
   
   return (
     <Layout>
-      <div className={`${dashboardTheme}-theme`} data-testid="dashboard-container" style={dashboardTheme === 'modern' ? {padding: '2rem 0'} : {}}>
-        <div className={dashboardTheme === 'modern' ? 'space-y-6' : 'space-y-8'}>
+      <div className={`${dashboardTheme}-theme space-y-8`} data-testid="dashboard-container" style={dashboardTheme === 'modern' ? {padding: '2rem 0'} : {}}>
         {/* Header */}
         <div className="mb-8">
           <h1 className={`${dashboardTheme === 'modern' ? 'text-3xl' : 'text-4xl'} font-bold mb-2`} style={dashboardTheme === 'modern' ? {fontFamily: 'Inter, sans-serif', color: '#1a1f36'} : {fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}} data-testid="dashboard-title">
