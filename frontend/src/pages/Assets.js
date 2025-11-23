@@ -31,6 +31,90 @@ const CURRENCIES = ['USD', 'EUR', 'GBP', 'INR', 'JPY', 'AUD', 'CAD', 'SGD', 'AED
 const AREA_UNITS = ['sqft', 'sqmt', 'yard', 'acre'];
 const WEIGHT_UNITS = ['gram', 'kilogram', 'ounce', 'pound'];
 
+function AssetTableRow({ asset, typeInfo, purchaseValueOriginal, currentValueOriginal, displayCurrency, getConversionRate, handleEdit, handleDelete }) {
+  const [purchaseConverted, setPurchaseConverted] = useState(purchaseValueOriginal);
+  const [currentConverted, setCurrentConverted] = useState(currentValueOriginal);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const convert = async () => {
+      setLoading(true);
+      const rate = await getConversionRate(asset.purchase_currency, displayCurrency);
+      setPurchaseConverted(purchaseValueOriginal * rate);
+      setCurrentConverted(currentValueOriginal * rate);
+      setLoading(false);
+    };
+    convert();
+  }, [asset.purchase_currency, displayCurrency, purchaseValueOriginal, currentValueOriginal]);
+
+  const gain = currentConverted - purchaseConverted;
+  const gainPercent = purchaseConverted ? ((gain / purchaseConverted) * 100).toFixed(2) : 0;
+
+  return (
+    <tr style={{borderBottom: '1px solid #2d1f3d'}}>
+      <td className="p-4">
+        <div className="flex items-center gap-3">
+          <span className="text-2xl">{typeInfo.icon}</span>
+          <div>
+            <div style={{color: '#f8fafc', fontWeight: 500}}>{asset.name}</div>
+            {asset.symbol && <div className="text-xs" style={{color: '#94a3b8'}}>{asset.symbol}</div>}
+          </div>
+        </div>
+      </td>
+      <td className="p-4" style={{color: '#94a3b8'}}>{typeInfo.label}</td>
+      <td className="p-4 text-right" style={{color: '#94a3b8'}}>
+        {asset.quantity && `${asset.quantity} units`}
+        {asset.weight && `${asset.weight} ${asset.weight_unit}`}
+        {asset.area && `${asset.area} ${asset.area_unit}`}
+        {!asset.quantity && !asset.weight && !asset.area && '-'}
+      </td>
+      <td className="p-4 text-right" style={{color: '#cbd5e1'}}>
+        <div className="font-semibold">{asset.purchase_currency} {purchaseValueOriginal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+      </td>
+      <td className="p-4 text-right" style={{color: '#f8fafc'}}>
+        {loading ? '...' : `${displayCurrency} ${purchaseConverted.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}
+      </td>
+      <td className="p-4 text-right">
+        <div style={{color: '#ec4899', fontWeight: 600}}>
+          {loading ? '...' : `${displayCurrency} ${currentConverted.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}
+        </div>
+      </td>
+      <td className="p-4 text-right">
+        {!loading && gain !== 0 && (
+          <div>
+            <div style={{color: gain > 0 ? '#22c55e' : '#ef4444', fontWeight: 600}}>
+              {gain > 0 ? '+' : ''}{gain.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+            </div>
+            <div className="text-xs" style={{color: gain > 0 ? '#22c55e' : '#ef4444'}}>
+              ({gainPercent}%)
+            </div>
+          </div>
+        )}
+      </td>
+      <td className="p-4 text-right">
+        <div className="flex justify-end gap-2">
+          <Button 
+            onClick={() => handleEdit(asset)}
+            variant="outline"
+            size="sm"
+            style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+          >
+            <Edit className="w-4 h-4" />
+          </Button>
+          <Button 
+            onClick={() => handleDelete(asset.id)}
+            variant="outline"
+            size="sm"
+            style={{borderColor: '#ef4444', color: '#ef4444'}}
+          >
+            <Trash2 className="w-4 h-4" />
+          </Button>
+        </div>
+      </td>
+    </tr>
+  );
+}
+
 export default function Assets() {
   const [assets, setAssets] = useState([]);
   const [loading, setLoading] = useState(true);
