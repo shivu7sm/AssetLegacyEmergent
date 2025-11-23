@@ -434,8 +434,8 @@ export default function Assets() {
                   </>
                 )}
 
-                {/* Gold/Silver - Weight based */}
-                {(formData.type === 'gold' || formData.type === 'silver') && (
+                {/* Precious Metals - Weight based */}
+                {formData.type === 'precious_metals' && (
                   <>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
