@@ -1283,6 +1283,7 @@ async def create_checkout_session(data: dict, user: User = Depends(require_auth)
             metadata={"user_id": user.id, "plan": plan}
         )
         
+        logger.info(f"Checkout session created: {session.id}, URL: {session.url}")
         return {"sessionId": session.id, "url": session.url}
     except stripe.error.StripeError as e:
         logger.error(f"Stripe error: {str(e)}")
