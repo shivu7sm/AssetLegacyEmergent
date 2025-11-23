@@ -202,6 +202,7 @@ class AssetCreate(BaseModel):
 class NomineeCreate(BaseModel):
     name: str
     email: str
+    priority: int = 1
     phone: Optional[str] = None
     relationship: Optional[str] = None
 
