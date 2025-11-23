@@ -1,122 +1,272 @@
 {
-  "timestamp": "2025-11-23T04:04:49.584480",
-  "total_tests": 19,
-  "passed_tests": 19,
+  "timestamp": "2025-11-23T07:43:10.205851",
+  "total_tests": 44,
+  "passed_tests": 44,
   "success_rate": 100.0,
   "test_details": [
     {
       "test": "Get current user (/auth/me)",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T04:04:48.051870"
+      "timestamp": "2025-11-23T07:43:08.014931"
     },
     {
       "test": "Get user without auth (should fail)",
       "success": true,
       "details": "Status: 401",
-      "timestamp": "2025-11-23T04:04:48.091795"
+      "timestamp": "2025-11-23T07:43:08.093115"
     },
     {
       "test": "Get assets list",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T04:04:48.130427"
+      "timestamp": "2025-11-23T07:43:08.143984"
     },
     {
       "test": "Create new asset",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T04:04:48.192474"
+      "timestamp": "2025-11-23T07:43:08.197043"
     },
     {
       "test": "Update asset",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T04:04:48.234972"
+      "timestamp": "2025-11-23T07:43:08.235433"
     },
     {
       "test": "Get assets after creation",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T04:04:48.275607"
+      "timestamp": "2025-11-23T07:43:08.277373"
     },
     {
       "test": "Delete asset",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T04:04:48.316963"
+      "timestamp": "2025-11-23T07:43:08.312995"
     },
     {
       "test": "Get nominee (initially empty)",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T04:04:48.357903"
+      "timestamp": "2025-11-23T07:43:08.366276"
     },
     {
       "test": "Create nominee",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T04:04:48.399421"
+      "timestamp": "2025-11-23T07:43:08.409776"
     },
     {
       "test": "Update nominee",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T04:04:48.437470"
+      "timestamp": "2025-11-23T07:43:08.446659"
     },
     {
       "test": "Get DMS config (initially empty)",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T04:04:48.479672"
+      "timestamp": "2025-11-23T07:43:08.486498"
     },
     {
       "test": "Create DMS configuration",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T04:04:48.543389"
+      "timestamp": "2025-11-23T07:43:08.531887"
     },
     {
       "test": "Reset DMS timer",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T04:04:48.584419"
+      "timestamp": "2025-11-23T07:43:08.565919"
     },
     {
       "test": "Update DMS configuration",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T04:04:48.663996"
+      "timestamp": "2025-11-23T07:43:08.603043"
     },
     {
       "test": "Create asset for dashboard test",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T04:04:48.702998"
+      "timestamp": "2025-11-23T07:43:08.679616"
     },
     {
       "test": "Get dashboard summary",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T04:04:48.740094"
+      "timestamp": "2025-11-23T07:43:08.724457"
+    },
+    {
+      "test": "Get existing assets for cleanup",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T07:43:08.765561"
+    },
+    {
+      "test": "Delete existing asset 2bd9dc46-cd7b-48fd-a673-27e712f7a111",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T07:43:08.798607"
+    },
+    {
+      "test": "Create property asset: Family Home",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T07:43:08.837673"
+    },
+    {
+      "test": "Create crypto asset: Bitcoin Investment",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T07:43:08.875671"
+    },
+    {
+      "test": "Create stock asset: Apple Stock",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T07:43:08.913114"
+    },
+    {
+      "test": "Create bank asset: Savings Account",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T07:43:08.950067"
+    },
+    {
+      "test": "Create loan liability: Home Mortgage",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T07:43:08.987350"
+    },
+    {
+      "test": "Create credit_card liability: Credit Card Debt",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T07:43:09.022255"
+    },
+    {
+      "test": "Get dashboard summary with assets and liabilities",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T07:43:09.060203"
+    },
+    {
+      "test": "Dashboard summary has all required Phase 1 fields",
+      "success": true,
+      "details": "All Phase 1 fields present",
+      "timestamp": "2025-11-23T07:43:09.060668"
+    },
+    {
+      "test": "Asset calculation accuracy",
+      "success": true,
+      "details": "Expected: $429000.0, Actual: $429000.0",
+      "timestamp": "2025-11-23T07:43:09.060691"
+    },
+    {
+      "test": "Liability calculation accuracy",
+      "success": true,
+      "details": "Expected: $185000, Actual: $185000.0",
+      "timestamp": "2025-11-23T07:43:09.060695"
+    },
+    {
+      "test": "Net worth calculation accuracy",
+      "success": true,
+      "details": "Expected: $244000.0, Actual: $244000.0",
+      "timestamp": "2025-11-23T07:43:09.060698"
+    },
+    {
+      "test": "Cleanup test asset/liability 23995e2f-ac74-4a8c-9483-b28de738d0a6",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T07:43:09.095753"
+    },
+    {
+      "test": "Cleanup test asset/liability 8acd51db-d752-4c47-8f8f-f8fc55923cb0",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T07:43:09.133788"
+    },
+    {
+      "test": "Cleanup test asset/liability e0b160d9-1e40-4e8a-8d92-86ca1987ad1b",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T07:43:09.172503"
+    },
+    {
+      "test": "Cleanup test asset/liability 2674bcb0-55c9-4747-96dd-d40d026c28f5",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T07:43:09.207653"
+    },
+    {
+      "test": "Cleanup test asset/liability 519f62ed-15ae-4a40-b5fd-5520cfe14608",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T07:43:09.242430"
+    },
+    {
+      "test": "Cleanup test asset/liability 53b3e241-152e-4abd-a65b-7b3de2e4e832",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T07:43:09.277471"
+    },
+    {
+      "test": "Create real estate with current_price_per_area",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T07:43:09.313458"
+    },
+    {
+      "test": "Real estate has current_price_per_area field",
+      "success": true,
+      "details": "Value: $250.0",
+      "timestamp": "2025-11-23T07:43:09.313892"
+    },
+    {
+      "test": "Get dashboard summary for real estate calculation test",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T07:43:09.348916"
+    },
+    {
+      "test": "Dashboard uses current_price_per_area for calculation",
+      "success": true,
+      "details": "Expected: $375000, Actual: $375000.0",
+      "timestamp": "2025-11-23T07:43:09.349385"
+    },
+    {
+      "test": "Update real estate current_price_per_area",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T07:43:09.384449"
+    },
+    {
+      "test": "Cleanup real estate test asset",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T07:43:09.421220"
     },
     {
       "test": "Get Bitcoin price",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T04:04:48.899767"
+      "timestamp": "2025-11-23T07:43:09.564019"
     },
     {
       "test": "Get gold price",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T04:04:48.939396"
+      "timestamp": "2025-11-23T07:43:09.596779"
     },
     {
       "test": "Get USD to EUR conversion",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T04:04:49.218946"
+      "timestamp": "2025-11-23T07:43:09.840715"
     }
   ]
 }
