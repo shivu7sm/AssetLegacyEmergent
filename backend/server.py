@@ -1237,9 +1237,11 @@ async def get_stripe_price_for_plan(plan: str):
 async def create_checkout_session(data: dict, user: User = Depends(require_auth)):
     try:
         plan = data.get('plan')
+        logger.info(f"Creating checkout session for user {user.email}, plan: {plan}")
         
         # Get price ID based on plan (with dynamic fetching from product)
         price_id = await get_stripe_price_for_plan(plan)
+        logger.info(f"Found price ID: {price_id}")
         
         # Create or retrieve Stripe customer
         stripe_customer_id = getattr(user, 'stripe_customer_id', None)
