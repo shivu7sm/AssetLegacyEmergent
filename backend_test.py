@@ -1336,6 +1336,14 @@ print('Test data cleaned up');
             
             self.test_price_endpoints()
             
+            # New Phase: Net Worth Snapshots and AI Insights
+            self.test_networth_snapshot_auto_creation()
+            self.test_networth_backfill_snapshots()
+            self.test_asset_update_purchase_date_change()
+            self.test_ai_insights_generation_and_storage()
+            self.test_ai_insights_retrieval_latest()
+            self.test_multiple_insights_refresh_scenario()
+            
         finally:
             # Always cleanup
             self.cleanup_test_data()
