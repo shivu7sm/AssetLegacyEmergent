@@ -119,16 +119,16 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
-          <Card className="bg-slate-800/50 border-slate-700" data-testid="dms-status-card">
+          <Card data-testid="dms-status-card" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-slate-400">Dead Man Switch</CardTitle>
-              <AlertCircle className="w-5 h-5 text-emerald-500" />
+              <CardTitle className="text-sm font-medium" style={{color: '#94a3b8'}}>Dead Man Switch</CardTitle>
+              <AlertCircle className="w-5 h-5" style={{color: '#a855f7'}} />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white" data-testid="dms-status">
+              <div className="text-2xl font-bold" style={{color: '#f8fafc'}} data-testid="dms-status">
                 {summary?.has_dms ? '✓ Active' : 'Inactive'}
               </div>
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-xs mt-1" style={{color: '#64748b'}}>
                 {summary?.has_dms ? 'Protection enabled' : 'Setup required'}
               </p>
             </CardContent>
@@ -137,20 +137,21 @@ export default function Dashboard() {
 
         {/* Alerts */}
         {(!summary?.has_nominee || !summary?.has_dms) && (
-          <Card className="bg-amber-900/20 border-amber-800/50" data-testid="setup-alert">
+          <Card data-testid="setup-alert" style={{background: 'rgba(251, 191, 36, 0.1)', borderColor: 'rgba(251, 191, 36, 0.3)'}}>
             <CardContent className="pt-6">
               <div className="flex items-start gap-4">
-                <AlertCircle className="w-6 h-6 text-amber-500 flex-shrink-0 mt-1" />
+                <AlertCircle className="w-6 h-6 flex-shrink-0 mt-1" style={{color: '#fbbf24'}} />
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-amber-400 mb-2">Setup Required</h3>
-                  <p className="text-slate-300 mb-4">
+                  <h3 className="text-lg font-semibold mb-2" style={{color: '#fbbf24'}}>Setup Required</h3>
+                  <p className="mb-4" style={{color: '#cbd5e1'}}>
                     {!summary?.has_nominee && 'Please add a nominee to ensure your assets reach the right person. '}
                     {!summary?.has_dms && 'Configure the dead man switch for automated protection.'}
                   </p>
                   <Button 
                     data-testid="complete-setup-btn"
                     onClick={() => navigate('/settings')} 
-                    className="bg-amber-600 hover:bg-amber-700 text-white rounded-full"
+                    className="text-white rounded-full"
+                    style={{background: '#f59e0b'}}
                   >
                     Complete Setup
                   </Button>
