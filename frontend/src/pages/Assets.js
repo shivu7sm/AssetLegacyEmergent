@@ -37,6 +37,11 @@ export default function Assets() {
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingAsset, setEditingAsset] = useState(null);
+  const [viewMode, setViewMode] = useState('grid');
+  const [filterType, setFilterType] = useState('all');
+  const [sortBy, setSortBy] = useState('date');
+  const [displayCurrency, setDisplayCurrency] = useState('USD');
+  const [filteredAssets, setFilteredAssets] = useState([]);
   const [formData, setFormData] = useState({
     type: 'crypto',
     name: '',
