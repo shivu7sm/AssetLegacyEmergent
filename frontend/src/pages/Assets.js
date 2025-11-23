@@ -118,14 +118,22 @@ function AssetTableRow({ asset, typeInfo, purchaseValueOriginal, currentValueOri
 }
 
 export default function Assets() {
+  const { selectedCurrency, currencyFormat, preferences } = useApp();
   const [assets, setAssets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingAsset, setEditingAsset] = useState(null);
-  const [viewMode, setViewMode] = useState('grid');
+  
+  // Initialize viewMode from preferences or sessionStorage
+  const getInitialView = () => {
+    const sessionView = sessionStorage.getItem('assetsViewMode');
+    if (sessionView) return sessionView;
+    return preferences?.default_asset_view || 'grid';
+  };
+  const [viewMode, setViewMode] = useState(getInitialView());
+  
   const [filterType, setFilterType] = useState('all');
   const [sortBy, setSortBy] = useState('date');
-  const [displayCurrency, setDisplayCurrency] = useState('USD');
   const [filteredAssets, setFilteredAssets] = useState([]);
   const [conversionRates, setConversionRates] = useState({});
   const [formData, setFormData] = useState({
