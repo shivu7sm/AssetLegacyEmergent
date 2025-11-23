@@ -1262,7 +1262,8 @@ async def get_subscription(user: User = Depends(require_auth)):
                 
                 # Convert Stripe object to dict for easier access
                 sub_dict = sub.to_dict()
-                logger.info(f"Stripe subscription data: status={sub_dict.get('status')}, current_period_start={sub_dict.get('current_period_start')}, current_period_end={sub_dict.get('current_period_end')}")
+                logger.info(f"Stripe subscription keys: {list(sub_dict.keys())}")
+                logger.info(f"Subscription status: {sub_dict.get('status')}, cancel_at: {sub_dict.get('cancel_at')}")
                 
                 # Get payment method
                 payment_method_info = None
