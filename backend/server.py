@@ -210,6 +210,48 @@ class DocumentCreate(BaseModel):
 class UserPreferences(BaseModel):
     measurement_unit: str = "imperial"
     weight_unit: str = "ounce"
+    currency_format: Optional[str] = "standard"
+    default_asset_view: Optional[str] = "grid"
+    marketing_consent: Optional[bool] = None
+    communication_consent: Optional[bool] = None
+
+class ScheduledMessage(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    recipient_name: str
+    recipient_email: str
+    subject: str
+    message: str
+    send_date: str
+    occasion: Optional[str] = None
+    status: str = "scheduled"  # scheduled, sent, failed
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class ScheduledMessageCreate(BaseModel):
+    recipient_name: str
+    recipient_email: str
+    subject: str
+    message: str
+    send_date: str
+    occasion: Optional[str] = None
+
+class ExchangeConnection(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    exchange_name: str  # binance, gemini, etoro
+    api_key: str
+    api_secret: Optional[str] = None
+    is_active: bool = True
+    last_synced: Optional[datetime] = None
+    holdings: Dict[str, Any] = {}
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class ExchangeConnectionCreate(BaseModel):
+    exchange_name: str
+    api_key: str
+    api_secret: Optional[str] = None
 
 # Auth Helper
 async def get_current_user(request: Request) -> Optional[User]:
