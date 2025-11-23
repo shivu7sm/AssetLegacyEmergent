@@ -211,10 +211,10 @@ export default function Assets() {
       <div className="space-y-8" data-testid="assets-container">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2" style={{fontFamily: 'Space Grotesk, sans-serif'}}>
+            <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
               Assets
             </h1>
-            <p className="text-slate-400">Manage all your financial assets</p>
+            <p style={{color: '#94a3b8'}}>Manage all your financial assets</p>
           </div>
           
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -222,13 +222,14 @@ export default function Assets() {
               <Button 
                 data-testid="add-asset-dialog-btn"
                 onClick={() => { resetForm(); setDialogOpen(true); }}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-full"
+                className="text-white rounded-full"
+                style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add Asset
               </Button>
             </DialogTrigger>
-            <DialogContent className="bg-slate-900 border-slate-700 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
+            <DialogContent className="text-white max-w-2xl max-h-[90vh] overflow-y-auto" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
               <DialogHeader>
                 <DialogTitle className="text-2xl">
                   {editingAsset ? 'Edit Asset' : 'Add New Asset'}
