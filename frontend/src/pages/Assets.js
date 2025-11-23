@@ -268,99 +268,166 @@ export default function Assets() {
                   />
                 </div>
 
+                {/* Crypto/Stock - Quantity based */}
+                {(formData.type === 'crypto' || formData.type === 'stock') && (
+                  <>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label className="text-slate-300">Quantity *</Label>
+                        <Input type="number" step="any" value={formData.quantity} onChange={(e) => setFormData({ ...formData, quantity: e.target.value })} placeholder="10" required className="bg-slate-800 border-slate-700 text-white" />
+                      </div>
+                      <div>
+                        <Label className="text-slate-300">Price Per Unit</Label>
+                        <Input type="number" step="any" value={formData.unit_price} onChange={(e) => setFormData({ ...formData, unit_price: e.target.value })} placeholder="50000" className="bg-slate-800 border-slate-700 text-white" />
+                      </div>
+                    </div>
+                    {formData.type === 'crypto' && (
+                      <div>
+                        <Label className="text-slate-300">Symbol (e.g., bitcoin, ethereum)</Label>
+                        <Input value={formData.symbol} onChange={(e) => setFormData({ ...formData, symbol: e.target.value })} placeholder="bitcoin" className="bg-slate-800 border-slate-700 text-white" />
+                      </div>
+                    )}
+                  </>
+                )}
+
+                {/* Gold/Silver - Weight based */}
+                {(formData.type === 'gold' || formData.type === 'silver') && (
+                  <>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label className="text-slate-300">Weight *</Label>
+                        <Input type="number" step="any" value={formData.weight} onChange={(e) => setFormData({ ...formData, weight: e.target.value })} placeholder="100" required className="bg-slate-800 border-slate-700 text-white" />
+                      </div>
+                      <div>
+                        <Label className="text-slate-300">Unit</Label>
+                        <Select value={formData.weight_unit} onValueChange={(value) => setFormData({ ...formData, weight_unit: value })}>
+                          <SelectTrigger className="bg-slate-800 border-slate-700 text-white"><SelectValue /></SelectTrigger>
+                          <SelectContent className="bg-slate-800 border-slate-700">
+                            {WEIGHT_UNITS.map(unit => (<SelectItem key={unit} value={unit} className="text-white">{unit}</SelectItem>))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label className="text-slate-300">Price Per Unit</Label>
+                        <Input type="number" step="any" value={formData.unit_price} onChange={(e) => setFormData({ ...formData, unit_price: e.target.value })} placeholder="65" className="bg-slate-800 border-slate-700 text-white" />
+                      </div>
+                      <div>
+                        <Label className="text-slate-300">Purity (e.g., 24K, 22K)</Label>
+                        <Input value={formData.purity} onChange={(e) => setFormData({ ...formData, purity: e.target.value })} placeholder="24K" className="bg-slate-800 border-slate-700 text-white" />
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {/* Real Estate - Area based */}
+                {formData.type === 'property' && (
+                  <>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label className="text-slate-300">Area *</Label>
+                        <Input type="number" step="any" value={formData.area} onChange={(e) => setFormData({ ...formData, area: e.target.value })} placeholder="2000" required className="bg-slate-800 border-slate-700 text-white" />
+                      </div>
+                      <div>
+                        <Label className="text-slate-300">Unit</Label>
+                        <Select value={formData.area_unit} onValueChange={(value) => setFormData({ ...formData, area_unit: value })}>
+                          <SelectTrigger className="bg-slate-800 border-slate-700 text-white"><SelectValue /></SelectTrigger>
+                          <SelectContent className="bg-slate-800 border-slate-700">
+                            {AREA_UNITS.map(unit => (<SelectItem key={unit} value={unit} className="text-white">{unit}</SelectItem>))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    <div>
+                      <Label className="text-slate-300">Price Per {formData.area_unit}</Label>
+                      <Input type="number" step="any" value={formData.price_per_area} onChange={(e) => setFormData({ ...formData, price_per_area: e.target.value })} placeholder="500" className="bg-slate-800 border-slate-700 text-white" />
+                    </div>
+                    <div>
+                      <Label className="text-slate-300">Location Address</Label>
+                      <Input value={formData.location.address} onChange={(e) => setFormData({ ...formData, location: { ...formData.location, address: e.target.value } })} placeholder="123 Main St, City" className="bg-slate-800 border-slate-700 text-white" />
+                    </div>
+                  </>
+                )}
+
+                {/* Loan/Credit Card */}
+                {(formData.type === 'loan' || formData.type === 'credit_card') && (
+                  <>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label className="text-slate-300">Principal Amount *</Label>
+                        <Input type="number" step="any" value={formData.principal_amount} onChange={(e) => setFormData({ ...formData, principal_amount: e.target.value })} placeholder="100000" required className="bg-slate-800 border-slate-700 text-white" />
+                      </div>
+                      <div>
+                        <Label className="text-slate-300">Interest Rate (%)</Label>
+                        <Input type="number" step="any" value={formData.interest_rate} onChange={(e) => setFormData({ ...formData, interest_rate: e.target.value })} placeholder="8.5" className="bg-slate-800 border-slate-700 text-white" />
+                      </div>
+                    </div>
+                    <div>
+                      <Label className="text-slate-300">Tenure (months)</Label>
+                      <Input type="number" value={formData.tenure_months} onChange={(e) => setFormData({ ...formData, tenure_months: e.target.value })} placeholder="60" className="bg-slate-800 border-slate-700 text-white" />
+                    </div>
+                  </>
+                )}
+
+                {/* Investment */}
+                {formData.type === 'investment' && (
+                  <>
+                    <div>
+                      <Label className="text-slate-300">Total Investment</Label>
+                      <Input type="number" step="any" value={formData.total_value} onChange={(e) => setFormData({ ...formData, total_value: e.target.value })} placeholder="50000" className="bg-slate-800 border-slate-700 text-white" />
+                    </div>
+                    <div>
+                      <Label className="text-slate-300">Maturity Date</Label>
+                      <Input type="date" value={formData.maturity_date} onChange={(e) => setFormData({ ...formData, maturity_date: e.target.value })} className="bg-slate-800 border-slate-700 text-white" />
+                    </div>
+                  </>
+                )}
+
+                {/* Locker */}
+                {formData.type === 'locker' && (
+                  <>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label className="text-slate-300">Bank Name</Label>
+                        <Input value={formData.bank_name} onChange={(e) => setFormData({ ...formData, bank_name: e.target.value })} placeholder="ABC Bank" className="bg-slate-800 border-slate-700 text-white" />
+                      </div>
+                      <div>
+                        <Label className="text-slate-300">Branch</Label>
+                        <Input value={formData.branch} onChange={(e) => setFormData({ ...formData, branch: e.target.value })} placeholder="Main Street" className="bg-slate-800 border-slate-700 text-white" />
+                      </div>
+                    </div>
+                    <div>
+                      <Label className="text-slate-300">Locker Number</Label>
+                      <Input value={formData.locker_number} onChange={(e) => setFormData({ ...formData, locker_number: e.target.value })} placeholder="L-123" className="bg-slate-800 border-slate-700 text-white" />
+                    </div>
+                  </>
+                )}
+
+                {/* Simple total value for other assets */}
+                {!['crypto', 'stock', 'gold', 'silver', 'property', 'loan', 'credit_card', 'investment', 'locker'].includes(formData.type) && (
+                  <div>
+                    <Label className="text-slate-300">Total Value</Label>
+                    <Input type="number" step="any" value={formData.total_value} onChange={(e) => setFormData({ ...formData, total_value: e.target.value })} placeholder="10000" className="bg-slate-800 border-slate-700 text-white" />
+                  </div>
+                )}
+
+                {/* Common fields */}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="purchase-price" className="text-slate-300">Purchase/Current Value</Label>
-                    <Input
-                      id="purchase-price"
-                      data-testid="purchase-price-input"
-                      type="number"
-                      step="0.01"
-                      value={formData.purchase_price}
-                      onChange={(e) => setFormData({ ...formData, purchase_price: e.target.value })}
-                      placeholder="0.00"
-                      className="bg-slate-800 border-slate-700 text-white"
-                    />
-                  </div>
-                  
-                  <div>
-                    <Label htmlFor="currency" className="text-slate-300">Currency</Label>
-                    <Select 
-                      value={formData.purchase_currency} 
-                      onValueChange={(value) => setFormData({ ...formData, purchase_currency: value })}
-                    >
-                      <SelectTrigger id="currency" data-testid="currency-select" className="bg-slate-800 border-slate-700 text-white">
-                        <SelectValue />
-                      </SelectTrigger>
+                    <Label className="text-slate-300">Currency</Label>
+                    <Select value={formData.purchase_currency} onValueChange={(value) => setFormData({ ...formData, purchase_currency: value })}>
+                      <SelectTrigger className="bg-slate-800 border-slate-700 text-white"><SelectValue /></SelectTrigger>
                       <SelectContent className="bg-slate-800 border-slate-700">
-                        {CURRENCIES.map((curr) => (
-                          <SelectItem key={curr} value={curr} className="text-white">{curr}</SelectItem>
-                        ))}
+                        {CURRENCIES.map((curr) => (<SelectItem key={curr} value={curr} className="text-white">{curr}</SelectItem>))}
                       </SelectContent>
                     </Select>
                   </div>
+                  <div>
+                    <Label className="text-slate-300">Purchase Date</Label>
+                    <Input type="date" value={formData.purchase_date} onChange={(e) => setFormData({ ...formData, purchase_date: e.target.value })} className="bg-slate-800 border-slate-700 text-white" />
+                  </div>
                 </div>
-
-                <div>
-                  <Label htmlFor="purchase-date" className="text-slate-300">Purchase/Start Date</Label>
-                  <Input
-                    id="purchase-date"
-                    data-testid="purchase-date-input"
-                    type="date"
-                    value={formData.purchase_date}
-                    onChange={(e) => setFormData({ ...formData, purchase_date: e.target.value })}
-                    className="bg-slate-800 border-slate-700 text-white"
-                  />
-                </div>
-
-                {/* Type-specific fields */}
-                {formData.type === 'bank' && (
-                  <div>
-                    <Label htmlFor="account-number" className="text-slate-300">Account Number (optional)</Label>
-                    <Input
-                      id="account-number"
-                      value={formData.details.account_number || ''}
-                      onChange={(e) => setFormData({ 
-                        ...formData, 
-                        details: { ...formData.details, account_number: e.target.value }
-                      })}
-                      placeholder="Last 4 digits for security"
-                      className="bg-slate-800 border-slate-700 text-white"
-                    />
-                  </div>
-                )}
-
-                {formData.type === 'crypto' && (
-                  <div>
-                    <Label htmlFor="crypto-symbol" className="text-slate-300">Cryptocurrency Symbol (optional)</Label>
-                    <Input
-                      id="crypto-symbol"
-                      value={formData.details.symbol || ''}
-                      onChange={(e) => setFormData({ 
-                        ...formData, 
-                        details: { ...formData.details, symbol: e.target.value }
-                      })}
-                      placeholder="BTC, ETH, etc."
-                      className="bg-slate-800 border-slate-700 text-white"
-                    />
-                  </div>
-                )}
-
-                {formData.type === 'property' && (
-                  <div>
-                    <Label htmlFor="property-address" className="text-slate-300">Property Address (optional)</Label>
-                    <Input
-                      id="property-address"
-                      value={formData.details.address || ''}
-                      onChange={(e) => setFormData({ 
-                        ...formData, 
-                        details: { ...formData.details, address: e.target.value }
-                      })}
-                      placeholder="Property location"
-                      className="bg-slate-800 border-slate-700 text-white"
-                    />
-                  </div>
-                )}
 
                 <div className="flex gap-3 pt-4">
                   <Button 
