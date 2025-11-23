@@ -481,7 +481,8 @@ export default function Assets() {
                 <Card 
                   key={asset.id} 
                   data-testid={`asset-card-${asset.id}`}
-                  className="bg-slate-800/50 border-slate-700 hover:border-emerald-600/50 transition-all"
+                  className="transition-all"
+                  style={{background: '#1a1229', borderColor: '#2d1f3d'}}
                 >
                   <CardHeader>
                     <div className="flex justify-between items-start">
