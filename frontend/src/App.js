@@ -82,7 +82,7 @@ function AuthProvider({ children }) {
   );
 }
 
-function useAuth() {
+export function useAuth() {
   return useContext(AuthContext);
 }
 
