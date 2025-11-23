@@ -1716,10 +1716,12 @@ async def generate_insights(user: User = Depends(require_auth)):
         liability_types = {'loan', 'credit_card'}
         total_assets_value = 0
         total_liabilities_value = 0
+        holdings_details = []  # Track individual holdings from portfolios
         
         # Get user's preferred currency
         target_currency = user.selected_currency or "USD"
         
+        # Process individual assets
         for asset in assets:
             asset_type = asset['type']
             asset_types[asset_type] = asset_types.get(asset_type, 0) + 1
@@ -1740,10 +1742,46 @@ async def generate_insights(user: User = Depends(require_auth)):
             else:
                 total_assets_value += value_in_target_currency
         
+        # Process portfolio assets and their holdings
+        for portfolio in portfolios:
+            asset_types['portfolio'] = asset_types.get('portfolio', 0) + 1
+            portfolio_currency = portfolio.get("purchase_currency", "USD")
+            portfolio_value = portfolio.get("total_value", 0.0)
+            
+            # Convert portfolio value to target currency
+            portfolio_value_converted = convert_currency(
+                portfolio_value,
+                portfolio_currency,
+                target_currency
+            )
+            total_assets_value += portfolio_value_converted
+            
+            # Track holdings for detailed analysis
+            if portfolio.get('holdings'):
+                for holding in portfolio['holdings']:
+                    holdings_details.append({
+                        'portfolio': portfolio.get('name'),
+                        'symbol': holding.get('symbol'),
+                        'name': holding.get('name'),
+                        'type': holding.get('asset_type'),
+                        'quantity': holding.get('quantity'),
+                        'value': holding.get('quantity', 0) * holding.get('current_price', holding.get('purchase_price', 0))
+                    })
+                    # Count holding types separately
+                    holding_type = holding.get('asset_type', 'unknown')
+                    asset_types[holding_type] = asset_types.get(holding_type, 0) + 1
+        
         net_worth = total_assets_value - total_liabilities_value
         
         # Create detailed portfolio context for AI
         asset_distribution_str = ", ".join([f"{k}: {v} items" for k, v in asset_types.items()])
+        
+        # Format holdings for AI context
+        holdings_summary = ""
+        if holdings_details:
+            holdings_summary = "\n\nPortfolio Holdings Breakdown:\n"
+            for h in holdings_details[:20]:  # Limit to first 20 for context size
+                holdings_summary += f"- {h['name']} ({h['symbol']}): {h['quantity']} units in {h['portfolio']}, Type: {h['type']}\n"
         
         portfolio_context = f"""Analyze this investment portfolio and provide structured insights:
 
