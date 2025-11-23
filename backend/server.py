@@ -1192,6 +1192,59 @@ async def get_subscription(user: User = Depends(require_auth)):
         "features": []
     }
 
+@api_router.post("/subscription/verify-and-update")
+async def verify_and_update_subscription(user: User = Depends(require_auth)):
+    """
+    Manually verify subscription status with Stripe and update local database.
+    Useful as fallback when webhooks don't fire.
+    """
+    try:
+        stripe_customer_id = getattr(user, 'stripe_customer_id', None)
+        if not stripe_customer_id:
+            return {"plan": "Free", "updated": False}
+        
+        # Fetch active subscriptions from Stripe
+        subscriptions = stripe.Subscription.list(
+            customer=stripe_customer_id,
+            status='active',
+            limit=10
+        )
+        
+        if subscriptions.data and len(subscriptions.data) > 0:
+            # Get the first active subscription
+            subscription = subscriptions.data[0]
+            price_id = subscription['items']['data'][0]['price']['id']
+            
+            # Determine plan based on price amount
+            price = stripe.Price.retrieve(price_id)
+            plan = "Pro" if price.unit_amount == 999 else "Family" if price.unit_amount == 2499 else "Free"
+            
+            # Update database
+            await db.users.update_one(
+                {"id": user.id},
+                {"$set": {
+                    "subscription_plan": plan,
+                    "stripe_subscription_id": subscription['id']
+                }}
+            )
+            
+            logger.info(f"Updated subscription for {user.email}: {plan}")
+            return {"plan": plan, "updated": True}
+        else:
+            # No active subscription found
+            await db.users.update_one(
+                {"id": user.id},
+                {"$set": {"subscription_plan": "Free"}}
+            )
+            return {"plan": "Free", "updated": True}
+            
+    except stripe.error.StripeError as e:
+        logger.error(f"Stripe error verifying subscription: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to verify subscription")
+    except Exception as e:
+        logger.error(f"Error verifying subscription: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 async def get_stripe_price_for_plan(plan: str):
     """Fetch the price ID for a given plan from Stripe product."""
     try:
