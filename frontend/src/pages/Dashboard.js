@@ -174,28 +174,94 @@ export default function Dashboard() {
           </p>
         </div>
 
-        {/* Primary Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card 
-            data-testid="total-assets-card" 
-            className={`overflow-hidden transition-all hover:shadow-lg card ${dashboardTheme === 'modern' ? 'stat-card' : ''}`}
-            style={dashboardTheme === 'standard' ? {background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#3b82f6'} : {}}
-          >
-            <CardContent className={dashboardTheme === 'modern' ? 'p-0' : 'p-6'}>
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <p className={`text-sm font-medium mb-2 ${dashboardTheme === 'modern' ? 'stat-label' : ''}`} style={dashboardTheme === 'standard' ? {color: '#94a3b8', letterSpacing: '0.5px'} : {}}>TOTAL ASSETS</p>
-                  <div className={`${dashboardTheme === 'modern' ? 'stat-value text-5xl' : 'text-4xl'} font-bold mb-1`} style={dashboardTheme === 'standard' ? {color: '#f8fafc', fontFamily: 'Inter, sans-serif'} : {}} data-testid="total-assets-count">
-                    {summary?.total_assets || 0}
+        {dashboardTheme === 'modern' ? (
+          /* Modern Layout - Hero Card + Grid */
+          <>
+            {/* Net Worth Hero Card */}
+            <Card 
+              data-testid="net-worth-card" 
+              className="overflow-hidden transition-all hover:shadow-lg net-worth-hero"
+            >
+              <CardContent className="p-0">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <p className="stat-label">NET WORTH</p>
+                    <div className="stat-value">
+                      {formatCurrency(netWorthValue, selectedCurrency, currencyFormat)}
+                    </div>
+                    <p className="text-sm mt-2" style={{color: 'rgba(255,255,255,0.8)'}}>
+                      {selectedCurrency} • {isPositive ? 'Healthy portfolio' : 'Review recommended'}
+                    </p>
                   </div>
-                  <p className="text-xs" style={{color: '#64748b'}}>items tracked</p>
+                  <div className="stat-icon">
+                    {isPositive ? (
+                      <TrendingUp className="w-7 h-7" />
+                    ) : (
+                      <TrendingDown className="w-7 h-7" />
+                    )}
+                  </div>
                 </div>
-                <div className={`${dashboardTheme === 'modern' ? 'stat-icon neutral' : 'p-3 rounded-xl'}`} style={dashboardTheme === 'standard' ? {background: 'rgba(59, 130, 246, 0.1)'} : {}}>
-                  <DollarSign className={dashboardTheme === 'modern' ? 'w-10 h-10' : 'w-8 h-8'} style={{color: '#3b82f6'}} />
+              </CardContent>
+            </Card>
+
+            {/* Quick Stats Row */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="quick-stat">
+                <div className="quick-stat-icon neutral">
+                  <DollarSign className="w-4 h-4" />
+                </div>
+                <div>
+                  <div className="quick-stat-value" data-testid="total-assets-count">{summary?.total_assets || 0}</div>
+                  <div className="quick-stat-label">Total Assets</div>
                 </div>
               </div>
-            </CardContent>
-          </Card>
+
+              <div className="quick-stat">
+                <div className="quick-stat-icon orange">
+                  <AlertCircle className="w-4 h-4" />
+                </div>
+                <div>
+                  <div className="quick-stat-value">{summary?.total_liabilities || 0}</div>
+                  <div className="quick-stat-label">Liabilities</div>
+                </div>
+              </div>
+
+              <div className="quick-stat">
+                <div className={`quick-stat-icon ${summary?.has_nominee ? 'positive' : 'orange'}`}>
+                  <Shield className="w-4 h-4" />
+                </div>
+                <div>
+                  <div className="quick-stat-value" data-testid="nominee-status">
+                    {summary?.has_nominee ? 'Active' : 'Not Set'}
+                  </div>
+                  <div className="quick-stat-label">Nominee Status</div>
+                </div>
+              </div>
+            </div>
+          </>
+        ) : (
+          /* Standard Layout - Original 3-column grid */
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Card 
+              data-testid="total-assets-card" 
+              className="overflow-hidden transition-all hover:shadow-lg card"
+              style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#3b82f6'}}
+            >
+              <CardContent className="p-6">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <p className="text-sm font-medium mb-2" style={{color: '#94a3b8', letterSpacing: '0.5px'}}>TOTAL ASSETS</p>
+                    <div className="text-4xl font-bold mb-1" style={{color: '#f8fafc', fontFamily: 'Inter, sans-serif'}} data-testid="total-assets-count">
+                      {summary?.total_assets || 0}
+                    </div>
+                    <p className="text-xs" style={{color: '#64748b'}}>items tracked</p>
+                  </div>
+                  <div className="p-3 rounded-xl" style={{background: 'rgba(59, 130, 246, 0.1)'}}>
+                    <DollarSign className="w-8 h-8" style={{color: '#3b82f6'}} />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
           <Card 
             data-testid="net-worth-card" 
