@@ -75,6 +75,7 @@ class Nominee(BaseModel):
     email: str
     phone: Optional[str] = None
     relationship: Optional[str] = None
+    priority: int = 1  # Priority for contact order (1 = highest priority)
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class DeadManSwitch(BaseModel):
