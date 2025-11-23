@@ -203,6 +203,23 @@ export default function Documents() {
                   />
                 </div>
                 <div>
+                  <Label style={{color: '#94a3b8'}}>Link to Asset (optional)</Label>
+                  <select
+                    value={formData.linked_asset_id || ''}
+                    onChange={(e) => setFormData({ ...formData, linked_asset_id: e.target.value || null })}
+                    className="w-full p-2 rounded-md"
+                    style={{background: '#0f0a1e', borderColor: '#2d1f3d', color: '#f8fafc', border: '1px solid'}}
+                  >
+                    <option value="">-- No Asset --</option>
+                    {assets.map(asset => (
+                      <option key={asset.id} value={asset.id}>
+                        {asset.name} ({asset.type})
+                      </option>
+                    ))}
+                  </select>
+                  <p className="text-xs mt-1" style={{color: '#64748b'}}>Link this document to a specific asset for better organization</p>
+                </div>
+                <div>
                   <Label style={{color: '#94a3b8'}}>File (Max 10MB)</Label>
                   <Input
                     type="file"
