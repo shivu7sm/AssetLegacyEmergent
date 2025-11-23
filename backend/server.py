@@ -1185,11 +1185,30 @@ async def get_preferences(user: User = Depends(require_auth)):
 # Subscription Routes
 @api_router.get("/subscription/current")
 async def get_subscription(user: User = Depends(require_auth)):
+    plan = getattr(user, 'subscription_plan', 'Free')
+    features = SUBSCRIPTION_FEATURES.get(plan, SUBSCRIPTION_FEATURES["Free"])
+    
+    # Get current usage
+    asset_count = await db.assets.count_documents({"user_id": user.id})
+    document_count = await db.documents.count_documents({"user_id": user.id})
+    storage_bytes = await get_user_storage_usage(user.id)
+    storage_mb = storage_bytes / (1024 * 1024)
+    
     return {
-        "plan": getattr(user, 'subscription_plan', 'Free'),
-        "stripe_customer_id": getattr(user, 'stripe_customer_id', None),
-        "stripe_subscription_id": getattr(user, 'stripe_subscription_id', None),
-        "features": []
+        "plan": plan,
+        "status": "active" if plan != 'Free' else None,
+        "features": features,
+        "usage": {
+            "assets": asset_count,
+            "documents": document_count,
+            "storage_mb": round(storage_mb, 2),
+            "storage_bytes": storage_bytes
+        },
+        "limits": {
+            "assets_remaining": features["max_assets"] - asset_count if features["max_assets"] > 0 else -1,
+            "documents_remaining": features["max_documents"] - document_count if features["max_documents"] > 0 else -1,
+            "storage_remaining_mb": features["storage_mb"] - storage_mb if features["storage_mb"] > 0 else -1
+        }
     }
 
 @api_router.post("/subscription/verify-and-update")
