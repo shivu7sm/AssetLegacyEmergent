@@ -254,89 +254,291 @@ export default function Dashboard() {
           </Card>
         )}
 
-        {/* Charts */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Assets vs Liabilities Comparison */}
-          <Card data-testid="comparison-card" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
-            <CardHeader>
-              <CardTitle style={{color: '#f8fafc'}}>Assets vs Liabilities</CardTitle>
-              <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Financial position overview</p>
-            </CardHeader>
-            <CardContent>
-              {comparisonData.length > 0 ? (
-                <ResponsiveContainer width="100%" height={300}>
-                  <PieChart>
-                    <Pie
-                      data={comparisonData}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      label={({ name, percentage }) => `${name} ${percentage}%`}
-                      outerRadius={80}
-                      fill="#8884d8"
-                      dataKey="value"
-                    >
-                      {comparisonData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip content={<CustomTooltip />} />
-                  </PieChart>
-                </ResponsiveContainer>
-              ) : (
-                <div className="h-[300px] flex items-center justify-center" style={{color: '#94a3b8'}}>
-                  <div className="text-center">
-                    <p className="mb-4">No data available</p>
-                    <Button 
-                      data-testid="add-first-asset-btn"
-                      onClick={() => navigate('/assets')} 
-                      className="text-white rounded-full"
-                      style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
-                    >
-                      <Plus className="w-4 h-4 mr-2" />
-                      Add Your First Asset
-                    </Button>
+        {/* Charts with Data Tables */}
+        <div className="space-y-6">
+          {/* Assets vs Liabilities Row */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card data-testid="comparison-card" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+              <CardHeader>
+                <CardTitle style={{color: '#f8fafc'}}>Assets vs Liabilities</CardTitle>
+                <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Financial position overview</p>
+              </CardHeader>
+              <CardContent>
+                {comparisonData.length > 0 ? (
+                  <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                      <Pie
+                        data={comparisonData}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        label={({ name, percentage }) => `${name} ${percentage}%`}
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="value"
+                      >
+                        {comparisonData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Tooltip content={<CustomTooltip />} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="h-[300px] flex items-center justify-center" style={{color: '#94a3b8'}}>
+                    <div className="text-center">
+                      <p className="mb-4">No data available</p>
+                      <Button 
+                        data-testid="add-first-asset-btn"
+                        onClick={() => navigate('/assets')} 
+                        className="text-white rounded-full"
+                        style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
+                      >
+                        <Plus className="w-4 h-4 mr-2" />
+                        Add Your First Asset
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+                )}
+              </CardContent>
+            </Card>
 
-          {/* Asset Distribution by Value */}
-          <Card data-testid="asset-distribution-card" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
-            <CardHeader>
-              <CardTitle style={{color: '#f8fafc'}}>Asset Distribution</CardTitle>
-              <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Breakdown of asset values</p>
-            </CardHeader>
-            <CardContent>
-              {assetDistributionData.length > 0 ? (
-                <ResponsiveContainer width="100%" height={300}>
-                  <PieChart>
-                    <Pie
-                      data={assetDistributionData}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      label={({ name, percentage }) => `${name} ${percentage}%`}
-                      outerRadius={80}
-                      fill="#8884d8"
-                      dataKey="value"
-                    >
-                      {assetDistributionData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip content={<CustomTooltip />} />
-                  </PieChart>
-                </ResponsiveContainer>
-              ) : (
-                <div className="h-[300px] flex items-center justify-center" style={{color: '#94a3b8'}}>
-                  <p>No assets tracked yet</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+            {/* Comparison Data Table */}
+            <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+              <CardHeader>
+                <CardTitle style={{color: '#f8fafc'}}>Financial Breakdown</CardTitle>
+                <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Detailed values and percentages</p>
+              </CardHeader>
+              <CardContent>
+                {comparisonData.length > 0 ? (
+                  <div className="space-y-4">
+                    <table className="w-full">
+                      <thead>
+                        <tr style={{borderBottom: '2px solid #2d1f3d'}}>
+                          <th className="text-left py-3 px-2" style={{color: '#94a3b8', fontSize: '12px', fontWeight: 600}}>CATEGORY</th>
+                          <th className="text-right py-3 px-2" style={{color: '#94a3b8', fontSize: '12px', fontWeight: 600}}>VALUE</th>
+                          <th className="text-right py-3 px-2" style={{color: '#94a3b8', fontSize: '12px', fontWeight: 600}}>%</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {comparisonData.map((item, index) => (
+                          <tr key={index} style={{borderBottom: '1px solid #1a1229'}}>
+                            <td className="py-3 px-2">
+                              <div className="flex items-center gap-2">
+                                <div 
+                                  className="w-3 h-3 rounded-full" 
+                                  style={{background: item.color}}
+                                />
+                                <span style={{color: '#f8fafc', fontWeight: 500}}>{item.name}</span>
+                              </div>
+                            </td>
+                            <td className="text-right py-3 px-2" style={{color: '#cbd5e1', fontWeight: 600}}>
+                              {formatCurrency(item.value, selectedCurrency, currencyFormat)}
+                            </td>
+                            <td className="text-right py-3 px-2" style={{color: item.color, fontWeight: 600}}>
+                              {item.percentage}%
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    <div className="pt-4 border-t-2" style={{borderColor: '#2d1f3d'}}>
+                      <div className="flex justify-between items-center">
+                        <span style={{color: '#f8fafc', fontWeight: 600, fontSize: '16px'}}>Net Worth</span>
+                        <span style={{color: '#ec4899', fontWeight: 700, fontSize: '18px'}}>
+                          {formatCurrency(summary?.net_worth || 0, selectedCurrency, currencyFormat)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="h-[300px] flex items-center justify-center" style={{color: '#94a3b8'}}>
+                    <p>No data available</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Asset Distribution Row */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card data-testid="asset-distribution-card" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+              <CardHeader>
+                <CardTitle style={{color: '#f8fafc'}}>Asset Distribution</CardTitle>
+                <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Breakdown by asset type</p>
+              </CardHeader>
+              <CardContent>
+                {assetDistributionData.length > 0 ? (
+                  <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                      <Pie
+                        data={assetDistributionData}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        label={({ name, percentage }) => `${name} ${percentage}%`}
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="value"
+                      >
+                        {assetDistributionData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Tooltip content={<CustomTooltip />} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="h-[300px] flex items-center justify-center" style={{color: '#94a3b8'}}>
+                    <p>No assets tracked yet</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Asset Distribution Data Table */}
+            <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+              <CardHeader>
+                <CardTitle style={{color: '#f8fafc'}}>Asset Details</CardTitle>
+                <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Asset type breakdown</p>
+              </CardHeader>
+              <CardContent>
+                {assetDistributionData.length > 0 ? (
+                  <div className="space-y-4">
+                    <table className="w-full">
+                      <thead>
+                        <tr style={{borderBottom: '2px solid #2d1f3d'}}>
+                          <th className="text-left py-3 px-2" style={{color: '#94a3b8', fontSize: '12px', fontWeight: 600}}>ASSET TYPE</th>
+                          <th className="text-right py-3 px-2" style={{color: '#94a3b8', fontSize: '12px', fontWeight: 600}}>VALUE</th>
+                          <th className="text-right py-3 px-2" style={{color: '#94a3b8', fontSize: '12px', fontWeight: 600}}>%</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {assetDistributionData.map((item, index) => (
+                          <tr key={index} style={{borderBottom: '1px solid #1a1229'}}>
+                            <td className="py-3 px-2">
+                              <div className="flex items-center gap-2">
+                                <div 
+                                  className="w-3 h-3 rounded-full" 
+                                  style={{background: item.color}}
+                                />
+                                <span style={{color: '#f8fafc', fontWeight: 500}}>{item.name}</span>
+                              </div>
+                            </td>
+                            <td className="text-right py-3 px-2" style={{color: '#cbd5e1', fontWeight: 600}}>
+                              {formatCurrency(item.value, selectedCurrency, currencyFormat)}
+                            </td>
+                            <td className="text-right py-3 px-2" style={{color: item.color, fontWeight: 600}}>
+                              {item.percentage}%
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    <div className="pt-4 border-t-2" style={{borderColor: '#2d1f3d'}}>
+                      <div className="flex justify-between items-center">
+                        <span style={{color: '#f8fafc', fontWeight: 600, fontSize: '16px'}}>Total Assets</span>
+                        <span style={{color: '#10b981', fontWeight: 700, fontSize: '18px'}}>
+                          {formatCurrency(summary?.total_assets_value || 0, selectedCurrency, currencyFormat)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="h-[300px] flex items-center justify-center" style={{color: '#94a3b8'}}>
+                    <p>No assets tracked yet</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Liability Distribution Row (if liabilities exist) */}
+          {liabilityDistributionData.length > 0 && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                <CardHeader>
+                  <CardTitle style={{color: '#f8fafc'}}>Liability Distribution</CardTitle>
+                  <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Breakdown by debt type</p>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                      <Pie
+                        data={liabilityDistributionData}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        label={({ name, percentage }) => `${name} ${percentage}%`}
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="value"
+                      >
+                        {liabilityDistributionData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Tooltip content={<CustomTooltip />} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+
+              {/* Liability Distribution Data Table */}
+              <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                <CardHeader>
+                  <CardTitle style={{color: '#f8fafc'}}>Liability Details</CardTitle>
+                  <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Debt breakdown</p>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <table className="w-full">
+                      <thead>
+                        <tr style={{borderBottom: '2px solid #2d1f3d'}}>
+                          <th className="text-left py-3 px-2" style={{color: '#94a3b8', fontSize: '12px', fontWeight: 600}}>DEBT TYPE</th>
+                          <th className="text-right py-3 px-2" style={{color: '#94a3b8', fontSize: '12px', fontWeight: 600}}>VALUE</th>
+                          <th className="text-right py-3 px-2" style={{color: '#94a3b8', fontSize: '12px', fontWeight: 600}}>%</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {liabilityDistributionData.map((item, index) => (
+                          <tr key={index} style={{borderBottom: '1px solid #1a1229'}}>
+                            <td className="py-3 px-2">
+                              <div className="flex items-center gap-2">
+                                <div 
+                                  className="w-3 h-3 rounded-full" 
+                                  style={{background: item.color}}
+                                />
+                                <span style={{color: '#f8fafc', fontWeight: 500}}>{item.name}</span>
+                              </div>
+                            </td>
+                            <td className="text-right py-3 px-2" style={{color: '#f87171', fontWeight: 600}}>
+                              {formatCurrency(item.value, selectedCurrency, currencyFormat)}
+                            </td>
+                            <td className="text-right py-3 px-2" style={{color: item.color, fontWeight: 600}}>
+                              {item.percentage}%
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    <div className="pt-4 border-t-2" style={{borderColor: '#2d1f3d'}}>
+                      <div className="flex justify-between items-center">
+                        <span style={{color: '#f8fafc', fontWeight: 600, fontSize: '16px'}}>Total Liabilities</span>
+                        <span style={{color: '#dc2626', fontWeight: 700, fontSize: '18px'}}>
+                          {formatCurrency(summary?.total_liabilities_value || 0, selectedCurrency, currencyFormat)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
         </div>
+
+        {/* Historical Net Worth Chart - Moved below charts */}
+        <NetWorthChart />
 
         {/* AI Financial Insights Card */}
         {summary?.total_assets > 0 && (
