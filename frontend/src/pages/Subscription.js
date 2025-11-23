@@ -97,32 +97,13 @@ export default function Subscription() {
         { withCredentials: true }
       );
       
-      // Initialize Stripe and redirect to checkout
-      const stripePublishableKey = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY;
-      if (!stripePublishableKey) {
-        toast.error('Stripe configuration missing');
-        setLoading(false);
-        return;
-      }
-
-      const stripe = await loadStripe(stripePublishableKey);
-      if (!stripe) {
-        toast.error('Failed to load Stripe');
-        setLoading(false);
-        return;
-      }
-
-      if (response.data.sessionId) {
-        const { error } = await stripe.redirectToCheckout({
-          sessionId: response.data.sessionId
-        });
-        
-        if (error) {
-          console.error('Stripe redirect error:', error);
-          toast.error(error.message || 'Checkout failed');
-        }
-      } else if (response.data.url) {
+      // Redirect to Stripe Checkout using the URL (new method)
+      // The old stripe.redirectToCheckout() is deprecated as of 2025-09-30
+      if (response.data.url) {
         window.location.href = response.data.url;
+      } else if (response.data.sessionId) {
+        // Fallback: construct URL manually if only sessionId is provided
+        window.location.href = `https://checkout.stripe.com/c/pay/${response.data.sessionId}`;
       } else {
         toast.error('Failed to create checkout session');
       }
