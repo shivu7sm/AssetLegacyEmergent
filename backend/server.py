@@ -445,7 +445,7 @@ async def create_session(request: Request, response: Response):
             email=session_data["email"],
             name=session_data["name"],
             picture=session_data.get("picture"),
-            role="admin" if is_admin else "user"
+            role="admin" if is_admin else "customer"
         )
         user_dict = user.model_dump()
         user_dict['last_activity'] = user_dict['last_activity'].isoformat()
