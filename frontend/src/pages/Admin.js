@@ -133,10 +133,10 @@ export default function Admin() {
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex gap-2 border-b" style={{borderColor: '#2d1f3d'}}>
+        <div className="flex gap-2 border-b overflow-x-auto" style={{borderColor: '#2d1f3d'}}>
           <button
             onClick={() => setActiveTab('overview')}
-            className="px-6 py-3 font-semibold transition-all"
+            className="px-6 py-3 font-semibold transition-all whitespace-nowrap"
             style={{
               color: activeTab === 'overview' ? '#ec4899' : '#94a3b8',
               borderBottom: activeTab === 'overview' ? '2px solid #ec4899' : 'none'
@@ -146,7 +146,7 @@ export default function Admin() {
           </button>
           <button
             onClick={() => setActiveTab('users')}
-            className="px-6 py-3 font-semibold transition-all"
+            className="px-6 py-3 font-semibold transition-all whitespace-nowrap"
             style={{
               color: activeTab === 'users' ? '#ec4899' : '#94a3b8',
               borderBottom: activeTab === 'users' ? '2px solid #ec4899' : 'none'
@@ -155,14 +155,34 @@ export default function Admin() {
             Users
           </button>
           <button
+            onClick={() => setActiveTab('analytics')}
+            className="px-6 py-3 font-semibold transition-all whitespace-nowrap"
+            style={{
+              color: activeTab === 'analytics' ? '#ec4899' : '#94a3b8',
+              borderBottom: activeTab === 'analytics' ? '2px solid #ec4899' : 'none'
+            }}
+          >
+            Analytics
+          </button>
+          <button
             onClick={() => setActiveTab('jobs')}
-            className="px-6 py-3 font-semibold transition-all"
+            className="px-6 py-3 font-semibold transition-all whitespace-nowrap"
             style={{
               color: activeTab === 'jobs' ? '#ec4899' : '#94a3b8',
               borderBottom: activeTab === 'jobs' ? '2px solid #ec4899' : 'none'
             }}
           >
             Scheduled Jobs
+          </button>
+          <button
+            onClick={() => setActiveTab('audit')}
+            className="px-6 py-3 font-semibold transition-all whitespace-nowrap"
+            style={{
+              color: activeTab === 'audit' ? '#ec4899' : '#94a3b8',
+              borderBottom: activeTab === 'audit' ? '2px solid #ec4899' : 'none'
+            }}
+          >
+            Audit Logs
           </button>
         </div>
 
