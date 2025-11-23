@@ -195,20 +195,34 @@ export default function Subscription() {
                       </li>
                     ))}
                   </ul>
-                  <Button
-                    onClick={() => handleSubscribe(plan.name)}
-                    disabled={loading || isCurrentPlan}
-                    className="w-full text-white rounded-full"
-                    style={{
-                      background: isCurrentPlan 
-                        ? '#64748b' 
-                        : plan.popular 
-                          ? 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'
-                          : plan.color
-                    }}
-                  >
-                    {isCurrentPlan ? 'Current Plan' : `Subscribe to ${plan.name}`}
-                  </Button>
+                  <div className="space-y-2">
+                    <Button
+                      onClick={() => handleSubscribe(plan.name)}
+                      disabled={loading || isCurrentPlan}
+                      className="w-full text-white rounded-full"
+                      style={{
+                        background: isCurrentPlan 
+                          ? '#64748b' 
+                          : plan.popular 
+                            ? 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'
+                            : plan.color
+                      }}
+                    >
+                      {isCurrentPlan ? 'Current Plan' : plan.name === 'Free' ? 'Downgrade to Free' : `Upgrade to ${plan.name}`}
+                    </Button>
+                    
+                    {isCurrentPlan && currentPlan !== 'Free' && (
+                      <Button
+                        onClick={handleCancelSubscription}
+                        disabled={loading}
+                        variant="outline"
+                        className="w-full rounded-full"
+                        style={{borderColor: '#ef4444', color: '#ef4444'}}
+                      >
+                        Cancel Subscription
+                      </Button>
+                    )}
+                  </div>
                 </CardContent>
               </Card>
             );
