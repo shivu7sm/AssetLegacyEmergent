@@ -44,11 +44,19 @@ export default function Dashboard() {
     }
   };
 
-  const chartData = summary?.asset_types ? Object.entries(summary.asset_types).map(([key, value]) => ({
+  const pieChartData = summary?.asset_values ? Object.entries(summary.asset_values).map(([key, value]) => ({
     name: key.charAt(0).toUpperCase() + key.slice(1),
-    value,
-    color: ASSET_COLORS[key] || '#64748b'
+    value: Math.round(value),
+    color: ASSET_COLORS[key] || '#64748b',
+    percentage: summary.total_value_usd > 0 ? ((value / summary.total_value_usd) * 100).toFixed(1) : 0
   })) : [];
+
+  const barChartData = summary?.asset_values ? Object.entries(summary.asset_values).map(([key, value]) => ({
+    name: key.charAt(0).toUpperCase() + key.slice(1),
+    value: Math.round(value),
+    count: summary.asset_types[key] || 0,
+    color: ASSET_COLORS[key] || '#64748b'
+  })).sort((a, b) => b.value - a.value) : [];
 
   if (loading) {
     return (
