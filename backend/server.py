@@ -791,6 +791,7 @@ async def get_preferences(user: User = Depends(require_auth)):
         "measurement_unit": user.measurement_unit,
         "weight_unit": user.weight_unit,
         "currency_format": getattr(user, 'currency_format', 'standard'),
+        "selected_currency": getattr(user, 'selected_currency', 'USD'),
         "default_asset_view": getattr(user, 'default_asset_view', 'grid'),
         "marketing_consent": getattr(user, 'marketing_consent', False),
         "communication_consent": getattr(user, 'communication_consent', True)
