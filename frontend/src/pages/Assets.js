@@ -800,7 +800,45 @@ export default function Assets() {
             </CardContent>
           </Card>
         ) : viewMode === 'grid' ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <>
+            {/* Summary Card */}
+            <Card 
+              data-testid="assets-summary-card"
+              className="mb-6"
+              style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', borderColor: '#2d1f3d'}}
+            >
+              <CardContent className="py-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-sm font-medium text-white/80 mb-1">Total Portfolio Value</div>
+                    <div className="text-4xl font-bold text-white">
+                      {displayCurrency} {(() => {
+                        const displayAssets = filteredAssets.length > 0 ? filteredAssets : assets;
+                        const totalValue = displayAssets.reduce((sum, asset) => {
+                          const assetType = getAssetTypeInfo(asset.type);
+                          const value = calculateAssetValue(asset, true) || calculateAssetValue(asset, false);
+                          return sum + (assetType.isLiability ? -value : value);
+                        }, 0);
+                        return totalValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                      })()}
+                    </div>
+                    <div className="text-sm text-white/70 mt-1">
+                      {(() => {
+                        const displayAssets = filteredAssets.length > 0 ? filteredAssets : assets;
+                        const assetCount = displayAssets.filter(a => !getAssetTypeInfo(a.type).isLiability).length;
+                        const liabilityCount = displayAssets.filter(a => getAssetTypeInfo(a.type).isLiability).length;
+                        return `${assetCount} asset${assetCount !== 1 ? 's' : ''} ${liabilityCount > 0 ? `• ${liabilityCount} liabilit${liabilityCount !== 1 ? 'ies' : 'y'}` : ''}`;
+                      })()}
+                    </div>
+                  </div>
+                  <div className="text-6xl text-white/30">
+                    <DollarSign className="w-16 h-16" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {(filteredAssets.length > 0 ? filteredAssets : assets).map((asset) => {
               const typeInfo = getAssetTypeInfo(asset.type);
               return (
