@@ -18,7 +18,7 @@ export const ThemeProvider = ({ children }) => {
   const toggleTheme = () => {
     const newTheme = dashboardTheme === 'standard' ? 'modern' : 'standard';
     setDashboardTheme(newTheme);
-    localStorage.setItem('dashboardTheme') , newTheme);
+    localStorage.setItem('dashboardTheme', newTheme);
   };
 
   const setTheme = (theme) => {
