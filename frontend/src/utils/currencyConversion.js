@@ -36,20 +36,42 @@ export const convertCurrency = async (amount, fromCurrency, toCurrency) => {
   return amount * rate;
 };
 
+// Helper function to format Indian numbering (X,XX,XX,XXX)
+const formatIndianNumber = (num) => {
+  const numStr = Math.abs(num).toFixed(2);
+  const [integerPart, decimalPart] = numStr.split('.');
+  
+  // For Indian format: last 3 digits, then groups of 2
+  let formatted = '';
+  let count = 0;
+  
+  for (let i = integerPart.length - 1; i >= 0; i--) {
+    if (count === 3 || (count > 3 && (count - 3) % 2 === 0)) {
+      formatted = ',' + formatted;
+    }
+    formatted = integerPart[i] + formatted;
+    count++;
+  }
+  
+  return (num < 0 ? '-' : '') + formatted + '.' + decimalPart;
+};
+
 export const formatCurrency = (value, currency = 'USD', format = 'standard') => {
   const absValue = Math.abs(value);
   
   if (currency === 'INR' && format === 'indian') {
     // Indian numbering system with lakhs and crores
     if (absValue >= 10000000) {
-      return `₹${(value / 10000000).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Cr`;
+      const crores = value / 10000000;
+      return `₹${formatIndianNumber(crores)} Cr`;
     } else if (absValue >= 100000) {
-      return `₹${(value / 100000).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} L`;
+      const lakhs = value / 100000;
+      return `₹${formatIndianNumber(lakhs)} L`;
     } else {
-      return `₹${value.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      return `₹${formatIndianNumber(value)}`;
     }
   } else if (currency === 'INR') {
-    return `₹${value.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    return `₹${formatIndianNumber(value)}`;
   } else if (currency === 'USD') {
     return `$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   } else if (currency === 'EUR') {
