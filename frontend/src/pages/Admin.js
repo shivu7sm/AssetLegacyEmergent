@@ -30,17 +30,21 @@ export default function Admin() {
   const fetchAllData = async () => {
     setLoading(true);
     try {
-      const [statsRes, usersRes, messagesRes, dmsRes] = await Promise.all([
+      const [statsRes, usersRes, messagesRes, dmsRes, analyticsRes, auditRes] = await Promise.all([
         axios.get(`${API}/admin/stats`, { withCredentials: true }),
         axios.get(`${API}/admin/users?limit=100`, { withCredentials: true }),
         axios.get(`${API}/admin/jobs/scheduled-messages`, { withCredentials: true }),
-        axios.get(`${API}/admin/jobs/dms-reminders`, { withCredentials: true })
+        axios.get(`${API}/admin/jobs/dms-reminders`, { withCredentials: true }),
+        axios.get(`${API}/admin/subscription-analytics`, { withCredentials: true }),
+        axios.get(`${API}/admin/audit-logs?limit=50`, { withCredentials: true })
       ]);
       
       setStats(statsRes.data);
       setUsers(usersRes.data.users);
       setScheduledMessages(messagesRes.data.messages);
       setDmsReminders(dmsRes.data.dms_reminders);
+      setAnalytics(analyticsRes.data);
+      setAuditLogs(auditRes.data.logs);
     } catch (error) {
       console.error('Failed to fetch admin data:', error);
       if (error.response?.status === 403) {
