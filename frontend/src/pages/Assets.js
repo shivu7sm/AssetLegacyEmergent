@@ -74,11 +74,11 @@ function AssetTableRow({ asset, typeInfo, purchaseValueOriginal, currentValueOri
         <div className="font-semibold">{asset.purchase_currency} {purchaseValueOriginal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
       </td>
       <td className="p-4 text-right" style={{color: '#f8fafc'}}>
-        {loading ? '...' : `${displayCurrency} ${purchaseConverted.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}
+        {loading ? '...' : formatCurrency(purchaseConverted, selectedCurrency, currencyFormat)}
       </td>
       <td className="p-4 text-right">
         <div style={{color: '#ec4899', fontWeight: 600}}>
-          {loading ? '...' : `${displayCurrency} ${currentConverted.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}
+          {loading ? '...' : formatCurrency(currentConverted, selectedCurrency, currencyFormat)}
         </div>
       </td>
       <td className="p-4 text-right">
