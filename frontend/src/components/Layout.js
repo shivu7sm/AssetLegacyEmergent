@@ -58,58 +58,65 @@ export default function Layout({ children }) {
     <div className="min-h-screen" style={{background: 'linear-gradient(135deg, #1a0b2e 0%, #16001e 50%, #2d0e3e 100%)'}}>
       {/* Header */}
       <header className="backdrop-blur-xl sticky top-0 z-50" style={{borderBottom: '1px solid #2d1f3d', background: 'rgba(15, 10, 30, 0.9)'}}>
-        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="w-8 h-8" style={{color: '#ec4899'}} />
-            <h1 className="text-2xl font-bold" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>AssetVault</h1>
-          </div>
-          
-          <nav className="hidden md:flex items-center gap-6">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = location.pathname === item.path;
-              return (
-                <button
-                  key={item.path}
-                  data-testid={item.testId}
-                  onClick={() => navigate(item.path)}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg transition-all"
-                  style={{
-                    background: isActive ? 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)' : 'transparent',
-                    color: isActive ? '#f8fafc' : '#94a3b8'
-                  }}
-                >
-                  <Icon className="w-5 h-5" />
-                  <span>{item.label}</span>
-                </button>
-              );
-            })}
-          </nav>
+        <div className="container mx-auto px-4 py-3">
+          <div className="flex justify-between items-center">
+            {/* Logo */}
+            <div className="flex items-center gap-2 min-w-fit">
+              <ShieldCheck className="w-7 h-7" style={{color: '#ec4899'}} />
+              <h1 className="text-xl font-bold whitespace-nowrap" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>AssetVault</h1>
+            </div>
+            
+            {/* Desktop Navigation */}
+            <nav className="hidden lg:flex items-center gap-1 flex-1 justify-center">
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                const isActive = location.pathname === item.path;
+                return (
+                  <button
+                    key={item.path}
+                    data-testid={item.testId}
+                    onClick={() => navigate(item.path)}
+                    className="flex items-center gap-1.5 px-3 py-2 rounded-lg transition-all text-sm"
+                    style={{
+                      background: isActive ? 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)' : 'transparent',
+                      color: isActive ? '#f8fafc' : '#94a3b8'
+                    }}
+                  >
+                    <Icon className="w-4 h-4" />
+                    <span className="hidden xl:inline">{item.label}</span>
+                  </button>
+                );
+              })}
+            </nav>
 
-          <div className="flex items-center gap-4">
-            {/* Currency Selector */}
-            <Select value={selectedCurrency} onValueChange={handleCurrencyChange}>
-              <SelectTrigger className="w-32" style={{background: '#1a1229', borderColor: '#2d1f3d', color: '#f8fafc'}}>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
-                {CURRENCIES.map(curr => (
-                  <SelectItem key={curr.value} value={curr.value} style={{color: '#f8fafc'}}>
-                    {curr.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            {/* Actions */}
+            <div className="flex items-center gap-2 min-w-fit">
+              {/* Currency Selector */}
+              <Select value={selectedCurrency} onValueChange={handleCurrencyChange}>
+                <SelectTrigger className="w-24 h-9 text-sm" style={{background: '#1a1229', borderColor: '#2d1f3d', color: '#f8fafc'}}>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                  {CURRENCIES.map(curr => (
+                    <SelectItem key={curr.value} value={curr.value} style={{color: '#f8fafc'}}>
+                      {curr.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
 
-            <Button 
-              data-testid="logout-btn"
-              onClick={handleLogout} 
-              variant="outline" 
-              style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
-            >
-              <LogOut className="w-4 h-4 mr-2" />
-              Logout
-            </Button>
+              <Button 
+                data-testid="logout-btn"
+                onClick={handleLogout} 
+                size="sm"
+                variant="outline" 
+                className="h-9"
+                style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+              >
+                <LogOut className="w-4 h-4 lg:mr-2" />
+                <span className="hidden lg:inline">Logout</span>
+              </Button>
+            </div>
           </div>
         </div>
       </header>
