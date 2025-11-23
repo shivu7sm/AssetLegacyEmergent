@@ -180,7 +180,10 @@ export default function Insights() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p style={{color: '#cbd5e1', lineHeight: '1.8', fontSize: '15px'}}>{insights.portfolio_summary}</p>
+                  <p 
+                    style={{color: '#cbd5e1', lineHeight: '1.8', fontSize: '15px'}}
+                    dangerouslySetInnerHTML={{__html: formatText(insights.portfolio_summary)}}
+                  />
                   
                   {/* View Detailed Analysis Button */}
                   <div className="mt-6">
