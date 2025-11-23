@@ -31,6 +31,7 @@ const ASSET_COLORS = {
   locker: '#6366f1',
   property: '#14b8a6',
   stock: '#06b6d4',
+  portfolio: '#a855f7', // Purple for portfolio accounts
   // Liabilities - Red negative tones
   loan: '#dc2626',
   credit_card: '#ef4444'
