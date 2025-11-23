@@ -262,6 +262,18 @@ export default function Assets() {
     return value;
   };
 
+  // NEW: Calculate value and convert to selected currency
+  const calculateAssetValueConverted = async (asset, useCurrent = false) => {
+    const valueInOriginalCurrency = calculateAssetValue(asset, useCurrent);
+    const originalCurrency = asset.purchase_currency || 'USD';
+    
+    if (originalCurrency === selectedCurrency) {
+      return valueInOriginalCurrency;
+    }
+    
+    return await convertCurrency(valueInOriginalCurrency, originalCurrency, selectedCurrency);
+  };
+
   const getConversionRate = async (fromCurrency, toCurrency) => {
     if (fromCurrency === toCurrency) return 1;
     
