@@ -1184,18 +1184,50 @@ async def get_subscription(user: User = Depends(require_auth)):
         "features": []
     }
 
+async def get_stripe_price_for_plan(plan: str):
+    """Fetch the price ID for a given plan from Stripe product."""
+    try:
+        product_id = os.environ.get('STRIPE_PRODUCT_ID')
+        if not product_id:
+            # Fallback to old method with direct price IDs
+            if plan == 'Pro':
+                return os.environ.get('STRIPE_PRICE_PRO')
+            elif plan == 'Family':
+                return os.environ.get('STRIPE_PRICE_FAMILY')
+            else:
+                raise HTTPException(status_code=400, detail="Invalid plan")
+        
+        # Fetch all prices for the product
+        prices = stripe.Price.list(product=product_id, active=True, limit=10)
+        
+        # Map plan names to price amounts (in cents)
+        plan_amounts = {
+            'Pro': 999,      # $9.99
+            'Family': 2499   # $24.99
+        }
+        
+        target_amount = plan_amounts.get(plan)
+        if not target_amount:
+            raise HTTPException(status_code=400, detail="Invalid plan")
+        
+        # Find matching price
+        for price in prices.data:
+            if price.unit_amount == target_amount and price.currency == 'usd':
+                return price.id
+        
+        # If no match found, raise error
+        raise HTTPException(status_code=400, detail=f"No price found for {plan} plan")
+    except stripe.error.StripeError as e:
+        logger.error(f"Stripe error fetching prices: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to fetch subscription prices")
+
 @api_router.post("/subscription/create-checkout-session")
 async def create_checkout_session(data: Dict[str, Any], user: User = Depends(require_auth)):
     try:
         plan = data.get('plan')
-        price_id = None
         
-        if plan == 'Pro':
-            price_id = os.environ.get('STRIPE_PRICE_PRO')
-        elif plan == 'Family':
-            price_id = os.environ.get('STRIPE_PRICE_FAMILY')
-        else:
-            raise HTTPException(status_code=400, detail="Invalid plan")
+        # Get price ID based on plan (with dynamic fetching from product)
+        price_id = await get_stripe_price_for_plan(plan)
         
         # Create or retrieve Stripe customer
         stripe_customer_id = getattr(user, 'stripe_customer_id', None)
