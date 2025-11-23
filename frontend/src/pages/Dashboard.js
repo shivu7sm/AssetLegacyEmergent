@@ -364,6 +364,31 @@ export default function Dashboard() {
           </Card>
         )}
 
+        {/* Portfolio Guide Card */}
+        <Card style={{background: 'linear-gradient(135deg, #2d1f3d 0%, #1a1229 100%)', borderColor: '#a855f7', borderWidth: '2px'}}>
+          <CardContent className="p-6">
+            <div className="flex items-start gap-4">
+              <div className="p-3 rounded-xl" style={{background: 'rgba(168, 85, 247, 0.1)'}}>
+                <BookOpen className="w-8 h-8" style={{color: '#a855f7'}} />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-xl font-bold mb-2" style={{color: '#f8fafc'}}>Track Exchange Portfolios</h3>
+                <p className="mb-4" style={{color: '#94a3b8'}}>
+                  Create portfolio assets to track multiple holdings from exchanges like Binance, Zerodha, or Robinhood in one place
+                </p>
+                <Button
+                  onClick={() => navigate('/portfolio-guide')}
+                  className="text-white rounded-full"
+                  style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
+                >
+                  <BookOpen className="w-4 h-4 mr-2" />
+                  Learn How to Create Portfolios
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Quick Actions */}
         <Card data-testid="quick-actions-card" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
           <CardHeader>
