@@ -59,47 +59,40 @@
   transform: translateY(-2px);
 }
 
-/* Stat icon with gradient backgrounds */
+/* Stat icon - simple circles with solid colors */
 .modern-theme .stat-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1.25rem;
-  position: relative;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  transition: all 0.4s ease;
-}
-
-.modern-theme .stat-card:hover .stat-icon {
-  transform: scale(1.1) rotate(5deg);
+  flex-shrink: 0;
 }
 
 .modern-theme .stat-icon.positive {
-  background: linear-gradient(135deg, #d1fae5 0%, #6ee7b7 100%);
-  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+  background: #e6f9f3;
+  color: #00d4aa;
 }
 
 .modern-theme .stat-icon.negative {
-  background: linear-gradient(135deg, #fecaca 0%, #f87171 100%);
-  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.3);
+  background: #ffebee;
+  color: #ff4757;
 }
 
 .modern-theme .stat-icon.neutral {
-  background: linear-gradient(135deg, #dbeafe 0%, #93c5fd 100%);
-  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+  background: #e8f2ff;
+  color: #0066ff;
 }
 
 .modern-theme .stat-icon.purple {
-  background: linear-gradient(135deg, #e9d5ff 0%, #c084fc 100%);
-  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.3);
+  background: #f3ebff;
+  color: #7c3aed;
 }
 
 .modern-theme .stat-icon.orange {
-  background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);
-  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.3);
+  background: #fff4e6;
+  color: #ff6b35;
 }
 
 /* Stat value with modern typography */
