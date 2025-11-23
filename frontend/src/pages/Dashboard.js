@@ -99,7 +99,7 @@ export default function Dashboard() {
     {
       name: 'Assets',
       value: summary?.total_assets_value || 0,
-      color: '#10b981',
+      color: '#10b981', // Green for positive
       percentage: (() => {
         const total = (summary?.total_assets_value || 0) + (summary?.total_liabilities_value || 0);
         return total > 0 ? (((summary?.total_assets_value || 0) / total) * 100).toFixed(1) : 0;
@@ -108,7 +108,7 @@ export default function Dashboard() {
     {
       name: 'Liabilities',
       value: summary?.total_liabilities_value || 0,
-      color: '#ef4444',
+      color: '#dc2626', // Dark red for negative
       percentage: (() => {
         const total = (summary?.total_assets_value || 0) + (summary?.total_liabilities_value || 0);
         return total > 0 ? (((summary?.total_liabilities_value || 0) / total) * 100).toFixed(1) : 0;
