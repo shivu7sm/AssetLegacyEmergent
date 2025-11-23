@@ -878,6 +878,9 @@ async def get_dashboard_summary(user: User = Depends(require_auth), target_curre
     # Define liability types
     liability_types = {'loan', 'credit_card'}
     
+    # Define liquid asset types
+    liquid_asset_types = {'bank', 'crypto', 'stock'}
+    
     total_assets_count = len(assets)
     asset_types = {}
     asset_values = {}
@@ -885,6 +888,8 @@ async def get_dashboard_summary(user: User = Depends(require_auth), target_curre
     total_liabilities_value = 0.0
     asset_values_separate = {}
     liability_values_separate = {}
+    liquid_assets_value = 0.0
+    diversification_count = 0
     
     # Validation tracking
     individual_values = []
@@ -925,8 +930,122 @@ async def get_dashboard_summary(user: User = Depends(require_auth), target_curre
             total_assets_value += value_in_target_currency
             asset_values_separate[asset_type] = asset_values_separate.get(asset_type, 0) + value_in_target_currency
             asset_values[asset_type] = asset_values.get(asset_type, 0) + value_in_target_currency
+            
+            # Track liquid assets
+            if asset_type in liquid_asset_types:
+                liquid_assets_value += value_in_target_currency
     
     net_worth = total_assets_value - total_liabilities_value
+    
+    # Count unique asset types for diversification
+    diversification_count = len([at for at in asset_types.keys() if at not in liability_types])
+    
+    # Calculate Financial Ratios
+    financial_ratios = {}
+    
+    # 1. Debt-to-Asset Ratio (lower is better, <0.3 is good)
+    if total_assets_value > 0:
+        debt_to_asset = total_liabilities_value / total_assets_value
+        financial_ratios["debt_to_asset_ratio"] = {
+            "value": round(debt_to_asset * 100, 1),
+            "display": f"{round(debt_to_asset * 100, 1)}%",
+            "status": "good" if debt_to_asset < 0.3 else ("warning" if debt_to_asset < 0.5 else "bad"),
+            "description": "Debt as % of total assets"
+        }
+    else:
+        financial_ratios["debt_to_asset_ratio"] = {
+            "value": 0,
+            "display": "0%",
+            "status": "good",
+            "description": "Debt as % of total assets"
+        }
+    
+    # 2. Liquidity Ratio (higher is better, >1.5 is good)
+    if total_liabilities_value > 0:
+        liquidity_ratio = liquid_assets_value / total_liabilities_value
+        financial_ratios["liquidity_ratio"] = {
+            "value": round(liquidity_ratio, 2),
+            "display": f"{round(liquidity_ratio, 2)}x",
+            "status": "good" if liquidity_ratio >= 1.5 else ("warning" if liquidity_ratio >= 1.0 else "bad"),
+            "description": "Liquid assets to cover debts"
+        }
+    else:
+        financial_ratios["liquidity_ratio"] = {
+            "value": 999,
+            "display": "∞",
+            "status": "good",
+            "description": "Liquid assets to cover debts"
+        }
+    
+    # 3. Net Worth Growth Rate (get last snapshot for comparison)
+    snapshots = await db.networth_snapshots.find(
+        {"user_id": user.id}
+    ).sort("snapshot_date", -1).limit(2).to_list(2)
+    
+    if len(snapshots) >= 2:
+        latest_nw = snapshots[0]["net_worth"]
+        previous_nw = snapshots[1]["net_worth"]
+        if previous_nw > 0:
+            growth_rate = ((latest_nw - previous_nw) / abs(previous_nw)) * 100
+            financial_ratios["net_worth_growth"] = {
+                "value": round(growth_rate, 1),
+                "display": f"{'+' if growth_rate >= 0 else ''}{round(growth_rate, 1)}%",
+                "status": "good" if growth_rate > 0 else ("warning" if growth_rate >= -5 else "bad"),
+                "description": "Net worth change since last snapshot"
+            }
+        else:
+            financial_ratios["net_worth_growth"] = {
+                "value": 0,
+                "display": "N/A",
+                "status": "neutral",
+                "description": "Net worth change since last snapshot"
+            }
+    else:
+        financial_ratios["net_worth_growth"] = {
+            "value": 0,
+            "display": "N/A",
+            "status": "neutral",
+            "description": "Net worth change since last snapshot"
+        }
+    
+    # 4. Diversification Score (0-100, higher is better)
+    max_diversification = 8  # Ideal number of asset types
+    diversification_score = min(100, (diversification_count / max_diversification) * 100)
+    financial_ratios["diversification_score"] = {
+        "value": round(diversification_score, 0),
+        "display": f"{round(diversification_score, 0)}/100",
+        "status": "good" if diversification_score >= 60 else ("warning" if diversification_score >= 30 else "bad"),
+        "description": f"Portfolio spread across {diversification_count} asset types"
+    }
+    
+    # 5. Emergency Fund Ratio (3-6 months expenses is ideal)
+    # Assume monthly expenses = 30% of net worth or 10% of liquid assets as proxy
+    estimated_monthly_expenses = liquid_assets_value * 0.1 if liquid_assets_value > 0 else 1000
+    emergency_fund_months = liquid_assets_value / estimated_monthly_expenses if estimated_monthly_expenses > 0 else 0
+    financial_ratios["emergency_fund_ratio"] = {
+        "value": round(emergency_fund_months, 1),
+        "display": f"{round(emergency_fund_months, 1)} months",
+        "status": "good" if emergency_fund_months >= 3 else ("warning" if emergency_fund_months >= 1 else "bad"),
+        "description": "Liquid assets coverage"
+    }
+    
+    # 6. Debt Service Coverage (higher is better, >1.5 is good)
+    # Calculate based on liquid assets vs total liabilities
+    if total_liabilities_value > 0:
+        dscr = (liquid_assets_value * 0.15) / (total_liabilities_value * 0.05)  # Assume 15% liquid income, 5% debt payment
+        financial_ratios["debt_service_coverage"] = {
+            "value": round(dscr, 2),
+            "display": f"{round(dscr, 2)}x",
+            "status": "good" if dscr >= 1.5 else ("warning" if dscr >= 1.0 else "bad"),
+            "description": "Ability to service debt obligations"
+        }
+    else:
+        financial_ratios["debt_service_coverage"] = {
+            "value": 999,
+            "display": "N/A",
+            "status": "good",
+            "description": "Ability to service debt obligations"
+        }
     
     # Validation checks
     calculated_sum = sum([v["converted_value"] * (1 if not v["is_liability"] else -1) for v in individual_values])
@@ -951,6 +1070,7 @@ async def get_dashboard_summary(user: User = Depends(require_auth), target_curre
         "has_nominee": await db.nominees.count_documents({"user_id": user.id}) > 0,
         "has_dms": await db.dead_man_switches.count_documents({"user_id": user.id}) > 0,
         "has_will": await db.digital_wills.count_documents({"user_id": user.id}) > 0,
+        "financial_ratios": financial_ratios,
         # Debug info (remove in production)
         "validation": {
             "individual_count": len(individual_values),
