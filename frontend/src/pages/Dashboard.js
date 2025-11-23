@@ -72,48 +72,48 @@ export default function Dashboard() {
     <Layout>
       <div className="space-y-8" data-testid="dashboard-container">
         <div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2" style={{fontFamily: 'Space Grotesk, sans-serif'}}>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
             Dashboard
           </h1>
-          <p className="text-slate-400">Overview of your assets and security status</p>
+          <p style={{color: '#94a3b8'}}>Overview of your assets and security status</p>
         </div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card className="bg-slate-800/50 border-slate-700" data-testid="total-assets-card">
+          <Card data-testid="total-assets-card" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-slate-400">Total Assets</CardTitle>
-              <DollarSign className="w-5 h-5 text-emerald-500" />
+              <CardTitle className="text-sm font-medium" style={{color: '#94a3b8'}}>Total Assets</CardTitle>
+              <DollarSign className="w-5 h-5" style={{color: '#ec4899'}} />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-white" data-testid="total-assets-count">{summary?.total_assets || 0}</div>
-              <p className="text-xs text-slate-500 mt-1">Items tracked</p>
+              <div className="text-3xl font-bold" style={{color: '#f8fafc'}} data-testid="total-assets-count">{summary?.total_assets || 0}</div>
+              <p className="text-xs mt-1" style={{color: '#64748b'}}>Items tracked</p>
             </CardContent>
           </Card>
 
-          <Card className="bg-slate-800/50 border-slate-700" data-testid="net-worth-card">
+          <Card data-testid="net-worth-card" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-slate-400">Net Worth</CardTitle>
-              <TrendingUp className="w-5 h-5 text-emerald-500" />
+              <CardTitle className="text-sm font-medium" style={{color: '#94a3b8'}}>Net Worth</CardTitle>
+              <TrendingUp className="w-5 h-5" style={{color: '#a855f7'}} />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-white" data-testid="net-worth-value">
+              <div className="text-3xl font-bold" style={{color: '#ec4899'}} data-testid="net-worth-value">
                 ${summary?.total_value_usd?.toLocaleString() || '0'}
               </div>
-              <p className="text-xs text-slate-500 mt-1">USD equivalent</p>
+              <p className="text-xs mt-1" style={{color: '#64748b'}}>USD equivalent</p>
             </CardContent>
           </Card>
 
-          <Card className="bg-slate-800/50 border-slate-700" data-testid="nominee-status-card">
+          <Card data-testid="nominee-status-card" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-slate-400">Nominee</CardTitle>
-              <Shield className="w-5 h-5 text-emerald-500" />
+              <CardTitle className="text-sm font-medium" style={{color: '#94a3b8'}}>Nominee</CardTitle>
+              <Shield className="w-5 h-5" style={{color: '#ec4899'}} />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white" data-testid="nominee-status">
+              <div className="text-2xl font-bold" style={{color: '#f8fafc'}} data-testid="nominee-status">
                 {summary?.has_nominee ? '✓ Configured' : 'Not Set'}
               </div>
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-xs mt-1" style={{color: '#64748b'}}>
                 {summary?.has_nominee ? 'Nominee assigned' : 'Add nominee'}
               </p>
             </CardContent>
