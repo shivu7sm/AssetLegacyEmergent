@@ -1223,8 +1223,12 @@ async def get_stripe_price_for_plan(plan: str):
             if price.unit_amount == target_amount and price.currency == 'usd':
                 return price.id
         
-        # If no match found, raise error
-        raise HTTPException(status_code=400, detail=f"No price found for {plan} plan")
+        # If no match found, provide detailed error
+        available_prices = [f"${p.unit_amount/100:.2f}" for p in prices.data]
+        raise HTTPException(
+            status_code=400, 
+            detail=f"No price found for {plan} plan (${target_amount/100:.2f}). Available prices in Stripe product {product_id}: {', '.join(available_prices)}. Please add the {plan} plan price in Stripe Dashboard."
+        )
     except stripe.error.StripeError as e:
         logger.error(f"Stripe error fetching prices: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to fetch subscription prices")
