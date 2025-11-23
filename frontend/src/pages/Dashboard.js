@@ -138,57 +138,91 @@ export default function Dashboard() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card data-testid="total-assets-card" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium" style={{color: '#94a3b8'}}>Total Assets</CardTitle>
-              <DollarSign className="w-5 h-5" style={{color: '#ec4899'}} />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold" style={{color: '#f8fafc'}} data-testid="total-assets-count">{summary?.total_assets || 0}</div>
-              <p className="text-xs mt-1" style={{color: '#64748b'}}>Items tracked</p>
+          <Card 
+            data-testid="total-assets-card" 
+            className="overflow-hidden transition-all hover:shadow-lg"
+            style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#3b82f6'}}
+          >
+            <CardContent className="p-6">
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <p className="text-sm font-medium mb-2" style={{color: '#94a3b8', letterSpacing: '0.5px'}}>TOTAL ASSETS</p>
+                  <div className="text-4xl font-bold mb-1" style={{color: '#f8fafc', fontFamily: 'Inter, sans-serif'}} data-testid="total-assets-count">
+                    {summary?.total_assets || 0}
+                  </div>
+                  <p className="text-xs" style={{color: '#64748b'}}>items tracked</p>
+                </div>
+                <div className="p-3 rounded-xl" style={{background: 'rgba(59, 130, 246, 0.1)'}}>
+                  <DollarSign className="w-8 h-8" style={{color: '#3b82f6'}} />
+                </div>
+              </div>
             </CardContent>
           </Card>
 
-          <Card data-testid="net-worth-card" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium" style={{color: '#94a3b8'}}>Net Worth</CardTitle>
-              <TrendingUp className="w-5 h-5" style={{color: '#a855f7'}} />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold" style={{color: '#ec4899'}} data-testid="net-worth-value">
-                {formatCurrency(summary?.net_worth || 0, selectedCurrency, currencyFormat)}
+          <Card 
+            data-testid="net-worth-card" 
+            className="overflow-hidden transition-all hover:shadow-lg"
+            style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#ec4899', borderWidth: '2px'}}
+          >
+            <CardContent className="p-6">
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <p className="text-sm font-medium mb-2" style={{color: '#94a3b8', letterSpacing: '0.5px'}}>NET WORTH</p>
+                  <div className="text-3xl font-bold mb-1" style={{color: '#ec4899', fontFamily: 'Inter, sans-serif'}} data-testid="net-worth-value">
+                    {formatCurrency(summary?.net_worth || 0, selectedCurrency, currencyFormat)}
+                  </div>
+                  <p className="text-xs" style={{color: '#64748b'}}>{selectedCurrency} equivalent</p>
+                </div>
+                <div className="p-3 rounded-xl" style={{background: 'rgba(236, 72, 153, 0.1)'}}>
+                  <TrendingUp className="w-8 h-8" style={{color: '#ec4899'}} />
+                </div>
               </div>
-              <p className="text-xs mt-1" style={{color: '#64748b'}}>{selectedCurrency} value</p>
             </CardContent>
           </Card>
 
-          <Card data-testid="nominee-status-card" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium" style={{color: '#94a3b8'}}>Nominee</CardTitle>
-              <Shield className="w-5 h-5" style={{color: '#ec4899'}} />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold" style={{color: '#f8fafc'}} data-testid="nominee-status">
-                {summary?.has_nominee ? '✓ Configured' : 'Not Set'}
+          <Card 
+            data-testid="nominee-status-card" 
+            className="overflow-hidden transition-all hover:shadow-lg"
+            style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: summary?.has_nominee ? '#10b981' : '#f59e0b'}}
+          >
+            <CardContent className="p-6">
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <p className="text-sm font-medium mb-2" style={{color: '#94a3b8', letterSpacing: '0.5px'}}>NOMINEE</p>
+                  <div className="text-2xl font-bold mb-1" style={{color: summary?.has_nominee ? '#10b981' : '#f59e0b', fontFamily: 'Inter, sans-serif'}} data-testid="nominee-status">
+                    {summary?.has_nominee ? '✓ Configured' : 'Not Set'}
+                  </div>
+                  <p className="text-xs" style={{color: '#64748b'}}>
+                    {summary?.has_nominee ? 'Protection active' : 'Setup required'}
+                  </p>
+                </div>
+                <div className="p-3 rounded-xl" style={{background: summary?.has_nominee ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)'}}>
+                  <Shield className="w-8 h-8" style={{color: summary?.has_nominee ? '#10b981' : '#f59e0b'}} />
+                </div>
               </div>
-              <p className="text-xs mt-1" style={{color: '#64748b'}}>
-                {summary?.has_nominee ? 'Nominee assigned' : 'Add nominee'}
-              </p>
             </CardContent>
           </Card>
 
-          <Card data-testid="dms-status-card" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium" style={{color: '#94a3b8'}}>Dead Man Switch</CardTitle>
-              <AlertCircle className="w-5 h-5" style={{color: '#a855f7'}} />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold" style={{color: '#f8fafc'}} data-testid="dms-status">
-                {summary?.has_dms ? '✓ Active' : 'Inactive'}
+          <Card 
+            data-testid="dms-status-card" 
+            className="overflow-hidden transition-all hover:shadow-lg"
+            style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: summary?.has_dms ? '#a855f7' : '#f59e0b'}}
+          >
+            <CardContent className="p-6">
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <p className="text-sm font-medium mb-2" style={{color: '#94a3b8', letterSpacing: '0.5px'}}>DEAD MAN SWITCH</p>
+                  <div className="text-2xl font-bold mb-1" style={{color: summary?.has_dms ? '#a855f7' : '#f59e0b', fontFamily: 'Inter, sans-serif'}} data-testid="dms-status">
+                    {summary?.has_dms ? '✓ Active' : 'Inactive'}
+                  </div>
+                  <p className="text-xs" style={{color: '#64748b'}}>
+                    {summary?.has_dms ? 'Monitoring enabled' : 'Setup required'}
+                  </p>
+                </div>
+                <div className="p-3 rounded-xl" style={{background: summary?.has_dms ? 'rgba(168, 85, 247, 0.1)' : 'rgba(245, 158, 11, 0.1)'}}>
+                  <AlertCircle className="w-8 h-8" style={{color: summary?.has_dms ? '#a855f7' : '#f59e0b'}} />
+                </div>
               </div>
-              <p className="text-xs mt-1" style={{color: '#64748b'}}>
-                {summary?.has_dms ? 'Protection enabled' : 'Setup required'}
-              </p>
             </CardContent>
           </Card>
         </div>
