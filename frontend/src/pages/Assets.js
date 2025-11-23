@@ -205,6 +205,7 @@ export default function Assets() {
       locker_number: asset.locker_number || '',
       purchase_currency: asset.purchase_currency,
       purchase_date: asset.purchase_date || '',
+      current_price: asset.current_price?.toString() || '',
       details: asset.details || {}
     });
     setDialogOpen(true);
