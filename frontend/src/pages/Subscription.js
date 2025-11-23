@@ -65,8 +65,43 @@ export default function Subscription() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    // Check if returning from Stripe success
+    const urlParams = new URLSearchParams(window.location.search);
+    const success = urlParams.get('success');
+    const canceled = urlParams.get('canceled');
+    
+    if (success === 'true') {
+      // Verify and update subscription from Stripe
+      verifyAndUpdateSubscription();
+      toast.success('Payment successful! Updating your subscription...');
+      // Clean up URL
+      window.history.replaceState({}, document.title, '/subscription');
+    } else if (canceled === 'true') {
+      toast.info('Subscription canceled');
+      window.history.replaceState({}, document.title, '/subscription');
+    }
+    
     fetchSubscription();
   }, []);
+
+  const verifyAndUpdateSubscription = async () => {
+    try {
+      const response = await axios.post(
+        `${API}/subscription/verify-and-update`,
+        {},
+        { withCredentials: true }
+      );
+      
+      if (response.data.updated) {
+        setCurrentPlan(response.data.plan);
+        toast.success(`Subscription updated to ${response.data.plan} plan!`);
+      }
+    } catch (error) {
+      console.error('Failed to verify subscription:', error);
+      // Still try to fetch normally
+      fetchSubscription();
+    }
+  };
 
   const fetchSubscription = async () => {
     try {
