@@ -73,6 +73,32 @@ export default function NetWorthChart() {
     }
   };
 
+  const backfillSnapshots = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.post(
+        `${API}/networth/backfill`,
+        {},
+        { 
+          params: { currency: selectedCurrency },
+          withCredentials: true 
+        }
+      );
+      
+      if (response.data.snapshots_created > 0) {
+        alert(`Successfully created ${response.data.snapshots_created} snapshots from your asset purchase dates!`);
+        fetchData();
+      } else {
+        alert('No assets with purchase dates found. Add purchase dates to your assets to enable historical tracking.');
+      }
+    } catch (error) {
+      console.error('Failed to backfill snapshots:', error);
+      alert('Failed to backfill snapshots. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   if (loading) {
     return (
       <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
