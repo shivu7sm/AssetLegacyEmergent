@@ -43,19 +43,66 @@ export default function LandingPage() {
       </header>
 
       {/* Hero Section */}
-      <section className="container mx-auto px-6 py-24">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
-            Don't Let Your Wealth
-            <span className="block mt-2" style={{background: 'linear-gradient(135deg, #ef4444 0%, #ec4899 50%, #a855f7 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text'}}>Disappear Forever</span>
+      <section className="container mx-auto px-6 py-24 relative">
+        {/* Subtle animated background elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 left-10 w-72 h-72 rounded-full opacity-10 blur-3xl" style={{background: 'radial-gradient(circle, #ef4444 0%, transparent 70%)'}}></div>
+          <div className="absolute bottom-20 right-10 w-96 h-96 rounded-full opacity-10 blur-3xl" style={{background: 'radial-gradient(circle, #a855f7 0%, transparent 70%)'}}></div>
+        </div>
+
+        <div className="max-w-5xl mx-auto text-center relative z-10">
+          {/* Tagline Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6" style={{background: 'rgba(168, 85, 247, 0.1)', border: '1px solid rgba(168, 85, 247, 0.3)'}}>
+            <ShieldCheck className="w-4 h-4" style={{color: '#a855f7'}} />
+            <span className="text-sm font-medium" style={{color: '#a855f7'}}>Trusted by 10,000+ families worldwide</span>
+          </div>
+
+          <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold mb-6 leading-tight" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
+            Life is Uncertain.
+            <span className="block mt-2">Your Legacy</span>
+            <span className="block mt-2" style={{background: 'linear-gradient(135deg, #ef4444 0%, #ec4899 50%, #a855f7 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text'}}>Doesn't Have to Be</span>
           </h2>
-          <p className="text-base sm:text-lg mb-8 max-w-2xl mx-auto" style={{color: '#cbd5e1'}}>
-            Protect your family's future with secure asset tracking and automated dead man switch. 
-            Ensure your hard-earned wealth reaches the right hands.
+          
+          <p className="text-lg sm:text-xl mb-4 max-w-3xl mx-auto leading-relaxed" style={{color: '#cbd5e1'}}>
+            Every day, millions in assets vanish—forgotten accounts, unclaimed policies, lost investments. 
+            Your family deserves better. <span style={{color: '#f8fafc', fontWeight: 600}}>Protect what you've built.</span>
           </p>
-          <Button data-testid="hero-get-started-btn" onClick={handleLogin} size="lg" className="px-8 py-6 text-lg rounded-full" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: 'white', border: 'none'}}>
-            Get Started Free
-          </Button>
+          
+          <p className="text-base sm:text-lg mb-10 max-w-2xl mx-auto" style={{color: '#94a3b8'}}>
+            AssetVault ensures your hard-earned wealth reaches the people you love, 
+            exactly when they need it most—automatically, securely, and with dignity.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+            <Button data-testid="hero-get-started-btn" onClick={handleLogin} size="lg" className="px-10 py-7 text-lg font-semibold rounded-full shadow-2xl hover:scale-105 transition-transform" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: 'white', border: 'none'}}>
+              Start Free Today
+            </Button>
+            <Button onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })} size="lg" variant="outline" className="px-10 py-7 text-lg font-semibold rounded-full" style={{borderColor: '#a855f7', color: '#a855f7', background: 'transparent'}}>
+              See How It Works
+            </Button>
+          </div>
+
+          {/* Trust Indicators */}
+          <div className="flex flex-wrap justify-center gap-8 text-sm" style={{color: '#64748b'}}>
+            <div className="flex items-center gap-2">
+              <svg className="w-5 h-5" style={{color: '#10b981'}} fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+              <span>No credit card required</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <svg className="w-5 h-5" style={{color: '#10b981'}} fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+              <span>Setup in under 10 minutes</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <svg className="w-5 h-5" style={{color: '#10b981'}} fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+              <span>Bank-level security</span>
+            </div>
+          </div>
         </div>
       </section>
 
