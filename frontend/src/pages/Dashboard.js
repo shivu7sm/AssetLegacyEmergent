@@ -2,13 +2,14 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
-import { DollarSign, TrendingUp, Shield, AlertCircle, Plus, Sparkles } from 'lucide-react';
+import { DollarSign, TrendingUp, Shield, AlertCircle, Plus, Sparkles, BookOpen } from 'lucide-react';
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
 import { useApp } from '@/context/AppContext';
 import { formatCurrency } from '@/utils/currencyConversion';
+import NetWorthChart from '@/components/NetWorthChart';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
