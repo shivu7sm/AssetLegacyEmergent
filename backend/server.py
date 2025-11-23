@@ -1234,6 +1234,50 @@ async def get_subscription(user: User = Depends(require_auth)):
     storage_bytes = await get_user_storage_usage(user.id)
     storage_mb = storage_bytes / (1024 * 1024)
     
+    # Get subscription details from Stripe if applicable
+    subscription_details = None
+    stripe_customer_id = getattr(user, 'stripe_customer_id', None)
+    
+    if stripe_customer_id and plan != 'Free':
+        try:
+            subscriptions = stripe.Subscription.list(
+                customer=stripe_customer_id,
+                status='all',
+                limit=10
+            )
+            
+            if subscriptions.data and len(subscriptions.data) > 0:
+                sub = subscriptions.data[0]  # Get most recent subscription
+                
+                # Get payment method
+                payment_method_info = None
+                if sub.get('default_payment_method'):
+                    pm = stripe.PaymentMethod.retrieve(sub['default_payment_method'])
+                    if pm.type == 'card':
+                        payment_method_info = {
+                            "type": "card",
+                            "brand": pm.card.brand,
+                            "last4": pm.card.last4,
+                            "exp_month": pm.card.exp_month,
+                            "exp_year": pm.card.exp_year
+                        }
+                
+                subscription_details = {
+                    "subscription_id": sub.id,
+                    "status": sub.status,
+                    "current_period_start": datetime.fromtimestamp(sub.current_period_start).isoformat(),
+                    "current_period_end": datetime.fromtimestamp(sub.current_period_end).isoformat(),
+                    "cancel_at_period_end": sub.cancel_at_period_end,
+                    "canceled_at": datetime.fromtimestamp(sub.canceled_at).isoformat() if sub.canceled_at else None,
+                    "created": datetime.fromtimestamp(sub.created).isoformat(),
+                    "payment_method": payment_method_info,
+                    "amount": sub['items']['data'][0]['price']['unit_amount'] / 100,
+                    "currency": sub['items']['data'][0]['price']['currency'].upper(),
+                    "interval": sub['items']['data'][0]['price']['recurring']['interval']
+                }
+        except Exception as e:
+            logger.error(f"Failed to fetch Stripe subscription details: {str(e)}")
+    
     return {
         "plan": plan,
         "status": "active" if plan != 'Free' else None,
@@ -1248,7 +1292,8 @@ async def get_subscription(user: User = Depends(require_auth)):
             "assets_remaining": features["max_assets"] - asset_count if features["max_assets"] > 0 else -1,
             "documents_remaining": features["max_documents"] - document_count if features["max_documents"] > 0 else -1,
             "storage_remaining_mb": features["storage_mb"] - storage_mb if features["storage_mb"] > 0 else -1
-        }
+        },
+        "subscription_details": subscription_details
     }
 
 @api_router.post("/subscription/verify-and-update")
