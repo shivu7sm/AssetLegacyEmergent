@@ -68,11 +68,18 @@ export default function Settings() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab) {
+      setActiveSection(tab);
+    }
+  }, [searchParams]);
+
   const fetchData = async () => {
     try {
-      const [userRes, nomineeRes, dmsRes, subRes] = await Promise.all([
+      const [userRes, nomineesRes, dmsRes, subRes] = await Promise.all([
         axios.get(`${API}/auth/me`, { withCredentials: true }),
-        axios.get(`${API}/nominee`, { withCredentials: true }),
+        axios.get(`${API}/nominees`, { withCredentials: true }),
         axios.get(`${API}/dms`, { withCredentials: true }),
         axios.get(`${API}/subscription/current`, { withCredentials: true })
       ]);
@@ -80,14 +87,9 @@ export default function Settings() {
       setUser(userRes.data);
       setSubscription(subRes.data);
       
-      if (nomineeRes.data) {
-        setNominee(nomineeRes.data);
-        setNomineeForm({
-          name: nomineeRes.data.name,
-          email: nomineeRes.data.email,
-          phone: nomineeRes.data.phone || '',
-          relationship: nomineeRes.data.relationship || ''
-        });
+      // Handle multiple nominees
+      if (nomineesRes.data && Array.isArray(nomineesRes.data)) {
+        setNominees(nomineesRes.data.sort((a, b) => a.priority - b.priority));
       }
       
       if (dmsRes.data) {
@@ -96,7 +98,8 @@ export default function Settings() {
           inactivity_days: dmsRes.data.inactivity_days,
           reminder_1_days: dmsRes.data.reminder_1_days,
           reminder_2_days: dmsRes.data.reminder_2_days,
-          reminder_3_days: dmsRes.data.reminder_3_days
+          reminder_3_days: dmsRes.data.reminder_3_days,
+          is_active: dmsRes.data.is_active !== false
         });
       }
 
