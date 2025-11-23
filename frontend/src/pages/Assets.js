@@ -113,15 +113,26 @@ export default function Assets() {
     return value;
   };
 
-  const convertCurrency = async (amount, fromCurrency, toCurrency) => {
-    if (fromCurrency === toCurrency) return amount;
+  const getConversionRate = async (fromCurrency, toCurrency) => {
+    if (fromCurrency === toCurrency) return 1;
+    
+    const key = `${fromCurrency}_${toCurrency}`;
+    if (conversionRates[key]) return conversionRates[key];
+    
     try {
       const response = await axios.get(`${API}/prices/currency/${fromCurrency}/${toCurrency}`, { withCredentials: true });
-      return amount * response.data.rate;
+      const rate = response.data.rate;
+      setConversionRates(prev => ({ ...prev, [key]: rate }));
+      return rate;
     } catch (error) {
       console.error('Currency conversion failed:', error);
-      return amount;
+      return 1;
     }
+  };
+
+  const convertCurrency = async (amount, fromCurrency, toCurrency) => {
+    const rate = await getConversionRate(fromCurrency, toCurrency);
+    return amount * rate;
   };
 
   const filterAndSortAssets = () => {
