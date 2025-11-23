@@ -541,6 +541,7 @@ export default function Assets() {
               </form>
             </DialogContent>
           </Dialog>
+          </div>
         </div>
 
         {/* Filters and Sort */}
