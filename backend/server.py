@@ -394,6 +394,14 @@ async def require_auth(request: Request) -> User:
         raise HTTPException(status_code=401, detail="Unauthorized")
     return user
 
+async def require_admin(request: Request) -> User:
+    user = await get_current_user(request)
+    if not user:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    if user.role != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    return user
+
 # Auth Routes
 @api_router.post("/auth/session")
 async def create_session(request: Request, response: Response):
