@@ -1244,6 +1244,125 @@ async def delete_exchange_connection(conn_id: str, user: User = Depends(require_
         raise HTTPException(status_code=404, detail="Connection not found")
     return {"success": True}
 
+# Portfolio Asset Routes
+@api_router.get("/portfolio-assets")
+async def get_portfolio_assets(user: User = Depends(require_auth)):
+    """Get all portfolio assets for the user"""
+    portfolios = await db.portfolio_assets.find({"user_id": user.id}, {"_id": 0}).to_list(1000)
+    return portfolios
+
+@api_router.post("/portfolio-assets")
+async def create_portfolio_asset(portfolio_data: PortfolioAssetCreate, user: User = Depends(require_auth)):
+    """Create a new portfolio asset"""
+    portfolio = PortfolioAsset(user_id=user.id, **portfolio_data.model_dump())
+    portfolio_dict = portfolio.model_dump()
+    portfolio_dict['created_at'] = portfolio_dict['created_at'].isoformat()
+    portfolio_dict['updated_at'] = portfolio_dict['updated_at'].isoformat()
+    if portfolio_dict.get('last_synced'):
+        portfolio_dict['last_synced'] = portfolio_dict['last_synced'].isoformat()
+    
+    await db.portfolio_assets.insert_one(portfolio_dict)
+    return {"success": True, "id": portfolio.id}
+
+@api_router.get("/portfolio-assets/{portfolio_id}")
+async def get_portfolio_asset(portfolio_id: str, user: User = Depends(require_auth)):
+    """Get a specific portfolio with all holdings"""
+    portfolio = await db.portfolio_assets.find_one({"id": portfolio_id, "user_id": user.id}, {"_id": 0})
+    if not portfolio:
+        raise HTTPException(status_code=404, detail="Portfolio not found")
+    return portfolio
+
+@api_router.post("/portfolio-assets/{portfolio_id}/holdings")
+async def add_holding_to_portfolio(portfolio_id: str, holding: PortfolioHolding, user: User = Depends(require_auth)):
+    """Add a holding to a portfolio"""
+    portfolio = await db.portfolio_assets.find_one({"id": portfolio_id, "user_id": user.id})
+    if not portfolio:
+        raise HTTPException(status_code=404, detail="Portfolio not found")
+    
+    holding_dict = holding.model_dump()
+    
+    # Calculate current value if current_price is provided
+    if holding.current_price:
+        holding_dict['current_value'] = holding.quantity * holding.current_price
+    
+    await db.portfolio_assets.update_one(
+        {"id": portfolio_id, "user_id": user.id},
+        {
+            "$push": {"holdings": holding_dict},
+            "$set": {"updated_at": datetime.now(timezone.utc).isoformat()}
+        }
+    )
+    
+    # Recalculate total portfolio value
+    await recalculate_portfolio_value(portfolio_id, user.id)
+    
+    return {"success": True}
+
+@api_router.put("/portfolio-assets/{portfolio_id}/holdings/{symbol}")
+async def update_holding(portfolio_id: str, symbol: str, holding: PortfolioHolding, user: User = Depends(require_auth)):
+    """Update a specific holding in a portfolio"""
+    holding_dict = holding.model_dump()
+    
+    if holding.current_price:
+        holding_dict['current_value'] = holding.quantity * holding.current_price
+    
+    await db.portfolio_assets.update_one(
+        {"id": portfolio_id, "user_id": user.id, "holdings.symbol": symbol},
+        {
+            "$set": {
+                "holdings.$": holding_dict,
+                "updated_at": datetime.now(timezone.utc).isoformat()
+            }
+        }
+    )
+    
+    await recalculate_portfolio_value(portfolio_id, user.id)
+    
+    return {"success": True}
+
+@api_router.delete("/portfolio-assets/{portfolio_id}/holdings/{symbol}")
+async def delete_holding(portfolio_id: str, symbol: str, user: User = Depends(require_auth)):
+    """Delete a holding from a portfolio"""
+    await db.portfolio_assets.update_one(
+        {"id": portfolio_id, "user_id": user.id},
+        {
+            "$pull": {"holdings": {"symbol": symbol}},
+            "$set": {"updated_at": datetime.now(timezone.utc).isoformat()}
+        }
+    )
+    
+    await recalculate_portfolio_value(portfolio_id, user.id)
+    
+    return {"success": True}
+
+@api_router.delete("/portfolio-assets/{portfolio_id}")
+async def delete_portfolio_asset(portfolio_id: str, user: User = Depends(require_auth)):
+    """Delete an entire portfolio"""
+    result = await db.portfolio_assets.delete_one({"id": portfolio_id, "user_id": user.id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Portfolio not found")
+    return {"success": True}
+
+async def recalculate_portfolio_value(portfolio_id: str, user_id: str):
+    """Recalculate the total value of a portfolio based on holdings"""
+    portfolio = await db.portfolio_assets.find_one({"id": portfolio_id, "user_id": user_id})
+    if not portfolio:
+        return
+    
+    total_value = 0.0
+    for holding in portfolio.get("holdings", []):
+        if holding.get("current_value"):
+            total_value += holding["current_value"]
+        elif holding.get("current_price"):
+            total_value += holding["quantity"] * holding["current_price"]
+        else:
+            total_value += holding["quantity"] * holding["purchase_price"]
+    
+    await db.portfolio_assets.update_one(
+        {"id": portfolio_id, "user_id": user_id},
+        {"$set": {"total_value": total_value}}
+    )
+
 # Net Worth Snapshot Routes
 @api_router.post("/networth/snapshot")
 async def create_networth_snapshot(snapshot_data: NetWorthSnapshotCreate, user: User = Depends(require_auth)):
