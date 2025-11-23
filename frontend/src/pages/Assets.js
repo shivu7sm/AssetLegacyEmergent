@@ -33,7 +33,7 @@ const CURRENCIES = ['USD', 'EUR', 'GBP', 'INR', 'JPY', 'AUD', 'CAD', 'SGD', 'AED
 const AREA_UNITS = ['sqft', 'sqmt', 'yard', 'acre'];
 const WEIGHT_UNITS = ['gram', 'kilogram', 'ounce', 'pound'];
 
-function AssetTableRow({ asset, typeInfo, purchaseValueOriginal, currentValueOriginal, displayCurrency, getConversionRate, handleEdit, handleDelete }) {
+function AssetTableRow({ asset, typeInfo, purchaseValueOriginal, currentValueOriginal, selectedCurrency, currencyFormat, getConversionRate, handleEdit, handleDelete }) {
   const [purchaseConverted, setPurchaseConverted] = useState(purchaseValueOriginal);
   const [currentConverted, setCurrentConverted] = useState(currentValueOriginal);
   const [loading, setLoading] = useState(true);
