@@ -264,8 +264,7 @@ export default function AssetsNew() {
     const typeInfo = ASSET_TYPES.find(t => t.value === formData.type);
     
     return (
-      <div className=\"space-y-4\">
-        {/* Quantity-based assets (Crypto, Stocks) */}
+      <div className="space-y-4">
         {typeInfo?.hasQuantity && (
           <>
             <div className=\"grid grid-cols-2 gap-4\">
