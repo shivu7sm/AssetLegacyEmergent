@@ -793,6 +793,31 @@ async def get_document(doc_id: str, user: User = Depends(require_auth)):
 
 @api_router.post("/documents")
 async def create_document(doc_data: DocumentCreate, user: User = Depends(require_auth)):
+    # Check subscription limits
+    plan = getattr(user, 'subscription_plan', 'Free')
+    features = SUBSCRIPTION_FEATURES.get(plan, SUBSCRIPTION_FEATURES["Free"])
+    
+    # Check document count limit
+    if features["max_documents"] > 0:
+        current_count = await db.documents.count_documents({"user_id": user.id})
+        if current_count >= features["max_documents"]:
+            raise HTTPException(
+                status_code=403,
+                detail=f"Document limit reached. Your {plan} plan allows {features['max_documents']} documents. Upgrade to add more."
+            )
+    
+    # Check storage limit
+    storage_bytes = await get_user_storage_usage(user.id)
+    storage_mb = storage_bytes / (1024 * 1024)
+    new_file_mb = doc_data.file_size / (1024 * 1024)
+    
+    if features["storage_mb"] > 0:
+        if (storage_mb + new_file_mb) > features["storage_mb"]:
+            raise HTTPException(
+                status_code=403,
+                detail=f"Storage limit exceeded. Your {plan} plan allows {features['storage_mb']} MB. Current: {storage_mb:.1f} MB, New file: {new_file_mb:.1f} MB. Upgrade for more storage."
+            )
+    
     document = Document(user_id=user.id, **doc_data.model_dump())
     doc_dict = document.model_dump()
     doc_dict['created_at'] = doc_dict['created_at'].isoformat()
