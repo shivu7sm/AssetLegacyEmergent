@@ -1283,18 +1283,44 @@ async def get_subscription(user: User = Depends(require_auth)):
                         logger.warning(f"Failed to fetch payment method: {str(pm_error)}")
                 
                 try:
+                    # Calculate current period dates from billing cycle
+                    billing_anchor = sub_dict.get('billing_cycle_anchor', sub_dict.get('created', 0))
+                    current_time = int(datetime.now().timestamp())
+                    
+                    # Get the plan interval to calculate period
+                    interval = sub_dict.get('items', {}).get('data', [{}])[0].get('price', {}).get('recurring', {}).get('interval', 'month')
+                    interval_count = sub_dict.get('items', {}).get('data', [{}])[0].get('price', {}).get('recurring', {}).get('interval_count', 1)
+                    
+                    # Calculate period end based on interval
+                    if interval == 'month':
+                        from dateutil.relativedelta import relativedelta
+                        period_start_dt = datetime.fromtimestamp(billing_anchor)
+                        # Find the current period by adding months until we're past current time
+                        periods_passed = 0
+                        while True:
+                            period_end_dt = period_start_dt + relativedelta(months=interval_count * (periods_passed + 1))
+                            if period_end_dt.timestamp() > current_time:
+                                period_start_dt = period_start_dt + relativedelta(months=interval_count * periods_passed)
+                                break
+                            periods_passed += 1
+                    else:
+                        # For non-monthly intervals, use billing anchor as start
+                        period_start_dt = datetime.fromtimestamp(billing_anchor)
+                        period_end_dt = datetime.fromtimestamp(sub_dict.get('cancel_at', billing_anchor))
+                    
                     subscription_details = {
                         "subscription_id": sub_dict.get('id'),
                         "status": sub_dict.get('status'),
-                        "current_period_start": datetime.fromtimestamp(sub_dict.get('current_period_start', 0)).isoformat(),
-                        "current_period_end": datetime.fromtimestamp(sub_dict.get('current_period_end', 0)).isoformat(),
+                        "current_period_start": period_start_dt.isoformat(),
+                        "current_period_end": period_end_dt.isoformat(),
                         "cancel_at_period_end": sub_dict.get('cancel_at_period_end', False),
+                        "cancel_at": datetime.fromtimestamp(sub_dict['cancel_at']).isoformat() if sub_dict.get('cancel_at') else None,
                         "canceled_at": datetime.fromtimestamp(sub_dict['canceled_at']).isoformat() if sub_dict.get('canceled_at') else None,
                         "created": datetime.fromtimestamp(sub_dict.get('created', 0)).isoformat(),
                         "payment_method": payment_method_info,
                         "amount": sub_dict['items']['data'][0]['price']['unit_amount'] / 100 if sub_dict.get('items') and sub_dict['items'].get('data') else 0,
                         "currency": sub_dict['items']['data'][0]['price']['currency'].upper() if sub_dict.get('items') and sub_dict['items'].get('data') else "USD",
-                        "interval": sub_dict['items']['data'][0]['price']['recurring']['interval'] if sub_dict.get('items') and sub_dict['items'].get('data') else "month"
+                        "interval": interval
                     }
                 except (KeyError, IndexError, TypeError) as parse_err:
                     logger.error(f"Failed to parse subscription details: {str(parse_err)}")
