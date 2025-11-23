@@ -97,8 +97,31 @@ export default function Subscription() {
         { withCredentials: true }
       );
       
-      // Redirect to Stripe checkout
-      if (response.data.url) {
+      // Initialize Stripe and redirect to checkout
+      const stripePublishableKey = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY;
+      if (!stripePublishableKey) {
+        toast.error('Stripe configuration missing');
+        setLoading(false);
+        return;
+      }
+
+      const stripe = await loadStripe(stripePublishableKey);
+      if (!stripe) {
+        toast.error('Failed to load Stripe');
+        setLoading(false);
+        return;
+      }
+
+      if (response.data.sessionId) {
+        const { error } = await stripe.redirectToCheckout({
+          sessionId: response.data.sessionId
+        });
+        
+        if (error) {
+          console.error('Stripe redirect error:', error);
+          toast.error(error.message || 'Checkout failed');
+        }
+      } else if (response.data.url) {
         window.location.href = response.data.url;
       } else {
         toast.error('Failed to create checkout session');
@@ -106,6 +129,7 @@ export default function Subscription() {
     } catch (error) {
       console.error('Failed to subscribe:', error);
       toast.error('Subscription failed. Please try again.');
+    } finally {
       setLoading(false);
     }
   };
