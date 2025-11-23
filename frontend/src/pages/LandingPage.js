@@ -47,13 +47,13 @@ export default function LandingPage() {
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
             Don't Let Your Wealth
-            <span className="block mt-2" style={{background: 'linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #22d3ee 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text'}}>Disappear Forever</span>
+            <span className="block mt-2" style={{background: 'linear-gradient(135deg, #ef4444 0%, #ec4899 50%, #a855f7 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text'}}>Disappear Forever</span>
           </h2>
-          <p className="text-base sm:text-lg mb-8 max-w-2xl mx-auto" style={{color: '#94a3b8'}}>
+          <p className="text-base sm:text-lg mb-8 max-w-2xl mx-auto" style={{color: '#cbd5e1'}}>
             Protect your family's future with secure asset tracking and automated dead man switch. 
             Ensure your hard-earned wealth reaches the right hands.
           </p>
-          <Button data-testid="hero-get-started-btn" onClick={handleLogin} size="lg" className="px-8 py-6 text-lg rounded-full" style={{background: 'linear-gradient(135deg, #2563eb 0%, #7c3aed 100%)', color: 'white', border: 'none'}}>
+          <Button data-testid="hero-get-started-btn" onClick={handleLogin} size="lg" className="px-8 py-6 text-lg rounded-full" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: 'white', border: 'none'}}>
             Get Started Free
           </Button>
         </div>
