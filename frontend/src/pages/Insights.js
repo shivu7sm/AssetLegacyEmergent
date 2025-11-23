@@ -251,7 +251,10 @@ export default function Insights() {
                                 {insights.advantages.map((adv, index) => (
                                   <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: '#16001e'}}>
                                     <CheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{color: '#10b981'}} />
-                                    <p style={{color: '#cbd5e1', lineHeight: '1.6'}}>{adv}</p>
+                                    <p 
+                                      style={{color: '#cbd5e1', lineHeight: '1.6'}}
+                                      dangerouslySetInnerHTML={{__html: formatText(adv)}}
+                                    />
                                   </li>
                                 ))}
                               </ul>
