@@ -137,7 +137,7 @@ export default function Dashboard() {
           <p style={{color: '#94a3b8'}}>Overview of your assets and security status</p>
         </div>
 
-        {/* Stats Cards */}
+        {/* Primary Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Card 
             data-testid="total-assets-card" 
