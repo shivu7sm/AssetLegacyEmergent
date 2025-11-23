@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
-import { DollarSign, TrendingUp, Shield, AlertCircle, Plus } from 'lucide-react';
+import { DollarSign, TrendingUp, Shield, AlertCircle, Plus, Sparkles } from 'lucide-react';
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -17,10 +17,42 @@ const ASSET_COLORS = {
   investment: '#8b5cf6',
   crypto: '#f59e0b',
   gold: '#fbbf24',
+  precious_metals: '#fbbf24',
   diamond: '#ec4899',
   locker: '#6366f1',
   property: '#14b8a6',
-  loan: '#ef4444'
+  stock: '#06b6d4',
+  loan: '#ef4444',
+  credit_card: '#f87171'
+};
+
+const formatCurrency = (value, currency = 'USD') => {
+  if (currency === 'INR') {
+    // Indian numbering system
+    const absValue = Math.abs(value);
+    if (absValue >= 10000000) {
+      return `₹${(value / 10000000).toFixed(2)} Cr`;
+    } else if (absValue >= 100000) {
+      return `₹${(value / 100000).toFixed(2)} L`;
+    } else {
+      return `₹${value.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
+  }
+  return `$${value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+};
+
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div style={{ background: '#1a1229', border: '1px solid #2d1f3d', borderRadius: '8px', padding: '12px' }}>
+        <p style={{ color: '#f8fafc', fontWeight: 600, marginBottom: '4px' }}>{label || payload[0].name}</p>
+        <p style={{ color: '#ec4899', fontSize: '14px' }}>
+          {payload[0].name === 'percentage' ? `${payload[0].value}%` : formatCurrency(payload[0].value)}
+        </p>
+      </div>
+    );
+  }
+  return null;
 };
 
 export default function Dashboard() {
@@ -44,19 +76,49 @@ export default function Dashboard() {
     }
   };
 
-  const pieChartData = summary?.asset_values ? Object.entries(summary.asset_values).map(([key, value]) => ({
-    name: key.charAt(0).toUpperCase() + key.slice(1),
-    value: Math.round(value),
-    color: ASSET_COLORS[key] || '#64748b',
-    percentage: summary.total_value_usd > 0 ? ((value / summary.total_value_usd) * 100).toFixed(1) : 0
-  })) : [];
+  // Asset Distribution (only assets, no liabilities)
+  const assetDistributionData = summary?.asset_values_separate ? Object.entries(summary.asset_values_separate).map(([key, value]) => {
+    const totalAssets = summary.total_assets_value || 1;
+    return {
+      name: key.charAt(0).toUpperCase() + key.slice(1).replace('_', ' '),
+      value: Math.abs(value),
+      color: ASSET_COLORS[key] || '#64748b',
+      percentage: ((Math.abs(value) / totalAssets) * 100).toFixed(1)
+    };
+  }).filter(item => item.value > 0) : [];
 
-  const barChartData = summary?.asset_values ? Object.entries(summary.asset_values).map(([key, value]) => ({
-    name: key.charAt(0).toUpperCase() + key.slice(1),
-    value: Math.round(value),
-    count: summary.asset_types[key] || 0,
-    color: ASSET_COLORS[key] || '#64748b'
-  })).sort((a, b) => b.value - a.value) : [];
+  // Liability Distribution (only liabilities)
+  const liabilityDistributionData = summary?.liability_values_separate ? Object.entries(summary.liability_values_separate).map(([key, value]) => {
+    const totalLiabilities = summary.total_liabilities_value || 1;
+    return {
+      name: key.charAt(0).toUpperCase() + key.slice(1).replace('_', ' '),
+      value: Math.abs(value),
+      color: ASSET_COLORS[key] || '#ef4444',
+      percentage: ((Math.abs(value) / totalLiabilities) * 100).toFixed(1)
+    };
+  }).filter(item => item.value > 0) : [];
+
+  // Assets vs Liabilities Comparison
+  const comparisonData = [
+    {
+      name: 'Assets',
+      value: summary?.total_assets_value || 0,
+      color: '#10b981',
+      percentage: (() => {
+        const total = (summary?.total_assets_value || 0) + (summary?.total_liabilities_value || 0);
+        return total > 0 ? (((summary?.total_assets_value || 0) / total) * 100).toFixed(1) : 0;
+      })()
+    },
+    {
+      name: 'Liabilities',
+      value: summary?.total_liabilities_value || 0,
+      color: '#ef4444',
+      percentage: (() => {
+        const total = (summary?.total_assets_value || 0) + (summary?.total_liabilities_value || 0);
+        return total > 0 ? (((summary?.total_liabilities_value || 0) / total) * 100).toFixed(1) : 0;
+      })()
+    }
+  ].filter(item => item.value > 0);
 
   if (loading) {
     return (
@@ -98,7 +160,7 @@ export default function Dashboard() {
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold" style={{color: '#ec4899'}} data-testid="net-worth-value">
-                ${summary?.total_value_usd?.toLocaleString() || '0'}
+                ${summary?.net_worth?.toLocaleString() || '0'}
               </div>
               <p className="text-xs mt-1" style={{color: '#64748b'}}>USD equivalent</p>
             </CardContent>
@@ -163,18 +225,18 @@ export default function Dashboard() {
 
         {/* Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Asset Distribution by Value */}
-          <Card data-testid="asset-distribution-card" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+          {/* Assets vs Liabilities Comparison */}
+          <Card data-testid="comparison-card" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
             <CardHeader>
-              <CardTitle style={{color: '#f8fafc'}}>Asset Distribution by Value</CardTitle>
-              <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Portfolio allocation by USD value</p>
+              <CardTitle style={{color: '#f8fafc'}}>Assets vs Liabilities</CardTitle>
+              <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Financial position overview</p>
             </CardHeader>
             <CardContent>
-              {pieChartData.length > 0 ? (
+              {comparisonData.length > 0 ? (
                 <ResponsiveContainer width="100%" height={300}>
                   <PieChart>
                     <Pie
-                      data={pieChartData}
+                      data={comparisonData}
                       cx="50%"
                       cy="50%"
                       labelLine={false}
@@ -183,25 +245,17 @@ export default function Dashboard() {
                       fill="#8884d8"
                       dataKey="value"
                     >
-                      {pieChartData.map((entry, index) => (
+                      {comparisonData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
-                    <Tooltip 
-                      contentStyle={{ 
-                        background: '#1a1229', 
-                        border: '1px solid #2d1f3d',
-                        borderRadius: '8px',
-                        color: '#f8fafc'
-                      }}
-                      formatter={(value) => `$${value.toLocaleString()}`}
-                    />
+                    <Tooltip content={<CustomTooltip />} />
                   </PieChart>
                 </ResponsiveContainer>
               ) : (
                 <div className="h-[300px] flex items-center justify-center" style={{color: '#94a3b8'}}>
                   <div className="text-center">
-                    <p className="mb-4">No assets tracked yet</p>
+                    <p className="mb-4">No data available</p>
                     <Button 
                       data-testid="add-first-asset-btn"
                       onClick={() => navigate('/assets')} 
@@ -217,43 +271,64 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
-          {/* Value by Asset Type (Bar Chart) */}
-          <Card data-testid="value-by-type-card" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+          {/* Asset Distribution by Value */}
+          <Card data-testid="asset-distribution-card" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
             <CardHeader>
-              <CardTitle style={{color: '#f8fafc'}}>Value by Asset Type</CardTitle>
-              <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Ranked by total value</p>
+              <CardTitle style={{color: '#f8fafc'}}>Asset Distribution</CardTitle>
+              <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Breakdown of asset values</p>
             </CardHeader>
             <CardContent>
-              {barChartData.length > 0 ? (
+              {assetDistributionData.length > 0 ? (
                 <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={barChartData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#2d1f3d" />
-                    <XAxis dataKey="name" stroke="#94a3b8" />
-                    <YAxis stroke="#94a3b8" tickFormatter={(value) => `$${(value/1000).toFixed(0)}k`} />
-                    <Tooltip 
-                      contentStyle={{ 
-                        background: '#1a1229', 
-                        border: '1px solid #2d1f3d',
-                        borderRadius: '8px',
-                        color: '#f8fafc'
-                      }}
-                      formatter={(value) => [`$${value.toLocaleString()}`, 'Value']}
-                    />
-                    <Bar dataKey="value" radius={[8, 8, 0, 0]}>
-                      {barChartData.map((entry, index) => (
+                  <PieChart>
+                    <Pie
+                      data={assetDistributionData}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={({ name, percentage }) => `${name} ${percentage}%`}
+                      outerRadius={80}
+                      fill="#8884d8"
+                      dataKey="value"
+                    >
+                      {assetDistributionData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
-                    </Bar>
-                  </BarChart>
+                    </Pie>
+                    <Tooltip content={<CustomTooltip />} />
+                  </PieChart>
                 </ResponsiveContainer>
               ) : (
                 <div className="h-[300px] flex items-center justify-center" style={{color: '#94a3b8'}}>
-                  <p>No data available</p>
+                  <p>No assets tracked yet</p>
                 </div>
               )}
             </CardContent>
           </Card>
         </div>
+
+        {/* AI Financial Insights Card */}
+        {summary?.total_assets > 0 && (
+          <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#a855f7'}}>
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <Sparkles className="w-6 h-6" style={{color: '#a855f7'}} />
+                <CardTitle style={{color: '#f8fafc'}}>AI Financial Insights</CardTitle>
+              </div>
+              <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Powered by AI analysis of your portfolio</p>
+            </CardHeader>
+            <CardContent>
+              <Button
+                onClick={() => navigate('/insights')}
+                className="text-white rounded-full w-full sm:w-auto"
+                style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
+              >
+                <Sparkles className="w-4 h-4 mr-2" />
+                View AI Insights & Recommendations
+              </Button>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Quick Actions */}
         <Card data-testid="quick-actions-card" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
@@ -284,14 +359,14 @@ export default function Dashboard() {
               </Button>
               
               <Button 
-                data-testid="manage-security-btn"
+                data-testid="settings-btn"
                 onClick={() => navigate('/settings')} 
                 variant="outline"
                 className="justify-start rounded-xl h-14"
                 style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
               >
                 <Shield className="w-5 h-5 mr-3" />
-                Manage Security
+                Security Settings
               </Button>
             </div>
           </CardContent>
