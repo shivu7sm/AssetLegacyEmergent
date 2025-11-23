@@ -1044,9 +1044,21 @@ export default function Assets() {
               </form>
             </DialogContent>
           </Dialog>
+            ) : (
+              <Button 
+                onClick={() => setPortfolioDialogOpen(true)}
+                className="text-white rounded-full"
+                style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add Portfolio
+              </Button>
+            )}
           </div>
         </div>
 
+        {pageMode === 'assets' ? (
+          <>
         {/* Filters and Sort */}
         {assets.length > 0 && (
           <div className="flex flex-wrap gap-4 mb-6">
