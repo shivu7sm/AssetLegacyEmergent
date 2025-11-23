@@ -455,23 +455,13 @@ export default function Assets() {
           </div>
           
           <div className="flex items-center gap-3">
-            <Select value={displayCurrency} onValueChange={setDisplayCurrency}>
-              <SelectTrigger className="w-32" style={{background: '#1a1229', borderColor: '#2d1f3d', color: '#f8fafc'}}>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
-                {CURRENCIES.map(curr => (
-                  <SelectItem key={curr} value={curr} style={{color: '#f8fafc'}}>{curr}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
             <Button
               onClick={() => setViewMode(viewMode === 'grid' ? 'table' : 'grid')}
               variant="outline"
               style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
             >
-              {viewMode === 'grid' ? <List className="w-4 h-4" /> : <Grid className="w-4 h-4" />}
+              {viewMode === 'grid' ? <List className="w-4 h-4 mr-2" /> : <Grid className="w-4 h-4 mr-2" />}
+              {viewMode === 'grid' ? 'Table View' : 'Grid View'}
             </Button>
 
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
