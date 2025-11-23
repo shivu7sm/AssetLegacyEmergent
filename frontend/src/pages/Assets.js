@@ -952,12 +952,6 @@ export default function Assets() {
                         const displayAssets = filteredAssets.length > 0 ? filteredAssets : assets;
                         const assetCount = displayAssets.filter(a => !getAssetTypeInfo(a.type).isLiability).length;
                         const liabilityCount = displayAssets.filter(a => getAssetTypeInfo(a.type).isLiability).length;
-                        const assetsValue = displayAssets
-                          .filter(a => !getAssetTypeInfo(a.type).isLiability)
-                          .reduce((sum, a) => sum + (calculateAssetValue(a, true) || calculateAssetValue(a, false)), 0);
-                        const liabilitiesValue = displayAssets
-                          .filter(a => getAssetTypeInfo(a.type).isLiability)
-                          .reduce((sum, a) => sum + (calculateAssetValue(a, true) || calculateAssetValue(a, false)), 0);
                         
                         return (
                           <>
@@ -965,7 +959,7 @@ export default function Assets() {
                               <div className="text-sm">
                                 <span style={{color: '#10b981', fontWeight: 600}}>↑ {assetCount} Asset{assetCount !== 1 ? 's' : ''}</span>
                                 <div style={{color: 'rgba(255,255,255,0.6)', fontSize: '0.75rem'}}>
-                                  {formatCurrency(assetsValue, selectedCurrency, currencyFormat)}
+                                  {assetsTotal !== null ? formatCurrency(assetsTotal, selectedCurrency, currencyFormat) : 'Calculating...'}
                                 </div>
                               </div>
                             )}
