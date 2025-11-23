@@ -493,7 +493,7 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20" style={{background: 'rgba(19, 24, 53, 0.5)'}}>
+      <section id="features" className="py-20" style={{background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)'}}>
         <div className="container mx-auto px-6">
           <h3 className="text-3xl sm:text-4xl font-bold text-center mb-16" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
             Complete Asset Protection
