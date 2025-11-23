@@ -347,6 +347,20 @@ class AIInsightResponse(BaseModel):
     asset_distribution_analysis: str = ""
     generated_at: Optional[str] = None
 
+class AuditLog(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    user_email: str
+    action: str  # CREATE, UPDATE, DELETE, READ
+    resource_type: str  # asset, document, user, settings, etc.
+    resource_id: Optional[str] = None
+    changes: Optional[dict] = None  # What changed
+    ip_address: Optional[str] = None
+    user_agent: Optional[str] = None
+    is_admin_action: bool = False
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
 # Auth Helper
 async def get_current_user(request: Request) -> Optional[User]:
     session_token = request.cookies.get("session_token")
