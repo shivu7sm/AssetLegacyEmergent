@@ -1162,7 +1162,12 @@ async def generate_insights(user: User = Depends(require_auth)):
             insight_dict['generated_at'] = insight_dict['generated_at'].isoformat()
             await db.ai_insights.insert_one(insight_dict)
             
-            return AIInsightResponse(**basic_insight.model_dump())
+            # Convert datetime to string for response
+            response_data = basic_insight.model_dump()
+            if isinstance(response_data.get('generated_at'), datetime):
+                response_data['generated_at'] = response_data['generated_at'].isoformat()
+            
+            return AIInsightResponse(**response_data)
         
         # Calculate portfolio summary
         asset_types = {}
