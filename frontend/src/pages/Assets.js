@@ -799,8 +799,8 @@ export default function Assets() {
                     <tbody>
                       {(filteredAssets.length > 0 ? filteredAssets : assets).map((asset) => {
                         const typeInfo = getAssetTypeInfo(asset.type);
-                        const purchaseValue = calculateAssetValue(asset);
-                        const currentValue = asset.current_price || purchaseValue;
+                        const purchaseValue = calculateAssetValue(asset, false);
+                        const currentValue = calculateAssetValue(asset, true) || purchaseValue;
                         const gain = currentValue - purchaseValue;
                         const gainPercent = purchaseValue ? ((gain / purchaseValue) * 100).toFixed(2) : 0;
                         
