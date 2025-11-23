@@ -878,21 +878,37 @@ export default function Assets() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {(filteredAssets.length > 0 ? filteredAssets : assets).map((asset) => {
               const typeInfo = getAssetTypeInfo(asset.type);
+              const isLiability = typeInfo.isLiability;
+              
               return (
                 <Card 
                   key={asset.id} 
                   data-testid={`asset-card-${asset.id}`}
                   className="transition-all"
-                  style={{background: '#1a1229', borderColor: '#2d1f3d'}}
+                  style={{
+                    background: isLiability ? 'linear-gradient(135deg, #450a0a 0%, #1a1229 100%)' : '#1a1229',
+                    borderColor: isLiability ? '#dc2626' : '#2d1f3d',
+                    borderWidth: isLiability ? '2px' : '1px'
+                  }}
                 >
                   <CardHeader>
                     <div className="flex justify-between items-start">
                       <div className="flex items-center gap-3">
                         <div className="text-3xl">{typeInfo.icon}</div>
                         <div>
-                          <CardTitle className="text-lg" data-testid={`asset-name-${asset.id}`} style={{color: '#f8fafc'}}>
-                            {asset.name}
-                          </CardTitle>
+                          <div className="flex items-center gap-2">
+                            <CardTitle className="text-lg" data-testid={`asset-name-${asset.id}`} style={{color: '#f8fafc'}}>
+                              {asset.name}
+                            </CardTitle>
+                            {isLiability && (
+                              <span 
+                                className="text-xs px-2 py-0.5 rounded-full font-semibold"
+                                style={{background: '#dc2626', color: '#fff'}}
+                              >
+                                DEBT
+                              </span>
+                            )}
+                          </div>
                           <p className="text-sm" style={{color: '#94a3b8'}}>{typeInfo.label}</p>
                         </div>
                       </div>
@@ -907,11 +923,13 @@ export default function Assets() {
                       
                       return purchaseValue ? (
                         <div className="mb-4">
-                          <div className="text-sm mb-1" style={{color: '#94a3b8'}}>Current Value</div>
-                          <div className="text-2xl font-bold" data-testid={`asset-value-${asset.id}`} style={{color: '#ec4899'}}>
-                            {asset.purchase_currency} {currentValue.toLocaleString()}
+                          <div className="text-sm mb-1" style={{color: '#94a3b8'}}>
+                            {isLiability ? 'Outstanding Balance' : 'Current Value'}
                           </div>
-                          {gain !== 0 && (
+                          <div className="text-2xl font-bold" data-testid={`asset-value-${asset.id}`} style={{color: isLiability ? '#ef4444' : '#ec4899'}}>
+                            {isLiability ? '-' : ''}{asset.purchase_currency} {currentValue.toLocaleString()}
+                          </div>
+                          {!isLiability && gain !== 0 && (
                             <div className="text-sm mt-1" style={{color: gain > 0 ? '#22c55e' : '#ef4444'}}>
                               {gain > 0 ? '↑' : '↓'} {gain > 0 ? '+' : ''}{gain.toLocaleString()} ({gainPercent}%)
                             </div>
