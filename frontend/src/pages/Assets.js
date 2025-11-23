@@ -253,6 +253,57 @@ export default function Assets() {
     return ASSET_TYPES.find(t => t.value === type) || ASSET_TYPES[0];
   };
 
+  // Interlinked field calculations
+  const handleQuantityChange = (value) => {
+    const qty = parseFloat(value) || 0;
+    const price = parseFloat(formData.unit_price) || 0;
+    setFormData({
+      ...formData,
+      quantity: value,
+      total_value: qty && price ? (qty * price).toString() : ''
+    });
+  };
+
+  const handleUnitPriceChange = (value) => {
+    const price = parseFloat(value) || 0;
+    const qty = parseFloat(formData.quantity) || 0;
+    setFormData({
+      ...formData,
+      unit_price: value,
+      total_value: qty && price ? (qty * price).toString() : ''
+    });
+  };
+
+  const handleTotalValueChange = (value) => {
+    const total = parseFloat(value) || 0;
+    const qty = parseFloat(formData.quantity) || 0;
+    setFormData({
+      ...formData,
+      total_value: value,
+      unit_price: qty && total ? (total / qty).toString() : ''
+    });
+  };
+
+  const handleCurrentUnitPriceChange = (value) => {
+    const price = parseFloat(value) || 0;
+    const qty = parseFloat(formData.quantity) || 0;
+    setFormData({
+      ...formData,
+      current_unit_price: value,
+      current_total_value: qty && price ? (qty * price).toString() : ''
+    });
+  };
+
+  const handleCurrentTotalValueChange = (value) => {
+    const total = parseFloat(value) || 0;
+    const qty = parseFloat(formData.quantity) || 0;
+    setFormData({
+      ...formData,
+      current_total_value: value,
+      current_unit_price: qty && total ? (total / qty).toString() : ''
+    });
+  };
+
   if (loading) {
     return (
       <Layout>
