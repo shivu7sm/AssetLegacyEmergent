@@ -1,110 +1,122 @@
 {
-  "timestamp": "2025-11-23T04:04:12.955944",
-  "total_tests": 17,
-  "passed_tests": 4,
-  "success_rate": 23.52941176470588,
+  "timestamp": "2025-11-23T04:04:49.584480",
+  "total_tests": 19,
+  "passed_tests": 19,
+  "success_rate": 100.0,
   "test_details": [
     {
       "test": "Get current user (/auth/me)",
-      "success": false,
-      "details": "Status: 500, Expected: 200, Response: Internal Server Error",
-      "timestamp": "2025-11-23T04:04:11.612894"
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T04:04:48.051870"
     },
     {
       "test": "Get user without auth (should fail)",
       "success": true,
       "details": "Status: 401",
-      "timestamp": "2025-11-23T04:04:11.650874"
+      "timestamp": "2025-11-23T04:04:48.091795"
     },
     {
       "test": "Get assets list",
-      "success": false,
-      "details": "Status: 500, Expected: 200, Response: Internal Server Error",
-      "timestamp": "2025-11-23T04:04:11.690724"
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T04:04:48.130427"
     },
     {
       "test": "Create new asset",
-      "success": false,
-      "details": "Status: 500, Expected: 200, Response: Internal Server Error",
-      "timestamp": "2025-11-23T04:04:11.732530"
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T04:04:48.192474"
+    },
+    {
+      "test": "Update asset",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T04:04:48.234972"
     },
     {
       "test": "Get assets after creation",
-      "success": false,
-      "details": "Status: 500, Expected: 200, Response: Internal Server Error",
-      "timestamp": "2025-11-23T04:04:11.772943"
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T04:04:48.275607"
+    },
+    {
+      "test": "Delete asset",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T04:04:48.316963"
     },
     {
       "test": "Get nominee (initially empty)",
-      "success": false,
-      "details": "Status: 500, Expected: 200, Response: Internal Server Error",
-      "timestamp": "2025-11-23T04:04:11.810954"
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T04:04:48.357903"
     },
     {
       "test": "Create nominee",
-      "success": false,
-      "details": "Status: 500, Expected: 200, Response: Internal Server Error",
-      "timestamp": "2025-11-23T04:04:11.856297"
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T04:04:48.399421"
     },
     {
       "test": "Update nominee",
-      "success": false,
-      "details": "Status: 500, Expected: 200, Response: Internal Server Error",
-      "timestamp": "2025-11-23T04:04:11.898078"
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T04:04:48.437470"
     },
     {
       "test": "Get DMS config (initially empty)",
-      "success": false,
-      "details": "Status: 500, Expected: 200, Response: Internal Server Error",
-      "timestamp": "2025-11-23T04:04:11.944528"
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T04:04:48.479672"
     },
     {
       "test": "Create DMS configuration",
-      "success": false,
-      "details": "Status: 500, Expected: 200, Response: Internal Server Error",
-      "timestamp": "2025-11-23T04:04:11.983104"
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T04:04:48.543389"
     },
     {
       "test": "Reset DMS timer",
-      "success": false,
-      "details": "Status: 500, Expected: 200, Response: Internal Server Error",
-      "timestamp": "2025-11-23T04:04:12.022441"
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T04:04:48.584419"
     },
     {
       "test": "Update DMS configuration",
-      "success": false,
-      "details": "Status: 500, Expected: 200, Response: Internal Server Error",
-      "timestamp": "2025-11-23T04:04:12.061117"
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T04:04:48.663996"
     },
     {
       "test": "Create asset for dashboard test",
-      "success": false,
-      "details": "Status: 500, Expected: 200, Response: Internal Server Error",
-      "timestamp": "2025-11-23T04:04:12.100283"
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T04:04:48.702998"
     },
     {
       "test": "Get dashboard summary",
-      "success": false,
-      "details": "Status: 500, Expected: 200, Response: Internal Server Error",
-      "timestamp": "2025-11-23T04:04:12.137973"
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2025-11-23T04:04:48.740094"
     },
     {
       "test": "Get Bitcoin price",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T04:04:12.284820"
+      "timestamp": "2025-11-23T04:04:48.899767"
     },
     {
       "test": "Get gold price",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T04:04:12.327223"
+      "timestamp": "2025-11-23T04:04:48.939396"
     },
     {
       "test": "Get USD to EUR conversion",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2025-11-23T04:04:12.590101"
+      "timestamp": "2025-11-23T04:04:49.218946"
     }
   ]
 }
