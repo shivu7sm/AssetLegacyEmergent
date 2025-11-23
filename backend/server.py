@@ -42,6 +42,7 @@ class User(BaseModel):
     email: str
     name: str
     picture: Optional[str] = None
+    role: str = "user"  # admin, user, readonly
     last_activity: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     measurement_unit: str = "imperial"  # imperial or metric
     weight_unit: str = "ounce"  # ounce or gram
