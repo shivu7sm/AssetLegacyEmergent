@@ -25,6 +25,7 @@ export default function Layout({ children }) {
   const navItems = [
     { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, testId: 'nav-dashboard' },
     { path: '/assets', label: 'Assets', icon: Wallet, testId: 'nav-assets' },
+    { path: '/documents', label: 'Documents', icon: FolderLock, testId: 'nav-documents' },
     { path: '/will', label: 'Digital Will', icon: FileText, testId: 'nav-will' },
     { path: '/settings', label: 'Settings', icon: Settings, testId: 'nav-settings' }
   ];
