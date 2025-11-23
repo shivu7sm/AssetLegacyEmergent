@@ -162,7 +162,8 @@ export default function Dashboard() {
   
   return (
     <Layout>
-      <div className={`space-y-8 ${dashboardTheme}-theme`} data-testid="dashboard-container">
+      <div className={`${dashboardTheme}-theme`} data-testid="dashboard-container" style={dashboardTheme === 'modern' ? {padding: '2rem 0'} : {}}>
+        <div className={dashboardTheme === 'modern' ? 'space-y-6' : 'space-y-8'}>
         <div>
           <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
             Dashboard
