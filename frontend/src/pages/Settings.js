@@ -205,8 +205,34 @@ export default function Settings() {
               <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
                 <CardHeader>
                   <CardTitle style={{color: '#f8fafc'}}>Currency & Format</CardTitle>
+                  <CardDescription style={{color: '#94a3b8'}}>Set your default currency and format preferences</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
+                  <div>
+                    <Label className="text-slate-300">Default Currency</Label>
+                    <Select 
+                      value={preferencesForm.default_currency || 'USD'} 
+                      onValueChange={(value) => setPreferencesForm({...preferencesForm, default_currency: value})}
+                    >
+                      <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-slate-800 border-slate-700">
+                        <SelectItem value="USD" className="text-white">🇺🇸 USD - US Dollar</SelectItem>
+                        <SelectItem value="EUR" className="text-white">🇪🇺 EUR - Euro</SelectItem>
+                        <SelectItem value="GBP" className="text-white">🇬🇧 GBP - British Pound</SelectItem>
+                        <SelectItem value="INR" className="text-white">🇮🇳 INR - Indian Rupee</SelectItem>
+                        <SelectItem value="JPY" className="text-white">🇯🇵 JPY - Japanese Yen</SelectItem>
+                        <SelectItem value="AUD" className="text-white">🇦🇺 AUD - Australian Dollar</SelectItem>
+                        <SelectItem value="CAD" className="text-white">🇨🇦 CAD - Canadian Dollar</SelectItem>
+                        <SelectItem value="CHF" className="text-white">🇨🇭 CHF - Swiss Franc</SelectItem>
+                        <SelectItem value="CNY" className="text-white">🇨🇳 CNY - Chinese Yuan</SelectItem>
+                        <SelectItem value="AED" className="text-white">🇦🇪 AED - UAE Dirham</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <p className="text-xs mt-1" style={{color: '#64748b'}}>This will be your default currency when you log in</p>
+                  </div>
+                  
                   <div>
                     <Label className="text-slate-300">Currency Format</Label>
                     <Select 
