@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, createContext, useContext } from "react";
 import "@/App.css";
 import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -11,7 +11,9 @@ import { Toaster } from "@/components/ui/sonner";
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-function AuthHandler() {
+const AuthContext = createContext(null);
+
+function AuthProvider({ children }) {
   const location = useLocation();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -34,7 +36,8 @@ function AuthHandler() {
           
           // Clear the hash
           window.location.hash = '';
-          navigate('/dashboard', { replace: true });
+          window.location.reload();
+          return;
         } catch (error) {
           console.error('Auth failed:', error);
           setLoading(false);
@@ -46,15 +49,15 @@ function AuthHandler() {
       try {
         const response = await axios.get(`${API}/auth/me`, { withCredentials: true });
         setUser(response.data);
-        setLoading(false);
       } catch (error) {
         setUser(null);
+      } finally {
         setLoading(false);
       }
     };
 
     handleAuth();
-  }, [location, navigate]);
+  }, [location.pathname]);
 
   if (loading) {
     return (
@@ -64,11 +67,19 @@ function AuthHandler() {
     );
   }
 
-  return { user, setUser };
+  return (
+    <AuthContext.Provider value={{ user, setUser }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+function useAuth() {
+  return useContext(AuthContext);
 }
 
 function ProtectedRoute({ children }) {
-  const { user } = AuthHandler();
+  const { user } = useAuth();
   
   if (!user) {
     return <Navigate to="/" replace />;
@@ -77,37 +88,45 @@ function ProtectedRoute({ children }) {
   return children;
 }
 
+function AppRoutes() {
+  return (
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route 
+        path="/dashboard" 
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/assets" 
+        element={
+          <ProtectedRoute>
+            <Assets />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/settings" 
+        element={
+          <ProtectedRoute>
+            <Settings />
+          </ProtectedRoute>
+        } 
+      />
+    </Routes>
+  );
+}
+
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route 
-            path="/dashboard" 
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/assets" 
-            element={
-              <ProtectedRoute>
-                <Assets />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/settings" 
-            element={
-              <ProtectedRoute>
-                <Settings />
-              </ProtectedRoute>
-            } 
-          />
-        </Routes>
+        <AuthProvider>
+          <AppRoutes />
+        </AuthProvider>
       </BrowserRouter>
       <Toaster position="top-right" />
     </div>
