@@ -1148,16 +1148,17 @@ async def get_dashboard_summary(user: User = Depends(require_auth), target_curre
             "description": "Liquid assets to cover debts"
         }
     
-    # 3. Net Worth Growth Rate (get last snapshot for comparison)
+    # 3. Net Worth Growth Rate (compare current net worth with last snapshot)
     snapshots = await db.networth_snapshots.find(
         {"user_id": user.id}
-    ).sort("snapshot_date", -1).limit(2).to_list(2)
+    ).sort("snapshot_date", -1).limit(1).to_list(1)
     
-    if len(snapshots) >= 2:
-        latest_nw = snapshots[0]["net_worth"]
-        previous_nw = snapshots[1]["net_worth"]
-        if previous_nw > 0:
-            growth_rate = ((latest_nw - previous_nw) / abs(previous_nw)) * 100
+    if len(snapshots) >= 1:
+        previous_snapshot_nw = snapshots[0]["net_worth"]
+        current_nw = net_worth
+        
+        if abs(previous_snapshot_nw) > 0:
+            growth_rate = ((current_nw - previous_snapshot_nw) / abs(previous_snapshot_nw)) * 100
             financial_ratios["net_worth_growth"] = {
                 "value": round(growth_rate, 1),
                 "display": f"{'+' if growth_rate >= 0 else ''}{round(growth_rate, 1)}%",
