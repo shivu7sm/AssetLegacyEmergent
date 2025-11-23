@@ -95,13 +95,15 @@ export default function Documents() {
           file_data: base64,
           file_size: formData.file.size,
           tags: [],
-          share_with_nominee: formData.share_with_nominee
+          share_with_nominee: formData.share_with_nominee,
+          linked_asset_id: formData.linked_asset_id
         }, { withCredentials: true });
 
         toast.success('Document uploaded successfully');
         setDialogOpen(false);
-        setFormData({ name: '', description: '', file: null, share_with_nominee: false });
+        setFormData({ name: '', description: '', file: null, share_with_nominee: false, linked_asset_id: null });
         fetchDocuments();
+        fetchStorageInfo();
       };
       reader.readAsDataURL(formData.file);
     } catch (error) {
