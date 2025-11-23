@@ -351,7 +351,8 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Landing Page Background Color Fix"
+    - "Net Worth Growth Rate Calculation Fix"
+    - "Dashboard Setup Requirements Banner"
     - "Portfolio Management UI"
     - "Portfolio Integration Across All Views"
   stuck_tasks: []
