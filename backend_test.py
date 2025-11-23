@@ -2088,6 +2088,9 @@ print('Test data cleaned up');
             self.test_ai_insights_retrieval_latest()
             self.test_multiple_insights_refresh_scenario()
             
+            # Admin Panel Backend Testing
+            self.test_admin_panel_backend()
+            
         finally:
             # Always cleanup
             self.cleanup_test_data()
