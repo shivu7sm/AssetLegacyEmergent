@@ -89,6 +89,49 @@ export default function Assets() {
     }
   };
 
+  const calculateAssetValue = (asset) => {
+    let value = asset.total_value || 0;
+    if (asset.quantity && asset.unit_price) value = asset.quantity * asset.unit_price;
+    if (asset.area && asset.price_per_area) value = asset.area * asset.price_per_area;
+    if (asset.weight && asset.unit_price) value = asset.weight * asset.unit_price;
+    if (asset.principal_amount) value = asset.principal_amount;
+    return value;
+  };
+
+  const convertCurrency = async (amount, fromCurrency, toCurrency) => {
+    if (fromCurrency === toCurrency) return amount;
+    try {
+      const response = await axios.get(`${API}/prices/currency/${fromCurrency}/${toCurrency}`, { withCredentials: true });
+      return amount * response.data.rate;
+    } catch (error) {
+      console.error('Currency conversion failed:', error);
+      return amount;
+    }
+  };
+
+  const filterAndSortAssets = () => {
+    let filtered = assets;
+    
+    if (filterType !== 'all') {
+      filtered = assets.filter(a => a.type === filterType);
+    }
+    
+    filtered = [...filtered].sort((a, b) => {
+      if (sortBy === 'date') {
+        return new Date(b.created_at) - new Date(a.created_at);
+      } else if (sortBy === 'value') {
+        const aValue = calculateAssetValue(a);
+        const bValue = calculateAssetValue(b);
+        return bValue - aValue;
+      } else if (sortBy === 'name') {
+        return a.name.localeCompare(b.name);
+      }
+      return 0;
+    });
+    
+    setFilteredAssets(filtered);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
