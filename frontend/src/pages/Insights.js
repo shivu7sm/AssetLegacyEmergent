@@ -218,7 +218,10 @@ export default function Insights() {
                           {insights.asset_distribution_analysis && (
                             <div className="p-4 rounded-lg" style={{background: '#16001e', borderLeft: '3px solid #3b82f6'}}>
                               <h4 className="font-semibold mb-2" style={{color: '#3b82f6', fontSize: '16px'}}>Asset Distribution Analysis</h4>
-                              <p style={{color: '#cbd5e1', lineHeight: '1.8'}}>{insights.asset_distribution_analysis}</p>
+                              <p 
+                                style={{color: '#cbd5e1', lineHeight: '1.8'}}
+                                dangerouslySetInnerHTML={{__html: formatText(insights.asset_distribution_analysis)}}
+                              />
                             </div>
                           )}
 
