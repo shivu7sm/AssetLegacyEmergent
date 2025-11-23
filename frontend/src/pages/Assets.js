@@ -498,17 +498,55 @@ export default function Assets() {
                     </div>
                   </CardHeader>
                   <CardContent>
-                    {asset.purchase_price && (
-                      <div className="mb-4">
-                        <div className="text-sm text-slate-400 mb-1">Value</div>
-                        <div className="text-2xl font-bold text-emerald-500" data-testid={`asset-value-${asset.id}`}>
-                          {asset.purchase_currency} {asset.purchase_price.toLocaleString()}
+                    {(() => {
+                      let value = asset.total_value;
+                      if (asset.quantity && asset.unit_price) value = asset.quantity * asset.unit_price;
+                      if (asset.area && asset.price_per_area) value = asset.area * asset.price_per_area;
+                      if (asset.weight && asset.unit_price) value = asset.weight * asset.unit_price;
+                      if (asset.principal_amount) value = asset.principal_amount;
+                      
+                      return value ? (
+                        <div className="mb-4">
+                          <div className="text-sm mb-1" style={{color: '#94a3b8'}}>Value</div>
+                          <div className="text-2xl font-bold" data-testid={`asset-value-${asset.id}`} style={{color: '#ec4899'}}>
+                            {asset.purchase_currency} {value.toLocaleString()}
+                          </div>
                         </div>
+                      ) : null;
+                    })()}
+                    
+                    {asset.quantity && (
+                      <div className="text-sm mb-2" style={{color: '#94a3b8'}}>
+                        Quantity: <span style={{color: '#f8fafc'}}>{asset.quantity}</span>
+                      </div>
+                    )}
+                    
+                    {asset.weight && (
+                      <div className="text-sm mb-2" style={{color: '#94a3b8'}}>
+                        Weight: <span style={{color: '#f8fafc'}}>{asset.weight} {asset.weight_unit}</span>
+                      </div>
+                    )}
+                    
+                    {asset.area && (
+                      <div className="text-sm mb-2" style={{color: '#94a3b8'}}>
+                        Area: <span style={{color: '#f8fafc'}}>{asset.area} {asset.area_unit}</span>
+                      </div>
+                    )}
+                    
+                    {asset.location?.address && (
+                      <div className="text-sm mb-2" style={{color: '#94a3b8'}}>
+                        📍 {asset.location.address}
+                      </div>
+                    )}
+                    
+                    {asset.maturity_date && (
+                      <div className="text-sm mb-2" style={{color: '#94a3b8'}}>
+                        Maturity: <span style={{color: '#f8fafc'}}>{new Date(asset.maturity_date).toLocaleDateString()}</span>
                       </div>
                     )}
                     
                     {asset.purchase_date && (
-                      <div className="text-sm text-slate-400 mb-4">
+                      <div className="text-sm mb-4" style={{color: '#94a3b8'}}>
                         Date: {new Date(asset.purchase_date).toLocaleDateString()}
                       </div>
                     )}
