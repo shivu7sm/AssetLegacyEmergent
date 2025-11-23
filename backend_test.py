@@ -733,6 +733,11 @@ print('Test data cleaned up');
             self.test_nominee_endpoints()
             self.test_dms_endpoints()
             self.test_dashboard_endpoints()
+            
+            # Phase 1 specific tests
+            self.test_phase1_asset_liability_calculation()
+            self.test_real_estate_extended_fields()
+            
             self.test_price_endpoints()
             
         finally:
