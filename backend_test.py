@@ -2033,6 +2033,23 @@ print('User data cleaned up');
         except Exception as e:
             print(f"⚠️  Cleanup warning: {str(e)}")
 
+    def cleanup_user_snapshots(self):
+        """Clean up only net worth snapshots for the current user"""
+        if not self.user_id:
+            return
+            
+        mongo_cleanup = f"""
+use('test_database');
+db.networth_snapshots.deleteMany({{user_id: '{self.user_id}'}});
+print('Snapshots cleaned up');
+"""
+        
+        try:
+            import subprocess
+            subprocess.run(['mongosh', '--eval', mongo_cleanup], timeout=30)
+        except Exception as e:
+            print(f"⚠️  Snapshots cleanup warning: {str(e)}")
+
     def cleanup_test_data(self):
         """Clean up test data"""
         print("\n🧹 Cleaning up test data...")
