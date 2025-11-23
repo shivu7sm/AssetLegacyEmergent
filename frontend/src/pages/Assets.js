@@ -16,8 +16,7 @@ const API = `${BACKEND_URL}/api`;
 const ASSET_TYPES = [
   { value: 'crypto', label: 'Cryptocurrency', icon: '₿', hasQuantity: true },
   { value: 'stock', label: 'Stocks', icon: '📈', hasQuantity: true },
-  { value: 'gold', label: 'Gold', icon: '🥇', hasWeight: true },
-  { value: 'silver', label: 'Silver', icon: '⚪', hasWeight: true },
+  { value: 'precious_metals', label: 'Precious Metals (Gold/Silver)', icon: '🥇', hasWeight: true },
   { value: 'property', label: 'Real Estate', icon: '🏠', hasArea: true },
   { value: 'bank', label: 'Bank Account', icon: '🏦' },
   { value: 'investment', label: 'Investment', icon: '💰', hasMaturity: true },
