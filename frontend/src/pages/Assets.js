@@ -1156,18 +1156,10 @@ export default function Assets() {
                       <tr>
                         <td colSpan="3" className="p-4" style={{color: '#f8fafc', fontWeight: 600}}>Net Total</td>
                         <td className="p-4 text-right" style={{color: '#f8fafc', fontWeight: 600}}>
-                          {formatCurrency((filteredAssets.length > 0 ? filteredAssets : assets).reduce((sum, asset) => {
-                            const typeInfo = getAssetTypeInfo(asset.type);
-                            const value = calculateAssetValue(asset);
-                            return sum + (typeInfo.isLiability ? -value : value);
-                          }, 0), selectedCurrency, currencyFormat)}
+                          {portfolioTotal !== null ? formatCurrency(portfolioTotal, selectedCurrency, currencyFormat) : 'Calculating...'}
                         </td>
                         <td className="p-4 text-right" style={{color: '#ec4899', fontWeight: 700, fontSize: '1.1rem'}}>
-                          {formatCurrency((filteredAssets.length > 0 ? filteredAssets : assets).reduce((sum, asset) => {
-                            const typeInfo = getAssetTypeInfo(asset.type);
-                            const value = calculateAssetValue(asset, true) || calculateAssetValue(asset);
-                            return sum + (typeInfo.isLiability ? -value : value);
-                          }, 0), selectedCurrency, currencyFormat)}
+                          {portfolioTotal !== null ? formatCurrency(portfolioTotal, selectedCurrency, currencyFormat) : 'Calculating...'}
                         </td>
                         <td colSpan="2"></td>
                       </tr>
