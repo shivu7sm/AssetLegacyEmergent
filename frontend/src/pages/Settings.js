@@ -97,6 +97,7 @@ export default function Settings() {
           measurement_unit: preferences.measurement_unit || 'imperial',
           weight_unit: preferences.weight_unit || 'ounce',
           currency_format: preferences.currency_format || 'standard',
+          default_currency: preferences.default_currency || 'USD',
           default_asset_view: preferences.default_asset_view || 'grid',
           marketing_consent: preferences.marketing_consent || false,
           communication_consent: preferences.communication_consent !== false
