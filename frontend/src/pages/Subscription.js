@@ -438,7 +438,10 @@ export default function Subscription() {
                   <div className="flex justify-between text-sm mb-2">
                     <span style={{color: '#94a3b8'}}>Storage</span>
                     <span style={{color: '#f8fafc', fontWeight: 600}}>
-                      {subscriptionInfo.usage.storage_mb.toFixed(1)} MB / {subscriptionInfo.features.storage_mb} MB
+                      {subscriptionInfo.features.storage_mb >= 1024 
+                        ? `${(subscriptionInfo.usage.storage_mb / 1024).toFixed(2)} GB / ${(subscriptionInfo.features.storage_mb / 1024).toFixed(0)} GB`
+                        : `${subscriptionInfo.usage.storage_mb.toFixed(1)} MB / ${subscriptionInfo.features.storage_mb} MB`
+                      }
                     </span>
                   </div>
                   <div className="w-full h-2 rounded-full" style={{background: '#16001e'}}>
