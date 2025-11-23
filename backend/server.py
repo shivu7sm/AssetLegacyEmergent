@@ -695,7 +695,31 @@ async def update_nominee(nominee_id: str, nominee_data: NomineeCreate, user: Use
         raise HTTPException(status_code=404, detail="Nominee not found")
     
     await db.nominees.update_one(
-            {"user_id": user.id},
+            {"id": nominee_id, "user_id": user.id},
+            {"$set": nominee_data.model_dump()}
+        )
+    
+    result = await db.nominees.find_one({"id": nominee_id}, {"_id": 0})
+    if isinstance(result.get('created_at'), str):
+        result['created_at'] = datetime.fromisoformat(result['created_at'])
+    return Nominee(**result)
+
+@api_router.delete("/nominees/{nominee_id}")
+async def delete_nominee(nominee_id: str, user: User = Depends(require_auth)):
+    """Delete a nominee"""
+    result = await db.nominees.delete_one({"id": nominee_id, "user_id": user.id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Nominee not found")
+    return {"success": True}
+
+@api_router.post("/nominee", response_model=Nominee)
+async def create_or_update_nominee_legacy(nominee_data: NomineeCreate, user: User = Depends(require_auth)):
+    """Legacy endpoint for backward compatibility - creates/updates first nominee"""
+    existing = await db.nominees.find_one({"user_id": user.id}, sort=[("priority", 1)])
+    
+    if existing:
+        await db.nominees.update_one(
+            {"id": existing["id"], "user_id": user.id},
             {"$set": nominee_data.model_dump()}
         )
         nominee_id = existing["id"]
