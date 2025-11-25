@@ -196,21 +196,47 @@ export default function AssetsNew() {
   return (
     <Layout>
       <div className="min-h-screen" style={{background: '#0b0b11'}}>
-        <div className="space-y-6" style={{padding: '2rem'}}>
+        <div className="space-y-6" style={{padding: '2rem', maxWidth: '95%', margin: '0 auto'}}>
           {/* Header */}
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-4xl font-bold mb-2" style={{color: '#FFFFFF'}}>Assets & Portfolio</h1>
               <p className="text-lg" style={{color: 'rgba(255,255,255,0.65)'}}>Manage your wealth in one place</p>
             </div>
-            <Button 
-              onClick={() => toast.info('Add Asset dialog - to be implemented')}
-              className="text-white"
-              style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add Asset
-            </Button>
+            <div className="flex gap-3 items-center">
+              {/* View Mode Toggle */}
+              <div className="flex gap-2 p-1 rounded-lg" style={{background: 'rgba(255,255,255,0.05)'}}>
+                <button
+                  onClick={() => setDetailViewMode('sidebar')}
+                  className="px-3 py-1.5 rounded text-xs font-semibold transition-all"
+                  style={{
+                    background: detailViewMode === 'sidebar' ? '#E8C27C' : 'transparent',
+                    color: detailViewMode === 'sidebar' ? '#0B0B11' : 'rgba(255,255,255,0.6)'
+                  }}
+                >
+                  Side Panel
+                </button>
+                <button
+                  onClick={() => setDetailViewMode('modal')}
+                  className="px-3 py-1.5 rounded text-xs font-semibold transition-all"
+                  style={{
+                    background: detailViewMode === 'modal' ? '#E8C27C' : 'transparent',
+                    color: detailViewMode === 'modal' ? '#0B0B11' : 'rgba(255,255,255,0.6)'
+                  }}
+                >
+                  Modal
+                </button>
+              </div>
+              
+              <Button 
+                onClick={() => setDialogOpen(true)}
+                className="text-white"
+                style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add Asset
+              </Button>
+            </div>
           </div>
 
         {/* Jump Pills - Section Shortcuts */}
