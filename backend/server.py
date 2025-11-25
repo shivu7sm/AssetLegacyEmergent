@@ -1928,8 +1928,10 @@ async def seed_demo_data(user_id: str):
     
     # Demo Digital Will
     demo_will = {
+        "id": f"{demo_prefix}will1",
         "user_id": user_id,
-        "content": """LAST WILL AND TESTAMENT
+        "demo_mode": True,  # Mark as demo data
+        "will_text": """LAST WILL AND TESTAMENT
 
 I, [Your Name], being of sound mind and memory, do hereby declare this to be my Last Will and Testament.
 
@@ -1970,10 +1972,14 @@ Witnesses: [To be completed with legal counsel]
 
 ---
 DEMO NOTE: This is sample demo content. Please consult with a legal professional to create your actual will.""",
-        "last_updated": datetime.now(timezone.utc).isoformat(),
-        "created_at": datetime.now(timezone.utc).isoformat()
+        "beneficiaries": [],
+        "asset_distribution": {},
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "updated_at": datetime.now(timezone.utc).isoformat()
     }
-    await db.digital_wills.insert_one(demo_will)
+    existing_will = await db.digital_wills.find_one({"user_id": user_id, "demo_mode": True})
+    if not existing_will:
+        await db.digital_wills.insert_one(demo_will)
     
     # Demo Scheduled Messages
     demo_messages = [
