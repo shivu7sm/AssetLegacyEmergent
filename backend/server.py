@@ -997,6 +997,44 @@ async def get_nominee_dashboard(access_token: str):
         }
     }
 
+@api_router.get("/nominees/my-accesses")
+async def get_my_nominee_accesses(user: User = Depends(require_auth)):
+    """Get all accounts where current user is listed as a nominee"""
+    # Find all nominee records where current user's email matches
+    nominee_records = await db.nominees.find({
+        "email": user.email,
+        "access_granted": True
+    }).to_list(100)
+    
+    accessible_accounts = []
+    
+    for nominee_record in nominee_records:
+        # Get the owner's info
+        owner = await db.users.find_one({"id": nominee_record["user_id"]})
+        
+        if owner:
+            # Check access expiration for temporary access
+            is_expired = False
+            if nominee_record.get("access_type") == "temporary" and nominee_record.get("access_expires_at"):
+                expires_at = nominee_record.get("access_expires_at")
+                if isinstance(expires_at, str):
+                    expires_at = datetime.fromisoformat(expires_at)
+                is_expired = datetime.now(timezone.utc) > expires_at
+            
+            if not is_expired:
+                accessible_accounts.append({
+                    "account_id": owner["id"],
+                    "account_name": owner.get("name", "Unknown"),
+                    "account_email": owner.get("email"),
+                    "access_type": nominee_record.get("access_type", "after_dms"),
+                    "access_token": nominee_record.get("access_token"),
+                    "relationship": nominee_record.get("relationship"),
+                    "granted_at": nominee_record.get("access_token_created_at"),
+                    "expires_at": nominee_record.get("access_expires_at")
+                })
+    
+    return {"accessible_accounts": accessible_accounts}
+
 # Dead Man Switch Routes
 @api_router.get("/dms")
 async def get_dms(user: User = Depends(require_auth)):
