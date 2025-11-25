@@ -1153,52 +1153,92 @@ export default function Settings() {
               </Card>
             </form>
 
-            {/* Nominees List */}
+            {/* Nominees List with Access Controls */}
             {nominees.length > 0 && (
-              <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
-                <CardHeader>
-                  <CardTitle style={{color: '#f8fafc'}}>Your Nominees ({nominees.length})</CardTitle>
-                  <CardDescription style={{color: '#94a3b8'}}>
-                    Nominees are listed in priority order. They will be contacted sequentially.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {nominees.map((nominee, index) => (
-                      <div 
-                        key={nominee.id}
-                        className="flex items-center justify-between p-4 rounded-lg"
-                        style={{background: '#131835', border: '1px solid #1e293b'}}
-                      >
-                        <div className="flex items-center gap-4 flex-1">
-                          <div 
-                            className="w-10 h-10 rounded-full flex items-center justify-center font-bold"
-                            style={{background: '#2d0e3e', color: '#a855f7'}}
-                          >
-                            #{index + 1}
-                          </div>
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2">
-                              <span className="font-semibold" style={{color: '#f8fafc'}}>{nominee.name}</span>
-                              {nominee.relationship && (
-                                <span 
-                                  className="text-xs px-2 py-0.5 rounded-full"
-                                  style={{background: '#2d1f3d', color: '#94a3b8'}}
-                                >
-                                  {nominee.relationship}
-                                </span>
-                              )}
-                            </div>
-                            <div className="text-sm" style={{color: '#94a3b8'}}>
-                              {nominee.email}
-                              {nominee.phone && ` • ${nominee.phone}`}
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-center gap-2">
-                          <Button
-                            size="sm"
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold flex items-center gap-2" style={{color: '#f8fafc'}}>
+                  <Shield className="w-5 h-5" style={{color: '#a855f7'}} />
+                  Your Nominees ({nominees.length})
+                </h3>
+                <p className="text-sm mb-4" style={{color: '#94a3b8'}}>
+                  Configure access permissions for each nominee below
+                </p>
+                
+                {nominees.map((nominee) => (
+                  <NomineeAccessCard 
+                    key={nominee.id} 
+                    nominee={nominee} 
+                    onUpdate={fetchData}
+                  />
+                ))}
+              </div>
+            )}
+
+            {/* How Nominee Access Works - Visual Guide */}
+            <Card style={{background: 'linear-gradient(135deg, #1a0b2e 0%, #2d0e3e 100%)', borderColor: '#a855f7', borderWidth: '2px'}}>
+              <CardHeader>
+                <CardTitle style={{color: '#f8fafc'}}>How Nominee Access Works</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  {/* Flow Diagram */}
+                  <div className="flex items-center justify-between">
+                    <div className="text-center flex-1">
+                      <div className="w-16 h-16 rounded-full mx-auto mb-2 flex items-center justify-center" style={{background: 'rgba(168, 85, 247, 0.2)'}}>
+                        <User className="w-8 h-8" style={{color: '#a855f7'}} />
+                      </div>
+                      <p className="text-xs font-semibold" style={{color: '#f8fafc'}}>You Grant Access</p>
+                      <p className="text-xs" style={{color: '#64748b'}}>Generate secure link</p>
+                    </div>
+                    
+                    <div style={{color: '#a855f7', fontSize: '1.5rem'}}>→</div>
+                    
+                    <div className="text-center flex-1">
+                      <div className="w-16 h-16 rounded-full mx-auto mb-2 flex items-center justify-center" style={{background: 'rgba(245, 158, 11, 0.2)'}}>
+                        <Clock className="w-8 h-8" style={{color: '#f59e0b'}} />
+                      </div>
+                      <p className="text-xs font-semibold" style={{color: '#f8fafc'}}>Access Type</p>
+                      <p className="text-xs" style={{color: '#64748b'}}>Immediate or After DMS</p>
+                    </div>
+                    
+                    <div style={{color: '#a855f7', fontSize: '1.5rem'}}>→</div>
+                    
+                    <div className="text-center flex-1">
+                      <div className="w-16 h-16 rounded-full mx-auto mb-2 flex items-center justify-center" style={{background: 'rgba(16, 185, 129, 0.2)'}}>
+                        <Eye className="w-8 h-8" style={{color: '#10b981'}} />
+                      </div>
+                      <p className="text-xs font-semibold" style={{color: '#f8fafc'}}>Nominee Views</p>
+                      <p className="text-xs" style={{color: '#64748b'}}>Read-only portfolio</p>
+                    </div>
+                  </div>
+
+                  {/* FAQ */}
+                  <div className="pt-6" style={{borderTop: '1px solid #2d1f3d'}}>
+                    <h4 className="font-semibold mb-3" style={{color: '#fca5a5'}}>Frequently Asked Questions</h4>
+                    <div className="space-y-3">
+                      <div>
+                        <p className="text-sm font-semibold" style={{color: '#cbd5e1'}}>Q: What can nominees see?</p>
+                        <p className="text-xs" style={{color: '#94a3b8'}}>A: Nominees get read-only access to all your assets, documents, digital will, and other nominees. They cannot edit or delete anything.</p>
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold" style={{color: '#cbd5e1'}}>Q: What's the difference between Immediate and After DMS?</p>
+                        <p className="text-xs" style={{color: '#94a3b8'}}>A: <strong>Immediate</strong> grants access right away (useful for trusted family). <strong>After DMS</strong> only grants access if you're inactive beyond your Dead Man's Switch threshold.</p>
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold" style={{color: '#cbd5e1'}}>Q: Can I revoke access?</p>
+                        <p className="text-xs" style={{color: '#94a3b8'}}>A: Yes! Click "Revoke Access" anytime to immediately disable their access token.</p>
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold" style={{color: '#cbd5e1'}}>Q: Is the access link secure?</p>
+                        <p className="text-xs" style={{color: '#94a3b8'}}>A: Yes! Each link contains a unique 32-character cryptographically secure token. Only share via secure channels.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Why This Matters */}
                             variant="ghost"
                             onClick={() => handleMovePriority(nominee.id, 'up')}
                             disabled={index === 0}
