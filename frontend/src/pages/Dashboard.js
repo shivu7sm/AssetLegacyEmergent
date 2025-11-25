@@ -45,6 +45,7 @@ export default function Dashboard() {
   const { dashboardTheme } = useTheme();
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [demoMode, setDemoMode] = useState(false);
   const [comparisonChartType, setComparisonChartType] = useState(() => {
     return sessionStorage.getItem('comparisonChartType') || 'pie';
   });
