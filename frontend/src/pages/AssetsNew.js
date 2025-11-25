@@ -463,10 +463,8 @@ export default function AssetsNew() {
                               <tr 
                                 key={asset.id}
                                 onClick={() => {
-                                  if (!isEditing) {
-                                    setSelectedAsset(asset);
-                                    setEditModalOpen(true);
-                                  }
+                                  setSelectedAsset(asset);
+                                  setEditModalOpen(true);
                                 }}
                                 className="cursor-pointer transition-all"
                                 style={{
