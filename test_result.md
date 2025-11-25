@@ -442,10 +442,11 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Assets Table Footer Fix"
-    - "Set Default Asset View to Table"
-    - "Loan Repayment Calculator"
-  stuck_tasks: []
+    - "Demo Data Reseed Endpoint"
+    - "Loan Calculator with Timeout"
+    - "Demo Mode Filtering"
+  stuck_tasks:
+    - "Loan Calculator with Timeout"
   test_all: false
   test_priority: "high_first"
 
