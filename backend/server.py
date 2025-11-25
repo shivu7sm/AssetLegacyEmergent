@@ -2616,6 +2616,10 @@ Dad""",
             "phone": "+1-555-0101",
             "relationship": "spouse",
             "priority": 1,
+            "access_granted": True,  # Already has access in demo
+            "access_type": "immediate",
+            "access_token": f"nom_demo_{user_id}_jane",
+            "access_token_created_at": datetime.now(timezone.utc).isoformat(),
             "created_at": datetime.now(timezone.utc).isoformat()
         },
         {
@@ -2626,6 +2630,8 @@ Dad""",
             "phone": "+1-555-0102",
             "relationship": "child",
             "priority": 2,
+            "access_granted": False,
+            "access_type": "after_dms",
             "created_at": datetime.now(timezone.utc).isoformat()
         }
     ]
