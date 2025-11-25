@@ -468,6 +468,9 @@ async def create_session(request: Request, response: Response):
         user_dict['created_at'] = user_dict['created_at'].isoformat()
         await db.users.insert_one(user_dict)
         user_id = user.id
+        
+        # Auto-seed demo data for new users (since demo_mode defaults to True)
+        await seed_demo_data(user_id)
     else:
         user_id = existing_user["id"]
         # If existing user is the admin email but not marked as admin, update them
