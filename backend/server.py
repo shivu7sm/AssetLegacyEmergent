@@ -1452,6 +1452,24 @@ async def toggle_demo_mode(user: User = Depends(require_auth)):
         "message": f"Switched to {'Demo' if new_mode else 'Live'} mode"
     }
 
+@api_router.post("/demo/reseed")
+async def reseed_demo_data(user: User = Depends(require_auth)):
+    """Force reseed demo data - useful after updates"""
+    demo_prefix = f"demo_{user.id}_"
+    
+    # Delete all existing demo data
+    await db.assets.delete_many({"user_id": user.id, "id": {"$regex": f"^{demo_prefix}"}})
+    await db.portfolio_assets.delete_many({"user_id": user.id, "id": {"$regex": f"^{demo_prefix}"}})
+    await db.documents.delete_many({"user_id": user.id, "id": {"$regex": f"^{demo_prefix}"}})
+    await db.scheduled_messages.delete_many({"user_id": user.id, "id": {"$regex": f"^{demo_prefix}"}})
+    await db.digital_wills.delete_many({"user_id": user.id, "demo_mode": True})
+    await db.nominees.delete_many({"user_id": user.id, "id": {"$regex": f"^{demo_prefix}"}})
+    
+    # Reseed
+    await seed_demo_data(user.id, force=True)
+    
+    return {"success": True, "message": "Demo data reseeded successfully"}
+
 async def seed_demo_data(user_id: str):
     """Create comprehensive demo data for user with realistic values"""
     demo_prefix = f"demo_{user_id}_"
