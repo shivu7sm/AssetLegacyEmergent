@@ -182,6 +182,14 @@ function AppRoutes() {
           </ProtectedRoute>
         } 
       />
+      <Route 
+        path="/loan-calculator" 
+        element={
+          <ProtectedRoute>
+            <LoanCalculator />
+          </ProtectedRoute>
+        } 
+      />
     </Routes>
   );
 }
