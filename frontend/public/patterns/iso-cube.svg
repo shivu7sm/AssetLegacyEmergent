@@ -1,15 +1,20 @@
-<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+<svg width="18" height="18" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <pattern id="iso-pattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-      <!-- Finer isometric cube pattern -->
-      <line x1="10" y1="0" x2="0" y2="5" stroke="rgba(255,255,255,0.1)" stroke-width="0.5" />
-      <line x1="10" y1="0" x2="20" y2="5" stroke="rgba(255,255,255,0.1)" stroke-width="0.5" />
-      <line x1="0" y1="5" x2="10" y2="10" stroke="rgba(255,255,255,0.1)" stroke-width="0.5" />
-      <line x1="10" y1="10" x2="20" y2="5" stroke="rgba(255,255,255,0.1)" stroke-width="0.5" />
-      <line x1="10" y1="10" x2="10" y2="20" stroke="rgba(255,255,255,0.1)" stroke-width="0.5" />
-      <line x1="0" y1="5" x2="0" y2="15" stroke="rgba(255,255,255,0.1)" stroke-width="0.5" />
-      <line x1="20" y1="5" x2="20" y2="15" stroke="rgba(255,255,255,0.1)" stroke-width="0.5" />
+    <pattern id="iso-pattern" x="0" y="0" width="18" height="18" patternUnits="userSpaceOnUse">
+      <!-- Top face of cube -->
+      <line x1="9" y1="0" x2="0" y2="4.5" stroke="rgba(255,255,255,0.12)" stroke-width="0.5" />
+      <line x1="9" y1="0" x2="18" y2="4.5" stroke="rgba(255,255,255,0.12)" stroke-width="0.5" />
+      <!-- Left face -->
+      <line x1="0" y1="4.5" x2="9" y2="9" stroke="rgba(255,255,255,0.12)" stroke-width="0.5" />
+      <line x1="0" y1="4.5" x2="0" y2="13.5" stroke="rgba(255,255,255,0.12)" stroke-width="0.5" />
+      <!-- Right face -->
+      <line x1="18" y1="4.5" x2="9" y2="9" stroke="rgba(255,255,255,0.12)" stroke-width="0.5" />
+      <line x1="18" y1="4.5" x2="18" y2="13.5" stroke="rgba(255,255,255,0.12)" stroke-width="0.5" />
+      <!-- Bottom connections -->
+      <line x1="9" y1="9" x2="9" y2="18" stroke="rgba(255,255,255,0.12)" stroke-width="0.5" />
+      <line x1="0" y1="13.5" x2="9" y2="18" stroke="rgba(255,255,255,0.12)" stroke-width="0.5" />
+      <line x1="18" y1="13.5" x2="9" y2="18" stroke="rgba(255,255,255,0.12)" stroke-width="0.5" />
     </pattern>
   </defs>
-  <rect width="20" height="20" fill="url(#iso-pattern)" />
+  <rect width="18" height="18" fill="url(#iso-pattern)" />
 </svg>
