@@ -15,6 +15,199 @@ import { useApp } from '@/context/AppContext';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
+// Security Audit Section Component
+function SecurityAuditSection({ user }) {
+  const [auditLogs, setAuditLogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchAuditLogs();
+  }, []);
+
+  const fetchAuditLogs = async () => {
+    try {
+      const response = await axios.get(`${API}/audit/logs?days=30`, { withCredentials: true });
+      setAuditLogs(response.data || []);
+    } catch (error) {
+      console.error('Failed to fetch audit logs:', error);
+      toast.error('Failed to load audit logs');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteOldLogs = async () => {
+    if (!window.confirm('Delete all audit logs older than 30 days? This action cannot be undone.')) return;
+    
+    try {
+      await axios.delete(`${API}/audit/logs/cleanup`, { withCredentials: true });
+      toast.success('Old audit logs deleted successfully');
+      fetchAuditLogs();
+    } catch (error) {
+      console.error('Failed to delete old logs:', error);
+      toast.error('Failed to delete old logs');
+    }
+  };
+
+  const getActionColor = (action) => {
+    if (action.includes('create') || action.includes('login')) return '#10b981';
+    if (action.includes('update')) return '#3b82f6';
+    if (action.includes('delete')) return '#ef4444';
+    return '#94a3b8';
+  };
+
+  const getActionIcon = (action) => {
+    if (action.includes('login')) return '🔐';
+    if (action.includes('create')) return '➕';
+    if (action.includes('update')) return '✏️';
+    if (action.includes('delete')) return '🗑️';
+    return '📝';
+  };
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold mb-2 flex items-center gap-2" style={{color: '#f8fafc'}}>
+          <Shield className="w-7 h-7" />
+          Security & Audit Logs
+        </h2>
+        <p style={{color: '#94a3b8'}}>Monitor account activity and security events from the last 30 days</p>
+      </div>
+
+      {/* Security Overview Card */}
+      <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#3b82f6', borderWidth: '2px'}}>
+        <CardHeader>
+          <CardTitle style={{color: '#f8fafc'}}>Account Security Status</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="p-4 rounded-lg" style={{background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)'}}>
+              <div className="flex items-center gap-3">
+                <Shield className="w-10 h-10" style={{color: '#10b981'}} />
+                <div>
+                  <div className="text-2xl font-bold" style={{color: '#10b981'}}>Active</div>
+                  <div className="text-sm" style={{color: '#cbd5e1'}}>Account Status</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-4 rounded-lg" style={{background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.3)'}}>
+              <div className="flex items-center gap-3">
+                <Users className="w-10 h-10" style={{color: '#3b82f6'}} />
+                <div>
+                  <div className="text-2xl font-bold" style={{color: '#3b82f6'}}>{auditLogs.length}</div>
+                  <div className="text-sm" style={{color: '#cbd5e1'}}>Recent Activities</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-4 rounded-lg" style={{background: 'rgba(168, 85, 247, 0.1)', border: '1px solid rgba(168, 85, 247, 0.3)'}}>
+              <div className="flex items-center gap-3">
+                <Clock className="w-10 h-10" style={{color: '#a855f7'}} />
+                <div>
+                  <div className="text-2xl font-bold" style={{color: '#a855f7'}}>30 Days</div>
+                  <div className="text-sm" style={{color: '#cbd5e1'}}>Log Retention</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Audit Logs */}
+      <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle style={{color: '#f8fafc'}}>Recent Activity (Last 30 Days)</CardTitle>
+              <CardDescription style={{color: '#94a3b8'}}>
+                Track all security-related events on your account
+              </CardDescription>
+            </div>
+            <Button
+              onClick={deleteOldLogs}
+              variant="outline"
+              size="sm"
+              style={{borderColor: '#ef4444', color: '#ef4444'}}
+            >
+              <Trash2 className="w-4 h-4 mr-2" />
+              Clear Old Logs
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {loading ? (
+            <div className="text-center py-8" style={{color: '#94a3b8'}}>Loading audit logs...</div>
+          ) : auditLogs.length === 0 ? (
+            <div className="text-center py-8" style={{color: '#94a3b8'}}>No recent activity</div>
+          ) : (
+            <div className="space-y-2 max-h-96 overflow-y-auto">
+              {auditLogs.map((log, index) => (
+                <div 
+                  key={index}
+                  className="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-800/50 transition-colors"
+                  style={{background: '#131835', border: '1px solid #1e293b'}}
+                >
+                  <div className="text-2xl flex-shrink-0">{getActionIcon(log.action)}</div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span 
+                        className="font-semibold"
+                        style={{color: getActionColor(log.action)}}
+                      >
+                        {log.action}
+                      </span>
+                      {log.resource_type && (
+                        <span 
+                          className="text-xs px-2 py-0.5 rounded-full"
+                          style={{background: '#2d1f3d', color: '#94a3b8'}}
+                        >
+                          {log.resource_type}
+                        </span>
+                      )}
+                    </div>
+                    <div className="text-sm" style={{color: '#cbd5e1'}}>
+                      {log.changes && typeof log.changes === 'object' && (
+                        <span className="mr-2">
+                          {Object.keys(log.changes).length} changes
+                        </span>
+                      )}
+                      {log.ip_address && (
+                        <span className="mr-2">IP: {log.ip_address}</span>
+                      )}
+                    </div>
+                    <div className="text-xs mt-1" style={{color: '#64748b'}}>
+                      {new Date(log.timestamp).toLocaleString()}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Info Card */}
+      <Card style={{background: 'linear-gradient(135deg, #2d0e1e 0%, #3d1828 100%)', borderColor: '#3b82f6', borderLeftWidth: '4px'}}>
+        <CardContent className="py-6">
+          <div className="flex items-start gap-4">
+            <Shield className="w-6 h-6 flex-shrink-0" style={{color: '#60a5fa'}} />
+            <div>
+              <h3 className="font-semibold mb-2" style={{color: '#60a5fa'}}>Why Audit Logs Matter</h3>
+              <ul className="text-sm space-y-2" style={{color: '#cbd5e1'}}>
+                <li>• <strong>Detect suspicious activity:</strong> Monitor for unauthorized access attempts</li>
+                <li>• <strong>Track changes:</strong> See what was modified and when</li>
+                <li>• <strong>Compliance:</strong> Maintain a record of all account activities</li>
+                <li>• <strong>Auto-cleanup:</strong> Logs older than 30 days can be deleted to save space</li>
+              </ul>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
 const SECTIONS = [
   { id: 'profile', label: 'Profile', icon: User },
   { id: 'preferences', label: 'Preferences', icon: Eye },
