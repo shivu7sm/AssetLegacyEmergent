@@ -908,7 +908,7 @@ export default function Settings() {
           </div>
         );
 
-      case 'subscription':
+      case 'subscription': {
         const subDetails = subscription?.subscription_details;
         const currentPlan = subscription?.plan || 'Free';
         const hasActiveSubscription = currentPlan !== 'Free' && subDetails;
