@@ -1715,6 +1715,30 @@ async def seed_demo_data(user_id: str, force: bool = False):
             },
             "created_at": datetime.now(timezone.utc).isoformat()
         },
+        {
+            "id": f"{demo_prefix}property3",
+            "user_id": user_id,
+            "name": "London Apartment Investment",
+            "type": "property",
+            "purchase_currency": "GBP",
+            "purchase_date": "2022-04-10",
+            "area": 800,
+            "area_unit": "sqft",
+            "price_per_area": 600,
+            "current_price_per_area": 720,
+            "total_value": 480000,
+            "current_value": 576000,
+            "location": {
+                "address": "Baker Street, London, UK",
+                "lat": "",
+                "lng": ""
+            },
+            "details": {
+                "property_type": "Rental",
+                "monthly_rental_income": 2500
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
         # Investments
         {
             "id": f"{demo_prefix}investment1",
