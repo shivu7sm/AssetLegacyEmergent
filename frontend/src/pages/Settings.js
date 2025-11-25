@@ -1600,7 +1600,7 @@ export default function Settings() {
 
   return (
     <Layout>
-      <div className="flex gap-6 h-full">
+      <div className="flex gap-6 h-full" style={{padding: '2rem 1.5rem', margin: '0 auto', maxWidth: '1600px'}}>
         {/* Left Sidebar */}
         <div className="w-64 flex-shrink-0">
           <div className="sticky top-24">
