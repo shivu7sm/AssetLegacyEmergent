@@ -817,7 +817,14 @@ async def reset_dms(user: User = Depends(require_auth)):
 # Digital Will Routes
 @api_router.get("/will")
 async def get_will(user: User = Depends(require_auth)):
-    will = await db.digital_wills.find_one({"user_id": user.id}, {"_id": 0})
+    # Filter based on demo mode
+    query = {"user_id": user.id}
+    if user.demo_mode:
+        query["demo_mode"] = True
+    else:
+        query["demo_mode"] = {"$ne": True}  # Show live will (demo_mode not true or not present)
+    
+    will = await db.digital_wills.find_one(query, {"_id": 0})
     if will:
         if isinstance(will.get('created_at'), str):
             will['created_at'] = datetime.fromisoformat(will['created_at'])
