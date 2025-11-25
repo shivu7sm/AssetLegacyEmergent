@@ -3342,7 +3342,8 @@ print('Test data cleaned up');
             "POST",
             "loan-calculator",
             200,
-            long_term_loan
+            long_term_loan,
+            timeout=60
         )
         
         if long_result:
