@@ -246,24 +246,31 @@ export default function Assets() {
       let totalPortfolio = 0;
       let totalAssets = 0;
       let totalLiabilities = 0;
+      let totalPurchase = 0;
+      let totalCurrent = 0;
       
       for (const asset of displayAssets) {
         const assetType = getAssetTypeInfo(asset.type);
         const currentValue = calculateAssetValue(asset, true) || calculateAssetValue(asset, false);
-        const convertedValue = await calculateAssetValueConverted(asset, true);
+        const convertedCurrentValue = await calculateAssetValueConverted(asset, true);
+        const convertedPurchaseValue = await calculateAssetValueConverted(asset, false);
         
         if (assetType.isLiability) {
-          totalLiabilities += convertedValue;
-          totalPortfolio -= convertedValue;
+          totalLiabilities += convertedCurrentValue;
+          totalPortfolio -= convertedCurrentValue;
         } else {
-          totalAssets += convertedValue;
-          totalPortfolio += convertedValue;
+          totalAssets += convertedCurrentValue;
+          totalPortfolio += convertedCurrentValue;
+          totalPurchase += convertedPurchaseValue;
+          totalCurrent += convertedCurrentValue;
         }
       }
       
       setPortfolioTotal(totalPortfolio);
       setAssetsTotal(totalAssets);
       setLiabilitiesTotal(totalLiabilities);
+      setPurchaseTotal(totalPurchase);
+      setCurrentTotal(totalCurrent);
     };
     
     calculateTotals();
