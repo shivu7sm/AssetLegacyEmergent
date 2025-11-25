@@ -1331,14 +1331,22 @@ export default function Assets() {
                     </tbody>
                     <tfoot style={{background: '#16001e', borderTop: '2px solid #2d1f3d'}}>
                       <tr>
-                        <td colSpan="3" className="p-4" style={{color: '#f8fafc', fontWeight: 600}}>Net Total</td>
-                        <td className="p-4 text-right" style={{color: '#f8fafc', fontWeight: 600}}>
-                          {portfolioTotal !== null ? formatCurrency(portfolioTotal, selectedCurrency, currencyFormat) : 'Calculating...'}
+                        <td colSpan="3" className="p-4" style={{color: '#f8fafc', fontWeight: 600, fontSize: '1.1rem'}}>
+                          TOTAL
                         </td>
-                        <td className="p-4 text-right" style={{color: '#ec4899', fontWeight: 700, fontSize: '1.1rem'}}>
-                          {portfolioTotal !== null ? formatCurrency(portfolioTotal, selectedCurrency, currencyFormat) : 'Calculating...'}
+                        <td className="p-4 text-right" style={{color: '#94a3b8', fontWeight: 600}}>
+                          {/* Original Value column - skip */}
                         </td>
-                        <td colSpan="2"></td>
+                        <td className="p-4 text-right" style={{color: '#f8fafc', fontWeight: 600, fontSize: '1rem'}}>
+                          {assetsTotal !== null ? formatCurrency(assetsTotal, selectedCurrency, currencyFormat) : 'Calculating...'}
+                        </td>
+                        <td className="p-4 text-right" style={{color: '#ec4899', fontWeight: 700, fontSize: '1.2rem'}}>
+                          {assetsTotal !== null ? formatCurrency(assetsTotal, selectedCurrency, currencyFormat) : 'Calculating...'}
+                        </td>
+                        <td className="p-4 text-right" style={{color: assetsTotal > 0 ? '#10b981' : '#ef4444', fontWeight: 600}}>
+                          {/* Gain/Loss will show in current column */}
+                        </td>
+                        <td></td>
                       </tr>
                     </tfoot>
                   </table>
