@@ -2353,7 +2353,17 @@ async def delete_exchange_connection(conn_id: str, user: User = Depends(require_
 @api_router.get("/portfolio-assets")
 async def get_portfolio_assets(user: User = Depends(require_auth)):
     """Get all portfolio assets for the user"""
-    portfolios = await db.portfolio_assets.find({"user_id": user.id}, {"_id": 0}).to_list(1000)
+    demo_prefix = f"demo_{user.id}_"
+    if user.demo_mode:
+        portfolios = await db.portfolio_assets.find({
+            "user_id": user.id,
+            "id": {"$regex": f"^{demo_prefix}"}
+        }, {"_id": 0}).to_list(1000)
+    else:
+        portfolios = await db.portfolio_assets.find({
+            "user_id": user.id,
+            "id": {"$not": {"$regex": f"^{demo_prefix}"}}
+        }, {"_id": 0}).to_list(1000)
     return portfolios
 
 @api_router.post("/portfolio-assets")
