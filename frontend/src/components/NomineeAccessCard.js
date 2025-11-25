@@ -191,13 +191,13 @@ export default function NomineeAccessCard({ nominee, onUpdate, onEdit, onDelete,
           </div>
         </div>
 
-        {/* Access Type Selection - 3 Options in Single Row */}
+        {/* Access Type Selection + Grant Access - All in Single Row */}
         <div className="mb-4">
           <p className="text-sm font-semibold mb-3 flex items-center gap-2" style={{color: '#E8C27C'}}>
             <Shield className="w-4 h-4" />
-            Access Permissions
+            Access Permissions & Control
           </p>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-4 gap-3">
             {/* Immediate Access */}
             <button
               onClick={() => updateAccessType('immediate')}
@@ -257,91 +257,99 @@ export default function NomineeAccessCard({ nominee, onUpdate, onEdit, onDelete,
                 {nominee.access_type === 'after_dms' && <span style={{color: '#3b82f6'}}>🛡️ Safeguarded</span>}
               </p>
             </button>
+
+            {/* Grant Access Card */}
+            <div
+              className="p-4 rounded-lg text-center transition-all flex flex-col justify-center"
+              style={{
+                background: nominee.access_granted 
+                  ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(16, 185, 129, 0.1) 100%)'
+                  : 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.08) 100%)',
+                border: `2px solid ${nominee.access_granted ? '#10b981' : 'rgba(16, 185, 129, 0.4)'}`,
+                boxShadow: nominee.access_granted ? '0 4px 12px rgba(16, 185, 129, 0.3)' : 'none'
+              }}
+            >
+              {!nominee.access_granted ? (
+                <>
+                  <Shield className="w-7 h-7 mx-auto mb-2" style={{color: '#10b981'}} />
+                  <p className="text-sm font-bold mb-1" style={{color: '#f8fafc'}}>
+                    Grant Access
+                  </p>
+                  <Button 
+                    onClick={generateAccess}
+                    disabled={generating}
+                    size="sm"
+                    className="mt-2 w-full"
+                    style={{background: '#10b981', color: '#fff', fontSize: '0.75rem', padding: '0.5rem'}}
+                  >
+                    {generating ? '...' : 'Generate Link'}
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Check className="w-7 h-7 mx-auto mb-2" style={{color: '#10b981'}} />
+                  <p className="text-sm font-bold mb-1" style={{color: '#10b981'}}>
+                    Active
+                  </p>
+                  <div className="flex flex-col gap-1 mt-2">
+                    <Button 
+                      onClick={() => {
+                        setShowLink(!showLink);
+                        if (!accessLink) generateAccess();
+                      }}
+                      size="sm"
+                      className="w-full"
+                      style={{background: 'rgba(16, 185, 129, 0.2)', border: '1px solid #10b981', color: '#10b981', fontSize: '0.75rem', padding: '0.4rem'}}
+                    >
+                      {showLink ? 'Hide' : 'Show'} Link
+                    </Button>
+                    <Button 
+                      onClick={revokeAccess}
+                      size="sm"
+                      className="w-full"
+                      style={{background: 'rgba(239, 68, 68, 0.15)', border: '1px solid #ef4444', color: '#ef4444', fontSize: '0.75rem', padding: '0.4rem'}}
+                    >
+                      Revoke
+                    </Button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
           
-          {/* Explanation Text */}
+          {/* Link Display - Below the row */}
+          {showLink && accessLink && (
+            <div className="mt-3 p-3 rounded-lg" style={{background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.2)'}}>
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex-1 overflow-hidden">
+                  <p className="text-xs font-semibold mb-1" style={{color: '#10b981'}}>SECURE ACCESS LINK</p>
+                  <p className="text-xs truncate font-mono" style={{color: '#cbd5e1'}}>
+                    {accessLink}
+                  </p>
+                </div>
+                <Button size="sm" onClick={copyLink} style={{background: '#10b981', color: '#fff', padding: '0.5rem'}}>
+                  <Copy className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+          )}
+          
+          {/* Explanation Text - Below the row */}
           <div className="mt-3 p-3 rounded-lg" style={{background: 'rgba(232, 194, 124, 0.05)', border: '1px solid rgba(232, 194, 124, 0.2)'}}>
             <p className="text-xs" style={{color: '#cbd5e1'}}>
-              {nominee.access_type === 'immediate' && '⚡ They can access your portfolio immediately. Access will be auto-granted.'}
-              {nominee.access_type === 'temporary' && '⏰ They get 7-day limited access. Perfect for temporary sharing.'}
-              {nominee.access_type === 'after_dms' && '🛡️ Access only activates if you\'re inactive beyond your Dead Man\'s Switch threshold. Current access will be auto-revoked.'}
+              {nominee.access_type === 'immediate' && '⚡ Immediate access - They can view your portfolio right now. Access auto-granted.'}
+              {nominee.access_type === 'temporary' && '⏰ Temporary access - 7-day limited access. Perfect for temporary sharing.'}
+              {nominee.access_type === 'after_dms' && '🛡️ After DMS - Access only activates if you\'re inactive beyond your Dead Man\'s Switch threshold. Auto-revokes current access.'}
             </p>
           </div>
         </div>
 
-        {/* Generate/Revoke Access - Enhanced CTA */}
-        <div className="space-y-3">
-          {!nominee.access_granted ? (
-            <div className="p-6 rounded-lg text-center" style={{background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%)', border: '2px solid rgba(16, 185, 129, 0.3)'}}>
-              <Shield className="w-12 h-12 mx-auto mb-3" style={{color: '#10b981'}} />
-              <p className="text-sm font-semibold mb-2" style={{color: '#f8fafc'}}>Ready to Grant Access?</p>
-              <p className="text-xs mb-4" style={{color: '#94a3b8'}}>
-                Generate a secure access link that {nominee.name} can use to view your portfolio
-              </p>
-              <Button 
-                onClick={generateAccess}
-                disabled={generating}
-                className="w-full"
-                style={{background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)', color: '#fff', fontWeight: 700}}
-              >
-                <Shield className="w-4 h-4 mr-2" />
-                {generating ? 'Generating Secure Link...' : 'Generate Access Link'}
-              </Button>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              <div className="p-4 rounded-lg" style={{background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)'}}>
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    <Shield className="w-5 h-5" style={{color: '#10b981'}} />
-                    <p className="text-sm font-bold" style={{color: '#10b981'}}>ACCESS ACTIVE</p>
-                  </div>
-                  {nominee.last_accessed_at && (
-                    <p className="text-xs" style={{color: '#64748b'}}>
-                      Last viewed: {new Date(nominee.last_accessed_at).toLocaleDateString()}
-                    </p>
-                  )}
-                </div>
-                
-                {showLink && accessLink && (
-                  <div className="mb-3 p-3 rounded" style={{background: 'rgba(0,0,0,0.2)'}}>
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="flex-1 overflow-hidden">
-                        <p className="text-xs font-semibold mb-1" style={{color: '#10b981'}}>SECURE LINK</p>
-                        <p className="text-xs truncate font-mono" style={{color: '#cbd5e1'}}>
-                          {accessLink}
-                        </p>
-                      </div>
-                      <Button size="sm" onClick={copyLink} style={{background: '#10b981', color: '#fff', padding: '0.5rem'}}>
-                        <Copy className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                )}
-                
-                <div className="flex gap-2">
-                  <Button 
-                    onClick={generateAccess}
-                    size="sm"
-                    className="flex-1"
-                    variant="outline"
-                    style={{borderColor: '#10b981', color: '#10b981', fontSize: '0.813rem'}}
-                  >
-                    <LinkIcon className="w-3 h-3 mr-2" />
-                    {showLink ? 'Regenerate' : 'Show'} Link
-                  </Button>
-                  <Button 
-                    onClick={revokeAccess}
-                    size="sm"
-                    style={{background: 'rgba(239, 68, 68, 0.15)', border: '1px solid rgba(239, 68, 68, 0.3)', color: '#ef4444', fontSize: '0.813rem'}}
-                  >
-                    Revoke Access
-                  </Button>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+        {/* Last Accessed Info */}
+        {nominee.last_accessed_at && (
+          <div className="text-xs text-center" style={{color: '#64748b'}}>
+            Last accessed: {new Date(nominee.last_accessed_at).toLocaleString()}
+          </div>
+        )}
       </div>
     </div>
   );
