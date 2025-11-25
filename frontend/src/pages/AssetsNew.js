@@ -64,6 +64,8 @@ export default function AssetsNew() {
   const [selectedAsset, setSelectedAsset] = useState(null);
   const [loanCalcData, setLoanCalcData] = useState(null);
   const [calculatingLoan, setCalculatingLoan] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [detailViewMode, setDetailViewMode] = useState('sidebar'); // 'sidebar' or 'modal'
 
   useEffect(() => {
     fetchAssets();
