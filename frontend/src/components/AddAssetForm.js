@@ -65,6 +65,7 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null 
         payload.weight_unit = formData.weight_unit;
         payload.unit_price = parseFloat(formData.unit_price);
         payload.total_value = payload.weight * payload.unit_price;
+        if (formData.current_unit_price) payload.current_unit_price = parseFloat(formData.current_unit_price);
       } else if (formData.type === 'property') {
         payload.area = parseFloat(formData.area);
         payload.area_unit = formData.area_unit;
@@ -79,16 +80,46 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null 
         payload.current_value = payload.principal_amount;
         if (formData.interest_rate) payload.interest_rate = parseFloat(formData.interest_rate);
         if (formData.tenure_months) payload.tenure_months = parseInt(formData.tenure_months);
+      } else if (formData.type === 'vehicle') {
+        payload.total_value = parseFloat(formData.total_value);
+        payload.details = {
+          make: formData.make,
+          model: formData.model,
+          year: formData.year
+        };
+      } else if (formData.type === 'nft') {
+        payload.total_value = parseFloat(formData.total_value);
+        payload.details = {
+          collection: formData.collection,
+          token_id: formData.token_id
+        };
+      } else if (formData.type === 'mutual_fund') {
+        payload.total_value = parseFloat(formData.total_value);
+        payload.details = {
+          fund_name: formData.fund_name
+        };
       } else {
         payload.total_value = parseFloat(formData.total_value);
       }
 
-      await axios.post(`${API}/assets`, payload, { withCredentials: true });
-      toast.success('Asset added successfully');
+      // Add manual current value if provided
+      if (formData.current_total_value) {
+        payload.current_total_value = parseFloat(formData.current_total_value);
+      }
+
+      // Create or Update
+      if (editingAsset) {
+        await axios.put(`${API}/assets/${editingAsset.id}`, payload, { withCredentials: true });
+        toast.success('Asset updated successfully');
+      } else {
+        await axios.post(`${API}/assets`, payload, { withCredentials: true });
+        toast.success('Asset added successfully');
+      }
+      
       onSuccess();
     } catch (error) {
-      console.error('Failed to add asset:', error);
-      toast.error('Failed to add asset');
+      console.error('Failed to save asset:', error);
+      toast.error(error.response?.data?.detail || 'Failed to save asset');
     }
   };
 
