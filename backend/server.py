@@ -2470,7 +2470,21 @@ async def reactivate_subscription(user: User = Depends(require_auth)):
 # Scheduled Messages Routes
 @api_router.get("/scheduled-messages", response_model=List[ScheduledMessage])
 async def get_scheduled_messages(user: User = Depends(require_auth)):
-    messages = await db.scheduled_messages.find({"user_id": user.id}, {"_id": 0}).to_list(1000)
+    # Filter based on demo mode
+    demo_prefix = f"demo_{user.id}_"
+    if user.demo_mode:
+        # Show only demo messages
+        messages = await db.scheduled_messages.find({
+            "user_id": user.id,
+            "id": {"$regex": f"^{demo_prefix}"}
+        }, {"_id": 0}).to_list(1000)
+    else:
+        # Show only live messages (exclude demo)
+        messages = await db.scheduled_messages.find({
+            "user_id": user.id,
+            "id": {"$not": {"$regex": f"^{demo_prefix}"}}
+        }, {"_id": 0}).to_list(1000)
+    
     for msg in messages:
         if isinstance(msg.get('created_at'), str):
             msg['created_at'] = datetime.fromisoformat(msg['created_at'])
