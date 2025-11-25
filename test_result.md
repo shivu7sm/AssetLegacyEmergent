@@ -234,15 +234,18 @@ frontend:
 
   - task: "Loan Repayment Calculator"
     implemented: true
-    working: "NA"
+    working: false
     file: "/app/frontend/src/pages/LoanCalculator.js, /app/backend/server.py"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Implemented complete Loan Repayment Calculator feature: Backend - Added /loan-calculator endpoint with amortization calculation logic and AI-powered debt reduction tips using OpenAI GPT-5 via emergentintegrations library. Frontend - Created new LoanCalculator.js page with form for principal, interest rate, tenure, and loan type selection. Displays: monthly payment, total interest, total repayment, full amortization schedule table, and AI-generated personalized debt reduction tips. Added route in App.js and navigation link in Layout.js. Uses Emergent LLM key for GPT-5 API calls."
+      - working: false
+        agent: "testing"
+        comment: "❌ CRITICAL ISSUE - Loan Calculator API endpoint timing out due to OpenAI GPT-5 integration failure. Backend endpoint exists at POST /api/loan-calculator with correct implementation including: 1) LoanCalculatorRequest model with principal, annual_interest_rate, tenure_months, loan_type fields. 2) calculate_amortization() function with proper EMI formula implementation. 3) Response structure with monthly_payment, total_interest, total_amount, amortization_schedule, ai_tips. PROBLEM: OpenAI API calls via emergentintegrations library failing with '502 Bad Gateway' errors after multiple retries (seen in backend logs: 'ERROR:server:AI tips generation failed: Failed to generate chat completion: litellm.BadGatewayError: BadGatewayError: OpenAIException - Error code: 502'). This causes endpoint to hang for 60+ seconds before timing out. All test requests (basic loan, zero interest, short-term, long-term, auth test) failed with timeout errors. EMERGENT_LLM_KEY is present in .env file. This is a third-party API integration issue, not a code implementation problem. The amortization calculation logic itself is correct, but cannot be tested due to AI generation blocking the response."
 
   - task: "Net Worth Growth Rate Calculation Fix"
     implemented: true
