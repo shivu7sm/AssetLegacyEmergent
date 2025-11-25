@@ -105,7 +105,7 @@ export default function Layout({ children }) {
     <div className="min-h-screen" style={{
       background: dashboardTheme === 'modern' 
         ? '#0b0b11'
-        : 'linear-gradient(135deg, #1a0b2e 0%, #16001e 50%, #2d0e3e 100%)'
+        : ''
     }}>
       {/* Header */}
       <header className="backdrop-blur-xl sticky top-0 z-50" style={{borderBottom: '1px solid #2d1f3d', background: 'rgba(15, 10, 30, 0.9)'}}>

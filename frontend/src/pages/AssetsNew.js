@@ -21,13 +21,13 @@ const ASSET_GROUPS = {
   investments: {
     label: 'Stocks & Bonds',
     icon: '📈',
-    types: ['stock', 'investment'],
+    types: ['stock', 'investment', 'mutual_fund'],
     color: '#4BE0A1'
   },
   crypto: {
-    label: 'Cryptocurrency',
+    label: 'Cryptocurrency & NFT',
     icon: '₿',
-    types: ['crypto', 'portfolio'],
+    types: ['crypto', 'portfolio', 'nft'],
     color: '#5CE3D7'
   },
   realEstate: {
@@ -45,7 +45,7 @@ const ASSET_GROUPS = {
   valuables: {
     label: 'Valuables & Others',
     icon: '💎',
-    types: ['precious_metals', 'diamond', 'locker', 'insurance'],
+    types: ['precious_metals', 'diamond', 'locker', 'insurance', 'vehicle', 'art'],
     color: '#F5C26B'
   },
   liabilities: {
@@ -198,7 +198,7 @@ export default function AssetsNew() {
 
   return (
     <Layout>
-      <div className="min-h-screen" style={{background: '#0b0b11'}}>
+      <div className="min-h-screen" style={{background: ''}}>
         <div className="space-y-6" style={{padding: '2rem', maxWidth: '95%', margin: '0 auto'}}>
           {/* Header */}
           <div className="flex justify-between items-center">
