@@ -549,7 +549,7 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null 
           className="flex-1"
           style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: '#fff'}}
         >
-          Add Asset
+          {editingAsset ? 'Update Asset' : 'Add Asset'}
         </Button>
         <Button 
           type="button"
