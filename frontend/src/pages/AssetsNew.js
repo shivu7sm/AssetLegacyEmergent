@@ -69,6 +69,9 @@ export default function AssetsNew() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [detailViewMode, setDetailViewMode] = useState('sidebar'); // 'sidebar' or 'modal'
   const [activeFilter, setActiveFilter] = useState('all'); // Filter by asset group
+  const [activeAccount, setActiveAccount] = useState('own'); // 'own' or 'test_account'
+  const [testAccountData, setTestAccountData] = useState(null);
+  const [demoMode, setDemoMode] = useState(false);
 
   useEffect(() => {
     fetchAssets();
