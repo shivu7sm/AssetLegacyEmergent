@@ -87,30 +87,46 @@ export default function NomineeAccessCard({ nominee, onUpdate, onEdit, onDelete,
   };
 
   return (
-    <div className="p-5 rounded-lg space-y-4 relative" style={{background: '#16001e', border: '2px solid #2d1f3d'}}>
-      {/* Priority Badge & Controls */}
-      <div className="absolute top-3 left-3 flex flex-col gap-1">
-        <div className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm" style={{background: '#2d0e3e', color: '#a855f7'}}>
+    <div className="p-5 rounded-lg space-y-4 relative" style={{background: 'linear-gradient(135deg, #1a1229 0%, #16001e 100%)', border: '2px solid #2d1f3d', boxShadow: '0 4px 12px rgba(0,0,0,0.3)'}}>
+      {/* Priority Controls - Enhanced */}
+      <div className="absolute top-4 left-4 flex items-center gap-2">
+        <div 
+          className="w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg"
+          style={{background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)', color: '#fff', boxShadow: '0 2px 8px rgba(168, 85, 247, 0.4)'}}
+        >
           #{index + 1}
         </div>
-        <div className="flex flex-col gap-0.5">
+        <div className="flex flex-col">
           <Button
             size="sm"
-            variant="ghost"
             onClick={() => onMovePriority(nominee.id, 'up')}
             disabled={isFirst}
-            style={{height: '20px', width: '32px', padding: 0, opacity: isFirst ? 0.3 : 1}}
+            style={{
+              height: '24px', 
+              width: '36px', 
+              padding: 0,
+              background: isFirst ? 'rgba(255,255,255,0.05)' : 'rgba(168, 85, 247, 0.15)',
+              border: '1px solid rgba(168, 85, 247, 0.3)',
+              color: isFirst ? '#64748b' : '#a855f7',
+              marginBottom: '2px'
+            }}
           >
-            <ChevronUp className="w-3 h-3" />
+            <ChevronUp className="w-4 h-4" />
           </Button>
           <Button
             size="sm"
-            variant="ghost"
             onClick={() => onMovePriority(nominee.id, 'down')}
             disabled={isLast}
-            style={{height: '20px', width: '32px', padding: 0, opacity: isLast ? 0.3 : 1}}
+            style={{
+              height: '24px', 
+              width: '36px', 
+              padding: 0,
+              background: isLast ? 'rgba(255,255,255,0.05)' : 'rgba(168, 85, 247, 0.15)',
+              border: '1px solid rgba(168, 85, 247, 0.3)',
+              color: isLast ? '#64748b' : '#a855f7'
+            }}
           >
-            <ChevronDown className="w-3 h-3" />
+            <ChevronDown className="w-4 h-4" />
           </Button>
         </div>
       </div>
