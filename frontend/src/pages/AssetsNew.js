@@ -488,7 +488,6 @@ export default function AssetsNew() {
                             const currentValue = calculateAssetValue(asset, true) || purchaseValue;
                             const gain = currentValue - purchaseValue;
                             const gainPercent = purchaseValue ? ((gain / purchaseValue) * 100).toFixed(2) : 0;
-                            const isEditing = editingAssetId === asset.id;
                             
                             return (
                               <tr 
