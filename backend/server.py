@@ -3185,6 +3185,126 @@ async def get_subscription_analytics(admin: User = Depends(require_admin)):
         logger.error(f"Failed to get subscription analytics: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to fetch subscription analytics")
 
+# =======================
+# Loan Repayment Calculator
+# =======================
+
+class LoanCalculatorRequest(BaseModel):
+    principal: float
+    annual_interest_rate: float  # e.g., 8.5 for 8.5%
+    tenure_months: int
+    loan_type: str = "personal"  # personal, home, auto, credit_card
+    
+class AmortizationEntry(BaseModel):
+    month: int
+    payment: float
+    principal_payment: float
+    interest_payment: float
+    remaining_balance: float
+    
+class LoanCalculatorResponse(BaseModel):
+    monthly_payment: float
+    total_interest: float
+    total_amount: float
+    amortization_schedule: List[AmortizationEntry]
+    ai_tips: Optional[str] = None
+
+def calculate_amortization(principal: float, monthly_rate: float, tenure_months: int) -> List[Dict[str, float]]:
+    """Calculate loan amortization schedule"""
+    schedule = []
+    remaining_balance = principal
+    
+    # Calculate monthly payment using loan formula
+    if monthly_rate == 0:
+        monthly_payment = principal / tenure_months
+    else:
+        monthly_payment = principal * (monthly_rate * (1 + monthly_rate) ** tenure_months) / ((1 + monthly_rate) ** tenure_months - 1)
+    
+    for month in range(1, tenure_months + 1):
+        interest_payment = remaining_balance * monthly_rate
+        principal_payment = monthly_payment - interest_payment
+        remaining_balance = remaining_balance - principal_payment
+        
+        # Handle rounding issues for last payment
+        if month == tenure_months:
+            remaining_balance = 0
+            
+        schedule.append({
+            "month": month,
+            "payment": round(monthly_payment, 2),
+            "principal_payment": round(principal_payment, 2),
+            "interest_payment": round(interest_payment, 2),
+            "remaining_balance": round(max(0, remaining_balance), 2)
+        })
+    
+    return schedule
+
+@api_router.post("/loan-calculator")
+async def calculate_loan_repayment(request: LoanCalculatorRequest, user: User = Depends(require_auth)):
+    """Calculate loan repayment schedule with AI-powered debt reduction tips"""
+    try:
+        from emergentintegrations.llm.chat import LlmChat, UserMessage
+        
+        # Calculate monthly rate
+        monthly_rate = (request.annual_interest_rate / 100) / 12
+        
+        # Generate amortization schedule
+        schedule = calculate_amortization(request.principal, monthly_rate, request.tenure_months)
+        
+        # Calculate totals
+        total_payment = sum([entry["payment"] for entry in schedule])
+        total_interest = total_payment - request.principal
+        monthly_payment = schedule[0]["payment"] if schedule else 0
+        
+        # Generate AI tips using OpenAI GPT-5
+        ai_tips = ""
+        try:
+            api_key = os.getenv("EMERGENT_LLM_KEY")
+            if api_key:
+                chat = LlmChat(
+                    api_key=api_key,
+                    session_id=f"loan_tips_{user.id}_{datetime.now().timestamp()}",
+                    system_message="You are a financial advisor specializing in debt reduction and loan management. Provide practical, actionable advice."
+                ).with_model("openai", "gpt-5")
+                
+                user_message = UserMessage(
+                    text=f"""Analyze this loan and provide 3-5 specific, actionable tips for debt reduction:
+                    
+Loan Type: {request.loan_type.title()}
+Principal Amount: ${request.principal:,.2f}
+Interest Rate: {request.annual_interest_rate}%
+Tenure: {request.tenure_months} months
+Monthly Payment: ${monthly_payment:,.2f}
+Total Interest: ${total_interest:,.2f}
+
+Focus on practical strategies like:
+- Extra payment opportunities
+- Refinancing considerations
+- Payment timing optimization
+- Debt avalanche vs snowball methods
+- Budget adjustments
+
+Keep tips concise and numbered. Avoid generic advice."""
+                )
+                
+                response = await chat.send_message(user_message)
+                ai_tips = response
+        except Exception as ai_error:
+            logger.error(f"AI tips generation failed: {str(ai_error)}")
+            ai_tips = "AI tips temporarily unavailable. Please try again later."
+        
+        return {
+            "monthly_payment": round(monthly_payment, 2),
+            "total_interest": round(total_interest, 2),
+            "total_amount": round(total_payment, 2),
+            "amortization_schedule": schedule,
+            "ai_tips": ai_tips
+        }
+        
+    except Exception as e:
+        logger.error(f"Loan calculator error: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 app.include_router(api_router)
 
 app.add_middleware(
