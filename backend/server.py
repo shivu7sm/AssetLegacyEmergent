@@ -1085,9 +1085,30 @@ async def get_dashboard_summary(user: User = Depends(require_auth), target_curre
     Get dashboard summary with all values converted to target currency.
     This ensures consistent calculation across the app.
     Includes both individual assets and portfolio holdings.
+    FILTERS BY DEMO MODE.
     """
-    assets = await db.assets.find({"user_id": user.id}).to_list(1000)
-    portfolios = await db.portfolio_assets.find({"user_id": user.id}).to_list(1000)
+    # Filter based on demo mode
+    demo_prefix = f"demo_{user.id}_"
+    if user.demo_mode:
+        # Show only demo data
+        assets = await db.assets.find({
+            "user_id": user.id,
+            "id": {"$regex": f"^{demo_prefix}"}
+        }).to_list(1000)
+        portfolios = await db.portfolio_assets.find({
+            "user_id": user.id,
+            "id": {"$regex": f"^{demo_prefix}"}
+        }).to_list(1000)
+    else:
+        # Show only live data (exclude demo data)
+        assets = await db.assets.find({
+            "user_id": user.id,
+            "id": {"$not": {"$regex": f"^{demo_prefix}"}}
+        }).to_list(1000)
+        portfolios = await db.portfolio_assets.find({
+            "user_id": user.id,
+            "id": {"$not": {"$regex": f"^{demo_prefix}"}}
+        }).to_list(1000)
     
     # Define liability types
     liability_types = {'loan', 'credit_card'}
