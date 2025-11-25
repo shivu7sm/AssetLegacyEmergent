@@ -229,10 +229,44 @@ export default function AssetsNew() {
         <div className="space-y-6" style={{padding: '2rem', maxWidth: '95%', margin: '0 auto'}}>
           {/* Header */}
           <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-4xl font-bold mb-2" style={{color: '#FFFFFF'}}>Assets & Portfolio</h1>
-              <p className="text-lg" style={{color: 'rgba(255,255,255,0.65)'}}>Manage your wealth in one place</p>
+            <div className="flex items-center gap-4">
+              <div>
+                <h1 className="text-4xl font-bold mb-2" style={{color: '#FFFFFF'}}>Assets & Portfolio</h1>
+                <p className="text-lg" style={{color: 'rgba(255,255,255,0.65)'}}>Manage your wealth in one place</p>
+              </div>
+              
+              {/* Account Switcher - Demo Mode Only */}
+              {demoMode && testAccountData && (
+                <div className="ml-6">
+                  <Label className="text-xs mb-2 block" style={{color: '#94a3b8'}}>VIEWING ACCOUNT</Label>
+                  <Select value={activeAccount} onValueChange={setActiveAccount}>
+                    <SelectTrigger className="bg-slate-800 border-slate-700 text-white" style={{width: '280px'}}>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-slate-800 border-slate-700">
+                      <SelectItem value="own" className="text-white">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 rounded-full" style={{background: '#a855f7'}}></div>
+                          <span>My Demo Portfolio</span>
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="test_account" className="text-white">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 rounded-full" style={{background: '#10b981'}}></div>
+                          <span>🔍 {testAccountData.account_name} (Read-Only)</span>
+                        </div>
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                  {activeAccount === 'test_account' && (
+                    <p className="text-xs mt-1" style={{color: '#10b981'}}>
+                      ✓ Viewing as nominee - Read-only access
+                    </p>
+                  )}
+                </div>
+              )}
             </div>
+            
             <div className="flex gap-3 items-center">
               {/* View Mode Toggle */}
               <div className="flex gap-2 p-1 rounded-lg" style={{background: 'rgba(255,255,255,0.05)'}}>
