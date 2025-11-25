@@ -600,16 +600,145 @@ export default function Settings() {
               <p style={{color: '#94a3b8'}}>Your account information</p>
             </div>
             
+      case 'profile':
+        return (
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-2xl font-bold mb-2" style={{color: '#f8fafc'}}>Profile</h2>
+              <p style={{color: '#94a3b8'}}>Manage your account information and personal details</p>
+            </div>
+            
+            {/* Profile Card */}
             <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
-              <CardContent className="py-6">
+              <CardHeader>
+                <CardTitle style={{color: '#f8fafc'}}>Personal Information</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
                 <div className="flex items-center gap-6">
                   {user?.picture && (
-                    <img src={user.picture} alt={user.name} className="w-20 h-20 rounded-full" />
+                    <img src={user.picture} alt={user.name} className="w-24 h-24 rounded-full border-2" style={{borderColor: '#a855f7'}} />
                   )}
-                  <div>
+                  <div className="flex-1">
                     <p className="text-2xl font-semibold mb-1" style={{color: '#f8fafc'}}>{user?.name}</p>
                     <p className="text-lg" style={{color: '#94a3b8'}}>{user?.email}</p>
-                    <p className="text-sm mt-2" style={{color: '#64748b'}}>Member since {new Date(user?.created_at).toLocaleDateString()}</p>
+                    <div className="flex gap-4 mt-3">
+                      <div className="px-3 py-1 rounded-full text-xs font-semibold" style={{background: 'rgba(168, 85, 247, 0.2)', color: '#a855f7'}}>
+                        {user?.subscription_plan || 'Free'} Plan
+                      </div>
+                      <div className="px-3 py-1 rounded-full text-xs" style={{background: 'rgba(148, 163, 184, 0.2)', color: '#cbd5e1'}}>
+                        Member since {new Date(user?.created_at).toLocaleDateString()}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Additional Profile Fields */}
+                <div className="grid grid-cols-2 gap-4 pt-6" style={{borderTop: '1px solid #2d1f3d'}}>
+                  <div>
+                    <Label className="text-slate-300">Phone Number</Label>
+                    <Input
+                      type="tel"
+                      defaultValue={user?.phone || ''}
+                      placeholder="+1 234 567 8900"
+                      className="bg-slate-800 border-slate-700 text-white mt-2"
+                    />
+                  </div>
+                  <div>
+                    <Label className="text-slate-300">Date of Birth</Label>
+                    <Input
+                      type="date"
+                      defaultValue={user?.date_of_birth || ''}
+                      className="bg-slate-800 border-slate-700 text-white mt-2"
+                    />
+                  </div>
+                  <div>
+                    <Label className="text-slate-300">Country/Region</Label>
+                    <Select defaultValue={user?.country || 'US'}>
+                      <SelectTrigger className="bg-slate-800 border-slate-700 text-white mt-2">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-slate-800 border-slate-700">
+                        <SelectItem value="US" className="text-white">🇺🇸 United States</SelectItem>
+                        <SelectItem value="UK" className="text-white">🇬🇧 United Kingdom</SelectItem>
+                        <SelectItem value="IN" className="text-white">🇮🇳 India</SelectItem>
+                        <SelectItem value="SG" className="text-white">🇸🇬 Singapore</SelectItem>
+                        <SelectItem value="AU" className="text-white">🇦🇺 Australia</SelectItem>
+                        <SelectItem value="CA" className="text-white">🇨🇦 Canada</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label className="text-slate-300">Language</Label>
+                    <Select defaultValue="en">
+                      <SelectTrigger className="bg-slate-800 border-slate-700 text-white mt-2">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-slate-800 border-slate-700">
+                        <SelectItem value="en" className="text-white">English</SelectItem>
+                        <SelectItem value="es" className="text-white">Español</SelectItem>
+                        <SelectItem value="fr" className="text-white">Français</SelectItem>
+                        <SelectItem value="hi" className="text-white">हिंदी</SelectItem>
+                        <SelectItem value="zh" className="text-white">中文</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                {/* Emergency Contact */}
+                <div className="pt-6" style={{borderTop: '1px solid #2d1f3d'}}>
+                  <h3 className="text-lg font-semibold mb-4" style={{color: '#f8fafc'}}>Emergency Contact</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label className="text-slate-300">Contact Name</Label>
+                      <Input
+                        placeholder="Emergency contact person"
+                        className="bg-slate-800 border-slate-700 text-white mt-2"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-slate-300">Contact Phone</Label>
+                      <Input
+                        type="tel"
+                        placeholder="+1 234 567 8900"
+                        className="bg-slate-800 border-slate-700 text-white mt-2"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <Button 
+                  onClick={() => toast.success('Profile updated (full implementation pending)')}
+                  style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: '#fff'}}
+                >
+                  Save Changes
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Account Stats */}
+            <Card style={{background: 'linear-gradient(135deg, #1a0b2e 0%, #2d0e3e 100%)', borderColor: '#a855f7', borderWidth: '1px'}}>
+              <CardHeader>
+                <CardTitle style={{color: '#f8fafc'}}>Account Activity</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="text-center p-4 rounded-lg" style={{background: 'rgba(168, 85, 247, 0.1)'}}>
+                    <p className="text-3xl font-bold mb-1" style={{color: '#a855f7'}}>
+                      {user?.last_activity ? Math.floor((Date.now() - new Date(user.last_activity)) / (1000 * 60 * 60 * 24)) : 0}
+                    </p>
+                    <p className="text-xs" style={{color: '#94a3b8'}}>Days Since Last Active</p>
+                  </div>
+                  <div className="text-center p-4 rounded-lg" style={{background: 'rgba(16, 185, 129, 0.1)'}}>
+                    <p className="text-3xl font-bold mb-1" style={{color: '#10b981'}}>
+                      {Math.floor((Date.now() - new Date(user?.created_at)) / (1000 * 60 * 60 * 24))}
+                    </p>
+                    <p className="text-xs" style={{color: '#94a3b8'}}>Days as Member</p>
+                  </div>
+                  <div className="text-center p-4 rounded-lg" style={{background: 'rgba(245, 158, 11, 0.1)'}}>
+                    <p className="text-3xl font-bold mb-1" style={{color: '#f59e0b'}}>
+                      {user?.role === 'admin' ? 'Admin' : 'User'}
+                    </p>
+                    <p className="text-xs" style={{color: '#94a3b8'}}>Account Type</p>
                   </div>
                 </div>
               </CardContent>
