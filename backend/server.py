@@ -769,6 +769,187 @@ async def create_or_update_nominee_legacy(nominee_data: NomineeCreate, user: Use
         result['created_at'] = datetime.fromisoformat(result['created_at'])
     return Nominee(**result)
 
+        result['created_at'] = datetime.fromisoformat(result['created_at'])
+    return Nominee(**result)
+
+# Nominee Access Management
+@api_router.post("/nominees/{nominee_id}/generate-access")
+async def generate_nominee_access(nominee_id: str, user: User = Depends(require_auth)):
+    """Generate secure access token for a nominee"""
+    import secrets
+    
+    nominee = await db.nominees.find_one({"id": nominee_id, "user_id": user.id})
+    if not nominee:
+        raise HTTPException(status_code=404, detail="Nominee not found")
+    
+    # Generate a secure 32-character token
+    access_token = f"nom_{secrets.token_urlsafe(32)}"
+    
+    await db.nominees.update_one(
+        {"id": nominee_id},
+        {"$set": {
+            "access_token": access_token,
+            "access_token_created_at": datetime.now(timezone.utc).isoformat(),
+            "access_granted": True
+        }}
+    )
+    
+    # Create access link
+    frontend_url = os.getenv("FRONTEND_URL", "https://yourdomain.com")
+    access_link = f"{frontend_url}/nominee-access?token={access_token}"
+    
+    return {
+        "success": True,
+        "access_token": access_token,
+        "access_link": access_link,
+        "nominee_email": nominee["email"]
+    }
+
+@api_router.post("/nominees/{nominee_id}/revoke-access")
+async def revoke_nominee_access(nominee_id: str, user: User = Depends(require_auth)):
+    """Revoke access for a nominee"""
+    result = await db.nominees.update_one(
+        {"id": nominee_id, "user_id": user.id},
+        {"$set": {
+            "access_granted": False,
+            "access_token": None
+        }}
+    )
+    
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Nominee not found")
+    
+    return {"success": True, "message": "Access revoked successfully"}
+
+@api_router.put("/nominees/{nominee_id}/access-type")
+async def update_access_type(nominee_id: str, access_type: str, user: User = Depends(require_auth)):
+    """Update when nominee can access: 'immediate' or 'after_dms'"""
+    if access_type not in ['immediate', 'after_dms']:
+        raise HTTPException(status_code=400, detail="Invalid access type")
+    
+    result = await db.nominees.update_one(
+        {"id": nominee_id, "user_id": user.id},
+        {"$set": {"access_type": access_type}}
+    )
+    
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Nominee not found")
+    
+    return {"success": True, "access_type": access_type}
+
+# Nominee Authentication & Dashboard
+@api_router.post("/nominee/auth")
+async def nominee_login(access_token: str):
+    """Authenticate nominee using their access token"""
+    nominee = await db.nominees.find_one({"access_token": access_token})
+    
+    if not nominee:
+        raise HTTPException(status_code=401, detail="Invalid access token")
+    
+    if not nominee.get("access_granted"):
+        raise HTTPException(status_code=403, detail="Access has been revoked")
+    
+    # Check if access is immediate or requires DMS trigger
+    if nominee.get("access_type") == "after_dms":
+        # Check if DMS has been triggered
+        user = await db.users.find_one({"id": nominee["user_id"]})
+        if user:
+            last_activity = user.get("last_activity")
+            if isinstance(last_activity, str):
+                last_activity = datetime.fromisoformat(last_activity)
+            
+            dms = await db.dead_man_switches.find_one({"user_id": user["id"]})
+            if dms and dms.get("is_active"):
+                days_inactive = (datetime.now(timezone.utc) - last_activity).days
+                if days_inactive < dms.get("inactivity_days", 90):
+                    raise HTTPException(status_code=403, detail="Access is only available after Dead Man's Switch triggers")
+    
+    # Update last accessed time
+    await db.nominees.update_one(
+        {"access_token": access_token},
+        {"$set": {"last_accessed_at": datetime.now(timezone.utc).isoformat()}}
+    )
+    
+    # Return nominee info and owner info
+    owner = await db.users.find_one({"id": nominee["user_id"]})
+    
+    return {
+        "nominee": {
+            "id": nominee["id"],
+            "name": nominee["name"],
+            "relationship": nominee.get("relationship"),
+            "access_type": nominee.get("access_type", "after_dms")
+        },
+        "owner": {
+            "name": owner.get("name") if owner else "Unknown",
+            "email": owner.get("email") if owner else "Unknown"
+        },
+        "access_token": access_token
+    }
+
+@api_router.get("/nominee/dashboard")
+async def get_nominee_dashboard(access_token: str):
+    """Get read-only dashboard for nominee"""
+    nominee = await db.nominees.find_one({"access_token": access_token})
+    
+    if not nominee or not nominee.get("access_granted"):
+        raise HTTPException(status_code=401, detail="Invalid or revoked access")
+    
+    user_id = nominee["user_id"]
+    
+    # Get all assets (excluding demo data)
+    demo_prefix = f"demo_{user_id}_"
+    assets = await db.assets.find({
+        "user_id": user_id,
+        "id": {"$not": {"$regex": f"^{demo_prefix}"}}
+    }).to_list(1000)
+    
+    # Get portfolios
+    portfolios = await db.portfolio_assets.find({
+        "user_id": user_id,
+        "id": {"$not": {"$regex": f"^{demo_prefix}"}}
+    }).to_list(1000)
+    
+    # Get documents
+    documents = await db.documents.find({
+        "user_id": user_id,
+        "id": {"$not": {"$regex": f"^{demo_prefix}"}}
+    }, {"_id": 0, "file_data": 0}).to_list(1000)
+    
+    # Get will
+    will = await db.digital_wills.find_one({
+        "user_id": user_id,
+        "demo_mode": {"$ne": True}
+    }, {"_id": 0})
+    
+    # Get nominees (they should see who else is a nominee)
+    all_nominees = await db.nominees.find({"user_id": user_id}, {"_id": 0, "access_token": 0}).to_list(100)
+    
+    # Calculate summary
+    total_assets = len(assets) + len(portfolios)
+    total_value = sum([a.get("current_value", a.get("total_value", 0)) for a in assets])
+    total_value += sum([p.get("total_value", 0) for p in portfolios])
+    
+    return {
+        "summary": {
+            "total_assets": total_assets,
+            "total_value": total_value,
+            "asset_count": len(assets),
+            "portfolio_count": len(portfolios),
+            "document_count": len(documents)
+        },
+        "assets": assets,
+        "portfolios": portfolios,
+        "documents": documents,
+        "will": will,
+        "nominees": all_nominees,
+        "nominee_info": {
+            "name": nominee.get("name"),
+            "relationship": nominee.get("relationship"),
+            "priority": nominee.get("priority")
+        }
+    }
+
 # Dead Man Switch Routes
 @api_router.get("/dms")
 async def get_dms(user: User = Depends(require_auth)):
