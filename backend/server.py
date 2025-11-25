@@ -1586,6 +1586,25 @@ async def seed_demo_data(user_id: str, force: bool = False):
             },
             "created_at": datetime.now(timezone.utc).isoformat()
         },
+        {
+            "id": f"{demo_prefix}crypto3",
+            "user_id": user_id,
+            "name": "Solana Holdings - EUR Account",
+            "type": "crypto",
+            "symbol": "SOL",
+            "purchase_currency": "EUR",
+            "purchase_date": "2023-09-10",
+            "quantity": 100,
+            "unit_price": 20,
+            "current_unit_price": 110,
+            "total_value": 2000,
+            "current_value": 11000,
+            "details": {
+                "wallet_address": "SoL9x1...AbC123",
+                "crypto_type": "SOL"
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
         # Stocks
         {
             "id": f"{demo_prefix}stock1",
