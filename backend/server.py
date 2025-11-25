@@ -949,18 +949,18 @@ async def get_nominee_dashboard(access_token: str):
     }
     await db.audit_logs.insert_one(audit_log)
     
-    # Get all assets (excluding demo data)
+    # Get all assets (excluding demo data) - EXCLUDE _id
     demo_prefix = f"demo_{user_id}_"
     assets = await db.assets.find({
         "user_id": user_id,
         "id": {"$not": {"$regex": f"^{demo_prefix}"}}
-    }).to_list(1000)
+    }, {"_id": 0}).to_list(1000)
     
-    # Get portfolios
+    # Get portfolios - EXCLUDE _id
     portfolios = await db.portfolio_assets.find({
         "user_id": user_id,
         "id": {"$not": {"$regex": f"^{demo_prefix}"}}
-    }).to_list(1000)
+    }, {"_id": 0}).to_list(1000)
     
     # Get documents
     documents = await db.documents.find({
