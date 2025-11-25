@@ -349,30 +349,6 @@ export default function AssetsNew() {
             </div>
             
             <div className="flex gap-3 items-center">
-              {/* View Mode Toggle */}
-              <div className="flex gap-2 p-1 rounded-lg" style={{background: 'rgba(255,255,255,0.05)'}}>
-                <button
-                  onClick={() => setDetailViewMode('sidebar')}
-                  className="px-3 py-1.5 rounded text-xs font-semibold transition-all"
-                  style={{
-                    background: detailViewMode === 'sidebar' ? '#E8C27C' : 'transparent',
-                    color: detailViewMode === 'sidebar' ? '#0B0B11' : 'rgba(255,255,255,0.6)'
-                  }}
-                >
-                  Side Panel
-                </button>
-                <button
-                  onClick={() => setDetailViewMode('modal')}
-                  className="px-3 py-1.5 rounded text-xs font-semibold transition-all"
-                  style={{
-                    background: detailViewMode === 'modal' ? '#E8C27C' : 'transparent',
-                    color: detailViewMode === 'modal' ? '#0B0B11' : 'rgba(255,255,255,0.6)'
-                  }}
-                >
-                  Modal
-                </button>
-              </div>
-              
               <Button 
                 onClick={() => setDialogOpen(true)}
                 className="text-white"
