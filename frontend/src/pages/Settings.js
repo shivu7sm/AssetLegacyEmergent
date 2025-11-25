@@ -1299,37 +1299,70 @@ export default function Settings() {
       case 'nominees':
         return (
           <div className="space-y-6">
-            <div>
-              <h2 className="text-2xl font-bold mb-2 flex items-center gap-2" style={{color: '#f8fafc'}}>
-                <Users className="w-7 h-7" />
-                Nominees
-              </h2>
-              <p style={{color: '#94a3b8'}}>Designate trusted individuals to inherit your assets and receive notifications</p>
-            </div>
-
-            {/* Add/Edit Nominee Form */}
-            <form onSubmit={handleNomineeSubmit}>
-              <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
-                <CardHeader>
-                  <CardTitle style={{color: '#f8fafc'}}>
-                    {editingNomineeId ? 'Edit Nominee' : 'Add New Nominee'}
-                  </CardTitle>
-                  <CardDescription style={{color: '#94a3b8'}}>
-                    Nominees will be contacted in priority order if you're inactive or in case of emergency
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label className="text-slate-300">Name *</Label>
-                      <Input
-                        value={nomineeForm.name}
-                        onChange={(e) => setNomineeForm({ ...nomineeForm, name: e.target.value })}
-                        placeholder="John Doe"
-                        required
-                        className="bg-slate-800 border-slate-700 text-white"
-                      />
+            <div className="flex justify-between items-center">
+              <div>
+                <h2 className="text-2xl font-bold mb-2 flex items-center gap-2" style={{color: '#f8fafc'}}>
+                  <Users className="w-7 h-7" />
+                  Nominees
+                </h2>
+                <p style={{color: '#94a3b8'}}>Designate trusted individuals to inherit your assets and receive notifications</p>
+              </div>
+              
+              {/* Add Nominee Button */}
+              <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+                <Button 
+                  onClick={() => {
+                    setEditingNomineeId(null);
+                    setNomineeForm({ name: '', email: '', phone: '', relationship: '', priority: nominees.length + 1 });
+                    setDialogOpen(true);
+                  }}
+                  style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: '#fff'}}
+                >
+                  <Users className="w-4 h-4 mr-2" />
+                  Add Nominee
+                </Button>
+                
+                {/* Add/Edit Nominee Modal */}
+                <DialogContent className="max-w-lg" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                  <DialogHeader>
+                    <DialogTitle style={{color: '#f8fafc', fontSize: '1.5rem'}}>
+                      {editingNomineeId ? 'Edit Nominee' : 'Add New Nominee'}
+                    </DialogTitle>
+                  </DialogHeader>
+                  
+                  <form onSubmit={handleNomineeSubmit} className="space-y-4 pt-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label className="text-slate-300">Name *</Label>
+                        <Input
+                          value={nomineeForm.name}
+                          onChange={(e) => setNomineeForm({ ...nomineeForm, name: e.target.value })}
+                          placeholder="John Doe"
+                          required
+                          className="bg-slate-800 border-slate-700 text-white"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-slate-300">Relationship</Label>
+                        <Select 
+                          value={nomineeForm.relationship} 
+                          onValueChange={(value) => setNomineeForm({ ...nomineeForm, relationship: value })}
+                        >
+                          <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
+                            <SelectValue placeholder="Select" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-slate-800 border-slate-700">
+                            <SelectItem value="spouse" className="text-white">Spouse</SelectItem>
+                            <SelectItem value="parent" className="text-white">Parent</SelectItem>
+                            <SelectItem value="child" className="text-white">Child</SelectItem>
+                            <SelectItem value="sibling" className="text-white">Sibling</SelectItem>
+                            <SelectItem value="friend" className="text-white">Friend</SelectItem>
+                            <SelectItem value="lawyer" className="text-white">Lawyer</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
+                    
                     <div>
                       <Label className="text-slate-300">Email *</Label>
                       <Input
@@ -1341,6 +1374,7 @@ export default function Settings() {
                         className="bg-slate-800 border-slate-700 text-white"
                       />
                     </div>
+                    
                     <div>
                       <Label className="text-slate-300">Phone</Label>
                       <Input
@@ -1351,49 +1385,24 @@ export default function Settings() {
                         className="bg-slate-800 border-slate-700 text-white"
                       />
                     </div>
-                    <div>
-                      <Label className="text-slate-300">Relationship</Label>
-                      <Select 
-                        value={nomineeForm.relationship} 
-                        onValueChange={(value) => setNomineeForm({ ...nomineeForm, relationship: value })}
-                      >
-                        <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
-                          <SelectValue placeholder="Select relationship" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-slate-800 border-slate-700">
-                          <SelectItem value="spouse" className="text-white">Spouse</SelectItem>
-                          <SelectItem value="parent" className="text-white">Parent</SelectItem>
-                          <SelectItem value="child" className="text-white">Child</SelectItem>
-                          <SelectItem value="sibling" className="text-white">Sibling</SelectItem>
-                          <SelectItem value="friend" className="text-white">Friend</SelectItem>
-                          <SelectItem value="lawyer" className="text-white">Lawyer</SelectItem>
-                          <SelectItem value="other" className="text-white">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                  
-                  <div className="flex gap-3">
-                    <Button type="submit" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: '#fff'}}>
-                      {editingNomineeId ? 'Update Nominee' : 'Add Nominee'}
-                    </Button>
-                    {editingNomineeId && (
+                    
+                    <div className="flex gap-3 pt-4">
+                      <Button type="submit" className="flex-1" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: '#fff'}}>
+                        {editingNomineeId ? 'Update Nominee' : 'Add Nominee'}
+                      </Button>
                       <Button 
                         type="button" 
                         variant="outline"
-                        onClick={() => {
-                          setEditingNomineeId(null);
-                          setNomineeForm({ name: '', email: '', phone: '', relationship: '', priority: nominees.length + 1 });
-                        }}
+                        onClick={() => setDialogOpen(false)}
                         style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
                       >
                         Cancel
                       </Button>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            </form>
+                    </div>
+                  </form>
+                </DialogContent>
+              </Dialog>
+            </div>
 
             {/* Nominees List with Access Controls */}
             {nominees.length > 0 && (
