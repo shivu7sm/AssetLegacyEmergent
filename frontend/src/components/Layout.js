@@ -104,7 +104,7 @@ export default function Layout({ children }) {
   return (
     <div className="min-h-screen" style={{
       background: dashboardTheme === 'modern' 
-        ? 'linear-gradient(180deg, #0B0B11 0%, #131622 100%)'
+        ? '#0b0b11'
         : 'linear-gradient(135deg, #1a0b2e 0%, #16001e 50%, #2d0e3e 100%)'
     }}>
       {/* Header */}
