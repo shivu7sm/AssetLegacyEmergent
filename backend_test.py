@@ -38,7 +38,7 @@ class AssetManagementAPITester:
             "timestamp": datetime.now().isoformat()
         })
 
-    def run_test(self, name, method, endpoint, expected_status, data=None, headers=None):
+    def run_test(self, name, method, endpoint, expected_status, data=None, headers=None, timeout=10):
         """Run a single API test"""
         url = f"{self.api_url}/{endpoint}"
         test_headers = {'Content-Type': 'application/json'}
@@ -51,13 +51,13 @@ class AssetManagementAPITester:
 
         try:
             if method == 'GET':
-                response = requests.get(url, headers=test_headers, timeout=10)
+                response = requests.get(url, headers=test_headers, timeout=timeout)
             elif method == 'POST':
-                response = requests.post(url, json=data, headers=test_headers, timeout=10)
+                response = requests.post(url, json=data, headers=test_headers, timeout=timeout)
             elif method == 'PUT':
-                response = requests.put(url, json=data, headers=test_headers, timeout=10)
+                response = requests.put(url, json=data, headers=test_headers, timeout=timeout)
             elif method == 'DELETE':
-                response = requests.delete(url, headers=test_headers, timeout=10)
+                response = requests.delete(url, headers=test_headers, timeout=timeout)
 
             success = response.status_code == expected_status
             details = f"Status: {response.status_code}"
