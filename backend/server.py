@@ -856,7 +856,21 @@ async def create_or_update_will(will_data: DigitalWillCreate, user: User = Depen
 # Document Routes
 @api_router.get("/documents")
 async def get_documents(user: User = Depends(require_auth)):
-    documents = await db.documents.find({"user_id": user.id}, {"_id": 0, "file_data": 0}).to_list(1000)
+    # Filter based on demo mode
+    demo_prefix = f"demo_{user.id}_"
+    if user.demo_mode:
+        # Show only demo documents
+        documents = await db.documents.find({
+            "user_id": user.id,
+            "id": {"$regex": f"^{demo_prefix}"}
+        }, {"_id": 0, "file_data": 0}).to_list(1000)
+    else:
+        # Show only live documents (exclude demo)
+        documents = await db.documents.find({
+            "user_id": user.id,
+            "id": {"$not": {"$regex": f"^{demo_prefix}"}}
+        }, {"_id": 0, "file_data": 0}).to_list(1000)
+    
     for doc in documents:
         if isinstance(doc.get('created_at'), str):
             doc['created_at'] = datetime.fromisoformat(doc['created_at'])
