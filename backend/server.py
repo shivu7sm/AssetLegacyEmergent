@@ -1693,6 +1693,33 @@ async def reseed_demo_data(user: User = Depends(require_auth)):
     
     return {"success": True, "message": "Demo data reseeded successfully"}
 
+@api_router.get("/demo/test-account-assets")
+async def get_test_account_assets(user: User = Depends(require_auth)):
+    """Get assets from universal test account - only accessible in demo mode"""
+    if not user.demo_mode:
+        raise HTTPException(status_code=403, detail="Test account only accessible in demo mode")
+    
+    # Fetch test account assets (non-demo prefixed, belonging to test_account_universal)
+    test_account_id = "test_account_universal"
+    
+    # Get test account assets
+    assets = await db.assets.find({
+        "user_id": test_account_id
+    }).to_list(1000)
+    
+    portfolios = await db.portfolio_assets.find({
+        "user_id": test_account_id
+    }).to_list(1000)
+    
+    return {
+        "account_id": test_account_id,
+        "account_name": "AssetVault Demo Portfolio",
+        "account_owner": "Demo Account Holder",
+        "assets": assets,
+        "portfolios": portfolios,
+        "access_type": "readonly_demo"
+    }
+
 async def seed_demo_data(user_id: str, force: bool = False):
     """Create comprehensive demo data for user with realistic values"""
     demo_prefix = f"demo_{user_id}_"
