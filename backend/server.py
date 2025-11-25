@@ -3243,8 +3243,6 @@ def calculate_amortization(principal: float, monthly_rate: float, tenure_months:
 async def calculate_loan_repayment(request: LoanCalculatorRequest, user: User = Depends(require_auth)):
     """Calculate loan repayment schedule with AI-powered debt reduction tips"""
     try:
-        from emergentintegrations.llm.chat import LlmChat, UserMessage
-        
         # Calculate monthly rate
         monthly_rate = (request.annual_interest_rate / 100) / 12
         
@@ -3256,20 +3254,24 @@ async def calculate_loan_repayment(request: LoanCalculatorRequest, user: User = 
         total_interest = total_payment - request.principal
         monthly_payment = schedule[0]["payment"] if schedule else 0
         
-        # Generate AI tips using OpenAI GPT-5
+        # Generate AI tips using OpenAI GPT-5 (with timeout and fallback)
         ai_tips = ""
         try:
             api_key = os.getenv("EMERGENT_LLM_KEY")
             if api_key:
-                chat = LlmChat(
-                    api_key=api_key,
-                    session_id=f"loan_tips_{user.id}_{datetime.now().timestamp()}",
-                    system_message="You are a financial advisor specializing in debt reduction and loan management. Provide practical, actionable advice."
-                ).with_model("openai", "gpt-5")
+                from emergentintegrations.llm.chat import LlmChat, UserMessage
                 
-                user_message = UserMessage(
-                    text=f"""Analyze this loan and provide 3-5 specific, actionable tips for debt reduction:
+                # Use asyncio.wait_for to add timeout
+                async def generate_tips():
+                    chat = LlmChat(
+                        api_key=api_key,
+                        session_id=f"loan_tips_{user.id}_{datetime.now().timestamp()}",
+                        system_message="You are a financial advisor specializing in debt reduction and loan management. Provide practical, actionable advice."
+                    ).with_model("openai", "gpt-5")
                     
+                    user_message = UserMessage(
+                        text=f"""Analyze this loan and provide 3-5 specific, actionable tips for debt reduction:
+                        
 Loan Type: {request.loan_type.title()}
 Principal Amount: ${request.principal:,.2f}
 Interest Rate: {request.annual_interest_rate}%
@@ -3285,13 +3287,20 @@ Focus on practical strategies like:
 - Budget adjustments
 
 Keep tips concise and numbered. Avoid generic advice."""
-                )
+                    )
+                    
+                    return await chat.send_message(user_message)
                 
-                response = await chat.send_message(user_message)
-                ai_tips = response
+                # Add 15 second timeout for AI generation
+                ai_tips = await asyncio.wait_for(generate_tips(), timeout=15.0)
+            else:
+                ai_tips = "AI tips feature requires API key configuration."
+        except asyncio.TimeoutError:
+            logger.warning(f"AI tips generation timed out for user {user.id}")
+            ai_tips = "AI tips generation timed out. Please try again later or continue with the calculation results below."
         except Exception as ai_error:
             logger.error(f"AI tips generation failed: {str(ai_error)}")
-            ai_tips = "AI tips temporarily unavailable. Please try again later."
+            ai_tips = "AI tips temporarily unavailable. The calculation results below are still accurate."
         
         return {
             "monthly_payment": round(monthly_payment, 2),
