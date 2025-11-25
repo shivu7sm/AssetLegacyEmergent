@@ -28,6 +28,8 @@ export default function Layout({ children }) {
   const { selectedCurrency, setSelectedCurrency } = useApp();
   const { user } = useAuth();
   const [isAdmin, setIsAdmin] = useState(false);
+  const [demoMode, setDemoMode] = useState(false);
+  const [togglingDemo, setTogglingDemo] = useState(false);
 
   useEffect(() => {
     // Check if user is admin
