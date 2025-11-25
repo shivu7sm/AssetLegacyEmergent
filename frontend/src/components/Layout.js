@@ -97,7 +97,8 @@ export default function Layout({ children }) {
     { path: '/assets', label: 'Assets', icon: Wallet, testId: 'nav-assets' },
     { path: '/insights', label: 'AI Insights', icon: Sparkles, testId: 'nav-insights' },
     { path: '/schedule-messages', label: 'Messages', icon: Calendar, testId: 'nav-messages' },
-    { path: '/subscription', label: 'Plans', icon: Crown, testId: 'nav-subscription' },
+    // Only show Plans if user is on Free plan or no subscription
+    ...((!userSubscription || userSubscription.plan === 'Free') ? [{ path: '/subscription', label: 'Plans', icon: Crown, testId: 'nav-subscription' }] : []),
     { path: '/documents', label: 'Documents', icon: FolderLock, testId: 'nav-documents' },
     { path: '/will', label: 'Will', icon: FileText, testId: 'nav-will' },
     { path: '/settings', label: 'Settings', icon: Settings, testId: 'nav-settings' }
