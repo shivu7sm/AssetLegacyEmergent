@@ -191,39 +191,81 @@ export default function NomineeAccessCard({ nominee, onUpdate, onEdit, onDelete,
           </div>
         </div>
 
-        {/* Access Type Selection */}
+        {/* Access Type Selection - 3 Options in Single Row */}
         <div className="mb-4">
-          <p className="text-sm font-semibold mb-3" style={{color: '#E8C27C'}}>⚙️ When can they access your portfolio?</p>
-          <div className="grid grid-cols-2 gap-3">
+          <p className="text-sm font-semibold mb-3 flex items-center gap-2" style={{color: '#E8C27C'}}>
+            <Shield className="w-4 h-4" />
+            Access Permissions
+          </p>
+          <div className="grid grid-cols-3 gap-3">
+            {/* Immediate Access */}
             <button
               onClick={() => updateAccessType('immediate')}
-              className="p-4 rounded-lg text-left transition-all hover:scale-105"
+              className="p-4 rounded-lg text-center transition-all hover:scale-105"
               style={{
-                background: nominee.access_type === 'immediate' ? 'rgba(168, 85, 247, 0.2)' : 'rgba(255,255,255,0.03)',
-                border: `2px solid ${nominee.access_type === 'immediate' ? '#a855f7' : 'rgba(255,255,255,0.1)'}`
+                background: nominee.access_type === 'immediate' ? 'linear-gradient(135deg, rgba(168, 85, 247, 0.25) 0%, rgba(168, 85, 247, 0.15) 100%)' : 'rgba(255,255,255,0.03)',
+                border: `2px solid ${nominee.access_type === 'immediate' ? '#a855f7' : 'rgba(255,255,255,0.08)'}`,
+                boxShadow: nominee.access_type === 'immediate' ? '0 4px 12px rgba(168, 85, 247, 0.3)' : 'none'
               }}
             >
-              <Zap className="w-6 h-6 mb-2" style={{color: nominee.access_type === 'immediate' ? '#a855f7' : '#64748b'}} />
-              <p className="text-sm font-bold" style={{color: nominee.access_type === 'immediate' ? '#f8fafc' : '#94a3b8'}}>
-                Immediate Access
+              <Zap className="w-7 h-7 mx-auto mb-2" style={{color: nominee.access_type === 'immediate' ? '#a855f7' : '#64748b'}} />
+              <p className="text-sm font-bold mb-1" style={{color: nominee.access_type === 'immediate' ? '#f8fafc' : '#94a3b8'}}>
+                Immediate
               </p>
-              <p className="text-xs" style={{color: '#64748b'}}>They can view right now</p>
+              <p className="text-xs leading-tight" style={{color: '#64748b'}}>
+                Access right now<br/>
+                {nominee.access_type === 'immediate' && <span style={{color: '#10b981'}}>✓ Auto-granted</span>}
+              </p>
             </button>
 
+            {/* Temporary Access */}
             <button
-              onClick={() => updateAccessType('after_dms')}
-              className="p-4 rounded-lg text-left transition-all hover:scale-105"
+              onClick={() => updateAccessType('temporary')}
+              className="p-4 rounded-lg text-center transition-all hover:scale-105"
               style={{
-                background: nominee.access_type === 'after_dms' ? 'rgba(168, 85, 247, 0.2)' : 'rgba(255,255,255,0.03)',
-                border: `2px solid ${nominee.access_type === 'after_dms' ? '#a855f7' : 'rgba(255,255,255,0.1)'}`
+                background: nominee.access_type === 'temporary' ? 'linear-gradient(135deg, rgba(245, 158, 11, 0.25) 0%, rgba(245, 158, 11, 0.15) 100%)' : 'rgba(255,255,255,0.03)',
+                border: `2px solid ${nominee.access_type === 'temporary' ? '#f59e0b' : 'rgba(255,255,255,0.08)'}`,
+                boxShadow: nominee.access_type === 'temporary' ? '0 4px 12px rgba(245, 158, 11, 0.3)' : 'none'
               }}
             >
-              <Clock className="w-6 h-6 mb-2" style={{color: nominee.access_type === 'after_dms' ? '#a855f7' : '#64748b'}} />
-              <p className="text-sm font-bold" style={{color: nominee.access_type === 'after_dms' ? '#f8fafc' : '#94a3b8'}}>
-                After Dead Man's Switch
+              <Clock className="w-7 h-7 mx-auto mb-2" style={{color: nominee.access_type === 'temporary' ? '#f59e0b' : '#64748b'}} />
+              <p className="text-sm font-bold mb-1" style={{color: nominee.access_type === 'temporary' ? '#f8fafc' : '#94a3b8'}}>
+                Temporary
               </p>
-              <p className="text-xs" style={{color: '#64748b'}}>Only if you're inactive</p>
+              <p className="text-xs leading-tight" style={{color: '#64748b'}}>
+                7-day access<br/>
+                {nominee.access_type === 'temporary' && <span style={{color: '#f59e0b'}}>⏰ Limited time</span>}
+              </p>
             </button>
+
+            {/* After DMS */}
+            <button
+              onClick={() => updateAccessType('after_dms')}
+              className="p-4 rounded-lg text-center transition-all hover:scale-105"
+              style={{
+                background: nominee.access_type === 'after_dms' ? 'linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(59, 130, 246, 0.15) 100%)' : 'rgba(255,255,255,0.03)',
+                border: `2px solid ${nominee.access_type === 'after_dms' ? '#3b82f6' : 'rgba(255,255,255,0.08)'}`,
+                boxShadow: nominee.access_type === 'after_dms' ? '0 4px 12px rgba(59, 130, 246, 0.3)' : 'none'
+              }}
+            >
+              <Shield className="w-7 h-7 mx-auto mb-2" style={{color: nominee.access_type === 'after_dms' ? '#3b82f6' : '#64748b'}} />
+              <p className="text-sm font-bold mb-1" style={{color: nominee.access_type === 'after_dms' ? '#f8fafc' : '#94a3b8'}}>
+                After DMS
+              </p>
+              <p className="text-xs leading-tight" style={{color: '#64748b'}}>
+                Only if inactive<br/>
+                {nominee.access_type === 'after_dms' && <span style={{color: '#3b82f6'}}>🛡️ Safeguarded</span>}
+              </p>
+            </button>
+          </div>
+          
+          {/* Explanation Text */}
+          <div className="mt-3 p-3 rounded-lg" style={{background: 'rgba(232, 194, 124, 0.05)', border: '1px solid rgba(232, 194, 124, 0.2)'}}>
+            <p className="text-xs" style={{color: '#cbd5e1'}}>
+              {nominee.access_type === 'immediate' && '⚡ They can access your portfolio immediately. Access will be auto-granted.'}
+              {nominee.access_type === 'temporary' && '⏰ They get 7-day limited access. Perfect for temporary sharing.'}
+              {nominee.access_type === 'after_dms' && '🛡️ Access only activates if you\'re inactive beyond your Dead Man\'s Switch threshold. Current access will be auto-revoked.'}
+            </p>
           </div>
         </div>
 
