@@ -321,7 +321,6 @@ export default function AssetsNew() {
                             return (
                               <tr 
                                 key={asset.id}
-                                onClick={() => setSelectedAsset(asset)}
                                 className="cursor-pointer transition-all"
                                 style={{
                                   background: selectedAsset?.id === asset.id ? 'rgba(232, 194, 124, 0.08)' : 'transparent',
@@ -329,13 +328,18 @@ export default function AssetsNew() {
                                   borderLeft: selectedAsset?.id === asset.id ? '3px solid #E8C27C' : '3px solid transparent'
                                 }}
                               >
-                                <td className="p-3" onClick={(e) => e.stopPropagation()}>
+                                {/* Asset Name - Clickable but stops propagation for edit mode */}
+                                <td className="p-3" onClick={(e) => {
+                                  if (!isEditing) setSelectedAsset(asset);
+                                  else e.stopPropagation();
+                                }}>
                                   {isEditing ? (
                                     <Input 
                                       value={editValues.name}
                                       onChange={(e) => setEditValues({...editValues, name: e.target.value})}
                                       className="bg-slate-800 border-slate-700 text-white text-sm"
                                       style={{height: '32px', padding: '0.5rem'}}
+                                      onClick={(e) => e.stopPropagation()}
                                     />
                                   ) : (
                                     <div className="flex items-center gap-2">
@@ -348,10 +352,22 @@ export default function AssetsNew() {
                                     </div>
                                   )}
                                 </td>
-                                <td className="p-3 text-right" style={{color: '#94a3b8', fontSize: '0.813rem'}}>
+                                
+                                {/* Purchase Value - Original Currency */}
+                                <td className="p-3 text-right" onClick={() => setSelectedAsset(asset)} style={{color: '#94a3b8', fontSize: '0.813rem'}}>
                                   {asset.purchase_currency} {purchaseValue.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})}
                                 </td>
-                                <td className="p-3 text-right" onClick={(e) => e.stopPropagation()}>
+                                
+                                {/* Purchase Value - Converted Currency */}
+                                <td className="p-3 text-right" onClick={() => setSelectedAsset(asset)} style={{color: '#cbd5e1', fontSize: '0.813rem', fontWeight: 500}}>
+                                  {formatCurrency(purchaseValue, selectedCurrency, currencyFormat)}
+                                </td>
+                                
+                                {/* Current Value - Converted Currency - Editable */}
+                                <td className="p-3 text-right" onClick={(e) => {
+                                  if (!isEditing) setSelectedAsset(asset);
+                                  else e.stopPropagation();
+                                }}>
                                   {isEditing ? (
                                     <Input 
                                       type="number"
@@ -359,6 +375,7 @@ export default function AssetsNew() {
                                       onChange={(e) => setEditValues({...editValues, current_value: e.target.value})}
                                       className="bg-slate-800 border-slate-700 text-white text-right text-sm"
                                       style={{height: '32px', padding: '0.5rem'}}
+                                      onClick={(e) => e.stopPropagation()}
                                     />
                                   ) : (
                                     <span style={{color: isLiability ? '#FF5C73' : '#5CE3D7', fontWeight: 600}}>
@@ -366,7 +383,9 @@ export default function AssetsNew() {
                                     </span>
                                   )}
                                 </td>
-                                <td className="p-3 text-right">
+                                
+                                {/* Gain/Loss */}
+                                <td className="p-3 text-right" onClick={() => setSelectedAsset(asset)}>
                                   {!isLiability && gain !== 0 && (
                                     <div>
                                       <div style={{color: gain > 0 ? '#4BE0A1' : '#FF5C73', fontWeight: 600, fontSize: '0.813rem'}}>
@@ -378,6 +397,8 @@ export default function AssetsNew() {
                                     </div>
                                   )}
                                 </td>
+                                
+                                {/* Actions - Stop propagation */}
                                 <td className="p-3 text-center" onClick={(e) => e.stopPropagation()}>
                                   <div className="flex justify-center gap-1">
                                     {isEditing ? (
