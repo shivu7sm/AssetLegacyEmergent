@@ -241,8 +241,27 @@ export default function AssetsNew() {
             </div>
           </div>
 
-        {/* Jump Pills - Section Shortcuts */}
+        {/* Jump Pills - Section Shortcuts with ALL filter */}
         <div className="flex flex-wrap gap-2">
+          {/* ALL pill */}
+          <button
+            onClick={() => setActiveFilter('all')}
+            className="px-4 py-2 rounded-full text-sm font-semibold transition-all hover:scale-105"
+            style={{
+              background: activeFilter === 'all' ? '#E8C27C' : 'rgba(232, 194, 124, 0.15)',
+              border: `1.5px solid ${activeFilter === 'all' ? '#E8C27C' : 'rgba(232, 194, 124, 0.4)'}`,
+              color: activeFilter === 'all' ? '#0B0B11' : '#E8C27C',
+              fontWeight: activeFilter === 'all' ? 700 : 600
+            }}
+          >
+            ALL
+            <span className="ml-2 px-2 py-0.5 rounded-full text-xs" style={{
+              background: activeFilter === 'all' ? 'rgba(11, 11, 17, 0.2)' : 'rgba(232, 194, 124, 0.2)'
+            }}>
+              {assets.length}
+            </span>
+          </button>
+          
           {Object.keys(ASSET_GROUPS).map(groupKey => {
             const group = ASSET_GROUPS[groupKey];
             const groupAssets = groupedAssets[groupKey] || [];
@@ -251,17 +270,20 @@ export default function AssetsNew() {
             return (
               <button
                 key={groupKey}
-                onClick={() => scrollToGroup(groupKey)}
+                onClick={() => setActiveFilter(groupKey)}
                 className="px-4 py-2 rounded-full text-sm font-semibold transition-all hover:scale-105"
                 style={{
-                  background: `${group.color}15`,
-                  border: `1.5px solid ${group.color}40`,
-                  color: group.color
+                  background: activeFilter === groupKey ? group.color : `${group.color}15`,
+                  border: `1.5px solid ${activeFilter === groupKey ? group.color : `${group.color}40`}`,
+                  color: activeFilter === groupKey ? '#0B0B11' : group.color,
+                  fontWeight: activeFilter === groupKey ? 700 : 600
                 }}
               >
                 <span className="mr-2">{group.icon}</span>
                 {group.label}
-                <span className="ml-2 px-2 py-0.5 rounded-full text-xs" style={{background: `${group.color}20`}}>
+                <span className="ml-2 px-2 py-0.5 rounded-full text-xs" style={{
+                  background: activeFilter === groupKey ? 'rgba(11, 11, 17, 0.2)' : `${group.color}20`
+                }}>
                   {groupAssets.length}
                 </span>
               </button>
