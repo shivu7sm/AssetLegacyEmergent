@@ -54,7 +54,8 @@ function AuthProvider({ children }) {
           setUser(response.data);
           setLoading(false);
           
-          // Navigation will happen in separate useEffect
+          // Navigate immediately after user state is set
+          navigate('/dashboard', { replace: true });
           return;
         } catch (error) {
           console.error('Auth failed:', error);
@@ -68,6 +69,11 @@ function AuthProvider({ children }) {
       try {
         const response = await axios.get(`${API}/auth/me`, { withCredentials: true });
         setUser(response.data);
+        
+        // If authenticated and on home page, redirect to dashboard
+        if (response.data && location.pathname === '/') {
+          navigate('/dashboard', { replace: true });
+        }
       } catch (error) {
         setUser(null);
       } finally {
@@ -77,13 +83,6 @@ function AuthProvider({ children }) {
 
     handleAuth();
   }, []);
-
-  // Separate useEffect for navigation after user state is set
-  useEffect(() => {
-    if (!loading && user && location.pathname === '/') {
-      navigate('/dashboard');
-    }
-  }, [user, loading, location.pathname, navigate]);
 
   if (loading) {
     return (
