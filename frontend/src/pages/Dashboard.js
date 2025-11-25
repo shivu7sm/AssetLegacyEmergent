@@ -73,7 +73,17 @@ export default function Dashboard() {
 
   useEffect(() => {
     fetchSummary();
+    checkDemoMode();
   }, [selectedCurrency]); // Refetch when currency changes
+
+  const checkDemoMode = async () => {
+    try {
+      const response = await axios.get(`${API}/demo/status`, { withCredentials: true });
+      setDemoMode(response.data.demo_mode);
+    } catch (error) {
+      console.error('Failed to fetch demo status:', error);
+    }
+  };
 
   const fetchSummary = async () => {
     try {
