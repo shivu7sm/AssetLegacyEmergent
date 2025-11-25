@@ -162,7 +162,7 @@ export default function Assets() {
   const getInitialView = () => {
     const sessionView = sessionStorage.getItem('assetsViewMode');
     if (sessionView) return sessionView;
-    return preferences?.default_asset_view || 'grid';
+    return preferences?.default_asset_view || 'table';
   };
   const [viewMode, setViewMode] = useState(getInitialView());
   const [pageMode, setPageMode] = useState('assets'); // 'assets' or 'portfolios'
