@@ -28,6 +28,7 @@ export default function Layout({ children }) {
   const location = useLocation();
   const { selectedCurrency, setSelectedCurrency } = useApp();
   const { user } = useAuth();
+  const { dashboardTheme } = useTheme();
   const [isAdmin, setIsAdmin] = useState(false);
   const [demoMode, setDemoMode] = useState(false);
   const [togglingDemo, setTogglingDemo] = useState(false);
