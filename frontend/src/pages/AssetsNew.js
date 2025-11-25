@@ -523,49 +523,56 @@ export default function AssetsNew() {
                                 
                                 {/* Actions - Stop propagation */}
                                 <td className="p-3 text-center" onClick={(e) => e.stopPropagation()}>
-                                  <div className="flex justify-center gap-1">
-                                    {isEditing ? (
-                                      <>
-                                        <Button size="sm" onClick={() => saveInlineEdit(asset.id)} style={{background: '#10b981', color: '#fff', height: '28px', padding: '0 0.5rem'}}>
-                                          <Check className="w-3 h-3" />
-                                        </Button>
-                                        <Button size="sm" onClick={() => setEditingAssetId(null)} style={{background: '#ef4444', color: '#fff', height: '28px', padding: '0 0.5rem'}}>
-                                          <X className="w-3 h-3" />
-                                        </Button>
-                                      </>
-                                    ) : (
-                                      <>
-                                        <Button 
-                                          size="sm" 
-                                          variant="ghost" 
-                                          onClick={() => startInlineEdit(asset)} 
-                                          style={{
-                                            height: '28px', 
-                                            padding: '0 0.5rem',
-                                            background: 'rgba(232, 194, 124, 0.1)',
-                                            border: '1px solid rgba(232, 194, 124, 0.3)',
-                                            color: '#E8C27C'
-                                          }}
-                                        >
-                                          <Edit2 className="w-3 h-3" />
-                                        </Button>
-                                        <Button 
-                                          size="sm" 
-                                          variant="ghost" 
-                                          onClick={() => handleDeleteAsset(asset.id)} 
-                                          style={{
-                                            color: '#FF5C73', 
-                                            height: '28px', 
-                                            padding: '0 0.5rem',
-                                            background: 'rgba(255, 92, 115, 0.1)',
-                                            border: '1px solid rgba(255, 92, 115, 0.3)'
-                                          }}
-                                        >
-                                          <Trash2 className="w-3 h-3" />
-                                        </Button>
-                                      </>
-                                    )}
-                                  </div>
+                                  {activeAccount === 'test_account' ? (
+                                    // Read-only mode for test account
+                                    <div className="text-xs px-2 py-1 rounded" style={{background: 'rgba(148, 163, 184, 0.1)', color: '#94a3b8'}}>
+                                      Read-Only
+                                    </div>
+                                  ) : (
+                                    <div className="flex justify-center gap-1">
+                                      {isEditing ? (
+                                        <>
+                                          <Button size="sm" onClick={() => saveInlineEdit(asset.id)} style={{background: '#10b981', color: '#fff', height: '28px', padding: '0 0.5rem'}}>
+                                            <Check className="w-3 h-3" />
+                                          </Button>
+                                          <Button size="sm" onClick={() => setEditingAssetId(null)} style={{background: '#ef4444', color: '#fff', height: '28px', padding: '0 0.5rem'}}>
+                                            <X className="w-3 h-3" />
+                                          </Button>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <Button 
+                                            size="sm" 
+                                            variant="ghost" 
+                                            onClick={() => startInlineEdit(asset)} 
+                                            style={{
+                                              height: '28px', 
+                                              padding: '0 0.5rem',
+                                              background: 'rgba(232, 194, 124, 0.1)',
+                                              border: '1px solid rgba(232, 194, 124, 0.3)',
+                                              color: '#E8C27C'
+                                            }}
+                                          >
+                                            <Edit2 className="w-3 h-3" />
+                                          </Button>
+                                          <Button 
+                                            size="sm" 
+                                            variant="ghost" 
+                                            onClick={() => handleDeleteAsset(asset.id)} 
+                                            style={{
+                                              color: '#FF5C73', 
+                                              height: '28px', 
+                                              padding: '0 0.5rem',
+                                              background: 'rgba(255, 92, 115, 0.1)',
+                                              border: '1px solid rgba(255, 92, 115, 0.3)'
+                                            }}
+                                          >
+                                            <Trash2 className="w-3 h-3" />
+                                          </Button>
+                                        </>
+                                      )}
+                                    </div>
+                                  )}
                                 </td>
                               </tr>
                             );
