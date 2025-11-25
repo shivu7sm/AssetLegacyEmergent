@@ -89,6 +89,13 @@ export default function AssetsNew() {
     );
   };
 
+  const scrollToGroup = (groupKey) => {
+    const element = document.getElementById(`group-${groupKey}`);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   const groupAssetsByType = () => {
     const grouped = {};
     Object.keys(ASSET_GROUPS).forEach(key => {
