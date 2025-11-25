@@ -58,8 +58,14 @@
   color: var(--text-body);
 }
 
+/* Main content area background */
+.modern-theme > div,
+.modern-theme main {
+  background: var(--app-bg-main);
+}
+
 /* ========================================
-   🔶 4. CARD SYSTEM
+   🔶 4. CARD SYSTEM - REVISED PADDING
    ======================================== */
 .modern-theme .card,
 .modern-theme [class*="card"],
@@ -70,12 +76,25 @@
   box-shadow: var(--shadow-standard) !important;
   transition: all 0.3s ease;
   color: var(--text-body);
+  padding: 1.25rem !important; /* Reduced from default */
 }
 
 .modern-theme .card:hover,
 .modern-theme [class*="card"]:hover {
   box-shadow: var(--shadow-elevated) !important;
   transform: translateY(-2px);
+}
+
+/* Card Header - Minimal Padding */
+.modern-theme [class*="CardHeader"],
+.modern-theme [class*="card-header"] {
+  padding: 1rem !important;
+}
+
+/* Card Content - Minimal Padding */
+.modern-theme [class*="CardContent"],
+.modern-theme [class*="card-content"] {
+  padding: 1rem !important;
 }
 
 /* Secondary Cards */
