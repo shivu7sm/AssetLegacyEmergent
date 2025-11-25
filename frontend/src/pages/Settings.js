@@ -1239,45 +1239,6 @@ export default function Settings() {
             </Card>
 
             {/* Why This Matters */}
-                            variant="ghost"
-                            onClick={() => handleMovePriority(nominee.id, 'up')}
-                            disabled={index === 0}
-                            style={{color: '#94a3b8'}}
-                          >
-                            <ChevronUp className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => handleMovePriority(nominee.id, 'down')}
-                            disabled={index === nominees.length - 1}
-                            style={{color: '#94a3b8'}}
-                          >
-                            <ChevronDown className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => handleEditNominee(nominee)}
-                            style={{color: '#3b82f6'}}
-                          >
-                            <User className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => handleDeleteNominee(nominee.id)}
-                            style={{color: '#ef4444'}}
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
 
             {/* Info Card */}
             <Card style={{background: 'linear-gradient(135deg, #2d0e1e 0%, #3d1828 100%)', borderColor: '#ef4444', borderLeftWidth: '4px'}}>
