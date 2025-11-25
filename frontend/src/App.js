@@ -46,7 +46,7 @@ function AuthProvider({ children }) {
             withCredentials: true
           });
           
-          // Clear the hash and navigate to dashboard
+          // Clear the hash
           window.location.hash = '';
           
           // Fetch user data
@@ -54,8 +54,7 @@ function AuthProvider({ children }) {
           setUser(response.data);
           setLoading(false);
           
-          // Navigate to dashboard
-          navigate('/dashboard');
+          // Navigation will happen in separate useEffect
           return;
         } catch (error) {
           console.error('Auth failed:', error);
@@ -78,6 +77,13 @@ function AuthProvider({ children }) {
 
     handleAuth();
   }, []);
+
+  // Separate useEffect for navigation after user state is set
+  useEffect(() => {
+    if (!loading && user && location.pathname === '/') {
+      navigate('/dashboard');
+    }
+  }, [user, loading, location.pathname, navigate]);
 
   if (loading) {
     return (
