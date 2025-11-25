@@ -41,7 +41,18 @@ export default function Layout({ children }) {
     }
     // Check demo mode status
     checkDemoStatus();
+    // Fetch subscription status
+    fetchSubscription();
   }, [user]);
+
+  const fetchSubscription = async () => {
+    try {
+      const response = await axios.get(`${API}/subscription/current`, { withCredentials: true });
+      setUserSubscription(response.data);
+    } catch (error) {
+      console.error('Failed to fetch subscription:', error);
+    }
+  };
 
   const checkDemoStatus = async () => {
     try {
