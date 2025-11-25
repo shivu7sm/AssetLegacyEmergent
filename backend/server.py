@@ -1531,6 +1531,22 @@ async def seed_demo_data(user_id: str, force: bool = False):
             },
             "created_at": datetime.now(timezone.utc).isoformat()
         },
+        {
+            "id": f"{demo_prefix}bank4",
+            "user_id": user_id,
+            "name": "HSBC UK Savings Account",
+            "type": "bank",
+            "purchase_currency": "GBP",
+            "purchase_date": "2023-02-20",
+            "total_value": 18000,
+            "current_value": 18500,
+            "details": {
+                "account_number": "****7890",
+                "bank_name": "HSBC UK",
+                "account_type": "Savings"
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
         # Crypto
         {
             "id": f"{demo_prefix}crypto1",
