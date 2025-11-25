@@ -210,22 +210,51 @@ export default function AssetsNew() {
           </Button>
         </div>
 
+        {/* Jump Pills - Section Shortcuts */}
+        <div className="flex flex-wrap gap-2">
+          {Object.keys(ASSET_GROUPS).map(groupKey => {
+            const group = ASSET_GROUPS[groupKey];
+            const groupAssets = groupedAssets[groupKey] || [];
+            if (groupAssets.length === 0) return null;
+            
+            return (
+              <button
+                key={groupKey}
+                onClick={() => scrollToGroup(groupKey)}
+                className="px-4 py-2 rounded-full text-sm font-semibold transition-all hover:scale-105"
+                style={{
+                  background: `${group.color}15`,
+                  border: `1.5px solid ${group.color}40`,
+                  color: group.color
+                }}
+              >
+                <span className="mr-2">{group.icon}</span>
+                {group.label}
+                <span className="ml-2 px-2 py-0.5 rounded-full text-xs" style={{background: `${group.color}20`}}>
+                  {groupAssets.length}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
         {/* Main Layout: Table + Detail Panel */}
         <div className="grid grid-cols-12 gap-6">
-          {/* Assets Table - Left Side */}
+          {/* Assets Table - Left Side - Scrollable */}
           <div className={selectedAsset ? 'col-span-7' : 'col-span-12'}>
-            <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+            <Card style={{background: '#1a1229', borderColor: '#2d1f3d', padding: 0}}>
               <CardContent className="p-0">
-                <table className="w-full">
-                  <thead style={{background: '#16001e', borderBottom: '2px solid #2d1f3d'}}>
-                    <tr>
-                      <th className="text-left p-4" style={{color: '#94a3b8', fontWeight: 600, width: '40%'}}>Asset</th>
-                      <th className="text-right p-4" style={{color: '#94a3b8', fontWeight: 600}}>Purchase Value</th>
-                      <th className="text-right p-4" style={{color: '#94a3b8', fontWeight: 600}}>Current Value</th>
-                      <th className="text-right p-4" style={{color: '#94a3b8', fontWeight: 600}}>Gain/Loss</th>
-                      <th className="text-center p-4" style={{color: '#94a3b8', fontWeight: 600}}>Actions</th>
-                    </tr>
-                  </thead>
+                <div style={{maxHeight: 'calc(100vh - 280px)', overflowY: 'auto'}}>
+                  <table className="w-full" style={{fontSize: '0.813rem'}}>
+                    <thead style={{background: '#0E0F16', borderBottom: '2px solid #2d1f3d', position: 'sticky', top: 0, zIndex: 10}}>
+                      <tr>
+                        <th className="text-left p-3" style={{color: '#94a3b8', fontWeight: 600, width: '40%'}}>Asset</th>
+                        <th className="text-right p-3" style={{color: '#94a3b8', fontWeight: 600}}>Purchase</th>
+                        <th className="text-right p-3" style={{color: '#94a3b8', fontWeight: 600}}>Current</th>
+                        <th className="text-right p-3" style={{color: '#94a3b8', fontWeight: 600}}>Gain/Loss</th>
+                        <th className="text-center p-3" style={{color: '#94a3b8', fontWeight: 600}}>Actions</th>
+                      </tr>
+                    </thead>
                   <tbody>
                     {Object.keys(ASSET_GROUPS).map(groupKey => {
                       const group = ASSET_GROUPS[groupKey];
