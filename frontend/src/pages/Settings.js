@@ -1099,54 +1099,7 @@ export default function Settings() {
         );
 
       case 'security':
-        return (
-          <SecurityAuditSection user={user} />
-                    </div>
-                    <div>
-                      <Label className="text-slate-300">Second Reminder (days)</Label>
-                      <Input
-                        type="number"
-                        value={dmsForm.reminder_2_days}
-                        onChange={(e) => setDmsForm({...dmsForm, reminder_2_days: parseInt(e.target.value)})}
-                        min="1"
-                        className="bg-slate-800 border-slate-700 text-white"
-                      />
-                    </div>
-                    <div>
-                      <Label className="text-slate-300">Final Reminder (days)</Label>
-                      <Input
-                        type="number"
-                        value={dmsForm.reminder_3_days}
-                        onChange={(e) => setDmsForm({...dmsForm, reminder_3_days: parseInt(e.target.value)})}
-                        min="1"
-                        className="bg-slate-800 border-slate-700 text-white"
-                      />
-                    </div>
-                  </div>
-                  <div className="flex gap-3">
-                    <Button 
-                      type="submit"
-                      className="text-white rounded-full"
-                      style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
-                    >
-                      {dms ? 'Update DMS' : 'Configure DMS'}
-                    </Button>
-                    <Button 
-                      type="button"
-                      onClick={resetLastActivity}
-                      variant="outline"
-                      className="rounded-full"
-                      style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
-                    >
-                      <RefreshCw className="w-4 h-4 mr-2" />
-                      Reset Activity
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </form>
-          </div>
-        );
+        return <SecurityAuditSection user={user} />;
 
       case 'privacy':
         return (
