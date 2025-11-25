@@ -769,9 +769,6 @@ async def create_or_update_nominee_legacy(nominee_data: NomineeCreate, user: Use
         result['created_at'] = datetime.fromisoformat(result['created_at'])
     return Nominee(**result)
 
-        result['created_at'] = datetime.fromisoformat(result['created_at'])
-    return Nominee(**result)
-
 # Nominee Access Management
 @api_router.post("/nominees/{nominee_id}/generate-access")
 async def generate_nominee_access(nominee_id: str, user: User = Depends(require_auth)):
