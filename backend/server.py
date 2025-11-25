@@ -1887,7 +1887,7 @@ async def seed_demo_data(user_id: str, force: bool = False):
     }
     await db.portfolio_assets.insert_one(demo_portfolio)
     
-    # Demo Documents
+    # Demo Documents - Linked to Assets
     demo_documents = [
         {
             "id": f"{demo_prefix}doc1",
@@ -1898,6 +1898,7 @@ async def seed_demo_data(user_id: str, force: bool = False):
             "file_size": 2457600,  # 2.4 MB
             "mime_type": "application/pdf",
             "description": "State Farm Term Life Insurance Policy - $750,000 coverage",
+            "linked_asset_id": f"{demo_prefix}insurance1",  # Link to insurance asset
             "uploaded_at": datetime.now(timezone.utc).isoformat(),
             "created_at": datetime.now(timezone.utc).isoformat()
         },
@@ -1910,6 +1911,7 @@ async def seed_demo_data(user_id: str, force: bool = False):
             "file_size": 1843200,  # 1.8 MB
             "mime_type": "application/pdf",
             "description": "Property deed for 123 Oak Street, Austin, TX",
+            "linked_asset_id": f"{demo_prefix}property1",  # Link to property asset
             "uploaded_at": datetime.now(timezone.utc).isoformat(),
             "created_at": datetime.now(timezone.utc).isoformat()
         },
@@ -1922,6 +1924,7 @@ async def seed_demo_data(user_id: str, force: bool = False):
             "file_size": 892800,  # 870 KB
             "mime_type": "application/pdf",
             "description": "Vanguard 401(k) quarterly statement",
+            "linked_asset_id": f"{demo_prefix}investment1",  # Link to 401k asset
             "uploaded_at": datetime.now(timezone.utc).isoformat(),
             "created_at": datetime.now(timezone.utc).isoformat()
         },
@@ -1934,6 +1937,7 @@ async def seed_demo_data(user_id: str, force: bool = False):
             "file_size": 512000,  # 500 KB
             "mime_type": "application/pdf",
             "description": "Chase Bank checking account statement",
+            "linked_asset_id": f"{demo_prefix}bank1",  # Link to bank asset
             "uploaded_at": datetime.now(timezone.utc).isoformat(),
             "created_at": datetime.now(timezone.utc).isoformat()
         },
