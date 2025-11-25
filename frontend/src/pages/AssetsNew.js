@@ -219,34 +219,6 @@ export default function AssetsNew() {
     return 0;
   };
 
-  const startInlineEdit = (asset) => {
-    setEditingAssetId(asset.id);
-    setEditValues({
-      name: asset.name,
-      current_value: calculateAssetValue(asset, true),
-      notes: asset.details?.notes || ''
-    });
-  };
-
-  const saveInlineEdit = async (assetId) => {
-    try {
-      const asset = assets.find(a => a.id === assetId);
-      await axios.put(`${API}/assets/${assetId}`, {
-        ...asset,
-        name: editValues.name,
-        current_value: parseFloat(editValues.current_value) || undefined,
-        details: { ...asset.details, notes: editValues.notes }
-      }, { withCredentials: true });
-      
-      toast.success('Asset updated');
-      setEditingAssetId(null);
-      fetchAssets();
-    } catch (error) {
-      console.error('Failed to update:', error);
-      toast.error('Update failed');
-    }
-  };
-
   const calculateLoanDetails = async (asset) => {
     if (!asset.principal_amount || !asset.interest_rate || !asset.tenure_months) {
       toast.error('Missing loan details for calculation');
