@@ -218,12 +218,19 @@ export default function Dashboard() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-xs opacity-75 mb-1" style={{color: dashboardTheme === 'modern' ? '#92400e' : '#94a3b8'}}>
-                    Using sample data
-                  </div>
-                  <div className="flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold" style={{background: '#f59e0b', color: '#fff'}}>
-                    <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-                    DEMO
+                  <div className="flex flex-col gap-2">
+                    <Button
+                      size="sm"
+                      onClick={() => navigate('/nominee-dashboard')}
+                      style={{background: 'rgba(168, 85, 247, 0.2)', border: '1px solid rgba(168, 85, 247, 0.4)', color: '#a855f7'}}
+                    >
+                      <Eye className="w-3 h-3 mr-2" />
+                      Preview Nominee View
+                    </Button>
+                    <div className="flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold" style={{background: '#f59e0b', color: '#fff'}}>
+                      <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+                      DEMO
+                    </div>
                   </div>
                 </div>
               </div>
