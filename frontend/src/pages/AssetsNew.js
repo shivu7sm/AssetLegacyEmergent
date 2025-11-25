@@ -582,8 +582,8 @@ export default function AssetsNew() {
                                 
                                 {/* Actions - Stop propagation */}
                                 <td className="p-3 text-center" onClick={(e) => e.stopPropagation()}>
-                                  {activeAccount === 'test_account' ? (
-                                    // Read-only mode for test account
+                                  {(activeAccount === 'test_account' || activeAccount !== 'own') ? (
+                                    // Read-only mode for test account or connected accounts
                                     <div className="text-xs px-2 py-1 rounded" style={{background: 'rgba(148, 163, 184, 0.1)', color: '#94a3b8'}}>
                                       Read-Only
                                     </div>
