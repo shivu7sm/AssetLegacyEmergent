@@ -130,9 +130,15 @@ export default function AssetsNew() {
 
   const groupAssetsByType = () => {
     const grouped = {};
+    
+    // Use test account assets if that's selected
+    const assetsToGroup = activeAccount === 'test_account' && testAccountData 
+      ? [...testAccountData.assets, ...testAccountData.portfolios]
+      : assets;
+    
     Object.keys(ASSET_GROUPS).forEach(key => {
       const group = ASSET_GROUPS[key];
-      grouped[key] = assets.filter(asset => group.types.includes(asset.type));
+      grouped[key] = assetsToGroup.filter(asset => group.types.includes(asset.type));
     });
     return grouped;
   };
