@@ -532,6 +532,8 @@ export default function Settings() {
   const [dms, setDms] = useState(null);
   const [subscription, setSubscription] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [demoMode, setDemoMode] = useState(false);
   
   const [nomineeForm, setNomineeForm] = useState({
     name: '',
