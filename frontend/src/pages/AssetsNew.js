@@ -193,12 +193,12 @@ export default function AssetsNew() {
 
   return (
     <Layout>
-      <div className="space-y-6" style={{padding: '2rem 0'}}>
+      <div className="space-y-6" style={{padding: '2rem 0', background: '#0B0B11', minHeight: '100vh'}}>
         {/* Header */}
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-4xl font-bold mb-2" style={{color: '#f8fafc'}}>Assets & Portfolio</h1>
-            <p className="text-lg" style={{color: '#94a3b8'}}>Manage your wealth in one place</p>
+            <h1 className="text-4xl font-bold mb-2" style={{color: '#FFFFFF'}}>Assets & Portfolio</h1>
+            <p className="text-lg" style={{color: 'rgba(255,255,255,0.65)'}}>Manage your wealth in one place</p>
           </div>
           <Button 
             onClick={() => toast.info('Add Asset dialog - to be implemented')}
