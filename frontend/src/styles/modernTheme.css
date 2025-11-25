@@ -58,18 +58,10 @@
   color: var(--text-body);
 }
 
-/* Main content area background - force dark background */
-.modern-theme > div,
-.modern-theme main,
-.modern-theme [class*="container"],
-.modern-theme [class*="space-y"] {
+/* Only apply background to direct Layout children, not nested divs */
+.modern-theme > main,
+body.modern-theme {
   background: var(--app-bg-main) !important;
-}
-
-/* Layout wrapper background */
-.modern-theme [data-testid*="container"],
-.modern-theme [class*="min-h-screen"] {
-  background: var(--app-bg-gradient) !important;
 }
 
 /* ========================================
