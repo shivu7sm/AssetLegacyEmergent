@@ -221,7 +221,15 @@ export default function Dashboard() {
                   <div className="flex flex-col gap-2">
                     <Button
                       size="sm"
-                      onClick={() => navigate('/nominee-dashboard')}
+                      onClick={() => {
+                        // Set a demo token for preview
+                        localStorage.setItem('nominee_access_token', `nom_demo_preview_${Date.now()}`);
+                        localStorage.setItem('nominee_info', JSON.stringify({
+                          nominee: { name: 'You (Preview)', relationship: 'Demo Preview' },
+                          owner: { name: 'Your Demo Account', email: 'demo@example.com' }
+                        }));
+                        navigate('/nominee-dashboard');
+                      }}
                       style={{background: 'rgba(168, 85, 247, 0.2)', border: '1px solid rgba(168, 85, 247, 0.4)', color: '#a855f7'}}
                     >
                       <Eye className="w-3 h-3 mr-2" />
