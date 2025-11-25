@@ -78,9 +78,10 @@ class Nominee(BaseModel):
     relationship: Optional[str] = None
     priority: int = 1  # Priority for contact order (1 = highest priority)
     access_granted: bool = False  # Whether nominee has been granted access
-    access_type: str = "after_dms"  # 'after_dms' or 'immediate'
+    access_type: str = "after_dms"  # 'after_dms', 'immediate', or 'temporary'
     access_token: Optional[str] = None  # Secure token for nominee login
     access_token_created_at: Optional[datetime] = None
+    access_expires_at: Optional[datetime] = None  # For temporary access
     last_accessed_at: Optional[datetime] = None
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
