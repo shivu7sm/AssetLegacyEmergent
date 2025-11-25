@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
-import { ShieldCheck, Lock, Clock, Users, DollarSign, TrendingUp, Play, AlertCircle, CheckCircle, ArrowRight, Zap, Heart, FileText, Database, CreditCard } from 'lucide-react';
+import { ShieldCheck, Lock, Clock, Users, DollarSign, TrendingUp, Play, AlertCircle, CheckCircle, ArrowRight, Zap, Heart, FileText, Database, CreditCard, Shield } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
