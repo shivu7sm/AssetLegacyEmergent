@@ -13,6 +13,7 @@ import Subscription from "./pages/Subscription";
 import ScheduleMessages from "./pages/ScheduleMessages";
 import PortfolioGuide from "./pages/PortfolioGuide";
 import Admin from "./pages/Admin";
+import LoanCalculator from "./pages/LoanCalculator";
 import { Toaster } from "@/components/ui/sonner";
 import { AppProvider } from "./context/AppContext";
 import { ThemeProvider } from "./context/ThemeContext";
