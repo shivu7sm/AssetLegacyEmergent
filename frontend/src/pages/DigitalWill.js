@@ -80,7 +80,7 @@ export default function DigitalWill() {
 
   return (
     <Layout>
-      <div className="space-y-8">
+      <div className="space-y-8" style={{padding: '2rem 1.5rem', margin: '0 auto', maxWidth: '1600px'}}>
         <div>
           <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
             Digital Will
