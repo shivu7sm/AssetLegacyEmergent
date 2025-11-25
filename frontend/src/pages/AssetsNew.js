@@ -796,75 +796,14 @@ export default function AssetsNew() {
             <DialogHeader>
               <DialogTitle style={{color: '#f8fafc', fontSize: '1.5rem'}}>Add New Asset</DialogTitle>
             </DialogHeader>
-            <div className="space-y-4 pt-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label className="text-slate-300">Asset Name *</Label>
-                  <Input 
-                    placeholder="e.g., Chase Savings, Bitcoin Wallet"
-                    className="bg-slate-800 border-slate-700 text-white"
-                  />
-                </div>
-                <div>
-                  <Label className="text-slate-300">Asset Type *</Label>
-                  <Select>
-                    <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
-                      <SelectValue placeholder="Select type" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-slate-800 border-slate-700">
-                      <SelectItem value="bank" className="text-white">🏦 Bank Account</SelectItem>
-                      <SelectItem value="crypto" className="text-white">₿ Cryptocurrency</SelectItem>
-                      <SelectItem value="stock" className="text-white">📈 Stocks</SelectItem>
-                      <SelectItem value="property" className="text-white">🏠 Real Estate</SelectItem>
-                      <SelectItem value="loan" className="text-white">💸 Loan</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label className="text-slate-300">Purchase Value *</Label>
-                  <Input 
-                    type="number"
-                    placeholder="10000"
-                    className="bg-slate-800 border-slate-700 text-white"
-                  />
-                </div>
-                <div>
-                  <Label className="text-slate-300">Currency</Label>
-                  <Select defaultValue="USD">
-                    <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="bg-slate-800 border-slate-700">
-                      <SelectItem value="USD" className="text-white">USD</SelectItem>
-                      <SelectItem value="EUR" className="text-white">EUR</SelectItem>
-                      <SelectItem value="GBP" className="text-white">GBP</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              <div className="flex gap-3 pt-4">
-                <Button 
-                  onClick={() => {
-                    toast.success('Asset will be added (full implementation pending)');
-                    setDialogOpen(false);
-                  }}
-                  className="flex-1"
-                  style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: '#fff'}}
-                >
-                  Add Asset
-                </Button>
-                <Button 
-                  onClick={() => setDialogOpen(false)}
-                  variant="outline"
-                  style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
-                >
-                  Cancel
-                </Button>
-              </div>
+            <div className="pt-4">
+              <AddAssetForm 
+                onSuccess={() => {
+                  setDialogOpen(false);
+                  fetchAssets();
+                }}
+                onCancel={() => setDialogOpen(false)}
+              />
             </div>
           </DialogContent>
         </Dialog>
