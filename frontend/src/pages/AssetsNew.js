@@ -193,22 +193,23 @@ export default function AssetsNew() {
 
   return (
     <Layout>
-      <div className="space-y-6" style={{padding: '2rem', background: '#0b0b11', minHeight: '100vh'}}>
-        {/* Header */}
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-4xl font-bold mb-2" style={{color: '#FFFFFF'}}>Assets & Portfolio</h1>
-            <p className="text-lg" style={{color: 'rgba(255,255,255,0.65)'}}>Manage your wealth in one place</p>
+      <div className="min-h-screen" style={{background: '#0b0b11'}}>
+        <div className="space-y-6" style={{padding: '2rem'}}>
+          {/* Header */}
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-4xl font-bold mb-2" style={{color: '#FFFFFF'}}>Assets & Portfolio</h1>
+              <p className="text-lg" style={{color: 'rgba(255,255,255,0.65)'}}>Manage your wealth in one place</p>
+            </div>
+            <Button 
+              onClick={() => toast.info('Add Asset dialog - to be implemented')}
+              className="text-white"
+              style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Add Asset
+            </Button>
           </div>
-          <Button 
-            onClick={() => toast.info('Add Asset dialog - to be implemented')}
-            className="text-white"
-            style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Add Asset
-          </Button>
-        </div>
 
         {/* Jump Pills - Section Shortcuts */}
         <div className="flex flex-wrap gap-2">
