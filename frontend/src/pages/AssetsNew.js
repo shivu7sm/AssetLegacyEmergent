@@ -11,6 +11,7 @@ import { ChevronDown, ChevronRight, Edit2, Check, X, Trash2, Calculator, Sparkle
 import { useApp } from '@/context/AppContext';
 import { formatCurrency } from '@/utils/currencyConversion';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import AddAssetForm from '@/components/AddAssetForm';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
