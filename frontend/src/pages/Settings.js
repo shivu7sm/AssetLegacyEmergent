@@ -1313,6 +1313,91 @@ export default function Settings() {
               </CardContent>
             </Card>
 
+            {/* Interactive DMS Toggle - Cool Design */}
+            <Card style={{
+              background: dmsForm.is_active 
+                ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' 
+                : 'linear-gradient(135deg, #374151 0%, #1f2937 100%)',
+              borderColor: dmsForm.is_active ? '#10b981' : '#4b5563',
+              borderWidth: '2px',
+              transition: 'all 0.3s ease'
+            }}>
+              <CardContent className="py-8">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div 
+                      className="w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300"
+                      style={{
+                        background: dmsForm.is_active ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.1)',
+                        transform: dmsForm.is_active ? 'scale(1.1)' : 'scale(1)'
+                      }}
+                    >
+                      {dmsForm.is_active ? (
+                        <Shield className="w-8 h-8" style={{color: '#fff'}} />
+                      ) : (
+                        <AlertTriangle className="w-8 h-8" style={{color: '#9ca3af'}} />
+                      )}
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold mb-1" style={{color: '#fff'}}>
+                        Dead Man's Switch {dmsForm.is_active ? 'ACTIVE' : 'INACTIVE'}
+                      </h3>
+                      <p className="text-sm" style={{color: 'rgba(255,255,255,0.8)'}}>
+                        {dmsForm.is_active 
+                          ? 'Your family is protected. We\'ll alert them if you\'re inactive.' 
+                          : 'Protection disabled. Your family won\'t be notified during inactivity.'}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex flex-col items-end gap-3">
+                    <div 
+                      onClick={() => setDmsForm({ ...dmsForm, is_active: !dmsForm.is_active })}
+                      className="cursor-pointer relative w-20 h-10 rounded-full transition-all duration-300"
+                      style={{
+                        background: dmsForm.is_active ? '#059669' : '#4b5563',
+                        boxShadow: dmsForm.is_active 
+                          ? '0 0 20px rgba(16, 185, 129, 0.5)' 
+                          : '0 0 10px rgba(0,0,0,0.2)'
+                      }}
+                    >
+                      <div 
+                        className="absolute top-1 w-8 h-8 rounded-full transition-all duration-300 flex items-center justify-center"
+                        style={{
+                          left: dmsForm.is_active ? '44px' : '4px',
+                          background: '#fff',
+                          boxShadow: '0 2px 8px rgba(0,0,0,0.3)'
+                        }}
+                      >
+                        {dmsForm.is_active ? (
+                          <span style={{fontSize: '16px'}}>✓</span>
+                        ) : (
+                          <span style={{fontSize: '16px', color: '#9ca3af'}}>×</span>
+                        )}
+                      </div>
+                    </div>
+                    
+                    {dmsForm.is_active && (
+                      <div 
+                        className="px-3 py-1 rounded-full text-xs font-bold animate-pulse"
+                        style={{background: 'rgba(255,255,255,0.2)', color: '#fff'}}
+                      >
+                        🛡️ PROTECTED
+                      </div>
+                    )}
+                  </div>
+                </div>
+                
+                {!dmsForm.is_active && (
+                  <div className="mt-4 p-4 rounded-lg" style={{background: 'rgba(239, 68, 68, 0.2)', border: '1px solid rgba(239, 68, 68, 0.3)'}}>
+                    <p className="text-sm" style={{color: 'rgba(255,255,255,0.9)'}}>
+                      ⚠️ <strong>Warning:</strong> With Dead Man's Switch disabled, your nominees will NOT be notified if you become inactive. We strongly recommend keeping this enabled for your family's protection.
+                    </p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
             {/* DMS Configuration */}
             <form onSubmit={handleDmsSubmit}>
               <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
