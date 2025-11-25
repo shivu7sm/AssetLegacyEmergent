@@ -1640,8 +1640,21 @@ async def cleanup_old_audit_logs(user: User = Depends(require_auth)):
 # Demo Mode Routes
 @api_router.get("/demo/status")
 async def get_demo_status(user: User = Depends(require_auth)):
-    """Get current demo mode status"""
-    return {"demo_mode": user.demo_mode}
+    """Get current demo mode status and test account access"""
+    # Check if user has access to universal test account
+    test_account_access = None
+    if user.demo_mode:
+        # In demo mode, users get automatic access to test account
+        test_account_access = {
+            "account_id": "test_account_universal",
+            "account_name": "AssetVault Demo Portfolio",
+            "access_type": "demo_preview"
+        }
+    
+    return {
+        "demo_mode": user.demo_mode,
+        "test_account_access": test_account_access
+    }
 
 @api_router.post("/demo/toggle")
 async def toggle_demo_mode(user: User = Depends(require_auth)):
