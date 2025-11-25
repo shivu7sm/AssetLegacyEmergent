@@ -644,6 +644,7 @@ export default function Settings() {
       }
       setNomineeForm({ name: '', email: '', phone: '', relationship: '', priority: nominees.length + 1 });
       setEditingNomineeId(null);
+      setDialogOpen(false); // Close modal
       fetchData();
     } catch (error) {
       console.error('Failed to save nominee:', error);
@@ -660,6 +661,7 @@ export default function Settings() {
       priority: nominee.priority
     });
     setEditingNomineeId(nominee.id);
+    setDialogOpen(true); // Open modal for editing
   };
 
   const handleDeleteNominee = async (nomineeId) => {
