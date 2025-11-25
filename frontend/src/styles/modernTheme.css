@@ -1,103 +1,440 @@
-/* Modern Dashboard Theme - Professional SaaS Design */
+/* Modern Dashboard Theme - Premium Dark SaaS Design */
 .modern-theme {
-  --bg-primary: #fafbfc;
-  --bg-secondary: #f6f8fa;
-  --bg-card: #ffffff;
-  --bg-card-hover: #ffffff;
-  --border-light: #e1e4e8;
-  --border-medium: #d1d5da;
-  --text-primary: #1a1f36;
-  --text-secondary: #697386;
-  --text-tertiary: #8792a2;
-  --accent-blue: #0066ff;
-  --accent-purple: #7c3aed;
-  --accent-green: #00d4aa;
-  --accent-orange: #ff6b35;
-  --accent-red: #ff4757;
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.1);
-  --shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.12);
+  /* Color System - Modern Theme */
+  --bg-gradient-start: #0B0B11;
+  --bg-gradient-end: #131622;
+  --card-primary: #161820;
+  --card-secondary: #1D1F27;
+  --card-highlight: #232530;
+  --border-subtle: rgba(255,255,255,0.05);
+  --shadow-soft: 0 6px 20px rgba(0,0,0,0.45);
+  
+  /* Accent Palette */
+  --accent-gold: #E8C27C;
+  --accent-teal: #5CE3D7;
+  --accent-rose: #CF8F86;
+  --accent-red: #FF5C73;
+  --accent-amber: #F5C26B;
+  
+  /* Typography */
+  --text-title: #FFFFFF;
+  --text-subtitle: rgba(255,255,255,0.75);
+  --text-body: rgba(255,255,255,0.65);
+  --text-muted: rgba(255,255,255,0.45);
+  
+  /* Spacing */
+  --spacing-section: 32px;
+  --border-radius-card: 16px;
 }
 
-/* Clean, professional background */
+/* Background Gradient */
 .modern-theme {
   position: relative;
   min-height: 100vh;
-  background: var(--bg-primary);
+  background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
 }
 
-/* Professional card styling */
+/* Card Styling */
 .modern-theme .card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-light);
-  border-radius: 12px;
-  box-shadow: var(--shadow-sm);
-  transition: all 0.2s ease;
+  background: var(--card-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--border-radius-card);
+  box-shadow: var(--shadow-soft);
+  transition: all 0.3s ease;
   position: relative;
+  color: var(--text-body);
 }
 
 .modern-theme .card:hover {
-  box-shadow: var(--shadow-md);
-  border-color: var(--border-medium);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.55);
   transform: translateY(-2px);
 }
 
-/* Stat cards - clean and minimal */
+/* Stat Cards - Enhanced for Modern */
 .modern-theme .stat-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-light);
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: var(--shadow-sm);
-  transition: all 0.2s ease;
+  background: var(--card-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--border-radius-card);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-soft);
+  transition: all 0.3s ease;
+  min-height: 140px;
 }
 
 .modern-theme .stat-card:hover {
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.55);
   transform: translateY(-2px);
+  background: var(--card-highlight);
 }
 
-/* Stat icon - simple circles with solid colors */
+/* Net Worth Hero Card - Key KPI Highlight */
+.modern-theme .net-worth-hero {
+  background: linear-gradient(135deg, var(--card-highlight) 0%, var(--card-secondary) 100%);
+  border: 1px solid rgba(232, 194, 124, 0.2);
+  border-radius: var(--border-radius-card);
+  padding: 2.5rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  margin-bottom: var(--spacing-section);
+}
+
+/* Stat Icon - Refined */
 .modern-theme .stat-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 10px;
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.08);
+  color: var(--accent-gold);
+}
+
+.modern-theme .stat-icon.positive {
+  background: rgba(92, 227, 215, 0.15);
+  color: var(--accent-teal);
+}
+
+.modern-theme .stat-icon.negative {
+  background: rgba(255, 92, 115, 0.15);
+  color: var(--accent-red);
+}
+
+.modern-theme .stat-icon.neutral {
+  background: rgba(232, 194, 124, 0.15);
+  color: var(--accent-gold);
+}
+
+.modern-theme .stat-icon.orange {
+  background: rgba(245, 194, 107, 0.15);
+  color: var(--accent-amber);
+}
+
+/* Stat Values - Premium Gold for Key Metrics */
+.modern-theme .stat-value {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin: 0.5rem 0;
+}
+
+.modern-theme .stat-value.positive {
+  color: var(--accent-teal);
+}
+
+.modern-theme .stat-value.negative {
+  color: var(--accent-red);
+}
+
+/* Stat Labels */
+.modern-theme .stat-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-subtitle);
+  margin-bottom: 0.5rem;
+}
+
+/* Quick Stats (smaller stat displays) */
+.modern-theme .quick-stat {
+  background: var(--card-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.2s ease;
+}
+
+.modern-theme .quick-stat:hover {
+  background: var(--card-secondary);
+  transform: translateY(-1px);
+}
+
+.modern-theme .quick-stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
 
-.modern-theme .stat-icon.positive {
-  background: #e6f9f3;
-  color: #00d4aa;
+.modern-theme .quick-stat-icon.positive {
+  background: rgba(92, 227, 215, 0.15);
+  color: var(--accent-teal);
 }
 
-.modern-theme .stat-icon.negative {
-  background: #ffebee;
-  color: #ff4757;
+.modern-theme .quick-stat-icon.negative {
+  background: rgba(255, 92, 115, 0.15);
+  color: var(--accent-red);
 }
 
-.modern-theme .stat-icon.neutral {
-  background: #e8f2ff;
-  color: #0066ff;
+.modern-theme .quick-stat-icon.neutral {
+  background: rgba(232, 194, 124, 0.15);
+  color: var(--accent-gold);
 }
 
-.modern-theme .stat-icon.purple {
-  background: #f3ebff;
-  color: #7c3aed;
+.modern-theme .quick-stat-icon.orange {
+  background: rgba(245, 194, 107, 0.15);
+  color: var(--accent-amber);
 }
 
-.modern-theme .stat-icon.orange {
-  background: #fff4e6;
-  color: #ff6b35;
+.modern-theme .quick-stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-title);
+  line-height: 1;
 }
 
-/* Stat value - clean numbers */
-.modern-theme .stat-value {
-  font-size: 2rem;
+.modern-theme .quick-stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 0.25rem;
+}
+
+/* Typography */
+.modern-theme h1,
+.modern-theme h2,
+.modern-theme h3 {
+  color: var(--text-title);
+  font-weight: 700;
+}
+
+.modern-theme h1 {
+  font-size: 2.5rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.modern-theme h2 {
+  font-size: 1.75rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.modern-theme h3 {
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+
+.modern-theme p {
+  color: var(--text-body);
+  line-height: 1.6;
+}
+
+/* Button Styles - Modern Theme */
+.modern-theme .btn-primary {
+  background: var(--accent-gold);
+  color: var(--bg-gradient-start);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  font-size: 0.9375rem;
+}
+
+.modern-theme .btn-primary:hover {
+  background: #F5D49F;
+  box-shadow: 0 4px 12px rgba(232, 194, 124, 0.4);
+  transform: translateY(-1px);
+}
+
+.modern-theme .btn-secondary {
+  background: #2A2C34;
+  color: var(--text-title);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.modern-theme .btn-secondary:hover {
+  background: #32343C;
+  border-color: rgba(255,255,255,0.2);
+}
+
+.modern-theme .btn-ghost {
+  background: transparent;
+  color: var(--text-title);
+  border: 1px solid rgba(255,255,255,0.25);
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.modern-theme .btn-ghost:hover {
+  border-color: rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.05);
+}
+
+/* Section Spacing */
+.modern-theme > div > div {
+  margin-bottom: var(--spacing-section);
+}
+
+/* Chart Legends - Using Modern Accent Colors */
+.modern-theme .recharts-legend-item-text {
+  color: var(--text-subtitle) !important;
+}
+
+.modern-theme .recharts-text {
+  fill: var(--text-muted);
+}
+
+/* Input Fields */
+.modern-theme input,
+.modern-theme select,
+.modern-theme textarea {
+  background: var(--card-secondary);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-title);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  transition: all 0.2s ease;
+}
+
+.modern-theme input:focus,
+.modern-theme select:focus,
+.modern-theme textarea:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 0 3px rgba(232, 194, 124, 0.1);
+}
+
+.modern-theme input::placeholder {
+  color: var(--text-muted);
+}
+
+/* Tables */
+.modern-theme table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.modern-theme table thead {
+  background: var(--card-secondary);
+}
+
+.modern-theme table th {
+  color: var(--text-subtitle);
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.modern-theme table td {
+  color: var(--text-body);
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.modern-theme table tbody tr:hover {
+  background: rgba(255,255,255,0.02);
+}
+
+/* Badges and Tags */
+.modern-theme .badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.modern-theme .badge-success {
+  background: rgba(92, 227, 215, 0.15);
+  color: var(--accent-teal);
+}
+
+.modern-theme .badge-warning {
+  background: rgba(245, 194, 107, 0.15);
+  color: var(--accent-amber);
+}
+
+.modern-theme .badge-error {
+  background: rgba(255, 92, 115, 0.15);
+  color: var(--accent-red);
+}
+
+/* Tooltips */
+.modern-theme .tooltip {
+  background: var(--card-highlight);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  color: var(--text-subtitle);
+  font-size: 0.875rem;
+  box-shadow: var(--shadow-soft);
+}
+
+/* Loading States */
+.modern-theme .skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--card-secondary) 0%,
+    var(--card-highlight) 50%,
+    var(--card-secondary) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Accessibility - Ensure minimum 4.5:1 contrast */
+.modern-theme a {
+  color: var(--accent-gold);
+  transition: color 0.2s ease;
+}
+
+.modern-theme a:hover {
+  color: #F5D49F;
+}
+
+/* Scrollbar Styling */
+.modern-theme ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.modern-theme ::-webkit-scrollbar-track {
+  background: var(--card-primary);
+}
+
+.modern-theme ::-webkit-scrollbar-thumb {
+  background: var(--card-highlight);
+  border-radius: 5px;
+}
+
+.modern-theme ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.2);
+}
   font-weight: 700;
   color: var(--text-primary);
   line-height: 1.2;
