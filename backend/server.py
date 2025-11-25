@@ -58,6 +58,7 @@ class User(BaseModel):
     stripe_subscription_id: Optional[str] = None
     marketing_consent: bool = False
     communication_consent: bool = True
+    demo_mode: bool = False  # Toggle between live and demo data
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class UserSession(BaseModel):
