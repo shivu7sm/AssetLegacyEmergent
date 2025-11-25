@@ -16,6 +16,162 @@ import { useTheme } from '@/context/ThemeContext';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
+// Appearance Section Component
+function AppearanceSection() {
+  const { dashboardTheme, setTheme } = useTheme();
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold mb-2 flex items-center gap-2" style={{color: '#f8fafc'}}>
+          <Palette className="w-7 h-7" />
+          Appearance
+        </h2>
+        <p style={{color: '#94a3b8'}}>Customize the look and feel of your dashboard</p>
+      </div>
+
+      <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+        <CardHeader>
+          <CardTitle style={{color: '#f8fafc'}}>Theme Selection</CardTitle>
+          <CardDescription style={{color: '#94a3b8'}}>
+            Choose your preferred dashboard theme. Your selection will be remembered across sessions.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Standard Theme Card */}
+            <div 
+              onClick={() => setTheme('standard')}
+              className="cursor-pointer relative p-6 rounded-lg border-2 transition-all"
+              style={{
+                background: dashboardTheme === 'standard' ? 'rgba(168, 85, 247, 0.1)' : '#16001e',
+                borderColor: dashboardTheme === 'standard' ? '#a855f7' : '#2d1f3d',
+                transform: dashboardTheme === 'standard' ? 'scale(1.02)' : 'scale(1)'
+              }}
+            >
+              {dashboardTheme === 'standard' && (
+                <div className="absolute top-3 right-3 w-6 h-6 rounded-full flex items-center justify-center" style={{background: '#a855f7'}}>
+                  <span style={{color: '#fff', fontSize: '14px'}}>✓</span>
+                </div>
+              )}
+              <h3 className="text-lg font-bold mb-2" style={{color: '#f8fafc'}}>Standard Theme</h3>
+              <p className="text-sm mb-4" style={{color: '#94a3b8'}}>
+                Classic dark theme with purple and pink gradient accents. Perfect for those who prefer vibrant colors.
+              </p>
+              <div className="flex gap-2">
+                <div className="w-8 h-8 rounded" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}></div>
+                <div className="w-8 h-8 rounded" style={{background: '#1a1229'}}></div>
+                <div className="w-8 h-8 rounded" style={{background: '#ec4899'}}></div>
+              </div>
+            </div>
+
+            {/* Modern Theme Card */}
+            <div 
+              onClick={() => setTheme('modern')}
+              className="cursor-pointer relative p-6 rounded-lg border-2 transition-all"
+              style={{
+                background: dashboardTheme === 'modern' ? 'rgba(232, 194, 124, 0.1)' : '#16001e',
+                borderColor: dashboardTheme === 'modern' ? '#E8C27C' : '#2d1f3d',
+                transform: dashboardTheme === 'modern' ? 'scale(1.02)' : 'scale(1)'
+              }}
+            >
+              {dashboardTheme === 'modern' && (
+                <div className="absolute top-3 right-3 w-6 h-6 rounded-full flex items-center justify-center" style={{background: '#E8C27C'}}>
+                  <span style={{color: '#0B0B11', fontSize: '14px'}}>✓</span>
+                </div>
+              )}
+              <h3 className="text-lg font-bold mb-2" style={{color: '#f8fafc'}}>Modern Theme</h3>
+              <p className="text-sm mb-4" style={{color: '#94a3b8'}}>
+                Premium dark theme with gold accents and refined spacing. Ideal for a sophisticated, professional look.
+              </p>
+              <div className="flex gap-2">
+                <div className="w-8 h-8 rounded" style={{background: '#E8C27C'}}></div>
+                <div className="w-8 h-8 rounded" style={{background: 'linear-gradient(135deg, #0B0B11 0%, #131622 100%)'}}></div>
+                <div className="w-8 h-8 rounded" style={{background: '#5CE3D7'}}></div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-4 p-4 rounded-lg" style={{background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.3)'}}>
+            <p className="text-sm" style={{color: '#cbd5e1'}}>
+              <strong style={{color: '#60a5fa'}}>Current theme:</strong> {dashboardTheme === 'modern' ? 'Modern' : 'Standard'}
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+// Demo Data Section Component
+function DemoDataSection() {
+  const [resetting, setResetting] = useState(false);
+
+  const handleResetDemoData = async () => {
+    if (!window.confirm('This will delete all your demo data and create fresh sample data. This action cannot be undone. Continue?')) {
+      return;
+    }
+
+    setResetting(true);
+    try {
+      await axios.post(`${API}/demo/reseed`, {}, { withCredentials: true });
+      toast.success('Demo data reset successfully! Refresh the page to see updated data.');
+    } catch (error) {
+      console.error('Failed to reset demo data:', error);
+      toast.error('Failed to reset demo data');
+    } finally {
+      setResetting(false);
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold mb-2 flex items-center gap-2" style={{color: '#f8fafc'}}>
+          <RefreshCw className="w-7 h-7" />
+          Demo Data Management
+        </h2>
+        <p style={{color: '#94a3b8'}}>Reset and manage your demo data for testing</p>
+      </div>
+
+      <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#f59e0b', borderWidth: '2px'}}>
+        <CardHeader>
+          <CardTitle style={{color: '#f8fafc'}}>Reset Demo Data</CardTitle>
+          <CardDescription style={{color: '#94a3b8'}}>
+            Use this to restore the original sample data if you've made changes in demo mode
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="p-4 rounded-lg" style={{background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.3)'}}>
+            <h4 className="font-semibold mb-2" style={{color: '#fbbf24'}}>⚠️ What happens when you reset:</h4>
+            <ul className="text-sm space-y-1" style={{color: '#cbd5e1'}}>
+              <li>• All demo assets will be deleted and recreated</li>
+              <li>• Demo documents will be restored to defaults</li>
+              <li>• Demo scheduled messages will be reset</li>
+              <li>• Demo digital will content will be refreshed</li>
+              <li>• Your live data (in Live Mode) will NOT be affected</li>
+            </ul>
+          </div>
+
+          <Button 
+            onClick={handleResetDemoData}
+            disabled={resetting}
+            className="w-full"
+            style={{background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)', color: '#fff'}}
+          >
+            <RefreshCw className={`w-4 h-4 mr-2 ${resetting ? 'animate-spin' : ''}`} />
+            {resetting ? 'Resetting Demo Data...' : 'Reset Demo Data'}
+          </Button>
+
+          <p className="text-xs text-center" style={{color: '#94a3b8'}}>
+            After reset, switch between Demo and Live mode to see the fresh data
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
 // Security Audit Section Component
 function SecurityAuditSection({ user }) {
   const [auditLogs, setAuditLogs] = useState([]);
