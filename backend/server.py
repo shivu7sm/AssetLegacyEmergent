@@ -820,13 +820,21 @@ async def revoke_nominee_access(nominee_id: str, user: User = Depends(require_au
 
 @api_router.put("/nominees/{nominee_id}/access-type")
 async def update_access_type(nominee_id: str, access_type: str, user: User = Depends(require_auth)):
-    """Update when nominee can access: 'immediate' or 'after_dms'"""
-    if access_type not in ['immediate', 'after_dms']:
-        raise HTTPException(status_code=400, detail="Invalid access type")
+    """Update when nominee can access: 'immediate', 'temporary', or 'after_dms'"""
+    if access_type not in ['immediate', 'temporary', 'after_dms']:
+        raise HTTPException(status_code=400, detail="Invalid access type. Must be 'immediate', 'temporary', or 'after_dms'")
+    
+    update_data = {"access_type": access_type}
+    
+    # For temporary access, set expiration date
+    if access_type == 'temporary':
+        update_data["access_expires_at"] = (datetime.now(timezone.utc) + timedelta(days=7)).isoformat()
+    else:
+        update_data["access_expires_at"] = None
     
     result = await db.nominees.update_one(
         {"id": nominee_id, "user_id": user.id},
-        {"$set": {"access_type": access_type}}
+        {"$set": update_data}
     )
     
     if result.modified_count == 0:
