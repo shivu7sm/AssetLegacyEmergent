@@ -2080,6 +2080,41 @@ async def seed_demo_data(user_id: str, force: bool = False):
                 "country": "Australia"
             },
             "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        # Mutual Funds
+        {
+            "id": f"{demo_prefix}mf1",
+            "user_id": user_id,
+            "name": "Vanguard S&P 500 Index Fund",
+            "type": "mutual_fund",
+            "purchase_currency": "USD",
+            "purchase_date": "2022-01-15",
+            "total_value": 45000,
+            "current_value": 58000,
+            "details": {
+                "fund_name": "Vanguard S&P 500",
+                "ticker": "VFIAX",
+                "expense_ratio": 0.04,
+                "country": "USA"
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}india_mf1",
+            "user_id": user_id,
+            "name": "SBI Bluechip Fund",
+            "type": "mutual_fund",
+            "purchase_currency": "INR",
+            "purchase_date": "2022-08-10",
+            "total_value": 300000,
+            "current_value": 385000,
+            "details": {
+                "fund_name": "SBI Bluechip Fund",
+                "folio_number": "12345678",
+                "units": 5000,
+                "country": "India"
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
         }
     ]
     
