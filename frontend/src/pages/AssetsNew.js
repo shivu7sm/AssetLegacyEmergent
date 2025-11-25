@@ -314,7 +314,9 @@ export default function AssetsNew() {
                       const group = ASSET_GROUPS[groupKey];
                       const groupAssets = groupedAssets[groupKey] || [];
                       
+                      // Skip if no assets or filtered out
                       if (groupAssets.length === 0) return null;
+                      if (activeFilter !== 'all' && activeFilter !== groupKey) return null;
                       
                       const isExpanded = expandedGroups.includes(groupKey);
                       const isLiability = groupKey === 'liabilities';
