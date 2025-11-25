@@ -193,7 +193,7 @@ export default function AssetsNew() {
 
   return (
     <Layout>
-      <div className="space-y-6" style={{padding: '2rem 1.5rem', margin: '0 auto', maxWidth: '1600px'}}>
+      <div className="space-y-6" style={{padding: '2rem', background: '#0b0b11', minHeight: '100vh'}}>
         {/* Header */}
         <div className="flex justify-between items-center">
           <div>
