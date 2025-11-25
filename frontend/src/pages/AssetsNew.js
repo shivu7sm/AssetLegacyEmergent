@@ -67,6 +67,7 @@ export default function AssetsNew() {
   const [calculatingLoan, setCalculatingLoan] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [detailViewMode, setDetailViewMode] = useState('sidebar'); // 'sidebar' or 'modal'
+  const [activeFilter, setActiveFilter] = useState('all'); // Filter by asset group
 
   useEffect(() => {
     fetchAssets();
