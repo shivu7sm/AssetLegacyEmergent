@@ -159,13 +159,11 @@ export default function Layout({ children }) {
                     <>
                       <FlaskConical className="w-4 h-4" />
                       <span>DEMO MODE</span>
-                      <span className="text-xs opacity-90">(Test Data)</span>
                     </>
                   ) : (
                     <>
                       <Database className="w-4 h-4" />
                       <span>LIVE MODE</span>
-                      <span className="text-xs opacity-90">(Real Data)</span>
                     </>
                   )}
                 </button>
