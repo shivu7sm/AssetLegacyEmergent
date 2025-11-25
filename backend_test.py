@@ -3085,6 +3085,316 @@ print('Test data cleaned up');
                 200
             )
 
+
+    def test_loan_calculator_endpoint(self):
+        """Test Loan Repayment Calculator API Endpoint"""
+        print("\n💳 Testing Loan Repayment Calculator Endpoint...")
+        
+        # Test 1: Basic loan calculation
+        print("\n   Test 1: Basic Loan Calculation")
+        basic_loan = {
+            "principal": 50000,
+            "annual_interest_rate": 8.5,
+            "tenure_months": 60,
+            "loan_type": "personal"
+        }
+        
+        basic_result = self.run_test(
+            "Calculate basic personal loan (50k, 8.5%, 60 months)",
+            "POST",
+            "loan-calculator",
+            200,
+            basic_loan
+        )
+        
+        if basic_result:
+            # Verify response structure
+            required_fields = ['monthly_payment', 'total_interest', 'total_amount', 'amortization_schedule', 'ai_tips']
+            missing_fields = [f for f in required_fields if f not in basic_result]
+            
+            if not missing_fields:
+                self.log_test(
+                    "Basic loan response has all required fields",
+                    True,
+                    f"All fields present: {required_fields}"
+                )
+            else:
+                self.log_test(
+                    "Basic loan response has all required fields",
+                    False,
+                    f"Missing fields: {missing_fields}"
+                )
+            
+            # Verify amortization schedule count
+            schedule = basic_result.get('amortization_schedule', [])
+            if len(schedule) == 60:
+                self.log_test(
+                    "Basic loan amortization schedule has correct number of entries",
+                    True,
+                    f"60 entries as expected"
+                )
+            else:
+                self.log_test(
+                    "Basic loan amortization schedule has correct number of entries",
+                    False,
+                    f"Expected 60, got {len(schedule)}"
+                )
+            
+            # Verify AI tips are present and meaningful
+            ai_tips = basic_result.get('ai_tips', '')
+            if ai_tips and len(ai_tips) > 50 and 'unavailable' not in ai_tips.lower():
+                self.log_test(
+                    "Basic loan AI tips generated successfully",
+                    True,
+                    f"AI tips length: {len(ai_tips)} characters"
+                )
+            else:
+                self.log_test(
+                    "Basic loan AI tips generated successfully",
+                    False,
+                    f"AI tips: {ai_tips[:100] if ai_tips else 'None'}"
+                )
+            
+            # Verify mathematical correctness
+            monthly_payment = basic_result.get('monthly_payment', 0)
+            total_interest = basic_result.get('total_interest', 0)
+            total_amount = basic_result.get('total_amount', 0)
+            
+            # Check: total_amount = principal + total_interest
+            expected_total = basic_loan['principal'] + total_interest
+            if abs(total_amount - expected_total) < 0.01:
+                self.log_test(
+                    "Basic loan: total_amount = principal + total_interest",
+                    True,
+                    f"${total_amount:.2f} = ${basic_loan['principal']:.2f} + ${total_interest:.2f}"
+                )
+            else:
+                self.log_test(
+                    "Basic loan: total_amount = principal + total_interest",
+                    False,
+                    f"Expected ${expected_total:.2f}, got ${total_amount:.2f}"
+                )
+            
+            # Verify remaining balance reaches 0 at the end
+            if schedule:
+                last_entry = schedule[-1]
+                final_balance = last_entry.get('remaining_balance', -1)
+                if final_balance == 0:
+                    self.log_test(
+                        "Basic loan: remaining balance reaches 0 at end",
+                        True,
+                        "Final balance is 0"
+                    )
+                else:
+                    self.log_test(
+                        "Basic loan: remaining balance reaches 0 at end",
+                        False,
+                        f"Final balance: ${final_balance:.2f}"
+                    )
+            
+            # Verify all monetary values are rounded to 2 decimal places
+            all_rounded = True
+            for entry in schedule[:5]:  # Check first 5 entries
+                for key in ['payment', 'principal_payment', 'interest_payment', 'remaining_balance']:
+                    value = entry.get(key, 0)
+                    if round(value, 2) != value:
+                        all_rounded = False
+                        break
+                if not all_rounded:
+                    break
+            
+            self.log_test(
+                "Basic loan: all monetary values rounded to 2 decimals",
+                all_rounded,
+                "All values properly rounded" if all_rounded else "Some values not properly rounded"
+            )
+            
+            # Verify monthly payment calculation (EMI formula)
+            # EMI = P * r * (1+r)^n / ((1+r)^n - 1)
+            P = basic_loan['principal']
+            r = (basic_loan['annual_interest_rate'] / 100) / 12
+            n = basic_loan['tenure_months']
+            expected_emi = P * r * ((1 + r) ** n) / (((1 + r) ** n) - 1)
+            
+            if abs(monthly_payment - expected_emi) < 0.01:
+                self.log_test(
+                    "Basic loan: monthly payment uses correct EMI formula",
+                    True,
+                    f"Calculated: ${monthly_payment:.2f}, Expected: ${expected_emi:.2f}"
+                )
+            else:
+                self.log_test(
+                    "Basic loan: monthly payment uses correct EMI formula",
+                    False,
+                    f"Calculated: ${monthly_payment:.2f}, Expected: ${expected_emi:.2f}"
+                )
+            
+            print(f"   📊 Basic Loan Results:")
+            print(f"   Monthly Payment: ${monthly_payment:.2f}")
+            print(f"   Total Interest: ${total_interest:.2f}")
+            print(f"   Total Amount: ${total_amount:.2f}")
+            print(f"   AI Tips Preview: {ai_tips[:100] if ai_tips else 'None'}...")
+        
+        # Test 2: Zero interest loan
+        print("\n   Test 2: Zero Interest Loan")
+        zero_interest_loan = {
+            "principal": 10000,
+            "annual_interest_rate": 0,
+            "tenure_months": 12,
+            "loan_type": "personal"
+        }
+        
+        zero_result = self.run_test(
+            "Calculate zero interest loan (10k, 0%, 12 months)",
+            "POST",
+            "loan-calculator",
+            200,
+            zero_interest_loan
+        )
+        
+        if zero_result:
+            monthly_payment = zero_result.get('monthly_payment', 0)
+            total_interest = zero_result.get('total_interest', 0)
+            expected_monthly = zero_interest_loan['principal'] / zero_interest_loan['tenure_months']
+            
+            # Verify monthly payment = principal / tenure
+            if abs(monthly_payment - expected_monthly) < 0.01:
+                self.log_test(
+                    "Zero interest loan: monthly payment = principal/tenure",
+                    True,
+                    f"${monthly_payment:.2f} = ${zero_interest_loan['principal']}/{zero_interest_loan['tenure_months']}"
+                )
+            else:
+                self.log_test(
+                    "Zero interest loan: monthly payment = principal/tenure",
+                    False,
+                    f"Expected ${expected_monthly:.2f}, got ${monthly_payment:.2f}"
+                )
+            
+            # Verify total interest is 0
+            if total_interest == 0:
+                self.log_test(
+                    "Zero interest loan: total interest is 0",
+                    True,
+                    "Total interest correctly calculated as 0"
+                )
+            else:
+                self.log_test(
+                    "Zero interest loan: total interest is 0",
+                    False,
+                    f"Expected 0, got ${total_interest:.2f}"
+                )
+            
+            print(f"   📊 Zero Interest Loan Results:")
+            print(f"   Monthly Payment: ${monthly_payment:.2f}")
+            print(f"   Total Interest: ${total_interest:.2f}")
+        
+        # Test 3: Short-term credit card loan
+        print("\n   Test 3: Short-term Credit Card Loan")
+        short_term_loan = {
+            "principal": 5000,
+            "annual_interest_rate": 12,
+            "tenure_months": 6,
+            "loan_type": "credit_card"
+        }
+        
+        short_result = self.run_test(
+            "Calculate short-term credit card loan (5k, 12%, 6 months)",
+            "POST",
+            "loan-calculator",
+            200,
+            short_term_loan
+        )
+        
+        if short_result:
+            schedule = short_result.get('amortization_schedule', [])
+            if len(schedule) == 6:
+                self.log_test(
+                    "Short-term loan: amortization schedule has 6 entries",
+                    True,
+                    "Correct number of entries"
+                )
+            else:
+                self.log_test(
+                    "Short-term loan: amortization schedule has 6 entries",
+                    False,
+                    f"Expected 6, got {len(schedule)}"
+                )
+            
+            print(f"   📊 Short-term Loan Results:")
+            print(f"   Monthly Payment: ${short_result.get('monthly_payment', 0):.2f}")
+            print(f"   Total Interest: ${short_result.get('total_interest', 0):.2f}")
+        
+        # Test 4: Long-term home loan
+        print("\n   Test 4: Long-term Home Loan (30 years)")
+        long_term_loan = {
+            "principal": 300000,
+            "annual_interest_rate": 4.5,
+            "tenure_months": 360,
+            "loan_type": "home"
+        }
+        
+        long_result = self.run_test(
+            "Calculate long-term home loan (300k, 4.5%, 360 months)",
+            "POST",
+            "loan-calculator",
+            200,
+            long_term_loan
+        )
+        
+        if long_result:
+            schedule = long_result.get('amortization_schedule', [])
+            if len(schedule) == 360:
+                self.log_test(
+                    "Long-term loan: amortization schedule has 360 entries",
+                    True,
+                    "Correct number of entries for 30-year loan"
+                )
+            else:
+                self.log_test(
+                    "Long-term loan: amortization schedule has 360 entries",
+                    False,
+                    f"Expected 360, got {len(schedule)}"
+                )
+            
+            # Verify final balance is 0
+            if schedule:
+                final_balance = schedule[-1].get('remaining_balance', -1)
+                if final_balance == 0:
+                    self.log_test(
+                        "Long-term loan: final balance is 0",
+                        True,
+                        "Loan fully paid off"
+                    )
+                else:
+                    self.log_test(
+                        "Long-term loan: final balance is 0",
+                        False,
+                        f"Final balance: ${final_balance:.2f}"
+                    )
+            
+            print(f"   📊 Long-term Loan Results:")
+            print(f"   Monthly Payment: ${long_result.get('monthly_payment', 0):.2f}")
+            print(f"   Total Interest: ${long_result.get('total_interest', 0):.2f}")
+            print(f"   Total Amount: ${long_result.get('total_amount', 0):.2f}")
+        
+        # Test 5: Authentication test (without token)
+        print("\n   Test 5: Authentication Test")
+        old_token = self.session_token
+        self.session_token = None
+        
+        self.run_test(
+            "Call loan calculator without authentication (should fail)",
+            "POST",
+            "loan-calculator",
+            401,
+            basic_loan
+        )
+        
+        self.session_token = old_token
+        
+        print("\n   ✅ Loan Calculator Endpoint Testing Complete")
+
     def run_all_tests(self):
         """Run all backend tests"""
         print("🚀 Starting Asset Management Backend API Tests")
