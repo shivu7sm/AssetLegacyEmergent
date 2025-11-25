@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
-import { ShieldCheck, Lock, Clock, Users, DollarSign, TrendingUp, Play, AlertCircle } from 'lucide-react';
+import { ShieldCheck, Lock, Clock, Users, DollarSign, TrendingUp, Play, AlertCircle, CheckCircle, ArrowRight, Zap, Heart, FileText } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -29,872 +29,524 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen" style={{background: 'linear-gradient(135deg, #1a0b2e 0%, #16001e 50%, #2d0e3e 100%)'}}>
-      {/* Header with Navigation */}
-      <header className="border-b backdrop-blur-xl sticky top-0 z-50" style={{borderColor: '#2d1f3d', background: 'rgba(15, 10, 30, 0.9)'}}>
-        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="w-8 h-8" style={{color: '#ec4899'}} />
-            <h1 className="text-2xl font-bold" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>AssetVault</h1>
-          </div>
-          
-          {/* Navigation Links */}
-          <nav className="hidden md:flex items-center gap-6">
-            <a 
-              href="#truth" 
-              className="text-sm font-medium hover:text-purple-400 transition-colors"
-              style={{color: '#cbd5e1'}}
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById('truth')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-            >
-              The Truth
-            </a>
-            <a 
-              href="#how-it-works" 
-              className="text-sm font-medium hover:text-purple-400 transition-colors"
-              style={{color: '#cbd5e1'}}
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-            >
-              How It Works
-            </a>
-            <a 
-              href="#features" 
-              className="text-sm font-medium hover:text-purple-400 transition-colors"
-              style={{color: '#cbd5e1'}}
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-            >
-              Features
-            </a>
-            <a 
-              href="#security" 
-              className="text-sm font-medium hover:text-purple-400 transition-colors"
-              style={{color: '#cbd5e1'}}
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById('security')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-            >
-              Security
-            </a>
-            <a 
-              href="#pricing" 
-              className="text-sm font-medium hover:text-purple-400 transition-colors"
-              style={{color: '#cbd5e1'}}
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-            >
-              Pricing
-            </a>
-            <a 
-              href="#faq" 
-              className="text-sm font-medium hover:text-purple-400 transition-colors"
-              style={{color: '#cbd5e1'}}
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-            >
-              FAQ
-            </a>
-          </nav>
-          
-          <Button data-testid="header-login-btn" onClick={handleLogin} className="px-6 py-2 rounded-full" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: 'white', border: 'none'}}>
-            Sign In
-          </Button>
-        </div>
-      </header>
+    <div className="min-h-screen" style={{
+      background: 'linear-gradient(135deg, #EB3349 0%, #F45C43 100%)',
+      position: 'relative',
+      fontFamily: '"Poppins", "Montserrat", sans-serif'
+    }}>
+      {/* Hexagon Grid Overlay */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundImage: `
+          repeating-linear-gradient(0deg, rgba(255,255,255,0.08) 0px, transparent 1px, transparent 60px, rgba(255,255,255,0.08) 61px),
+          repeating-linear-gradient(60deg, rgba(255,255,255,0.08) 0px, transparent 1px, transparent 60px, rgba(255,255,255,0.08) 61px),
+          repeating-linear-gradient(120deg, rgba(255,255,255,0.08) 0px, transparent 1px, transparent 60px, rgba(255,255,255,0.08) 61px)
+        `,
+        pointerEvents: 'none',
+        zIndex: 1
+      }} />
 
-      {/* Hero Section */}
-      <section className="container mx-auto px-6 py-24 relative">
-        {/* Subtle animated background elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-72 h-72 rounded-full opacity-10 blur-3xl" style={{background: 'radial-gradient(circle, #ef4444 0%, transparent 70%)'}}></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 rounded-full opacity-10 blur-3xl" style={{background: 'radial-gradient(circle, #a855f7 0%, transparent 70%)'}}></div>
-        </div>
-
-        <div className="max-w-5xl mx-auto text-center relative z-10">
-          {/* Tagline Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6" style={{background: 'rgba(168, 85, 247, 0.1)', border: '1px solid rgba(168, 85, 247, 0.3)'}}>
-            <ShieldCheck className="w-4 h-4" style={{color: '#a855f7'}} />
-            <span className="text-sm font-medium" style={{color: '#a855f7'}}>Trusted by 10,000+ families worldwide</span>
-          </div>
-
-          <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold mb-6 leading-tight" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
-            Life is Uncertain.
-            <span className="block mt-2">Your Legacy</span>
-            <span className="block mt-2" style={{background: 'linear-gradient(135deg, #ef4444 0%, #ec4899 50%, #a855f7 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text'}}>Doesn't Have to Be</span>
-          </h2>
-          
-          <p className="text-lg sm:text-xl mb-4 max-w-3xl mx-auto leading-relaxed" style={{color: '#cbd5e1'}}>
-            Every day, millions in assets vanish—forgotten accounts, unclaimed policies, lost investments. 
-            Your family deserves better. <span style={{color: '#f8fafc', fontWeight: 600}}>Protect what you've built.</span>
-          </p>
-          
-          <p className="text-base sm:text-lg mb-10 max-w-2xl mx-auto" style={{color: '#94a3b8'}}>
-            AssetVault ensures your hard-earned wealth reaches the people you love, 
-            exactly when they need it most—automatically, securely, and with dignity.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
-            <Button data-testid="hero-get-started-btn" onClick={handleLogin} size="lg" className="px-10 py-7 text-lg font-semibold rounded-full shadow-2xl hover:scale-105 transition-transform" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: 'white', border: 'none'}}>
-              Start Free Today
-            </Button>
-            <Button onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })} size="lg" variant="outline" className="px-10 py-7 text-lg font-semibold rounded-full" style={{borderColor: '#a855f7', color: '#a855f7', background: 'transparent'}}>
-              See How It Works
-            </Button>
-          </div>
-
-          {/* Trust Indicators */}
-          <div className="flex flex-wrap justify-center gap-8 text-sm" style={{color: '#64748b'}}>
-            <div className="flex items-center gap-2">
-              <svg className="w-5 h-5" style={{color: '#10b981'}} fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              <span>No credit card required</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <svg className="w-5 h-5" style={{color: '#10b981'}} fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              <span>Setup in under 10 minutes</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <svg className="w-5 h-5" style={{color: '#10b981'}} fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              <span>Bank-level security</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Video Section */}
-      <section className="py-20" style={{background: 'rgba(26, 11, 46, 0.3)'}}>
-        <div className="container mx-auto px-6">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-12">
-              <h3 className="text-3xl sm:text-4xl font-bold mb-4" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
-                See How AssetVault Protects Your Legacy
-              </h3>
-              <p className="text-base sm:text-lg" style={{color: '#94a3b8'}}>
-                Watch how families are securing their wealth for future generations
-              </p>
+      {/* Content Layer */}
+      <div style={{ position: 'relative', zIndex: 2 }}>
+        {/* Header */}
+        <header className="backdrop-blur-sm sticky top-0 z-50" style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+          <div className="container mx-auto px-6 py-5 flex justify-between items-center">
+            <div className="flex items-center gap-3">
+              <ShieldCheck className="w-9 h-9" style={{ color: '#FFC300' }} />
+              <h1 className="text-3xl font-bold" style={{ color: '#fff', letterSpacing: '-0.02em' }}>AssetVault</h1>
             </div>
             
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl" style={{background: '#131835', border: '1px solid #1e293b'}}>
-              <div className="relative" style={{paddingBottom: '56.25%'}}>
-                <iframe
-                  className="absolute top-0 left-0 w-full h-full"
-                  src="https://www.youtube.com/embed/_NUpwfw2Eqw?si=1s"
-                  title="AssetVault Introduction"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                ></iframe>
+            {/* Navigation */}
+            <nav className="hidden md:flex items-center gap-8">
+              <a href="#features" className="text-white text-sm font-medium hover:text-yellow-300 transition-colors" style={{ letterSpacing: '0.02em' }}>Features</a>
+              <a href="#why" className="text-white text-sm font-medium hover:text-yellow-300 transition-colors" style={{ letterSpacing: '0.02em' }}>Why AssetVault</a>
+              <a href="#pricing" className="text-white text-sm font-medium hover:text-yellow-300 transition-colors" style={{ letterSpacing: '0.02em' }}>Pricing</a>
+              <a href="#faq" className="text-white text-sm font-medium hover:text-yellow-300 transition-colors" style={{ letterSpacing: '0.02em' }}>FAQ</a>
+            </nav>
+
+            <Button 
+              onClick={handleLogin}
+              className="font-semibold px-8 py-6 text-base"
+              style={{
+                background: '#FFC300',
+                color: '#1a1a1a',
+                borderRadius: '999px',
+                border: 'none',
+                letterSpacing: '0.02em',
+                boxShadow: '0 4px 20px rgba(255, 195, 0, 0.3)'
+              }}
+            >
+              Get Started Free
+            </Button>
+          </div>
+        </header>
+
+        {/* Hero Section */}
+        <section className="py-24 md:py-32">
+          <div className="container mx-auto px-6">
+            <div className="max-w-5xl mx-auto text-center">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8" style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(10px)' }}>
+                <Zap className="w-4 h-4" style={{ color: '#FFC300' }} />
+                <span className="text-white text-sm font-medium" style={{ letterSpacing: '0.03em' }}>Protect Your Legacy Today</span>
+              </div>
+
+              <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight" style={{ 
+                color: '#fff',
+                letterSpacing: '-0.03em'
+              }}>
+                Your Assets.<br />Your Legacy.<br />
+                <span style={{ color: '#FFC300' }}>Forever Protected.</span>
+              </h1>
+              
+              <p className="text-xl md:text-2xl mb-12 max-w-3xl mx-auto" style={{ 
+                color: 'rgba(255,255,255,0.9)',
+                lineHeight: '1.6',
+                letterSpacing: '0.01em'
+              }}>
+                The only platform that ensures your financial assets are never lost to your family. 
+                Track everything, secure your legacy, protect what matters.
+              </p>
+
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <Button 
+                  onClick={handleLogin}
+                  className="font-bold px-10 py-7 text-lg"
+                  style={{
+                    background: '#FFC300',
+                    color: '#1a1a1a',
+                    borderRadius: '999px',
+                    border: 'none',
+                    letterSpacing: '0.02em',
+                    boxShadow: '0 8px 30px rgba(255, 195, 0, 0.4)'
+                  }}
+                >
+                  Start Free Trial
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+                
+                <Button 
+                  variant="outline"
+                  className="font-semibold px-8 py-7 text-lg"
+                  style={{
+                    background: 'rgba(255,255,255,0.1)',
+                    color: '#fff',
+                    borderRadius: '999px',
+                    border: '2px solid rgba(255,255,255,0.3)',
+                    letterSpacing: '0.02em',
+                    backdropFilter: 'blur(10px)'
+                  }}
+                >
+                  <Play className="mr-2 w-5 h-5" />
+                  Watch Demo
+                </Button>
+              </div>
+
+              <div className="mt-12 flex items-center justify-center gap-8 text-white">
+                <div className="text-center">
+                  <div className="text-3xl font-bold" style={{ color: '#FFC300' }}>5K+</div>
+                  <div className="text-sm opacity-90" style={{ letterSpacing: '0.02em' }}>Active Users</div>
+                </div>
+                <div className="h-12 w-px" style={{ background: 'rgba(255,255,255,0.2)' }} />
+                <div className="text-center">
+                  <div className="text-3xl font-bold" style={{ color: '#FFC300' }}>₹50Cr+</div>
+                  <div className="text-sm opacity-90" style={{ letterSpacing: '0.02em' }}>Assets Protected</div>
+                </div>
+                <div className="h-12 w-px" style={{ background: 'rgba(255,255,255,0.2)' }} />
+                <div className="text-center">
+                  <div className="text-3xl font-bold" style={{ color: '#FFC300' }}>99.9%</div>
+                  <div className="text-sm opacity-90" style={{ letterSpacing: '0.02em' }}>Uptime</div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Problem Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-6">
-          <div className="max-w-5xl mx-auto">
-            <h3 className="text-3xl sm:text-4xl font-bold text-center mb-12" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
-              The Hidden Crisis of Unclaimed Wealth
-            </h3>
-            
-            <div className="grid md:grid-cols-2 gap-8 mb-12">
-              <div className="p-8 rounded-2xl" style={{background: '#131835', border: '1px solid #1e293b'}}>
-                <div className="text-4xl font-bold mb-2" style={{color: '#60a5fa'}}>₹35,000 Cr+</div>
-                <div className="text-xl font-semibold mb-3" style={{color: '#f8fafc'}}>Unclaimed in India</div>
-                <p style={{color: '#94a3b8'}}>
-                  Over ₹35,000 crores remain unclaimed in Indian banks, insurance companies, and investments. 
-                  Families are unaware of assets their loved ones accumulated.
+        {/* The Uncomfortable Truth Section */}
+        <section id="why" className="py-20" style={{ background: 'rgba(0,0,0,0.15)' }}>
+          <div className="container mx-auto px-6">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-12">
+                <AlertCircle className="w-16 h-16 mx-auto mb-4" style={{ color: '#FFC300' }} />
+                <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ color: '#fff', letterSpacing: '-0.02em' }}>
+                  The Uncomfortable Truth
+                </h2>
+                <p className="text-xl" style={{ color: 'rgba(255,255,255,0.9)', letterSpacing: '0.01em' }}>
+                  Banks and credit card companies will track you down for every rupee you owe. 
+                  But what about the assets you own?
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="p-8 rounded-3xl" style={{ background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)' }}>
+                  <div className="text-5xl mb-4">🏦</div>
+                  <h3 className="text-2xl font-bold mb-3" style={{ color: '#fff' }}>Your Liabilities</h3>
+                  <p style={{ color: 'rgba(255,255,255,0.85)', lineHeight: '1.7' }}>
+                    Loans, credit cards, EMIs - every institution has your details. They'll find your family instantly.
+                  </p>
+                </div>
+
+                <div className="p-8 rounded-3xl" style={{ background: 'rgba(255,195,0,0.15)', backdropFilter: 'blur(10px)', border: '2px solid #FFC300' }}>
+                  <div className="text-5xl mb-4">💎</div>
+                  <h3 className="text-2xl font-bold mb-3" style={{ color: '#FFC300' }}>Your Assets?</h3>
+                  <p style={{ color: '#fff', lineHeight: '1.7' }}>
+                    Insurance policies, investments, bank lockers, crypto wallets - scattered everywhere. Lost forever without a record.
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-12 p-8 rounded-3xl text-center" style={{ background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(10px)' }}>
+                <Heart className="w-12 h-12 mx-auto mb-4" style={{ color: '#FFC300' }} />
+                <h3 className="text-2xl font-bold mb-3" style={{ color: '#fff' }}>Don't Let Your Legacy Disappear</h3>
+                <p className="text-lg" style={{ color: 'rgba(255,255,255,0.9)' }}>
+                  Millions in unclaimed assets sit in government custody because families didn't know they existed. 
+                  AssetVault ensures this never happens to you.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Features Section */}
+        <section id="features" className="py-20">
+          <div className="container mx-auto px-6">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: '#fff', letterSpacing: '-0.02em' }}>
+                Everything You Need to Protect Your Legacy
+              </h2>
+              <p className="text-xl" style={{ color: 'rgba(255,255,255,0.85)' }}>
+                Comprehensive tools designed for Indian families
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              {[
+                {
+                  icon: <ShieldCheck className="w-12 h-12" />,
+                  title: 'Asset Tracking',
+                  description: 'Track all your assets in one secure place - investments, property, insurance, crypto, gold, and more.'
+                },
+                {
+                  icon: <Users className="w-12 h-12" />,
+                  title: 'Nominee Management',
+                  description: 'Designate multiple nominees with priority order. Ensure the right people have access when needed.'
+                },
+                {
+                  icon: <Clock className="w-12 h-12" />,
+                  title: "Dead Man's Switch",
+                  description: 'Automatic notifications to your family if you become inactive. Life is unpredictable - be prepared.'
+                },
+                {
+                  icon: <TrendingUp className="w-12 h-12" />,
+                  title: 'Net Worth Tracking',
+                  description: 'Real-time dashboards showing your complete financial picture. Historical snapshots track your growth.'
+                },
+                {
+                  icon: <FileText className="w-12 h-12" />,
+                  title: 'Document Vault',
+                  description: 'Securely store important documents. Link them to specific assets for easy reference.'
+                },
+                {
+                  icon: <Lock className="w-12 h-12" />,
+                  title: 'Bank-Level Security',
+                  description: '256-bit encryption, regular security audits, and compliance with Indian data protection laws.'
+                }
+              ].map((feature, index) => (
+                <div 
+                  key={index}
+                  className="p-8 rounded-3xl transition-all hover:scale-105"
+                  style={{
+                    background: 'rgba(255,255,255,0.1)',
+                    backdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(255,255,255,0.2)'
+                  }}
+                >
+                  <div className="mb-4" style={{ color: '#FFC300' }}>
+                    {feature.icon}
+                  </div>
+                  <h3 className="text-2xl font-bold mb-3" style={{ color: '#fff' }}>
+                    {feature.title}
+                  </h3>
+                  <p style={{ color: 'rgba(255,255,255,0.85)', lineHeight: '1.7' }}>
+                    {feature.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* How It Works */}
+        <section className="py-20" style={{ background: 'rgba(0,0,0,0.15)' }}>
+          <div className="container mx-auto px-6">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: '#fff', letterSpacing: '-0.02em' }}>
+                Simple 3-Step Process
+              </h2>
+            </div>
+
+            <div className="max-w-5xl mx-auto">
+              <div className="grid md:grid-cols-3 gap-8">
+                {[
+                  {
+                    step: '01',
+                    title: 'Add Your Assets',
+                    description: 'Enter details of all your financial assets - from bank accounts to crypto wallets.'
+                  },
+                  {
+                    step: '02',
+                    title: 'Set Nominees',
+                    description: 'Designate trusted family members or advisors who should have access to your information.'
+                  },
+                  {
+                    step: '03',
+                    title: 'Stay Protected',
+                    description: 'Relax knowing your legacy is secure. Update anytime, access anywhere.'
+                  }
+                ].map((item, index) => (
+                  <div key={index} className="text-center">
+                    <div 
+                      className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold"
+                      style={{ background: '#FFC300', color: '#1a1a1a' }}
+                    >
+                      {item.step}
+                    </div>
+                    <h3 className="text-2xl font-bold mb-3" style={{ color: '#fff' }}>
+                      {item.title}
+                    </h3>
+                    <p style={{ color: 'rgba(255,255,255,0.85)', lineHeight: '1.7' }}>
+                      {item.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Pricing Section */}
+        <section id="pricing" className="py-20">
+          <div className="container mx-auto px-6">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: '#fff', letterSpacing: '-0.02em' }}>
+                Simple, Transparent Pricing
+              </h2>
+              <p className="text-xl" style={{ color: 'rgba(255,255,255,0.85)' }}>
+                Choose the plan that's right for your family
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              {[
+                {
+                  name: 'Free',
+                  price: '₹0',
+                  period: 'forever',
+                  features: ['Track up to 10 assets', '1 nominee', 'Basic dashboard', '100 MB storage', 'Email support'],
+                  highlight: false
+                },
+                {
+                  name: 'Pro',
+                  price: '₹199',
+                  period: 'per month',
+                  features: ['Unlimited assets', 'Up to 3 nominees', 'Advanced analytics', '5 GB storage', 'Priority support', 'AI-powered insights'],
+                  highlight: true
+                },
+                {
+                  name: 'Family',
+                  price: '₹499',
+                  period: 'per month',
+                  features: ['Everything in Pro', 'Unlimited nominees', 'Family sharing (5 members)', '20 GB storage', '24/7 phone support', 'Legal document templates'],
+                  highlight: false
+                }
+              ].map((plan, index) => (
+                <div 
+                  key={index}
+                  className="p-8 rounded-3xl"
+                  style={{
+                    background: plan.highlight ? '#FFC300' : 'rgba(255,255,255,0.1)',
+                    backdropFilter: 'blur(10px)',
+                    border: plan.highlight ? 'none' : '1px solid rgba(255,255,255,0.2)',
+                    transform: plan.highlight ? 'scale(1.05)' : 'scale(1)'
+                  }}
+                >
+                  {plan.highlight && (
+                    <div className="text-center mb-4">
+                      <span className="inline-block px-4 py-1 rounded-full text-sm font-bold" style={{ background: '#1a1a1a', color: '#FFC300' }}>
+                        MOST POPULAR
+                      </span>
+                    </div>
+                  )}
+                  <h3 className="text-2xl font-bold mb-2" style={{ color: plan.highlight ? '#1a1a1a' : '#fff' }}>
+                    {plan.name}
+                  </h3>
+                  <div className="mb-6">
+                    <span className="text-5xl font-bold" style={{ color: plan.highlight ? '#1a1a1a' : '#FFC300' }}>
+                      {plan.price}
+                    </span>
+                    <span className="text-lg" style={{ color: plan.highlight ? '#1a1a1a' : 'rgba(255,255,255,0.7)' }}>
+                      /{plan.period}
+                    </span>
+                  </div>
+                  <ul className="space-y-3 mb-8">
+                    {plan.features.map((feature, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <CheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: plan.highlight ? '#1a1a1a' : '#FFC300' }} />
+                        <span style={{ color: plan.highlight ? '#1a1a1a' : 'rgba(255,255,255,0.9)' }}>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <Button 
+                    onClick={handleLogin}
+                    className="w-full font-bold py-6 text-base"
+                    style={{
+                      background: plan.highlight ? '#1a1a1a' : '#FFC300',
+                      color: plan.highlight ? '#FFC300' : '#1a1a1a',
+                      borderRadius: '999px',
+                      border: 'none'
+                    }}
+                  >
+                    Get Started
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section id="faq" className="py-20" style={{ background: 'rgba(0,0,0,0.15)' }}>
+          <div className="container mx-auto px-6">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-16">
+                <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: '#fff', letterSpacing: '-0.02em' }}>
+                  Frequently Asked Questions
+                </h2>
+              </div>
+
+              <div className="space-y-6">
+                {[
+                  {
+                    q: 'Is my data secure?',
+                    a: 'Yes! We use bank-level 256-bit encryption and comply with all Indian data protection regulations. Your data is stored securely and never shared with third parties.'
+                  },
+                  {
+                    q: 'What happens if I become inactive?',
+                    a: 'Our Dead Man\'s Switch will send you reminders before notifying your nominees. You have full control over the timing and can reset it anytime by logging in.'
+                  },
+                  {
+                    q: 'Can I add assets from any country?',
+                    a: 'Yes! AssetVault supports multi-currency tracking for assets worldwide, with special focus on Indian assets and regulations.'
+                  },
+                  {
+                    q: 'How do my nominees access the information?',
+                    a: 'Nominees receive secure, encrypted links when triggered. They can view your asset information but cannot modify or delete anything without proper verification.'
+                  },
+                  {
+                    q: 'Can I try before committing?',
+                    a: 'Absolutely! Our Free plan lets you track up to 10 assets with 1 nominee forever. No credit card required to start.'
+                  }
+                ].map((faq, index) => (
+                  <div 
+                    key={index}
+                    className="p-6 rounded-2xl"
+                    style={{ background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(10px)' }}
+                  >
+                    <h3 className="text-xl font-bold mb-3" style={{ color: '#FFC300' }}>
+                      {faq.q}
+                    </h3>
+                    <p style={{ color: 'rgba(255,255,255,0.85)', lineHeight: '1.7' }}>
+                      {faq.a}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-24">
+          <div className="container mx-auto px-6">
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="text-4xl md:text-6xl font-bold mb-6" style={{ color: '#fff', letterSpacing: '-0.02em' }}>
+                Start Protecting Your Legacy Today
+              </h2>
+              <p className="text-xl mb-10" style={{ color: 'rgba(255,255,255,0.9)' }}>
+                Join thousands of families who have secured their financial future with AssetVault
+              </p>
+              <Button 
+                onClick={handleLogin}
+                className="font-bold px-12 py-8 text-xl"
+                style={{
+                  background: '#FFC300',
+                  color: '#1a1a1a',
+                  borderRadius: '999px',
+                  border: 'none',
+                  letterSpacing: '0.02em',
+                  boxShadow: '0 10px 40px rgba(255, 195, 0, 0.4)'
+                }}
+              >
+                Get Started - It's Free
+                <ArrowRight className="ml-3 w-6 h-6" />
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="py-12" style={{ background: 'rgba(0,0,0,0.2)', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+          <div className="container mx-auto px-6">
+            <div className="grid md:grid-cols-4 gap-8 mb-8">
+              <div>
+                <div className="flex items-center gap-2 mb-4">
+                  <ShieldCheck className="w-7 h-7" style={{ color: '#FFC300' }} />
+                  <h3 className="text-xl font-bold" style={{ color: '#fff' }}>AssetVault</h3>
+                </div>
+                <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>
+                  Protecting your legacy,<br />securing your family's future.
                 </p>
               </div>
               
-              <div className="p-8 rounded-2xl" style={{background: '#131835', border: '1px solid #1e293b'}}>
-                <div className="text-4xl font-bold mb-2" style={{color: '#a78bfa'}}>$70 Billion+</div>
-                <div className="text-xl font-semibold mb-3" style={{color: '#f8fafc'}}>Unclaimed in USA</div>
-                <p style={{color: '#94a3b8'}}>
-                  In the United States alone, over $70 billion in unclaimed property sits idle. 
-                  Banks contact families for loans, but never for investments.
-                </p>
-              </div>
-            </div>
-
-            <div className="p-8 rounded-2xl" style={{background: 'linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(239, 68, 68, 0.1) 100%)', border: '1px solid rgba(251, 191, 36, 0.3)'}}>
-              <h4 className="text-2xl font-bold mb-4" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#fbbf24'}}>
-                Real Story: The Forgotten Fortune
-              </h4>
-              <p className="leading-relaxed" style={{color: '#cbd5e1'}}>
-                In 2023, the family of Mr. Ramesh Kumar discovered ₹2.5 crores in fixed deposits and 
-                mutual funds, 8 years after his passing. The banks never reached out. His family struggled 
-                financially during those years, unaware of the wealth he'd left behind. 
-                <span className="font-semibold" style={{color: '#60a5fa'}}> This tragedy is preventable.</span>
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* The Hard Truth Section */}
-      <section id="truth" className="py-20" style={{background: 'linear-gradient(135deg, #1a0b2e 0%, #0a0e27 100%)'}}>
-        <div className="container mx-auto px-6">
-          <div className="max-w-5xl mx-auto">
-            {/* Title */}
-            <div className="text-center mb-12">
-              <h3 className="text-3xl sm:text-4xl font-bold mb-4" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
-                The Uncomfortable Truth About Your Money
-              </h3>
-              <p className="text-lg" style={{color: '#94a3b8'}}>
-                Financial institutions only remember you when you owe them money
-              </p>
-            </div>
-
-            {/* Two Column Comparison */}
-            <div className="grid md:grid-cols-2 gap-8">
-              {/* They WILL Contact You - Red Side */}
-              <div className="rounded-2xl p-8" style={{background: 'rgba(239, 68, 68, 0.1)', border: '2px solid rgba(239, 68, 68, 0.3)'}}>
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{background: 'rgba(239, 68, 68, 0.2)'}}>
-                    <span className="text-2xl">📞</span>
-                  </div>
-                  <div>
-                    <h4 className="text-xl font-bold" style={{color: '#ef4444'}}>They WILL Call You</h4>
-                    <p className="text-sm" style={{color: '#94a3b8'}}>For liabilities</p>
-                  </div>
-                </div>
-                <ul className="space-y-4">
-                  <li className="flex items-start gap-3">
-                    <AlertCircle className="w-5 h-5 mt-1 flex-shrink-0" style={{color: '#ef4444'}} />
-                    <div>
-                      <p className="font-semibold mb-1" style={{color: '#f8fafc'}}>Loan EMIs</p>
-                      <p className="text-sm" style={{color: '#cbd5e1'}}>Daily reminders before and after due date</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <AlertCircle className="w-5 h-5 mt-1 flex-shrink-0" style={{color: '#ef4444'}} />
-                    <div>
-                      <p className="font-semibold mb-1" style={{color: '#f8fafc'}}>Credit Card Bills</p>
-                      <p className="text-sm" style={{color: '#cbd5e1'}}>Multiple calls, SMS, and emails</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <AlertCircle className="w-5 h-5 mt-1 flex-shrink-0" style={{color: '#ef4444'}} />
-                    <div>
-                      <p className="font-semibold mb-1" style={{color: '#f8fafc'}}>Mortgage Payments</p>
-                      <p className="text-sm" style={{color: '#cbd5e1'}}>Legal notices if you miss payments</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <AlertCircle className="w-5 h-5 mt-1 flex-shrink-0" style={{color: '#ef4444'}} />
-                    <div>
-                      <p className="font-semibold mb-1" style={{color: '#f8fafc'}}>Outstanding Debts</p>
-                      <p className="text-sm" style={{color: '#cbd5e1'}}>They'll track down your family if needed</p>
-                    </div>
-                  </li>
-                </ul>
-                <div className="mt-6 p-4 rounded-lg" style={{background: 'rgba(239, 68, 68, 0.1)'}}>
-                  <p className="text-sm font-semibold" style={{color: '#ef4444'}}>
-                    💡 They have entire departments dedicated to recovering what you owe
-                  </p>
-                </div>
-              </div>
-
-              {/* They WON'T Contact You - Gray Side */}
-              <div className="rounded-2xl p-8" style={{background: 'rgba(100, 116, 139, 0.1)', border: '2px solid rgba(100, 116, 139, 0.3)'}}>
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{background: 'rgba(100, 116, 139, 0.2)'}}>
-                    <span className="text-2xl">🤐</span>
-                  </div>
-                  <div>
-                    <h4 className="text-xl font-bold" style={{color: '#94a3b8'}}>They WON'T Call You</h4>
-                    <p className="text-sm" style={{color: '#64748b'}}>For assets</p>
-                  </div>
-                </div>
-                <ul className="space-y-4 opacity-60">
-                  <li className="flex items-start gap-3">
-                    <div className="w-5 h-5 mt-1 flex-shrink-0 rounded-full" style={{background: 'rgba(100, 116, 139, 0.3)'}}></div>
-                    <div>
-                      <p className="font-semibold mb-1" style={{color: '#cbd5e1'}}>Savings Accounts</p>
-                      <p className="text-sm" style={{color: '#94a3b8'}}>Dormant after 10 years of inactivity</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-5 h-5 mt-1 flex-shrink-0 rounded-full" style={{background: 'rgba(100, 116, 139, 0.3)'}}></div>
-                    <div>
-                      <p className="font-semibold mb-1" style={{color: '#cbd5e1'}}>Fixed Deposits</p>
-                      <p className="text-sm" style={{color: '#94a3b8'}}>Maturity notices? Maybe one letter</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-5 h-5 mt-1 flex-shrink-0 rounded-full" style={{background: 'rgba(100, 116, 139, 0.3)'}}></div>
-                    <div>
-                      <p className="font-semibold mb-1" style={{color: '#cbd5e1'}}>Insurance Policies</p>
-                      <p className="text-sm" style={{color: '#94a3b8'}}>Unclaimed policies worth billions</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-5 h-5 mt-1 flex-shrink-0 rounded-full" style={{background: 'rgba(100, 116, 139, 0.3)'}}></div>
-                    <div>
-                      <p className="font-semibold mb-1" style={{color: '#cbd5e1'}}>Mutual Funds & Stocks</p>
-                      <p className="text-sm" style={{color: '#94a3b8'}}>Forgotten in demat accounts</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-5 h-5 mt-1 flex-shrink-0 rounded-full" style={{background: 'rgba(100, 116, 139, 0.3)'}}></div>
-                    <div>
-                      <p className="font-semibold mb-1" style={{color: '#cbd5e1'}}>Locker Contents</p>
-                      <p className="text-sm" style={{color: '#94a3b8'}}>Your family won't even know they exist</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-5 h-5 mt-1 flex-shrink-0 rounded-full" style={{background: 'rgba(100, 116, 139, 0.3)'}}></div>
-                    <div>
-                      <p className="font-semibold mb-1" style={{color: '#cbd5e1'}}>Provident Fund</p>
-                      <p className="text-sm" style={{color: '#94a3b8'}}>Millions in unclaimed EPF</p>
-                    </div>
-                  </li>
-                </ul>
-                <div className="mt-6 p-4 rounded-lg" style={{background: 'rgba(100, 116, 139, 0.1)'}}>
-                  <p className="text-sm font-semibold" style={{color: '#94a3b8'}}>
-                    🚫 No one is looking out for your assets except you
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Shocking Statistics */}
-            <div className="mt-12 grid md:grid-cols-3 gap-6">
-              <div className="text-center p-6 rounded-xl" style={{background: 'rgba(168, 85, 247, 0.1)', border: '1px solid rgba(168, 85, 247, 0.3)'}}>
-                <div className="text-4xl font-bold mb-2" style={{color: '#a855f7'}}>₹35,000 Cr+</div>
-                <p className="text-sm" style={{color: '#cbd5e1'}}>Unclaimed deposits in Indian banks</p>
-              </div>
-              <div className="text-center p-6 rounded-xl" style={{background: 'rgba(168, 85, 247, 0.1)', border: '1px solid rgba(168, 85, 247, 0.3)'}}>
-                <div className="text-4xl font-bold mb-2" style={{color: '#a855f7'}}>₹25,000 Cr+</div>
-                <p className="text-sm" style={{color: '#cbd5e1'}}>Unclaimed insurance policies in India</p>
-              </div>
-              <div className="text-center p-6 rounded-xl" style={{background: 'rgba(168, 85, 247, 0.1)', border: '1px solid rgba(168, 85, 247, 0.3)'}}>
-                <div className="text-4xl font-bold mb-2" style={{color: '#a855f7'}}>10+ Years</div>
-                <p className="text-sm" style={{color: '#cbd5e1'}}>Average time before accounts go dormant</p>
-              </div>
-            </div>
-
-            {/* Call to Action */}
-            <div className="mt-12 text-center p-8 rounded-2xl" style={{background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%)', border: '2px solid rgba(168, 85, 247, 0.3)'}}>
-              <h4 className="text-2xl font-bold mb-4" style={{color: '#f8fafc'}}>
-                Don't Let Your Hard-Earned Money Disappear
-              </h4>
-              <p className="text-lg mb-6 max-w-3xl mx-auto" style={{color: '#cbd5e1'}}>
-                While banks chase you for every rupee you owe, your savings, investments, and policies sit forgotten. 
-                <span style={{color: '#a855f7', fontWeight: 600}}> Your family deserves to know what you've built for them.</span>
-              </p>
-              <Button onClick={handleLogin} size="lg" className="px-10 py-6 text-lg rounded-full" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: 'white', border: 'none'}}>
-                Protect Your Assets Today - It's Free
-              </Button>
-              <p className="text-sm mt-4" style={{color: '#64748b'}}>
-                No credit card required • Setup in 10 minutes • Bank-level security
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works Section */}
-      <section id="how-it-works" className="py-20" style={{background: '#0a0e27'}}>
-        <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto text-center mb-16">
-            <h3 className="text-3xl sm:text-4xl font-bold mb-4" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
-              Three Simple Steps to Peace of Mind
-            </h3>
-            <p className="text-base sm:text-lg" style={{color: '#94a3b8'}}>
-              Protecting your legacy shouldn't be complicated. We've made it beautifully simple.
-            </p>
-          </div>
-
-          <div className="max-w-5xl mx-auto">
-            <div className="space-y-8">
-              {/* Step 1 */}
-              <div className="flex gap-6 items-start p-8 rounded-2xl transition-all hover:scale-102" style={{background: '#131835', border: '1px solid #1e293b'}}>
-                <div className="flex-shrink-0 w-16 h-16 rounded-2xl flex items-center justify-center font-bold text-2xl" style={{background: 'linear-gradient(135deg, #ef4444 0%, #ec4899 100%)', color: 'white'}}>
-                  1
-                </div>
-                <div>
-                  <h4 className="text-2xl font-bold mb-3" style={{color: '#f8fafc'}}>Add Your Assets in Minutes</h4>
-                  <p className="text-lg mb-3" style={{color: '#cbd5e1'}}>
-                    Bank accounts, properties, investments, insurance policies, crypto—add them all with simple forms. 
-                    No bank login required, you control what you share.
-                  </p>
-                  <p className="text-sm" style={{color: '#64748b'}}>
-                    ✓ Multi-currency support  •  ✓ Real-time net worth tracking  •  ✓ AI-powered insights
-                  </p>
-                </div>
-              </div>
-
-              {/* Step 2 */}
-              <div className="flex gap-6 items-start p-8 rounded-2xl transition-all hover:scale-102" style={{background: '#131835', border: '1px solid #1e293b'}}>
-                <div className="flex-shrink-0 w-16 h-16 rounded-2xl flex items-center justify-center font-bold text-2xl" style={{background: 'linear-gradient(135deg, #ec4899 0%, #a855f7 100%)', color: 'white'}}>
-                  2
-                </div>
-                <div>
-                  <h4 className="text-2xl font-bold mb-3" style={{color: '#f8fafc'}}>Designate Your Trusted Nominees</h4>
-                  <p className="text-lg mb-3" style={{color: '#cbd5e1'}}>
-                    Choose who should receive your asset information. You can add family members, lawyers, or trusted advisors. 
-                    Set custom timelines and decide what each person can access.
-                  </p>
-                  <p className="text-sm" style={{color: '#64748b'}}>
-                    ✓ Multiple nominees  •  ✓ Granular permissions  •  ✓ Encrypted document sharing
-                  </p>
-                </div>
-              </div>
-
-              {/* Step 3 */}
-              <div className="flex gap-6 items-start p-8 rounded-2xl transition-all hover:scale-102" style={{background: '#131835', border: '1px solid #1e293b'}}>
-                <div className="flex-shrink-0 w-16 h-16 rounded-2xl flex items-center justify-center font-bold text-2xl" style={{background: 'linear-gradient(135deg, #a855f7 0%, #7c3aed 100%)', color: 'white'}}>
-                  3
-                </div>
-                <div>
-                  <h4 className="text-2xl font-bold mb-3" style={{color: '#f8fafc'}}>Relax—We'll Handle the Rest</h4>
-                  <p className="text-lg mb-3" style={{color: '#cbd5e1'}}>
-                    Our automated Dead Man Switch monitors your activity. If life takes an unexpected turn, 
-                    your nominees are notified and guided through accessing your asset information—all while respecting your privacy.
-                  </p>
-                  <p className="text-sm" style={{color: '#64748b'}}>
-                    ✓ Smart reminders  •  ✓ Grace periods  •  ✓ Instant activation option
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="text-center mt-12 p-8 rounded-2xl" style={{background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%)', border: '1px solid rgba(168, 85, 247, 0.3)'}}>
-              <p className="text-xl font-semibold mb-4" style={{color: '#f8fafc'}}>
-                That's it. Your legacy is protected.
-              </p>
-              <p className="text-base" style={{color: '#94a3b8'}}>
-                Log in whenever you want to add new assets or update information. 
-                We'll keep watch, so you don't have to worry.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section id="features" className="py-20" style={{background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)'}}>
-        <div className="container mx-auto px-6">
-          <h3 className="text-3xl sm:text-4xl font-bold text-center mb-16" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
-            Complete Asset Protection
-          </h3>
-          
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <div className="p-8 rounded-xl transition-all hover:scale-105" style={{background: '#131835', border: '1px solid #1e293b'}}>
-              <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4" style={{background: 'rgba(96, 165, 250, 0.1)'}}>
-                <DollarSign className="w-7 h-7" style={{color: '#60a5fa'}} />
-              </div>
-              <h4 className="text-xl font-semibold mb-3" style={{color: '#f8fafc'}}>Track All Assets</h4>
-              <p style={{color: '#94a3b8'}}>
-                Banks, insurance, investments, crypto, gold, property, lockers - everything in one secure vault.
-              </p>
-            </div>
-
-            <div className="p-8 rounded-xl transition-all hover:scale-105" style={{background: '#131835', border: '1px solid #1e293b'}}>
-              <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4" style={{background: 'rgba(167, 139, 250, 0.1)'}}>
-                <TrendingUp className="w-7 h-7" style={{color: '#a78bfa'}} />
-              </div>
-              <h4 className="text-xl font-semibold mb-3" style={{color: '#f8fafc'}}>Real-time Valuation</h4>
-              <p style={{color: '#94a3b8'}}>
-                Live prices for crypto, gold, and currency conversion. Know your exact net worth anytime.
-              </p>
-            </div>
-
-            <div className="p-8 rounded-xl transition-all hover:scale-105" style={{background: '#131835', border: '1px solid #1e293b'}}>
-              <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4" style={{background: 'rgba(34, 211, 238, 0.1)'}}>
-                <Clock className="w-7 h-7" style={{color: '#22d3ee'}} />
-              </div>
-              <h4 className="text-xl font-semibold mb-3" style={{color: '#f8fafc'}}>Dead Man Switch</h4>
-              <p style={{color: '#94a3b8'}}>
-                Automated 3-tier reminder system. If you're inactive, your nominee gets access automatically.
-              </p>
-            </div>
-
-            <div className="p-8 rounded-xl transition-all hover:scale-105" style={{background: '#131835', border: '1px solid #1e293b'}}>
-              <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4" style={{background: 'rgba(96, 165, 250, 0.1)'}}>
-                <Lock className="w-7 h-7" style={{color: '#60a5fa'}} />
-              </div>
-              <h4 className="text-xl font-semibold mb-3" style={{color: '#f8fafc'}}>Bank-Grade Security</h4>
-              <p style={{color: '#94a3b8'}}>
-                Encrypted storage, Google OAuth authentication. Your financial data stays private and secure.
-              </p>
-            </div>
-
-            <div className="p-8 rounded-xl transition-all hover:scale-105" style={{background: '#131835', border: '1px solid #1e293b'}}>
-              <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4" style={{background: 'rgba(167, 139, 250, 0.1)'}}>
-                <Users className="w-7 h-7" style={{color: '#a78bfa'}} />
-              </div>
-              <h4 className="text-xl font-semibold mb-3" style={{color: '#f8fafc'}}>Nominee Management</h4>
-              <p style={{color: '#94a3b8'}}>
-                Designate trusted family members who will receive access to your asset information when needed.
-              </p>
-            </div>
-
-            <div className="p-8 rounded-xl transition-all hover:scale-105" style={{background: '#131835', border: '1px solid #1e293b'}}>
-              <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4" style={{background: 'rgba(34, 211, 238, 0.1)'}}>
-                <ShieldCheck className="w-7 h-7" style={{color: '#22d3ee'}} />
-              </div>
-              <h4 className="text-xl font-semibold mb-3" style={{color: '#f8fafc'}}>Complete Privacy</h4>
-              <p style={{color: '#94a3b8'}}>
-                Keep your wealth private from everyone until the right time. Only you control who sees what.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Security Message Section */}
-      <section id="security" className="py-16" style={{background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%)', borderTop: '1px solid #2d1f3d', borderBottom: '1px solid #2d1f3d'}}>
-        <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex items-start gap-6 p-8 rounded-2xl" style={{background: '#131835', border: '2px solid #ef4444'}}>
-              <div className="flex-shrink-0">
-                <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{background: 'rgba(239, 68, 68, 0.2)'}}>
-                  <ShieldCheck className="w-8 h-8" style={{color: '#ef4444'}} />
-                </div>
-              </div>
               <div>
-                <h4 className="text-2xl font-bold mb-4" style={{color: '#f8fafc'}}>
-                  🔒 What We DON'T Store (And You Shouldn't Either)
-                </h4>
-                <p className="text-lg mb-4 leading-relaxed" style={{color: '#cbd5e1'}}>
-                  <span style={{color: '#ef4444', fontWeight: 700}}>NEVER store passwords, PINs, or bank login credentials anywhere—including AssetVault.</span> 
-                  {' '}Your family doesn't need them to claim your assets.
-                </p>
-                <div className="p-4 rounded-lg mb-4" style={{background: 'rgba(168, 85, 247, 0.1)', borderLeft: '3px solid #a855f7'}}>
-                  <p className="text-base" style={{color: '#cbd5e1'}}>
-                    <strong style={{color: '#a855f7'}}>What AssetVault Does:</strong> We help you document WHAT assets you have and WHERE they are located. 
-                    Your family can then legally claim these assets through proper channels with death certificates and legal documentation.
-                  </p>
-                </div>
-                <p className="text-base" style={{color: '#94a3b8'}}>
-                  Think of AssetVault as an organized inventory map—not a key safe. Banks, insurance companies, and investment firms have legal processes 
-                  for rightful heirs to claim assets. They just need to know those assets exist!
-                </p>
+                <h4 className="font-bold mb-4" style={{ color: '#fff' }}>Product</h4>
+                <ul className="space-y-2">
+                  <li><a href="#features" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Features</a></li>
+                  <li><a href="#pricing" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Pricing</a></li>
+                  <li><a href="#faq" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>FAQ</a></li>
+                </ul>
+              </div>
+              
+              <div>
+                <h4 className="font-bold mb-4" style={{ color: '#fff' }}>Legal</h4>
+                <ul className="space-y-2">
+                  <li><a href="#" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Privacy Policy</a></li>
+                  <li><a href="#" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Terms of Service</a></li>
+                  <li><a href="#" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Security</a></li>
+                </ul>
+              </div>
+              
+              <div>
+                <h4 className="font-bold mb-4" style={{ color: '#fff' }}>Connect</h4>
+                <ul className="space-y-2">
+                  <li><a href="#" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Support</a></li>
+                  <li><a href="#" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Contact Us</a></li>
+                  <li><a href="#" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Blog</a></li>
+                </ul>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing Section */}
-      <section id="pricing" className="py-20">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h3 className="text-3xl sm:text-4xl font-bold mb-4" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
-              Simple, Transparent Pricing
-            </h3>
-            <p className="text-base sm:text-lg" style={{color: '#94a3b8'}}>
-              Choose the plan that fits your needs
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {/* Free Plan */}
-            <div className="p-8 rounded-2xl" style={{background: '#1a1229', border: '1px solid #2d1f3d'}}>
-              <div className="text-sm font-semibold mb-2" style={{color: '#94a3b8'}}>FREE</div>
-              <div className="mb-6">
-                <span className="text-4xl font-bold" style={{color: '#f8fafc'}}>$0</span>
-                <span style={{color: '#94a3b8'}}>/forever</span>
-              </div>
-              <ul className="space-y-3 mb-8" style={{color: '#cbd5e1'}}>
-                <li className="flex items-start gap-2">
-                  <span style={{color: '#10b981'}}>✓</span>
-                  <span>Track up to <strong>10 assets</strong></span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span style={{color: '#10b981'}}>✓</span>
-                  <span>Basic dashboard</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span style={{color: '#10b981'}}>✓</span>
-                  <span>One nominee</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span style={{color: '#10b981'}}>✓</span>
-                  <span>Dead man switch (90 days)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span style={{color: '#10b981'}}>✓</span>
-                  <span>Document vault (<strong>50MB</strong>)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span style={{color: '#10b981'}}>✓</span>
-                  <span>Email notifications</span>
-                </li>
-              </ul>
-              <Button onClick={handleLogin} variant="outline" className="w-full" style={{borderColor: '#a855f7', color: '#a855f7'}}>
-                Start Free
-              </Button>
-            </div>
-
-            {/* Pro Plan - Featured */}
-            <div className="p-8 rounded-2xl relative" style={{background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%)', border: '2px solid #ec4899'}}>
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 px-4 py-1 rounded-full text-xs font-semibold" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: 'white'}}>
-                MOST POPULAR
-              </div>
-              <div className="text-sm font-semibold mb-2" style={{color: '#ec4899'}}>PRO</div>
-              <div className="mb-6">
-                <span className="text-4xl font-bold" style={{color: '#f8fafc'}}>$9.99</span>
-                <span style={{color: '#94a3b8'}}>/month</span>
-              </div>
-              <ul className="space-y-3 mb-8" style={{color: '#cbd5e1'}}>
-                <li className="flex items-start gap-2">
-                  <span style={{color: '#10b981'}}>✓</span>
-                  <span><strong>100 assets</strong> tracking</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span style={{color: '#10b981'}}>✓</span>
-                  <span>Advanced analytics dashboard</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span style={{color: '#10b981'}}>✓</span>
-                  <span>Multiple nominees</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span style={{color: '#10b981'}}>✓</span>
-                  <span>Custom DMS timing</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span style={{color: '#10b981'}}>✓</span>
-                  <span>AI financial insights</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span style={{color: '#10b981'}}>✓</span>
-                  <span>Document vault (<strong>5GB</strong>)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span style={{color: '#10b981'}}>✓</span>
-                  <span>Priority support</span>
-                </li>
-              </ul>
-              <Button onClick={handleLogin} className="w-full text-white" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}>
-                Start Pro Plan
-              </Button>
-            </div>
-
-            {/* Family Plan */}
-            <div className="p-8 rounded-2xl" style={{background: '#1a1229', border: '1px solid #2d1f3d'}}>
-              <div className="text-sm font-semibold mb-2" style={{color: '#94a3b8'}}>FAMILY</div>
-              <div className="mb-6">
-                <span className="text-4xl font-bold" style={{color: '#f8fafc'}}>$24.99</span>
-                <span style={{color: '#94a3b8'}}>/month</span>
-              </div>
-              <ul className="space-y-3 mb-8" style={{color: '#cbd5e1'}}>
-                <li className="flex items-start gap-2">
-                  <span style={{color: '#10b981'}}>✓</span>
-                  <span><strong>Everything in Pro</strong></span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span style={{color: '#10b981'}}>✓</span>
-                  <span>Up to <strong>5 family members</strong></span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span style={{color: '#10b981'}}>✓</span>
-                  <span>Shared asset tracking</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span style={{color: '#10b981'}}>✓</span>
-                  <span>Family financial planning</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span style={{color: '#10b981'}}>✓</span>
-                  <span>Document vault (<strong>50GB</strong>)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span style={{color: '#10b981'}}>✓</span>
-                  <span>Scheduled messages</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span style={{color: '#10b981'}}>✓</span>
-                  <span>24/7 premium support</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span style={{color: '#10b981'}}>✓</span>
-                  <span>Custom integrations</span>
-                </li>
-              </ul>
-              <Button onClick={handleLogin} className="w-full text-white" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}>
-                Start Family Plan
-              </Button>
+            
+            <div className="pt-8" style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+              <p className="text-center" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.9rem' }}>
+                © 2025 AssetVault. All rights reserved. Made with ❤️ for Indian families.
+              </p>
             </div>
           </div>
-
-          <div className="text-center mt-12">
-            <p className="text-sm" style={{color: '#64748b'}}>
-              Free plan available forever. No credit card required. Upgrade or cancel anytime.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section id="faq" className="py-20">
-        <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto">
-            <h3 className="text-3xl sm:text-4xl font-bold text-center mb-4" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
-              Frequently Asked Questions
-            </h3>
-            <p className="text-center text-base sm:text-lg mb-12" style={{color: '#94a3b8'}}>
-              Everything you need to know about protecting your legacy
-            </p>
-
-            <div className="space-y-4">
-              {/* FAQ Item 1 */}
-              <details className="group rounded-xl p-6 transition-all" style={{background: '#131835', border: '1px solid #1e293b'}}>
-                <summary className="flex justify-between items-center cursor-pointer list-none">
-                  <h4 className="text-lg font-semibold" style={{color: '#f8fafc'}}>
-                    What happens to my assets if something unexpected happens to me?
-                  </h4>
-                  <svg className="w-5 h-5 transition-transform group-open:rotate-180" style={{color: '#a855f7'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </summary>
-                <div className="mt-4" style={{color: '#cbd5e1'}}>
-                  <p>With AssetVault's Dead Man Switch, your designated nominees are automatically notified if you're inactive for a specified period (default 90 days). They'll receive access to your asset information and important documents, ensuring your wealth doesn't get lost in the system. You'll receive reminders before activation, so false triggers are prevented.</p>
-                </div>
-              </details>
-
-              {/* FAQ Item 2 */}
-              <details className="group rounded-xl p-6 transition-all" style={{background: '#131835', border: '1px solid #1e293b'}}>
-                <summary className="flex justify-between items-center cursor-pointer list-none">
-                  <h4 className="text-lg font-semibold" style={{color: '#f8fafc'}}>
-                    Is my financial data secure?
-                  </h4>
-                  <svg className="w-5 h-5 transition-transform group-open:rotate-180" style={{color: '#a855f7'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </summary>
-                <div className="mt-4" style={{color: '#cbd5e1'}}>
-                  <p>Absolutely. We use bank-level encryption (256-bit SSL) for all data transmission and storage. Your sensitive documents are encrypted at rest, and we never share your information with third parties. Plus, you control exactly what information is shared with your nominees.</p>
-                </div>
-              </details>
-
-              {/* FAQ Item 3 */}
-              <details className="group rounded-xl p-6 transition-all" style={{background: '#131835', border: '1px solid #1e293b'}}>
-                <summary className="flex justify-between items-center cursor-pointer list-none">
-                  <h4 className="text-lg font-semibold" style={{color: '#f8fafc'}}>
-                    How is this different from a traditional will?
-                  </h4>
-                  <svg className="w-5 h-5 transition-transform group-open:rotate-180" style={{color: '#a855f7'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </summary>
-                <div className="mt-4" style={{color: '#cbd5e1'}}>
-                  <p>AssetVault complements your will, it doesn't replace it. While a will handles legal ownership transfer (which can take months or years), AssetVault ensures your family knows what assets exist and how to access them immediately. Many assets are lost simply because families don't know they exist. We solve that problem.</p>
-                </div>
-              </details>
-
-              {/* FAQ Item 4 */}
-              <details className="group rounded-xl p-6 transition-all" style={{background: '#131835', border: '1px solid #1e293b'}}>
-                <summary className="flex justify-between items-center cursor-pointer list-none">
-                  <h4 className="text-lg font-semibold" style={{color: '#f8fafc'}}>
-                    Can I track assets in multiple currencies?
-                  </h4>
-                  <svg className="w-5 h-5 transition-transform group-open:rotate-180" style={{color: '#a855f7'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </summary>
-                <div className="mt-4" style={{color: '#cbd5e1'}}>
-                  <p>Yes! AssetVault supports multiple currencies including USD, EUR, GBP, INR, and many more. Assets are automatically converted to your selected base currency using real-time exchange rates, giving you an accurate total net worth view across all your international holdings.</p>
-                </div>
-              </details>
-
-              {/* FAQ Item 5 */}
-              <details className="group rounded-xl p-6 transition-all" style={{background: '#131835', border: '1px solid #1e293b'}}>
-                <summary className="flex justify-between items-center cursor-pointer list-none">
-                  <h4 className="text-lg font-semibold" style={{color: '#f8fafc'}}>
-                    What if I forget to check in and the Dead Man Switch triggers by accident?
-                  </h4>
-                  <svg className="w-5 h-5 transition-transform group-open:rotate-180" style={{color: '#a855f7'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </summary>
-                <div className="mt-4" style={{color: '#cbd5e1'}}>
-                  <p>We've designed multiple safeguards. You'll receive reminder emails at 60, 75, and 85 days of inactivity (customizable). Simply logging into AssetVault resets the timer. Even if you miss all reminders, you have a grace period after the trigger to deactivate the notification before your nominees are contacted.</p>
-                </div>
-              </details>
-
-              {/* FAQ Item 6 */}
-              <details className="group rounded-xl p-6 transition-all" style={{background: '#131835', border: '1px solid #1e293b'}}>
-                <summary className="flex justify-between items-center cursor-pointer list-none">
-                  <h4 className="text-lg font-semibold" style={{color: '#f8fafc'}}>
-                    Can I cancel my subscription anytime?
-                  </h4>
-                  <svg className="w-5 h-5 transition-transform group-open:rotate-180" style={{color: '#a855f7'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </summary>
-                <div className="mt-4" style={{color: '#cbd5e1'}}>
-                  <p>Yes, absolutely. You can cancel anytime from your account settings. You'll retain access to premium features until the end of your current billing period. If you downgrade to the Free plan, your data remains accessible with basic features. You can always reactivate your subscription later.</p>
-                </div>
-              </details>
-
-              {/* FAQ Item 7 */}
-              <details className="group rounded-xl p-6 transition-all" style={{background: '#131835', border: '1px solid #1e293b'}}>
-                <summary className="flex justify-between items-center cursor-pointer list-none">
-                  <h4 className="text-lg font-semibold" style={{color: '#f8fafc'}}>
-                    How do I get started?
-                  </h4>
-                  <svg className="w-5 h-5 transition-transform group-open:rotate-180" style={{color: '#a855f7'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </summary>
-                <div className="mt-4" style={{color: '#cbd5e1'}}>
-                  <p>It's simple! Click "Get Started Free" to create your account. Start by adding your first few assets (bank accounts, properties, investments). Then designate a nominee and set your Dead Man Switch preferences. The entire setup takes less than 10 minutes, and you can always add more assets later.</p>
-                </div>
-              </details>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20" style={{background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%)', borderTop: '1px solid #2d1f3d', borderBottom: '1px solid #2d1f3d'}}>
-        <div className="container mx-auto px-6 text-center">
-          <h3 className="text-3xl sm:text-4xl font-bold mb-6" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
-            Secure Your Family's Future Today
-          </h3>
-          <p className="text-base sm:text-lg mb-8 max-w-2xl mx-auto" style={{color: '#94a3b8'}}>
-            Join thousands protecting their wealth and ensuring it reaches their loved ones.
-          </p>
-          <Button data-testid="cta-get-started-btn" onClick={handleLogin} size="lg" className="px-8 py-6 text-lg rounded-full" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: 'white', border: 'none'}}>
-            Start Protecting Your Assets
-          </Button>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="py-12" style={{background: '#0a0e27', borderTop: '1px solid #1e293b'}}>
-        <div className="container mx-auto px-6 text-center" style={{color: '#94a3b8'}}>
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <ShieldCheck className="w-6 h-6" style={{color: '#60a5fa'}} />
-            <span className="text-xl font-bold" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>AssetVault</span>
-          </div>
-          <p>Protecting wealth, securing futures.</p>
-          <p className="mt-4 text-sm">© 2025 AssetVault. All rights reserved.</p>
-        </div>
-      </footer>
+        </footer>
+      </div>
     </div>
   );
 }
