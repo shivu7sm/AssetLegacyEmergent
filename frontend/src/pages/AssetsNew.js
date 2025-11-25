@@ -248,9 +248,10 @@ export default function AssetsNew() {
                   <table className="w-full" style={{fontSize: '0.813rem'}}>
                     <thead style={{background: '#0E0F16', borderBottom: '2px solid #2d1f3d', position: 'sticky', top: 0, zIndex: 10}}>
                       <tr>
-                        <th className="text-left p-3" style={{color: '#94a3b8', fontWeight: 600, width: '40%'}}>Asset</th>
-                        <th className="text-right p-3" style={{color: '#94a3b8', fontWeight: 600}}>Purchase</th>
-                        <th className="text-right p-3" style={{color: '#94a3b8', fontWeight: 600}}>Current</th>
+                        <th className="text-left p-3" style={{color: '#94a3b8', fontWeight: 600, width: '30%'}}>Asset</th>
+                        <th className="text-right p-3" style={{color: '#94a3b8', fontWeight: 600}}>Purchase (Original)</th>
+                        <th className="text-right p-3" style={{color: '#94a3b8', fontWeight: 600}}>Purchase ({selectedCurrency})</th>
+                        <th className="text-right p-3" style={{color: '#94a3b8', fontWeight: 600}}>Current ({selectedCurrency})</th>
                         <th className="text-right p-3" style={{color: '#94a3b8', fontWeight: 600}}>Gain/Loss</th>
                         <th className="text-center p-3" style={{color: '#94a3b8', fontWeight: 600}}>Actions</th>
                       </tr>
