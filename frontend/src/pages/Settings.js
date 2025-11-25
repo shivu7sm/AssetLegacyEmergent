@@ -874,29 +874,137 @@ export default function Settings() {
         );
 
       case 'connected': {
+        const [connectedAccounts, setConnectedAccounts] = useState([]);
+        const [loadingAccounts, setLoadingAccounts] = useState(true);
+        
+        useEffect(() => {
+          fetchConnectedAccounts();
+        }, []);
+        
+        const fetchConnectedAccounts = async () => {
+          try {
+            const response = await axios.get(`${API}/nominees/my-accesses`, { withCredentials: true });
+            setConnectedAccounts(response.data.accessible_accounts || []);
+          } catch (error) {
+            console.error('Failed to fetch connected accounts:', error);
+          } finally {
+            setLoadingAccounts(false);
+          }
+        };
+        
         return (
           <div className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold mb-2" style={{color: '#f8fafc'}}>Connected Accounts</h2>
-              <p style={{color: '#94a3b8'}}>Manage your bank and exchange connections</p>
+              <p style={{color: '#94a3b8'}}>Portfolios you have access to as a nominee</p>
             </div>
             
-            <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
-              <CardContent className="py-16">
-                <div className="text-center">
-                  <Link className="w-16 h-16 mx-auto mb-4" style={{color: '#2d1f3d'}} />
-                  <h3 className="text-xl font-semibold mb-2" style={{color: '#f8fafc'}}>No Connected Accounts</h3>
-                  <p className="mb-6" style={{color: '#94a3b8'}}>Connect your banks, brokers, and exchanges for automatic sync</p>
-                  <Button
-                    className="text-white rounded-full"
-                    style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
-                  >
-                    <Link className="w-4 h-4 mr-2" />
-                    Connect Account
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Test Account - Demo Mode Only */}
+            {demoMode && (
+              <Card style={{background: 'linear-gradient(135deg, #1a0b2e 0%, #2d0e3e 100%)', borderColor: '#f59e0b', borderWidth: '2px'}}>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2" style={{color: '#fbbf24'}}>
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                    </svg>
+                    AssetVault Demo Portfolio (Test Account)
+                  </CardTitle>
+                  <CardDescription style={{color: '#cbd5e1'}}>
+                    Universal test account - Available only in Demo Mode
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-between p-4 rounded-lg" style={{background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.3)'}}>
+                    <div>
+                      <p className="font-semibold mb-1" style={{color: '#f8fafc'}}>Demo Account Holder</p>
+                      <p className="text-sm" style={{color: '#94a3b8'}}>demo.portfolio@assetvault.com</p>
+                      <div className="flex gap-2 mt-2">
+                        <span className="text-xs px-2 py-1 rounded-full" style={{background: 'rgba(16, 185, 129, 0.2)', color: '#10b981'}}>
+                          Read-Only Access
+                        </span>
+                        <span className="text-xs px-2 py-1 rounded-full" style={{background: 'rgba(245, 158, 11, 0.2)', color: '#f59e0b'}}>
+                          Demo Mode Only
+                        </span>
+                      </div>
+                    </div>
+                    <Button
+                      onClick={() => navigate('/assets')}
+                      style={{background: '#f59e0b', color: '#fff'}}
+                    >
+                      View in Assets
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+            
+            {/* Accounts Where User is Nominee */}
+            {connectedAccounts.length > 0 ? (
+              <div className="space-y-3">
+                <h3 className="text-lg font-semibold" style={{color: '#f8fafc'}}>
+                  Accounts You Can Access ({connectedAccounts.length})
+                </h3>
+                {connectedAccounts.map((account) => (
+                  <Card key={account.account_id} style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                    <CardContent className="py-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{background: 'rgba(168, 85, 247, 0.2)'}}>
+                            <Shield className="w-6 h-6" style={{color: '#a855f7'}} />
+                          </div>
+                          <div>
+                            <p className="font-semibold text-lg" style={{color: '#f8fafc'}}>{account.account_name}</p>
+                            <p className="text-sm" style={{color: '#94a3b8'}}>{account.account_email}</p>
+                            <div className="flex gap-2 mt-1">
+                              {account.relationship && (
+                                <span className="text-xs px-2 py-1 rounded-full" style={{background: 'rgba(168, 85, 247, 0.2)', color: '#a855f7'}}>
+                                  {account.relationship}
+                                </span>
+                              )}
+                              <span className="text-xs px-2 py-1 rounded-full" style={{
+                                background: account.access_type === 'immediate' ? 'rgba(168, 85, 247, 0.2)' :
+                                           account.access_type === 'temporary' ? 'rgba(245, 158, 11, 0.2)' :
+                                           'rgba(59, 130, 246, 0.2)',
+                                color: account.access_type === 'immediate' ? '#a855f7' :
+                                       account.access_type === 'temporary' ? '#f59e0b' :
+                                       '#3b82f6'
+                              }}>
+                                {account.access_type === 'immediate' ? '⚡ Immediate' :
+                                 account.access_type === 'temporary' ? '⏰ Temporary (7 days)' :
+                                 '🛡️ After DMS'}
+                              </span>
+                              {account.access_type === 'immediate' && (
+                                <span className="text-xs px-2 py-1 rounded-full" style={{background: 'rgba(16, 185, 129, 0.2)', color: '#10b981'}}>
+                                  ✓ Active Now
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <Button
+                          onClick={() => navigate('/assets')}
+                          style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: '#fff'}}
+                        >
+                          View Portfolio
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                <CardContent className="py-16">
+                  <div className="text-center">
+                    <Link className="w-16 h-16 mx-auto mb-4" style={{color: '#2d1f3d'}} />
+                    <h3 className="text-xl font-semibold mb-2" style={{color: '#f8fafc'}}>No Connected Accounts</h3>
+                    <p className="mb-6" style={{color: '#94a3b8'}}>
+                      You don't have access to any other portfolios yet. When someone grants you nominee access, it will appear here.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </div>
         );
       }
