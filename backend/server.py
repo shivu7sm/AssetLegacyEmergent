@@ -528,7 +528,21 @@ async def update_preferences(prefs: UserPreferences, user: User = Depends(requir
 # Asset Routes
 @api_router.get("/assets", response_model=List[Asset])
 async def get_assets(user: User = Depends(require_auth)):
-    assets = await db.assets.find({"user_id": user.id}, {"_id": 0}).to_list(1000)
+    # Filter based on demo mode
+    demo_prefix = f"demo_{user.id}_"
+    if user.demo_mode:
+        # Show only demo data
+        assets = await db.assets.find({
+            "user_id": user.id,
+            "id": {"$regex": f"^{demo_prefix}"}
+        }, {"_id": 0}).to_list(1000)
+    else:
+        # Show only live data (exclude demo data)
+        assets = await db.assets.find({
+            "user_id": user.id,
+            "id": {"$not": {"$regex": f"^{demo_prefix}"}}
+        }, {"_id": 0}).to_list(1000)
+    
     for asset in assets:
         if isinstance(asset.get('created_at'), str):
             asset['created_at'] = datetime.fromisoformat(asset['created_at'])
