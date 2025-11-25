@@ -205,6 +205,52 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ PASSED - Real estate extended fields working correctly. Successfully created property with current_price_per_area field ($250/sqft). Dashboard calculation correctly uses current_price_per_area over price_per_area (1500 sqft × $250 = $375K). Field updates work properly. Asset and AssetCreate models both support the new field."
+  
+  - task: "Demo Data Reseed Endpoint"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented POST /api/demo/reseed endpoint that deletes all existing demo data and creates fresh comprehensive demo data."
+      - working: true
+        agent: "testing"
+        comment: "PASSED - Demo reseed creates 18 assets, 5 documents (4 linked), 1 will with 3 beneficiaries, 3 scheduled messages. All demo data properly prefixed."
+  
+  - task: "Loan Calculator with Timeout"
+    implemented: true
+    working: false
+    file: "/app/backend/server.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented POST /api/loan-calculator with 15-second AI timeout, proper EMI calculations, amortization schedule generation."
+      - working: false
+        agent: "testing"
+        comment: "FAILED - Endpoint times out due to AI budget exceeded (Budget: 1.001, Current: 1.192). Core calculations are correct but AI tips generation fails. External API budget issue."
+  
+  - task: "Demo Mode Filtering"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented demo mode filtering across all endpoints using demo_{user_id}_ prefix regex."
+      - working: true
+        agent: "testing"
+        comment: "PASSED - All endpoints correctly filter by demo_mode. Documents, will, scheduled-messages, insights all properly isolated."
+
 
 frontend:
 frontend:
