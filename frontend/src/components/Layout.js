@@ -32,6 +32,7 @@ export default function Layout({ children }) {
   const [isAdmin, setIsAdmin] = useState(false);
   const [demoMode, setDemoMode] = useState(false);
   const [togglingDemo, setTogglingDemo] = useState(false);
+  const [userSubscription, setUserSubscription] = useState(null);
 
   useEffect(() => {
     // Check if user is admin
