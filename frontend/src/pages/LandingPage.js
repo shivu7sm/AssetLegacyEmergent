@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
@@ -7,19 +7,46 @@ import { ShieldCheck, Lock, Clock, Users, DollarSign, TrendingUp, Play, AlertCir
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-// Color System
-const COLORS = {
-  primary: '#EB3349',
-  primaryEnd: '#F45C43',
-  secondary: '#FFB347',
-  highlight: '#FFC300',
-  cream: '#FFE29F',
-  dark: '#1A1A1A',
-  darkGray: '#333333'
+// Theme System
+const THEMES = {
+  purple: {
+    name: 'Purple Dream',
+    primary: 'linear-gradient(135deg, #6A11CB 0%, #8E54E9 50%, #FF6A88 100%)',
+    secondary: 'linear-gradient(135deg, #8E54E9 0%, #FF6A88 100%)',
+    accent: 'linear-gradient(135deg, #FF6A88 0%, #FFB199 100%)',
+    light: 'linear-gradient(135deg, #FFB199 0%, #FFE5DD 100%)',
+    neutral: 'linear-gradient(135deg, #FAFAFA 0%, #FFFFFF 100%)',
+    footer: 'linear-gradient(135deg, #2D1B4E 0%, #1A0B2E 100%)',
+    buttonGradient: 'linear-gradient(135deg, #6A11CB 0%, #FF6A88 100%)'
+  },
+  blue: {
+    name: 'Ocean Deep',
+    primary: 'linear-gradient(135deg, #0F2027 0%, #203A43 50%, #2C5364 100%)',
+    secondary: 'linear-gradient(135deg, #203A43 0%, #2C5364 100%)',
+    accent: 'linear-gradient(135deg, #2C5364 0%, #4CA2CD 100%)',
+    light: 'linear-gradient(135deg, #4CA2CD 0%, #B8E6FF 100%)',
+    neutral: 'linear-gradient(135deg, #F5F7FA 0%, #FFFFFF 100%)',
+    footer: 'linear-gradient(135deg, #0F2027 0%, #000000 100%)',
+    buttonGradient: 'linear-gradient(135deg, #0F2027 0%, #2C5364 100%)'
+  },
+  green: {
+    name: 'Money Growth',
+    primary: 'linear-gradient(135deg, #11998E 0%, #38EF7D 50%, #C8FFB1 100%)',
+    secondary: 'linear-gradient(135deg, #38EF7D 0%, #C8FFB1 100%)',
+    accent: 'linear-gradient(135deg, #C8FFB1 0%, #E0FFD1 100%)',
+    light: 'linear-gradient(135deg, #E0FFD1 0%, #F5FFF0 100%)',
+    neutral: 'linear-gradient(135deg, #F8FFF8 0%, #FFFFFF 100%)',
+    footer: 'linear-gradient(135deg, #0D7377 0%, #0A4D4E 100%)',
+    buttonGradient: 'linear-gradient(135deg, #11998E 0%, #38EF7D 100%)'
+  }
 };
+
+const HIGHLIGHT = '#FFC300';
 
 export default function LandingPage() {
   const navigate = useNavigate();
+  const [selectedTheme, setSelectedTheme] = useState('purple');
+  const theme = THEMES[selectedTheme];
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -50,19 +77,37 @@ export default function LandingPage() {
     <div className="min-h-screen" style={{
       fontFamily: '"Poppins", "Montserrat", sans-serif'
     }}>
-      {/* Header with Pattern */}
+      {/* Header with Theme Selector */}
       <header className="backdrop-blur-sm sticky top-0 z-50" style={{ 
         borderBottom: '1px solid rgba(255,255,255,0.1)',
-        background: `url('/patterns/iso-cube.svg'), linear-gradient(135deg, ${COLORS.primary} 0%, ${COLORS.primaryEnd} 100%)`,
-        backgroundSize: '100px 100px, cover',
+        background: `url('/patterns/iso-cube.svg'), ${theme.primary}`,
+        backgroundSize: '90px 90px, cover',
         backgroundBlendMode: 'overlay'
       }}>
         <div className="container mx-auto px-6 py-5 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <ShieldCheck className="w-9 h-9" style={{ color: COLORS.highlight }} />
+            <ShieldCheck className="w-9 h-9" style={{ color: HIGHLIGHT }} />
             <h1 className="text-3xl font-bold" style={{ color: '#fff', letterSpacing: '-0.02em' }}>AssetVault</h1>
           </div>
           
+          {/* Theme Selector */}
+          <div className="hidden lg:flex items-center gap-3 px-4 py-2 rounded-full" style={{ background: 'rgba(0,0,0,0.2)', backdropFilter: 'blur(10px)' }}>
+            <span className="text-white text-sm mr-2">Theme:</span>
+            {Object.keys(THEMES).map(themeKey => (
+              <button
+                key={themeKey}
+                onClick={() => setSelectedTheme(themeKey)}
+                className="w-8 h-8 rounded-full transition-all"
+                style={{
+                  background: THEMES[themeKey].primary,
+                  border: selectedTheme === themeKey ? '3px solid #FFC300' : '2px solid rgba(255,255,255,0.3)',
+                  transform: selectedTheme === themeKey ? 'scale(1.1)' : 'scale(1)'
+                }}
+                title={THEMES[themeKey].name}
+              />
+            ))}
+          </div>
+
           {/* Navigation */}
           <nav className="hidden md:flex items-center gap-8">
             <a 
@@ -111,12 +156,13 @@ export default function LandingPage() {
             onClick={handleLogin}
             className="font-semibold px-8 py-6 text-base"
             style={{
-              background: COLORS.highlight,
-              color: COLORS.dark,
-              borderRadius: '999px',
+              background: HIGHLIGHT,
+              color: '#000',
+              borderRadius: '50px',
               border: 'none',
               letterSpacing: '0.02em',
-              boxShadow: `0 4px 20px rgba(255, 195, 0, 0.3)`
+              boxShadow: `0 4px 20px rgba(255, 195, 0, 0.3)`,
+              minWidth: '140px'
             }}
           >
             Get Started Free
@@ -126,14 +172,14 @@ export default function LandingPage() {
 
       {/* Hero Section */}
       <section className="py-24 md:py-32" style={{
-        background: `url('/patterns/iso-cube.svg'), linear-gradient(135deg, ${COLORS.primary} 0%, ${COLORS.primaryEnd} 100%)`,
-        backgroundSize: '100px 100px, cover',
+        background: `url('/patterns/iso-cube.svg'), ${theme.primary}`,
+        backgroundSize: '90px 90px, cover',
         backgroundBlendMode: 'overlay'
       }}>
         <div className="container mx-auto px-6">
           <div className="max-w-5xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8" style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(10px)' }}>
-              <Zap className="w-4 h-4" style={{ color: COLORS.highlight }} />
+              <Zap className="w-4 h-4" style={{ color: HIGHLIGHT }} />
               <span className="text-white text-sm font-medium" style={{ letterSpacing: '0.03em' }}>Protect Your Legacy Today</span>
             </div>
 
@@ -142,7 +188,7 @@ export default function LandingPage() {
               letterSpacing: '-0.03em'
             }}>
               Your Assets.<br />Your Legacy.<br />
-              <span style={{ color: COLORS.highlight }}>Forever Protected.</span>
+              <span style={{ color: HIGHLIGHT }}>Forever Protected.</span>
             </h1>
             
             <p className="text-xl md:text-2xl mb-12 max-w-3xl mx-auto" style={{ 
@@ -159,12 +205,13 @@ export default function LandingPage() {
                 onClick={handleLogin}
                 className="font-bold px-10 py-7 text-lg"
                 style={{
-                  background: COLORS.highlight,
-                  color: COLORS.dark,
-                  borderRadius: '999px',
+                  background: HIGHLIGHT,
+                  color: '#000',
+                  borderRadius: '50px',
                   border: 'none',
                   letterSpacing: '0.02em',
-                  boxShadow: '0 8px 30px rgba(255, 195, 0, 0.4)'
+                  boxShadow: '0 8px 30px rgba(255, 195, 0, 0.4)',
+                  minWidth: '200px'
                 }}
               >
                 Start Free Trial
@@ -175,12 +222,12 @@ export default function LandingPage() {
                 variant="outline"
                 className="font-semibold px-8 py-7 text-lg"
                 style={{
-                  background: 'rgba(255,255,255,0.1)',
+                  background: 'transparent',
                   color: '#fff',
-                  borderRadius: '999px',
-                  border: '2px solid rgba(255,255,255,0.3)',
+                  borderRadius: '50px',
+                  border: '2px solid #FFC300',
                   letterSpacing: '0.02em',
-                  backdropFilter: 'blur(10px)'
+                  minWidth: '180px'
                 }}
               >
                 <Play className="mr-2 w-5 h-5" />
@@ -190,35 +237,35 @@ export default function LandingPage() {
 
             <div className="mt-12 flex items-center justify-center gap-8 text-white flex-wrap">
               <div className="text-center">
-                <div className="text-3xl font-bold" style={{ color: COLORS.highlight }}>5K+</div>
-                <div className="text-sm opacity-90" style={{ letterSpacing: '0.02em' }}>Active Users</div>
+                <div className="text-3xl font-bold" style={{ color: HIGHLIGHT }}>5K+</div>
+                <div className="text-sm" style={{ color: 'rgba(255,255,255,0.85)' }}>Active Users</div>
               </div>
               <div className="h-12 w-px" style={{ background: 'rgba(255,255,255,0.2)' }} />
               <div className="text-center">
-                <div className="text-3xl font-bold" style={{ color: COLORS.highlight }}>₹50Cr+</div>
-                <div className="text-sm opacity-90" style={{ letterSpacing: '0.02em' }}>Assets Protected</div>
+                <div className="text-3xl font-bold" style={{ color: HIGHLIGHT }}>₹50Cr+</div>
+                <div className="text-sm" style={{ color: 'rgba(255,255,255,0.85)' }}>Assets Protected</div>
               </div>
               <div className="h-12 w-px" style={{ background: 'rgba(255,255,255,0.2)' }} />
               <div className="text-center">
-                <div className="text-3xl font-bold" style={{ color: COLORS.highlight }}>99.9%</div>
-                <div className="text-sm opacity-90" style={{ letterSpacing: '0.02em' }}>Uptime</div>
+                <div className="text-3xl font-bold" style={{ color: HIGHLIGHT }}>99.9%</div>
+                <div className="text-sm" style={{ color: 'rgba(255,255,255,0.85)' }}>Uptime</div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* The Uncomfortable Truth - What Banks Track */}
+      {/* The Uncomfortable Truth */}
       <section id="why" className="py-20" style={{ 
-        background: `url('/patterns/iso-cube.svg'), linear-gradient(135deg, ${COLORS.primaryEnd} 0%, #D43D51 100%)`,
-        backgroundSize: '100px 100px, cover',
+        background: `url('/patterns/iso-cube.svg'), ${theme.secondary}`,
+        backgroundSize: '80px 80px, cover',
         backgroundBlendMode: 'overlay',
         boxShadow: 'inset 0 4px 20px rgba(0,0,0,0.1)'
       }}>
         <div className="container mx-auto px-6">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12">
-              <AlertCircle className="w-16 h-16 mx-auto mb-4" style={{ color: COLORS.highlight }} />
+              <AlertCircle className="w-16 h-16 mx-auto mb-4" style={{ color: HIGHLIGHT }} />
               <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ color: '#fff', letterSpacing: '-0.02em' }}>
                 The Uncomfortable Truth
               </h2>
@@ -229,9 +276,14 @@ export default function LandingPage() {
             </div>
 
             <div className="grid md:grid-cols-2 gap-6 mb-12">
-              <div className="p-8 rounded-3xl" style={{ background: 'rgba(0,0,0,0.2)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)' }}>
+              {/* What Banks Chase - White Card */}
+              <div className="p-8 rounded-3xl" style={{ 
+                background: '#FFFFFF',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                border: '1px solid rgba(0,0,0,0.08)'
+              }}>
                 <div className="text-5xl mb-4">🚨</div>
-                <h3 className="text-2xl font-bold mb-4" style={{ color: '#fff' }}>What Banks WILL Chase You For:</h3>
+                <h3 className="text-2xl font-bold mb-4" style={{ color: '#222' }}>What Banks WILL Chase You For:</h3>
                 <ul className="space-y-3">
                   {[
                     'Home Loans - Every EMI tracked',
@@ -242,15 +294,19 @@ export default function LandingPage() {
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-3">
                       <CreditCard className="w-5 h-5 flex-shrink-0 mt-1" style={{ color: '#ef4444' }} />
-                      <span style={{ color: 'rgba(255,255,255,0.9)' }}>{item}</span>
+                      <span style={{ color: '#444' }}>{item}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <div className="p-8 rounded-3xl" style={{ background: COLORS.highlight, border: '2px solid rgba(255,255,255,0.3)' }}>
+              {/* What Banks Hide - Yellow Card */}
+              <div className="p-8 rounded-3xl" style={{ 
+                background: HIGHLIGHT,
+                boxShadow: '0 8px 32px rgba(255, 195, 0, 0.3)'
+              }}>
                 <div className="text-5xl mb-4">🔒</div>
-                <h3 className="text-2xl font-bold mb-4" style={{ color: COLORS.dark }}>What Banks WON'T Tell Your Family:</h3>
+                <h3 className="text-2xl font-bold mb-4" style={{ color: '#000' }}>What Banks WON'T Tell Your Family:</h3>
                 <ul className="space-y-3">
                   {[
                     'Life Insurance Policies - Hidden away',
@@ -261,21 +317,25 @@ export default function LandingPage() {
                     'Crypto Wallets - Gone forever'
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-3">
-                      <Lock className="w-5 h-5 flex-shrink-0 mt-1" style={{ color: COLORS.dark }} />
-                      <span style={{ color: COLORS.dark, fontWeight: 500 }}>{item}</span>
+                      <Lock className="w-5 h-5 flex-shrink-0 mt-1" style={{ color: '#000' }} />
+                      <span style={{ color: '#000', fontWeight: 500 }}>{item}</span>
                     </li>
                   ))}
                 </ul>
               </div>
             </div>
 
-            <div className="p-8 rounded-3xl text-center" style={{ background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(10px)' }}>
-              <Heart className="w-12 h-12 mx-auto mb-4" style={{ color: COLORS.highlight }} />
+            <div className="p-8 rounded-3xl text-center" style={{ 
+              background: 'rgba(255,255,255,0.15)', 
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255,255,255,0.2)'
+            }}>
+              <Heart className="w-12 h-12 mx-auto mb-4" style={{ color: HIGHLIGHT }} />
               <h3 className="text-2xl font-bold mb-3" style={{ color: '#fff' }}>Don't Let Your Legacy Disappear</h3>
               <p className="text-lg max-w-3xl mx-auto" style={{ color: 'rgba(255,255,255,0.9)', lineHeight: '1.7' }}>
                 In India, over ₹35,000 Crores in unclaimed assets sit with banks and insurance companies. 
                 Why? Because families didn't know these assets existed. 
-                <strong style={{ color: COLORS.highlight }}> AssetVault ensures this never happens to you.</strong>
+                <strong style={{ color: HIGHLIGHT }}> AssetVault ensures this never happens to you.</strong>
               </p>
             </div>
           </div>
@@ -284,8 +344,8 @@ export default function LandingPage() {
 
       {/* Features Section */}
       <section id="features" className="py-20" style={{
-        background: `url('/patterns/iso-cube.svg'), linear-gradient(135deg, ${COLORS.primaryEnd} 0%, ${COLORS.secondary} 100%)`,
-        backgroundSize: '100px 100px, cover',
+        background: `url('/patterns/iso-cube.svg'), ${theme.accent}`,
+        backgroundSize: '70px 70px, cover',
         backgroundBlendMode: 'overlay'
       }}>
         <div className="container mx-auto px-6">
@@ -303,11 +363,11 @@ export default function LandingPage() {
               {
                 icon: <ShieldCheck className="w-12 h-12" />,
                 title: 'Complete Asset Tracking',
-                description: 'Track ALL your assets - bank accounts, FDs, insurance, mutual funds, stocks, crypto, gold, property, and even portfolio holdings across exchanges.'
+                description: 'Track ALL your assets - bank accounts, FDs, insurance, mutual funds, stocks, crypto, gold, property, and portfolio holdings.'
               },
               {
                 icon: <Users className="w-12 h-12" />,
-                title: 'Multiple Nominees with Priority',
+                title: 'Multiple Nominees',
                 description: 'Add unlimited nominees with priority ordering. Primary unavailable? System automatically contacts your backup nominees.'
               },
               {
@@ -318,36 +378,35 @@ export default function LandingPage() {
               {
                 icon: <TrendingUp className="w-12 h-12" />,
                 title: 'Real-Time Net Worth',
-                description: 'Live dashboard showing your complete financial picture. Historical snapshots track your wealth growth over time.'
+                description: 'Live dashboard showing your complete financial picture. Historical snapshots track your wealth growth.'
               },
               {
                 icon: <FileText className="w-12 h-12" />,
                 title: 'Secure Document Vault',
-                description: 'Store policy documents, certificates, and statements. Link them to specific assets for easy family access.'
+                description: 'Store policy documents, certificates, and statements. Link them to specific assets for easy access.'
               },
               {
                 icon: <Database className="w-12 h-12" />,
                 title: 'Portfolio Management',
-                description: 'Track holdings across multiple exchanges and brokers. Real-time portfolio values with gain/loss tracking.'
+                description: 'Track holdings across exchanges and brokers. Real-time portfolio values with gain/loss tracking.'
               }
             ].map((feature, index) => (
               <div 
                 key={index}
                 className="p-8 rounded-3xl transition-all hover:scale-105"
                 style={{
-                  background: 'rgba(255,255,255,0.15)',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  boxShadow: '0 8px 32px rgba(0,0,0,0.1)'
+                  background: '#FFFFFF',
+                  boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
+                  border: '1px solid rgba(0,0,0,0.05)'
                 }}
               >
-                <div className="mb-4" style={{ color: '#fff' }}>
+                <div className="mb-4" style={{ color: '#222' }}>
                   {feature.icon}
                 </div>
-                <h3 className="text-2xl font-bold mb-3" style={{ color: '#fff' }}>
+                <h3 className="text-2xl font-bold mb-3" style={{ color: '#222' }}>
                   {feature.title}
                 </h3>
-                <p style={{ color: 'rgba(255,255,255,0.9)', lineHeight: '1.7' }}>
+                <p style={{ color: '#444', lineHeight: '1.7' }}>
                   {feature.description}
                 </p>
               </div>
@@ -358,18 +417,18 @@ export default function LandingPage() {
 
       {/* Security USP Section */}
       <section id="security" className="py-20" style={{ 
-        background: `url('/patterns/iso-cube.svg'), linear-gradient(135deg, ${COLORS.secondary} 0%, ${COLORS.cream} 100%)`,
-        backgroundSize: '100px 100px, cover',
+        background: `url('/patterns/iso-cube.svg'), ${theme.light}`,
+        backgroundSize: '60px 60px, cover',
         backgroundBlendMode: 'overlay'
       }}>
         <div className="container mx-auto px-6">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-16">
-              <Shield className="w-16 h-16 mx-auto mb-4" style={{ color: COLORS.primary }} />
-              <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: COLORS.darkGray, letterSpacing: '-0.02em' }}>
+              <Shield className="w-16 h-16 mx-auto mb-4" style={{ color: '#222' }} />
+              <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: '#222', letterSpacing: '-0.02em' }}>
                 Bank-Grade Security You Can Trust
               </h2>
-              <p className="text-xl" style={{ color: COLORS.darkGray }}>
+              <p className="text-xl" style={{ color: '#444' }}>
                 Your data security is our top priority
               </p>
             </div>
@@ -410,77 +469,33 @@ export default function LandingPage() {
                 <div 
                   key={index}
                   className="p-6 rounded-2xl"
-                  style={{ background: 'rgba(255,255,255,0.6)', backdropFilter: 'blur(10px)', border: `2px solid ${COLORS.secondary}` }}
+                  style={{ 
+                    background: '#FFFFFF',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+                    border: '1px solid rgba(0,0,0,0.05)'
+                  }}
                 >
                   <div className="text-4xl mb-3">{item.icon}</div>
-                  <h3 className="text-xl font-bold mb-2" style={{ color: COLORS.dark }}>
+                  <h3 className="text-xl font-bold mb-2" style={{ color: '#222' }}>
                     {item.title}
                   </h3>
-                  <p style={{ color: COLORS.darkGray, lineHeight: '1.7' }}>
+                  <p style={{ color: '#444', lineHeight: '1.7' }}>
                     {item.description}
                   </p>
                 </div>
               ))}
             </div>
 
-            <div className="mt-12 p-8 rounded-3xl text-center" style={{ background: 'rgba(235, 51, 73, 0.1)', border: `2px solid ${COLORS.primary}` }}>
-              <h3 className="text-2xl font-bold mb-3" style={{ color: COLORS.primary }}>Trusted by 5000+ Indian Families</h3>
-              <p className="text-lg" style={{ color: COLORS.darkGray }}>
+            <div className="mt-12 p-8 rounded-3xl text-center" style={{ 
+              background: '#FFFFFF',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+              border: '2px solid ' + HIGHLIGHT
+            }}>
+              <h3 className="text-2xl font-bold mb-3" style={{ color: '#222' }}>Trusted by 5000+ Indian Families</h3>
+              <p className="text-lg" style={{ color: '#444' }}>
                 Join thousands who trust AssetVault with their most important financial information. 
-                Rated 4.8/5 stars for security and reliability.
+                Rated <strong style={{ color: HIGHLIGHT }}>4.8/5 stars</strong> for security and reliability.
               </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section className="py-20" style={{ 
-        background: `url('/patterns/iso-cube.svg'), linear-gradient(135deg, ${COLORS.cream} 0%, #FFF5E1 100%)`,
-        backgroundSize: '100px 100px, cover',
-        backgroundBlendMode: 'overlay'
-      }}>
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: COLORS.darkGray, letterSpacing: '-0.02em' }}>
-              Simple 3-Step Process
-            </h2>
-          </div>
-
-          <div className="max-w-5xl mx-auto">
-            <div className="grid md:grid-cols-3 gap-8">
-              {[
-                {
-                  step: '01',
-                  title: 'Add Your Assets',
-                  description: 'Enter details of all your financial assets - from bank accounts to crypto wallets. Takes just 10 minutes.'
-                },
-                {
-                  step: '02',
-                  title: 'Set Nominees',
-                  description: 'Designate trusted family members or advisors. Set priority order for sequential contact.'
-                },
-                {
-                  step: '03',
-                  title: 'Stay Protected',
-                  description: 'Relax knowing your legacy is secure. Update anytime, access anywhere. We handle the rest.'
-                }
-              ].map((item, index) => (
-                <div key={index} className="text-center">
-                  <div 
-                    className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold"
-                    style={{ background: COLORS.highlight, color: COLORS.dark, boxShadow: '0 8px 24px rgba(255, 195, 0, 0.3)' }}
-                  >
-                    {item.step}
-                  </div>
-                  <h3 className="text-2xl font-bold mb-3" style={{ color: COLORS.dark }}>
-                    {item.title}
-                  </h3>
-                  <p style={{ color: COLORS.darkGray, lineHeight: '1.7' }}>
-                    {item.description}
-                  </p>
-                </div>
-              ))}
             </div>
           </div>
         </div>
@@ -488,16 +503,14 @@ export default function LandingPage() {
 
       {/* Pricing Section */}
       <section id="pricing" className="py-20" style={{
-        background: `url('/patterns/iso-cube.svg'), linear-gradient(135deg, #FFF5E1 0%, #FFF 100%)`,
-        backgroundSize: '100px 100px, cover',
-        backgroundBlendMode: 'overlay'
+        background: theme.neutral
       }}>
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: COLORS.darkGray, letterSpacing: '-0.02em' }}>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: '#222', letterSpacing: '-0.02em' }}>
               Simple, Transparent Pricing
             </h2>
-            <p className="text-xl" style={{ color: COLORS.darkGray }}>
+            <p className="text-xl" style={{ color: '#444' }}>
               Choose the plan that's right for your family
             </p>
           </div>
@@ -506,7 +519,7 @@ export default function LandingPage() {
             {[
               {
                 name: 'Free',
-                price: '₹0',
+                price: '$0',
                 period: 'forever',
                 description: 'Perfect for getting started',
                 features: [
@@ -522,7 +535,7 @@ export default function LandingPage() {
               },
               {
                 name: 'Pro',
-                price: '₹199',
+                price: '$9.99',
                 period: 'per month',
                 description: 'Most popular for families',
                 features: [
@@ -540,7 +553,7 @@ export default function LandingPage() {
               },
               {
                 name: 'Family',
-                price: '₹499',
+                price: '$24.99',
                 period: 'per month',
                 description: 'Complete family protection',
                 features: [
@@ -561,39 +574,38 @@ export default function LandingPage() {
                 key={index}
                 className="p-8 rounded-3xl"
                 style={{
-                  background: plan.highlight ? COLORS.highlight : 'rgba(255,255,255,0.9)',
-                  backdropFilter: 'blur(10px)',
-                  border: plan.highlight ? 'none' : `2px solid ${COLORS.secondary}`,
+                  background: plan.highlight ? HIGHLIGHT : '#FFFFFF',
+                  boxShadow: plan.highlight ? '0 12px 40px rgba(255, 195, 0, 0.3)' : '0 4px 20px rgba(0,0,0,0.08)',
                   transform: plan.highlight ? 'scale(1.05)' : 'scale(1)',
-                  boxShadow: plan.highlight ? '0 12px 40px rgba(255, 195, 0, 0.3)' : '0 4px 20px rgba(0,0,0,0.05)'
+                  border: plan.highlight ? 'none' : '1px solid rgba(0,0,0,0.08)'
                 }}
               >
                 {plan.highlight && (
                   <div className="text-center mb-4">
-                    <span className="inline-block px-4 py-1 rounded-full text-sm font-bold" style={{ background: COLORS.dark, color: COLORS.highlight }}>
+                    <span className="inline-block px-4 py-1 rounded-full text-sm font-bold" style={{ background: '#000', color: HIGHLIGHT }}>
                       MOST POPULAR
                     </span>
                   </div>
                 )}
-                <h3 className="text-2xl font-bold mb-2" style={{ color: plan.highlight ? COLORS.dark : COLORS.darkGray }}>
+                <h3 className="text-2xl font-bold mb-2" style={{ color: plan.highlight ? '#000' : '#222' }}>
                   {plan.name}
                 </h3>
-                <p className="text-sm mb-4" style={{ color: plan.highlight ? COLORS.dark : COLORS.darkGray, opacity: 0.8 }}>
+                <p className="text-sm mb-4" style={{ color: plan.highlight ? '#000' : '#666', opacity: plan.highlight ? 1 : 0.8 }}>
                   {plan.description}
                 </p>
                 <div className="mb-6">
-                  <span className="text-5xl font-bold" style={{ color: plan.highlight ? COLORS.dark : COLORS.primary }}>
+                  <span className="text-5xl font-bold" style={{ color: plan.highlight ? '#000' : '#222' }}>
                     {plan.price}
                   </span>
-                  <span className="text-lg" style={{ color: plan.highlight ? COLORS.dark : COLORS.darkGray }}>
+                  <span className="text-lg" style={{ color: plan.highlight ? '#000' : '#666' }}>
                     /{plan.period}
                   </span>
                 </div>
                 <ul className="space-y-3 mb-8">
                   {plan.features.map((feature, i) => (
                     <li key={i} className="flex items-start gap-3">
-                      <CheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: plan.highlight ? COLORS.dark : COLORS.primary }} />
-                      <span style={{ color: plan.highlight ? COLORS.dark : COLORS.darkGray }}>{feature}</span>
+                      <CheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: plan.highlight ? '#000' : '#222' }} />
+                      <span style={{ color: plan.highlight ? '#000' : '#444' }}>{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -601,10 +613,11 @@ export default function LandingPage() {
                   onClick={handleLogin}
                   className="w-full font-bold py-6 text-base"
                   style={{
-                    background: plan.highlight ? COLORS.dark : COLORS.highlight,
-                    color: plan.highlight ? COLORS.highlight : COLORS.dark,
-                    borderRadius: '999px',
-                    border: 'none'
+                    background: plan.highlight ? '#000' : HIGHLIGHT,
+                    color: plan.highlight ? HIGHLIGHT : '#000',
+                    borderRadius: '50px',
+                    border: 'none',
+                    minWidth: '100%'
                   }}
                 >
                   {plan.cta}
@@ -614,15 +627,15 @@ export default function LandingPage() {
           </div>
 
           <div className="mt-12 text-center">
-            <p style={{ color: COLORS.darkGray }}>All plans include 30-day money-back guarantee • Cancel anytime</p>
+            <p style={{ color: '#666' }}>All plans include 30-day money-back guarantee • Cancel anytime</p>
           </div>
         </div>
       </section>
 
       {/* FAQ Section */}
       <section id="faq" className="py-20" style={{ 
-        background: `url('/patterns/iso-cube.svg'), linear-gradient(135deg, ${COLORS.secondary} 0%, ${COLORS.primaryEnd} 100%)`,
-        backgroundSize: '100px 100px, cover',
+        background: `url('/patterns/iso-cube.svg'), ${theme.accent}`,
+        backgroundSize: '70px 70px, cover',
         backgroundBlendMode: 'overlay'
       }}>
         <div className="container mx-auto px-6">
@@ -663,12 +676,16 @@ export default function LandingPage() {
                 <div 
                   key={index}
                   className="p-6 rounded-2xl"
-                  style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)' }}
+                  style={{ 
+                    background: '#FFFFFF',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+                    border: '1px solid rgba(255,255,255,0.5)'
+                  }}
                 >
-                  <h3 className="text-xl font-bold mb-3" style={{ color: COLORS.highlight }}>
+                  <h3 className="text-xl font-bold mb-3" style={{ color: HIGHLIGHT }}>
                     {faq.q}
                   </h3>
-                  <p style={{ color: 'rgba(255,255,255,0.9)', lineHeight: '1.7' }}>
+                  <p style={{ color: '#444', lineHeight: '1.7' }}>
                     {faq.a}
                   </p>
                 </div>
@@ -680,8 +697,8 @@ export default function LandingPage() {
 
       {/* CTA Section */}
       <section className="py-24" style={{
-        background: `url('/patterns/iso-cube.svg'), linear-gradient(135deg, ${COLORS.primary} 0%, ${COLORS.primaryEnd} 100%)`,
-        backgroundSize: '100px 100px, cover',
+        background: `url('/patterns/iso-cube.svg'), ${theme.primary}`,
+        backgroundSize: '90px 90px, cover',
         backgroundBlendMode: 'overlay'
       }}>
         <div className="container mx-auto px-6">
@@ -696,12 +713,13 @@ export default function LandingPage() {
               onClick={handleLogin}
               className="font-bold px-12 py-8 text-xl"
               style={{
-                background: COLORS.highlight,
-                color: COLORS.dark,
-                borderRadius: '999px',
+                background: HIGHLIGHT,
+                color: '#000',
+                borderRadius: '50px',
                 border: 'none',
                 letterSpacing: '0.02em',
-                boxShadow: '0 10px 40px rgba(255, 195, 0, 0.4)'
+                boxShadow: '0 10px 40px rgba(255, 195, 0, 0.4)',
+                minWidth: '280px'
               }}
             >
               Get Started - It's Free
@@ -713,16 +731,16 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="py-12" style={{ 
-        background: `url('/patterns/iso-cube.svg'), ${COLORS.dark}`,
-        backgroundSize: '100px 100px',
+        background: `url('/patterns/iso-cube.svg'), ${theme.footer}`,
+        backgroundSize: '90px 90px',
         backgroundBlendMode: 'overlay',
-        borderTop: `1px solid ${COLORS.darkGray}`
+        borderTop: `1px solid rgba(255,255,255,0.1)`
       }}>
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <ShieldCheck className="w-7 h-7" style={{ color: COLORS.highlight }} />
+                <ShieldCheck className="w-7 h-7" style={{ color: HIGHLIGHT }} />
                 <h3 className="text-xl font-bold" style={{ color: '#fff' }}>AssetVault</h3>
               </div>
               <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>
@@ -795,7 +813,7 @@ export default function LandingPage() {
             </div>
           </div>
           
-          <div className="pt-8" style={{ borderTop: `1px solid ${COLORS.darkGray}` }}>
+          <div className="pt-8" style={{ borderTop: `1px solid rgba(255,255,255,0.1)` }}>
             <p className="text-center" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.9rem' }}>
               © 2025 AssetVault. All rights reserved. Made with ❤️ for Indian families.
             </p>
