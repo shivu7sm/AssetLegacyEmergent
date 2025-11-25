@@ -52,13 +52,13 @@ class User(BaseModel):
     currency_format: str = "standard"  # standard or indian
     selected_currency: str = "USD"  # USD, INR, EUR, GBP, etc.
     default_currency: str = "USD"  # Default currency for new users
-    default_asset_view: str = "grid"  # grid or table
+    default_asset_view: str = "table"  # grid or table - DEFAULT TO TABLE
     subscription_plan: str = "Free"  # Free, Pro, Family
     stripe_customer_id: Optional[str] = None
     stripe_subscription_id: Optional[str] = None
     marketing_consent: bool = False
     communication_consent: bool = True
-    demo_mode: bool = False  # Toggle between live and demo data
+    demo_mode: bool = True  # Toggle between live and demo data - DEFAULT TO DEMO
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class UserSession(BaseModel):
