@@ -881,7 +881,7 @@ export default function Settings() {
           </div>
         );
 
-      case 'connected':
+      case 'connected': {
         return (
           <div className="space-y-6">
             <div>
@@ -907,6 +907,7 @@ export default function Settings() {
             </Card>
           </div>
         );
+      }
 
       case 'subscription': {
         const subDetails = subscription?.subscription_details;
