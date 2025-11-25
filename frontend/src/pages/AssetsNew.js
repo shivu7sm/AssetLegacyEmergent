@@ -61,8 +61,6 @@ export default function AssetsNew() {
   const [assets, setAssets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expandedGroups, setExpandedGroups] = useState(Object.keys(ASSET_GROUPS));
-  const [editingAssetId, setEditingAssetId] = useState(null);
-  const [editValues, setEditValues] = useState({});
   const [selectedAsset, setSelectedAsset] = useState(null);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [loanCalcData, setLoanCalcData] = useState(null);
