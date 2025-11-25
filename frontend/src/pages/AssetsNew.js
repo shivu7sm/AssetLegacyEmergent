@@ -287,7 +287,7 @@ export default function AssetsNew() {
                               borderBottom: `1px solid ${group.color}30`
                             }}
                           >
-                            <td colSpan="3" className="p-3">
+                            <td colSpan="2" className="p-3">
                               <div className="flex items-center gap-3">
                                 {isExpanded ? 
                                   <ChevronDown className="w-4 h-4" style={{color: group.color}} /> : 
@@ -302,12 +302,12 @@ export default function AssetsNew() {
                                 </span>
                               </div>
                             </td>
-                            <td className="p-3 text-right">
+                            <td className="p-3 text-right" colSpan="2">
                               <span className="font-bold" style={{color: group.color, fontSize: '0.938rem'}}>
                                 {isLiability ? '-' : ''}{formatCurrency(groupTotal, selectedCurrency, currencyFormat)}
                               </span>
                             </td>
-                            <td></td>
+                            <td colSpan="2"></td>
                           </tr>
                           
                           {/* Group Assets Rows */}
