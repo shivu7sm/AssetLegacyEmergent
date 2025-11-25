@@ -870,6 +870,20 @@ async def nominee_login(access_token: str):
         {"$set": {"last_accessed_at": datetime.now(timezone.utc).isoformat()}}
     )
     
+    # Log nominee access in audit trail
+    audit_log = {
+        "user_id": nominee["user_id"],
+        "action": "nominee_access_login",
+        "details": {
+            "nominee_name": nominee.get("name"),
+            "nominee_email": nominee.get("email"),
+            "access_type": nominee.get("access_type", "after_dms")
+        },
+        "ip_address": "unknown",
+        "timestamp": datetime.now(timezone.utc).isoformat()
+    }
+    await db.audit_logs.insert_one(audit_log)
+    
     # Return nominee info and owner info
     owner = await db.users.find_one({"id": nominee["user_id"]})
     
