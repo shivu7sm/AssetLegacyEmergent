@@ -2002,8 +2002,32 @@ Witnesses: [To be completed with legal counsel]
 
 ---
 DEMO NOTE: This is sample demo content. Please consult with a legal professional to create your actual will.""",
-        "beneficiaries": [],
-        "asset_distribution": {},
+        "beneficiaries": [
+            {
+                "name": "Jane Doe",
+                "relationship": "Spouse",
+                "allocation_percentage": 50,
+                "details": "Primary beneficiary - receives 50% of estate"
+            },
+            {
+                "name": "John Doe Jr.",
+                "relationship": "Son",
+                "allocation_percentage": 25,
+                "details": "Secondary beneficiary - receives 25% held in trust until age 25"
+            },
+            {
+                "name": "Sarah Doe",
+                "relationship": "Daughter",
+                "allocation_percentage": 25,
+                "details": "Secondary beneficiary - receives 25% held in trust until age 25"
+            }
+        ],
+        "asset_distribution": {
+            "real_estate": "Primary residence to Jane Doe, Rental property held in children's trust",
+            "investments": "401k and IRA split equally between Jane Doe and children's education trust",
+            "cryptocurrency": "50% to Jane Doe, 50% to children's trust",
+            "life_insurance": "Proceeds deposited in children's education trust"
+        },
         "created_at": datetime.now(timezone.utc).isoformat(),
         "updated_at": datetime.now(timezone.utc).isoformat()
     }
