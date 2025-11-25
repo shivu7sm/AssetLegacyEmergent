@@ -1470,14 +1470,15 @@ async def reseed_demo_data(user: User = Depends(require_auth)):
     
     return {"success": True, "message": "Demo data reseeded successfully"}
 
-async def seed_demo_data(user_id: str):
+async def seed_demo_data(user_id: str, force: bool = False):
     """Create comprehensive demo data for user with realistic values"""
     demo_prefix = f"demo_{user_id}_"
     
-    # Check if demo data already exists
-    existing_demo = await db.assets.find_one({"user_id": user_id, "id": {"$regex": f"^{demo_prefix}"}})
-    if existing_demo:
-        return  # Demo data already exists
+    # Check if demo data already exists (skip if not forcing)
+    if not force:
+        existing_demo = await db.assets.find_one({"user_id": user_id, "id": {"$regex": f"^{demo_prefix}"}})
+        if existing_demo:
+            return  # Demo data already exists
     
     # Demo Assets - Expanded with more realistic data
     demo_assets = [
