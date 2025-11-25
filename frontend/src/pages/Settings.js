@@ -566,7 +566,17 @@ export default function Settings() {
 
   useEffect(() => {
     fetchData();
+    checkDemoMode();
   }, []);
+
+  const checkDemoMode = async () => {
+    try {
+      const response = await axios.get(`${API}/demo/status`, { withCredentials: true });
+      setDemoMode(response.data.demo_mode);
+    } catch (error) {
+      console.error('Failed to check demo mode:', error);
+    }
+  };
 
   useEffect(() => {
     const tab = searchParams.get('tab');
