@@ -21,7 +21,18 @@ export default function NomineeDashboard() {
       navigate('/nominee-access');
       return;
     }
-    fetchDashboard();
+    
+    // Check if this is a demo mode preview
+    if (token.startsWith('nom_demo_')) {
+      // Use demo mode - create mock data
+      setNomineeInfo({
+        nominee: { name: 'You (Demo Preview)', relationship: 'Preview Mode' },
+        owner: { name: 'Demo Account Owner', email: 'demo@example.com' }
+      });
+      fetchDashboard();
+    } else {
+      fetchDashboard();
+    }
   }, []);
 
   const fetchDashboard = async () => {
