@@ -410,14 +410,12 @@ export default function AssetsNew() {
           })}
         </div>
 
-        {/* Main Layout: Table + Detail Panel */}
-        <div className="grid grid-cols-12 gap-6">
-          {/* Assets Table - Left Side - Scrollable */}
-          <div className={selectedAsset ? 'col-span-7' : 'col-span-12'}>
-            <Card style={{background: '#1a1229', borderColor: '#2d1f3d', padding: 0}}>
-              <CardContent className="p-0">
-                <div style={{maxHeight: 'calc(100vh - 280px)', overflowY: 'auto'}}>
-                  <table className="w-full" style={{fontSize: '0.813rem'}}>
+        {/* Main Layout: Full Width Table */}
+        <div className="w-full">
+          <Card style={{background: '#1a1229', borderColor: '#2d1f3d', padding: 0}}>
+            <CardContent className="p-0">
+              <div style={{maxHeight: 'calc(100vh - 280px)', overflowY: 'auto'}}>
+                <table className="w-full" style={{fontSize: '0.813rem'}}>
                     <thead style={{background: '#0E0F16', borderBottom: '2px solid #2d1f3d', position: 'sticky', top: 0, zIndex: 10}}>
                       <tr>
                         <th className="text-left p-3" style={{color: '#94a3b8', fontWeight: 600, width: '30%'}}>Asset</th>
