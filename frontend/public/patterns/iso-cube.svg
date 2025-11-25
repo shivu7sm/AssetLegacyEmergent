@@ -1,18 +1,15 @@
-<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg">
+<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <pattern id="iso-pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-      <!-- Left line (60 degrees) -->
-      <line x1="20" y1="0" x2="0" y2="10" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
-      <!-- Right line (-60 degrees) -->
-      <line x1="20" y1="0" x2="40" y2="10" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
-      <!-- Bottom line (horizontal at 60 degree angle) -->
-      <line x1="0" y1="10" x2="20" y2="20" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
-      <line x1="20" y1="20" x2="40" y2="10" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
-      <!-- Vertical connection -->
-      <line x1="20" y1="20" x2="20" y2="40" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
-      <line x1="0" y1="10" x2="0" y2="30" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
-      <line x1="40" y1="10" x2="40" y2="30" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+    <pattern id="iso-pattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <!-- Finer isometric cube pattern -->
+      <line x1="10" y1="0" x2="0" y2="5" stroke="rgba(255,255,255,0.1)" stroke-width="0.5" />
+      <line x1="10" y1="0" x2="20" y2="5" stroke="rgba(255,255,255,0.1)" stroke-width="0.5" />
+      <line x1="0" y1="5" x2="10" y2="10" stroke="rgba(255,255,255,0.1)" stroke-width="0.5" />
+      <line x1="10" y1="10" x2="20" y2="5" stroke="rgba(255,255,255,0.1)" stroke-width="0.5" />
+      <line x1="10" y1="10" x2="10" y2="20" stroke="rgba(255,255,255,0.1)" stroke-width="0.5" />
+      <line x1="0" y1="5" x2="0" y2="15" stroke="rgba(255,255,255,0.1)" stroke-width="0.5" />
+      <line x1="20" y1="5" x2="20" y2="15" stroke="rgba(255,255,255,0.1)" stroke-width="0.5" />
     </pattern>
   </defs>
-  <rect width="40" height="40" fill="url(#iso-pattern)" />
+  <rect width="20" height="20" fill="url(#iso-pattern)" />
 </svg>
