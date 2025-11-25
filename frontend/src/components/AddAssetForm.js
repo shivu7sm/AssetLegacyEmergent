@@ -13,26 +13,33 @@ const CURRENCIES = ['USD', 'EUR', 'GBP', 'INR', 'JPY', 'AUD', 'CAD'];
 const AREA_UNITS = ['sqft', 'sqmt', 'yard', 'acre'];
 const WEIGHT_UNITS = ['gram', 'kilogram', 'ounce', 'pound'];
 
-export default function AddAssetForm({ onSuccess, onCancel }) {
+export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null }) {
   const [formData, setFormData] = useState({
-    type: 'bank',
-    name: '',
-    quantity: '',
-    unit_price: '',
-    total_value: '',
-    current_unit_price: '',
-    weight: '',
-    weight_unit: 'gram',
-    area: '',
-    area_unit: 'sqft',
-    price_per_area: '',
-    current_price_per_area: '',
-    principal_amount: '',
-    interest_rate: '',
-    tenure_months: '',
-    purchase_currency: 'USD',
-    purchase_date: '',
-    symbol: ''
+    type: editingAsset?.type || 'bank',
+    name: editingAsset?.name || '',
+    quantity: editingAsset?.quantity?.toString() || '',
+    unit_price: editingAsset?.unit_price?.toString() || '',
+    total_value: editingAsset?.total_value?.toString() || '',
+    current_unit_price: editingAsset?.current_unit_price?.toString() || '',
+    current_total_value: editingAsset?.current_total_value?.toString() || '',
+    weight: editingAsset?.weight?.toString() || '',
+    weight_unit: editingAsset?.weight_unit || 'gram',
+    area: editingAsset?.area?.toString() || '',
+    area_unit: editingAsset?.area_unit || 'sqft',
+    price_per_area: editingAsset?.price_per_area?.toString() || '',
+    current_price_per_area: editingAsset?.current_price_per_area?.toString() || '',
+    principal_amount: editingAsset?.principal_amount?.toString() || '',
+    interest_rate: editingAsset?.interest_rate?.toString() || '',
+    tenure_months: editingAsset?.tenure_months?.toString() || '',
+    purchase_currency: editingAsset?.purchase_currency || 'USD',
+    purchase_date: editingAsset?.purchase_date || '',
+    symbol: editingAsset?.symbol || '',
+    make: editingAsset?.details?.make || '',
+    model: editingAsset?.details?.model || '',
+    year: editingAsset?.details?.year || '',
+    collection: editingAsset?.details?.collection || '',
+    token_id: editingAsset?.details?.token_id || '',
+    fund_name: editingAsset?.details?.fund_name || ''
   });
 
   const handleSubmit = async (e) => {
