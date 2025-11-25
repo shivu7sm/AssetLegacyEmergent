@@ -494,7 +494,21 @@ export default function AssetsNew() {
                   <CardHeader style={{borderBottom: '1px solid #2d1f3d', padding: '1rem'}}>
                     <div className="flex justify-between items-start">
                       <CardTitle style={{color: '#f8fafc', fontSize: '1.125rem'}}>{selectedAsset.name}</CardTitle>
-                      <Button size="sm" variant="ghost" onClick={() => setSelectedAsset(null)} style={{height: '28px', width: '28px', padding: 0}}>
+                      <Button 
+                        size="sm" 
+                        onClick={() => {
+                          setSelectedAsset(null);
+                          setLoanCalcData(null);
+                        }} 
+                        style={{
+                          height: '32px', 
+                          width: '32px', 
+                          padding: 0,
+                          background: 'rgba(255, 92, 115, 0.15)',
+                          border: '1px solid rgba(255, 92, 115, 0.3)',
+                          color: '#FF5C73'
+                        }}
+                      >
                         <X className="w-4 h-4" />
                       </Button>
                     </div>
