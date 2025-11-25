@@ -855,6 +855,20 @@ async def nominee_login(access_token: str):
     if not nominee.get("access_granted"):
         raise HTTPException(status_code=403, detail="Access has been revoked")
     
+    # Check if temporary access has expired
+    if nominee.get("access_type") == "temporary" and nominee.get("access_expires_at"):
+        expires_at = nominee.get("access_expires_at")
+        if isinstance(expires_at, str):
+            expires_at = datetime.fromisoformat(expires_at)
+        
+        if datetime.now(timezone.utc) > expires_at:
+            # Auto-revoke expired access
+            await db.nominees.update_one(
+                {"access_token": access_token},
+                {"$set": {"access_granted": False, "access_token": None}}
+            )
+            raise HTTPException(status_code=403, detail="Temporary access has expired")
+    
     # Check if access is immediate or requires DMS trigger
     if nominee.get("access_type") == "after_dms":
         # Check if DMS has been triggered
