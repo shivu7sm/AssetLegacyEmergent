@@ -530,25 +530,14 @@ export default function AssetsNew() {
                                   {formatCurrency(purchaseValue, selectedCurrency, currencyFormat)}
                                 </td>
                                 
-                                {/* Current Value - Converted Currency - Editable */}
-                                <td className="p-3 text-right" onClick={(e) => {
-                                  if (!isEditing) setSelectedAsset(asset);
-                                  else e.stopPropagation();
+                                {/* Current Value - Converted Currency */}
+                                <td className="p-3 text-right" onClick={() => {
+                                  setSelectedAsset(asset);
+                                  setEditModalOpen(true);
                                 }}>
-                                  {isEditing ? (
-                                    <Input 
-                                      type="number"
-                                      value={editValues.current_value}
-                                      onChange={(e) => setEditValues({...editValues, current_value: e.target.value})}
-                                      className="bg-slate-800 border-slate-700 text-white text-right text-sm"
-                                      style={{height: '32px', padding: '0.5rem'}}
-                                      onClick={(e) => e.stopPropagation()}
-                                    />
-                                  ) : (
-                                    <span style={{color: isLiability ? '#FF5C73' : '#5CE3D7', fontWeight: 600}}>
-                                      {formatCurrency(currentValue, selectedCurrency, currencyFormat)}
-                                    </span>
-                                  )}
+                                  <span style={{color: isLiability ? '#FF5C73' : '#5CE3D7', fontWeight: 600}}>
+                                    {formatCurrency(currentValue, selectedCurrency, currencyFormat)}
+                                  </span>
                                 </td>
                                 
                                 {/* Gain/Loss */}
