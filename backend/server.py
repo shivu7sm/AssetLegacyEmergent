@@ -1895,6 +1895,191 @@ async def seed_demo_data(user_id: str, force: bool = False):
                 "remaining_months": 52
             },
             "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        # New Asset Types - Multi-country
+        {
+            "id": f"{demo_prefix}vehicle1",
+            "user_id": user_id,
+            "name": "Tesla Model Y - 2023",
+            "type": "vehicle",
+            "purchase_currency": "USD",
+            "purchase_date": "2023-07-01",
+            "total_value": 65000,
+            "current_value": 52000,
+            "details": {
+                "make": "Tesla",
+                "model": "Model Y",
+                "year": 2023,
+                "vin": "5YJ3E1EB8PF123456",
+                "license_plate": "CAL-1234",
+                "mileage": 12500
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}art1",
+            "user_id": user_id,
+            "name": "Contemporary Art Collection",
+            "type": "art",
+            "purchase_currency": "USD",
+            "purchase_date": "2022-09-15",
+            "total_value": 35000,
+            "current_value": 42000,
+            "details": {
+                "artist": "Various Artists",
+                "pieces": 5,
+                "authenticated": True,
+                "storage": "Climate-controlled vault"
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}nft1",
+            "user_id": user_id,
+            "name": "Bored Ape NFT #4521",
+            "type": "nft",
+            "purchase_currency": "ETH",
+            "purchase_date": "2023-04-12",
+            "quantity": 1,
+            "unit_price": 45,
+            "current_unit_price": 38,
+            "total_value": 45,
+            "current_value": 38,
+            "details": {
+                "collection": "Bored Ape Yacht Club",
+                "token_id": "4521",
+                "blockchain": "Ethereum",
+                "wallet": "0x742d35Cc..."
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        # Singapore Assets
+        {
+            "id": f"{demo_prefix}sg_bank1",
+            "user_id": user_id,
+            "name": "DBS Singapore Savings Account",
+            "type": "bank",
+            "purchase_currency": "SGD",
+            "purchase_date": "2023-01-10",
+            "total_value": 65000,
+            "current_value": 66500,
+            "details": {
+                "account_number": "****3456",
+                "bank_name": "DBS Bank",
+                "account_type": "High-Yield Savings",
+                "country": "Singapore"
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}sg_property1",
+            "user_id": user_id,
+            "name": "Condo Unit - Marina Bay",
+            "type": "property",
+            "purchase_currency": "SGD",
+            "purchase_date": "2021-06-20",
+            "area": 1000,
+            "area_unit": "sqft",
+            "price_per_area": 1800,
+            "current_price_per_area": 2100,
+            "total_value": 1800000,
+            "current_value": 2100000,
+            "location": {
+                "address": "Marina Bay Residences, Singapore",
+                "lat": "",
+                "lng": ""
+            },
+            "details": {
+                "property_type": "Condominium",
+                "country": "Singapore"
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        # India Assets
+        {
+            "id": f"{demo_prefix}india_fd1",
+            "user_id": user_id,
+            "name": "ICICI Bank Fixed Deposit",
+            "type": "investment",
+            "purchase_currency": "INR",
+            "purchase_date": "2023-02-01",
+            "total_value": 500000,
+            "current_value": 525000,
+            "details": {
+                "investment_type": "Fixed Deposit",
+                "provider": "ICICI Bank",
+                "interest_rate": 7.5,
+                "maturity_date": "2026-02-01",
+                "country": "India"
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}india_gold1",
+            "user_id": user_id,
+            "name": "Gold Jewelry Collection",
+            "type": "precious_metals",
+            "purchase_currency": "INR",
+            "purchase_date": "2022-10-15",
+            "weight": 500,
+            "weight_unit": "gram",
+            "purity": "22K",
+            "unit_price": 5000,
+            "current_unit_price": 6200,
+            "total_value": 2500000,
+            "current_value": 3100000,
+            "details": {
+                "purity": "22K",
+                "storage": "Bank Locker - Mumbai",
+                "country": "India"
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        # Australia Assets
+        {
+            "id": f"{demo_prefix}au_stock1",
+            "user_id": user_id,
+            "name": "Commonwealth Bank Shares",
+            "type": "stock",
+            "symbol": "CBA.AX",
+            "purchase_currency": "AUD",
+            "purchase_date": "2023-03-20",
+            "quantity": 200,
+            "unit_price": 95,
+            "current_unit_price": 108,
+            "total_value": 19000,
+            "current_value": 21600,
+            "details": {
+                "ticker": "CBA.AX",
+                "broker": "CommSec",
+                "country": "Australia"
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}au_property1",
+            "user_id": user_id,
+            "name": "Investment Apartment - Sydney",
+            "type": "property",
+            "purchase_currency": "AUD",
+            "purchase_date": "2022-05-10",
+            "area": 900,
+            "area_unit": "sqft",
+            "price_per_area": 800,
+            "current_price_per_area": 920,
+            "total_value": 720000,
+            "current_value": 828000,
+            "location": {
+                "address": "Darling Harbour, Sydney, Australia",
+                "lat": "",
+                "lng": ""
+            },
+            "details": {
+                "property_type": "Apartment",
+                "monthly_rental_income": 3200,
+                "country": "Australia"
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
         }
     ]
     
