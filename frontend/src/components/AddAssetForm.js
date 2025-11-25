@@ -341,6 +341,56 @@ export default function AddAssetForm({ onSuccess, onCancel }) {
         )}
       </div>
 
+      {/* Manual Current Value Override - For ALL Asset Types */}
+      <div className="space-y-4 p-4 rounded-lg" style={{background: 'rgba(207, 143, 134, 0.05)', border: '1px solid rgba(207, 143, 134, 0.2)'}}>
+        <h3 className="text-sm font-bold" style={{color: '#CF8F86'}}>CURRENT VALUE (OPTIONAL)</h3>
+        <p className="text-xs" style={{color: '#94a3b8'}}>
+          Leave blank to use calculated value. For crypto/stocks, we'll fetch real-time prices automatically.
+        </p>
+        
+        <div className="grid grid-cols-2 gap-4">
+          {(formData.type === 'crypto' || formData.type === 'stock' || formData.type === 'precious_metals') && (
+            <div>
+              <Label className="text-slate-300">Current Price Per Unit</Label>
+              <Input
+                type="number"
+                step="any"
+                value={formData.current_unit_price}
+                onChange={(e) => setFormData({ ...formData, current_unit_price: e.target.value })}
+                placeholder="Auto-fetched if available"
+                className="bg-slate-800 border-slate-700 text-white"
+              />
+            </div>
+          )}
+          
+          {formData.type === 'property' && (
+            <div>
+              <Label className="text-slate-300">Current Price Per {formData.area_unit}</Label>
+              <Input
+                type="number"
+                step="any"
+                value={formData.current_price_per_area}
+                onChange={(e) => setFormData({ ...formData, current_price_per_area: e.target.value })}
+                placeholder="Current market rate"
+                className="bg-slate-800 border-slate-700 text-white"
+              />
+            </div>
+          )}
+          
+          <div>
+            <Label className="text-slate-300">Manual Current Total Value</Label>
+            <Input
+              type="number"
+              step="any"
+              value={formData.current_total_value || ''}
+              onChange={(e) => setFormData({ ...formData, current_total_value: e.target.value })}
+              placeholder="Override calculated value"
+              className="bg-slate-800 border-slate-700 text-white"
+            />
+          </div>
+        </div>
+      </div>
+
       {/* Action Buttons */}
       <div className="flex gap-3">
         <Button 
