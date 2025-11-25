@@ -136,6 +136,22 @@ export default function Layout({ children }) {
 
             {/* Actions */}
             <div className="flex items-center gap-2 min-w-fit">
+              {/* Demo Mode Toggle */}
+              <button
+                onClick={toggleDemoMode}
+                disabled={togglingDemo}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-sm font-medium"
+                style={{
+                  background: demoMode ? 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' : 'rgba(255,255,255,0.05)',
+                  color: demoMode ? '#fff' : '#94a3b8',
+                  border: demoMode ? 'none' : '1px solid #2d1f3d'
+                }}
+                title={demoMode ? 'Switch to Live Data' : 'Switch to Demo Mode'}
+              >
+                {demoMode ? <FlaskConical className="w-4 h-4" /> : <Database className="w-4 h-4" />}
+                <span className="hidden xl:inline">{demoMode ? 'Demo' : 'Live'}</span>
+              </button>
+
               {/* Currency Selector */}
               <Select value={selectedCurrency} onValueChange={handleCurrencyChange}>
                 <SelectTrigger className="w-24 h-9 text-sm" style={{background: '#1a1229', borderColor: '#2d1f3d', color: '#f8fafc'}}>
