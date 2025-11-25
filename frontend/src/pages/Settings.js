@@ -1294,6 +1294,12 @@ export default function Settings() {
           </div>
         );
 
+      case 'appearance':
+        return <AppearanceSection />;
+
+      case 'demo':
+        return <DemoDataSection />;
+
       case 'security':
         return <SecurityAuditSection user={user} />;
 
