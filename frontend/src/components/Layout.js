@@ -36,7 +36,34 @@ export default function Layout({ children }) {
     if (user && user.role === 'admin') {
       setIsAdmin(true);
     }
+    // Check demo mode status
+    checkDemoStatus();
   }, [user]);
+
+  const checkDemoStatus = async () => {
+    try {
+      const response = await axios.get(`${API}/demo/status`, { withCredentials: true });
+      setDemoMode(response.data.demo_mode);
+    } catch (error) {
+      console.error('Failed to fetch demo status:', error);
+    }
+  };
+
+  const toggleDemoMode = async () => {
+    setTogglingDemo(true);
+    try {
+      const response = await axios.post(`${API}/demo/toggle`, {}, { withCredentials: true });
+      setDemoMode(response.data.demo_mode);
+      toast.success(response.data.message);
+      // Refresh the page to reload data
+      window.location.reload();
+    } catch (error) {
+      console.error('Failed to toggle demo mode:', error);
+      toast.error('Failed to switch mode');
+    } finally {
+      setTogglingDemo(false);
+    }
+  };
 
   const handleLogout = async () => {
     try {
