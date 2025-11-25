@@ -3968,6 +3968,11 @@ print('Test data cleaned up');
             # Admin Panel Backend Testing
             self.test_admin_panel_backend()
             
+            # Review Request: Demo Data Reseed, Loan Calculator, Demo Mode Filtering
+            self.test_demo_data_reseed()
+            self.test_loan_calculator_with_timeout()
+            self.test_demo_mode_filtering()
+            
         finally:
             # Always cleanup
             self.cleanup_test_data()
