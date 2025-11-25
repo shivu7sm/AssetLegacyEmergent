@@ -815,7 +815,7 @@ export default function LandingPage() {
           
           <div className="pt-8" style={{ borderTop: `1px solid rgba(255,255,255,0.1)` }}>
             <p className="text-center" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.9rem' }}>
-              © 2025 AssetVault. All rights reserved. Made with ❤️ for Indian families.
+              © 2025 AssetVault. All rights reserved. Made by shiv with ❤️
             </p>
           </div>
         </div>
