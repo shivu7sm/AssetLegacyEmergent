@@ -255,7 +255,7 @@ export default function AssetsNew() {
                         <th className="text-center p-3" style={{color: '#94a3b8', fontWeight: 600}}>Actions</th>
                       </tr>
                     </thead>
-                  <tbody>
+                    <tbody>
                     {Object.keys(ASSET_GROUPS).map(groupKey => {
                       const group = ASSET_GROUPS[groupKey];
                       const groupAssets = groupedAssets[groupKey] || [];
@@ -274,31 +274,35 @@ export default function AssetsNew() {
                         <>
                           {/* Group Header Row */}
                           <tr 
+                            id={`group-${groupKey}`}
                             key={`group-${groupKey}`}
                             onClick={() => toggleGroup(groupKey)}
                             className="cursor-pointer transition-all"
                             style={{
                               background: isLiability 
-                                ? 'rgba(220, 38, 38, 0.15)' 
-                                : 'rgba(168, 85, 247, 0.1)',
-                              borderTop: '2px solid #2d1f3d',
-                              borderBottom: '1px solid #2d1f3d'
+                                ? 'rgba(255, 92, 115, 0.12)' 
+                                : `${group.color}15`,
+                              borderTop: `2px solid ${group.color}40`,
+                              borderBottom: `1px solid ${group.color}30`
                             }}
                           >
-                            <td colSpan="3" className="p-4">
+                            <td colSpan="3" className="p-3">
                               <div className="flex items-center gap-3">
-                                {isExpanded ? <ChevronDown className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
-                                <span className="text-2xl">{group.icon}</span>
-                                <span className="font-bold text-lg" style={{color: '#f8fafc'}}>
+                                {isExpanded ? 
+                                  <ChevronDown className="w-4 h-4" style={{color: group.color}} /> : 
+                                  <ChevronRight className="w-4 h-4" style={{color: group.color}} />
+                                }
+                                <span className="text-xl">{group.icon}</span>
+                                <span className="font-bold" style={{color: '#f8fafc', fontSize: '0.938rem'}}>
                                   {group.label}
                                 </span>
-                                <span className="text-sm px-3 py-1 rounded-full" style={{background: 'rgba(148, 163, 184, 0.2)', color: '#cbd5e1'}}>
-                                  {groupAssets.length} {groupAssets.length === 1 ? 'item' : 'items'}
+                                <span className="text-xs px-2 py-1 rounded-full font-semibold" style={{background: `${group.color}20`, color: group.color}}>
+                                  {groupAssets.length}
                                 </span>
                               </div>
                             </td>
-                            <td className="p-4 text-right">
-                              <span className="font-bold text-lg" style={{color: group.color}}>
+                            <td className="p-3 text-right">
+                              <span className="font-bold" style={{color: group.color, fontSize: '0.938rem'}}>
                                 {isLiability ? '-' : ''}{formatCurrency(groupTotal, selectedCurrency, currencyFormat)}
                               </span>
                             </td>
@@ -319,16 +323,18 @@ export default function AssetsNew() {
                                 onClick={() => setSelectedAsset(asset)}
                                 className="cursor-pointer transition-all"
                                 style={{
-                                  background: selectedAsset?.id === asset.id ? 'rgba(168, 85, 247, 0.1)' : 'transparent',
-                                  borderBottom: '1px solid #2d1f3d'
+                                  background: selectedAsset?.id === asset.id ? 'rgba(232, 194, 124, 0.08)' : 'transparent',
+                                  borderBottom: '1px solid rgba(255,255,255,0.03)',
+                                  borderLeft: selectedAsset?.id === asset.id ? '3px solid #E8C27C' : '3px solid transparent'
                                 }}
                               >
-                                <td className="p-4" onClick={(e) => e.stopPropagation()}>
+                                <td className="p-3" onClick={(e) => e.stopPropagation()}>
                                   {isEditing ? (
                                     <Input 
                                       value={editValues.name}
                                       onChange={(e) => setEditValues({...editValues, name: e.target.value})}
-                                      className="bg-slate-800 border-slate-700 text-white"
+                                      className="bg-slate-800 border-slate-700 text-white text-sm"
+                                      style={{height: '32px', padding: '0.5rem'}}
                                     />
                                   ) : (
                                     <div className="flex items-center gap-2">
@@ -341,16 +347,17 @@ export default function AssetsNew() {
                                     </div>
                                   )}
                                 </td>
-                                <td className="p-4 text-right" style={{color: '#cbd5e1'}}>
-                                  {asset.purchase_currency} {purchaseValue.toLocaleString()}
+                                <td className="p-3 text-right" style={{color: '#94a3b8', fontSize: '0.813rem'}}>
+                                  {asset.purchase_currency} {purchaseValue.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})}
                                 </td>
-                                <td className="p-4 text-right" onClick={(e) => e.stopPropagation()}>
+                                <td className="p-3 text-right" onClick={(e) => e.stopPropagation()}>
                                   {isEditing ? (
                                     <Input 
                                       type="number"
                                       value={editValues.current_value}
                                       onChange={(e) => setEditValues({...editValues, current_value: e.target.value})}
-                                      className="bg-slate-800 border-slate-700 text-white text-right"
+                                      className="bg-slate-800 border-slate-700 text-white text-right text-sm"
+                                      style={{height: '32px', padding: '0.5rem'}}
                                     />
                                   ) : (
                                     <span style={{color: isLiability ? '#FF5C73' : '#5CE3D7', fontWeight: 600}}>
@@ -358,10 +365,10 @@ export default function AssetsNew() {
                                     </span>
                                   )}
                                 </td>
-                                <td className="p-4 text-right">
+                                <td className="p-3 text-right">
                                   {!isLiability && gain !== 0 && (
                                     <div>
-                                      <div style={{color: gain > 0 ? '#4BE0A1' : '#FF5C73', fontWeight: 600}}>
+                                      <div style={{color: gain > 0 ? '#4BE0A1' : '#FF5C73', fontWeight: 600, fontSize: '0.813rem'}}>
                                         {gain > 0 ? '↑' : '↓'} {formatCurrency(Math.abs(gain), selectedCurrency, currencyFormat)}
                                       </div>
                                       <div className="text-xs" style={{color: gain > 0 ? '#4BE0A1' : '#FF5C73'}}>
@@ -370,24 +377,24 @@ export default function AssetsNew() {
                                     </div>
                                   )}
                                 </td>
-                                <td className="p-4 text-center" onClick={(e) => e.stopPropagation()}>
-                                  <div className="flex justify-center gap-2">
+                                <td className="p-3 text-center" onClick={(e) => e.stopPropagation()}>
+                                  <div className="flex justify-center gap-1">
                                     {isEditing ? (
                                       <>
-                                        <Button size="sm" onClick={() => saveInlineEdit(asset.id)} style={{background: '#10b981', color: '#fff'}}>
-                                          <Check className="w-4 h-4" />
+                                        <Button size="sm" onClick={() => saveInlineEdit(asset.id)} style={{background: '#10b981', color: '#fff', height: '28px', padding: '0 0.5rem'}}>
+                                          <Check className="w-3 h-3" />
                                         </Button>
-                                        <Button size="sm" onClick={() => setEditingAssetId(null)} style={{background: '#ef4444', color: '#fff'}}>
-                                          <X className="w-4 h-4" />
+                                        <Button size="sm" onClick={() => setEditingAssetId(null)} style={{background: '#ef4444', color: '#fff', height: '28px', padding: '0 0.5rem'}}>
+                                          <X className="w-3 h-3" />
                                         </Button>
                                       </>
                                     ) : (
                                       <>
-                                        <Button size="sm" variant="ghost" onClick={() => startInlineEdit(asset)}>
-                                          <Edit2 className="w-4 h-4" />
+                                        <Button size="sm" variant="ghost" onClick={() => startInlineEdit(asset)} style={{height: '28px', padding: '0 0.5rem'}}>
+                                          <Edit2 className="w-3 h-3" />
                                         </Button>
-                                        <Button size="sm" variant="ghost" onClick={() => handleDeleteAsset(asset.id)} style={{color: '#ef4444'}}>
-                                          <Trash2 className="w-4 h-4" />
+                                        <Button size="sm" variant="ghost" onClick={() => handleDeleteAsset(asset.id)} style={{color: '#ef4444', height: '28px', padding: '0 0.5rem'}}>
+                                          <Trash2 className="w-3 h-3" />
                                         </Button>
                                       </>
                                     )}
@@ -400,145 +407,150 @@ export default function AssetsNew() {
                       );
                     })}
                   </tbody>
-                </table>
+                  </table>
+                </div>
               </CardContent>
             </Card>
           </div>
 
-          {/* Detail Panel - Right Side */}
+          {/* Detail Panel - Right Side - FIXED POSITION */}
           {selectedAsset && (
-            <div className="col-span-5">
-              <Card style={{background: '#1a1229', borderColor: '#a855f7', borderWidth: '2px', position: 'sticky', top: '2rem'}}>
-                <CardHeader style={{borderBottom: '1px solid #2d1f3d'}}>
-                  <div className="flex justify-between items-start">
-                    <CardTitle style={{color: '#f8fafc'}}>{selectedAsset.name}</CardTitle>
-                    <Button size="sm" variant="ghost" onClick={() => setSelectedAsset(null)}>
-                      <X className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-6 pt-6">
-                  {/* Asset Details */}
-                  <div className="space-y-3">
-                    <div className="flex justify-between">
-                      <span style={{color: '#94a3b8'}}>Type:</span>
-                      <span style={{color: '#f8fafc', fontWeight: 600}}>{selectedAsset.type}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span style={{color: '#94a3b8'}}>Purchase Date:</span>
-                      <span style={{color: '#f8fafc'}}>{selectedAsset.purchase_date ? new Date(selectedAsset.purchase_date).toLocaleDateString() : 'N/A'}</span>
-                    </div>
-                    {selectedAsset.quantity && (
-                      <div className="flex justify-between">
-                        <span style={{color: '#94a3b8'}}>Quantity:</span>
-                        <span style={{color: '#f8fafc', fontWeight: 600}}>{selectedAsset.quantity}</span>
-                      </div>
-                    )}
-                    {selectedAsset.area && (
-                      <div className="flex justify-between">
-                        <span style={{color: '#94a3b8'}}>Area:</span>
-                        <span style={{color: '#f8fafc'}}>{selectedAsset.area} {selectedAsset.area_unit}</span>
-                      </div>
-                    )}
-                    {selectedAsset.weight && (
-                      <div className="flex justify-between">
-                        <span style={{color: '#94a3b8'}}>Weight:</span>
-                        <span style={{color: '#f8fafc'}}>{selectedAsset.weight} {selectedAsset.weight_unit}</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Loan Calculator Section - Only for Loans/Credit Cards */}
-                  {(selectedAsset.type === 'loan' || selectedAsset.type === 'credit_card') && (
-                    <div className="pt-6" style={{borderTop: '2px solid #2d1f3d'}}>
-                      <h3 className="text-lg font-bold mb-4 flex items-center gap-2" style={{color: '#f8fafc'}}>
-                        <Calculator className="w-5 h-5" style={{color: '#E8C27C'}} />
-                        Loan Calculator
-                      </h3>
-                      
-                      <Button 
-                        onClick={() => calculateLoanDetails(selectedAsset)}
-                        disabled={calculatingLoan}
-                        className="w-full mb-4"
-                        style={{background: 'linear-gradient(135deg, #E8C27C 0%, #F5D49F 100%)', color: '#0B0B11'}}
-                      >
-                        {calculatingLoan ? 'Calculating...' : 'Calculate Repayment Schedule'}
+            <div className="col-span-5" style={{position: 'relative'}}>
+              <div style={{position: 'sticky', top: '1rem', maxHeight: 'calc(100vh - 120px)', overflowY: 'auto'}}>
+                <Card style={{background: '#1a1229', borderColor: '#a855f7', borderWidth: '2px'}}>
+                  <CardHeader style={{borderBottom: '1px solid #2d1f3d', padding: '1rem'}}>
+                    <div className="flex justify-between items-start">
+                      <CardTitle style={{color: '#f8fafc', fontSize: '1.125rem'}}>{selectedAsset.name}</CardTitle>
+                      <Button size="sm" variant="ghost" onClick={() => setSelectedAsset(null)} style={{height: '28px', width: '28px', padding: 0}}>
+                        <X className="w-4 h-4" />
                       </Button>
-
-                      {loanCalcData && (
-                        <div className="space-y-4">
-                          {/* Summary Cards */}
-                          <div className="grid grid-cols-2 gap-3">
-                            <div className="p-3 rounded-lg" style={{background: 'rgba(168, 85, 247, 0.1)', border: '1px solid rgba(168, 85, 247, 0.3)'}}>
-                              <div className="text-xs mb-1" style={{color: '#94a3b8'}}>Monthly Payment</div>
-                              <div className="text-xl font-bold" style={{color: '#a855f7'}}>
-                                ${loanCalcData.monthly_payment.toLocaleString()}
-                              </div>
-                            </div>
-                            <div className="p-3 rounded-lg" style={{background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)'}}>
-                              <div className="text-xs mb-1" style={{color: '#94a3b8'}}>Total Interest</div>
-                              <div className="text-xl font-bold" style={{color: '#ef4444'}}>
-                                ${loanCalcData.total_interest.toLocaleString()}
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* AI Tips */}
-                          {loanCalcData.ai_tips && (
-                            <div className="p-4 rounded-lg" style={{background: 'rgba(232, 194, 124, 0.1)', border: '1px solid rgba(232, 194, 124, 0.3)'}}>
-                              <div className="flex items-center gap-2 mb-2">
-                                <Sparkles className="w-4 h-4" style={{color: '#E8C27C'}} />
-                                <span className="text-sm font-semibold" style={{color: '#E8C27C'}}>AI Tips</span>
-                              </div>
-                              <div className="text-xs whitespace-pre-wrap" style={{color: '#cbd5e1', lineHeight: '1.6'}}>
-                                {loanCalcData.ai_tips}
-                              </div>
-                            </div>
-                          )}
-
-                          {/* Amortization Preview - First 12 months */}
-                          <div className="max-h-64 overflow-y-auto">
-                            <div className="text-xs font-semibold mb-2" style={{color: '#94a3b8'}}>
-                              AMORTIZATION SCHEDULE (First 12 months)
-                            </div>
-                            <table className="w-full text-xs">
-                              <thead style={{background: '#16001e'}}>
-                                <tr>
-                                  <th className="p-2 text-left" style={{color: '#94a3b8'}}>Month</th>
-                                  <th className="p-2 text-right" style={{color: '#94a3b8'}}>Principal</th>
-                                  <th className="p-2 text-right" style={{color: '#94a3b8'}}>Interest</th>
-                                  <th className="p-2 text-right" style={{color: '#94a3b8'}}>Balance</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {loanCalcData.amortization_schedule.slice(0, 12).map((entry) => (
-                                  <tr key={entry.month} style={{borderBottom: '1px solid #2d1f3d'}}>
-                                    <td className="p-2" style={{color: '#cbd5e1'}}>{entry.month}</td>
-                                    <td className="p-2 text-right" style={{color: '#10b981'}}>${entry.principal_payment.toLocaleString()}</td>
-                                    <td className="p-2 text-right" style={{color: '#ef4444'}}>${entry.interest_payment.toLocaleString()}</td>
-                                    <td className="p-2 text-right" style={{color: '#94a3b8'}}>${entry.remaining_balance.toLocaleString()}</td>
-                                  </tr>
-                                ))}
-                              </tbody>
-                            </table>
-                          </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-4" style={{padding: '1rem'}}>
+                    {/* Asset Details */}
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span style={{color: '#94a3b8'}}>Type:</span>
+                        <span style={{color: '#f8fafc', fontWeight: 600}}>{selectedAsset.type}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span style={{color: '#94a3b8'}}>Purchase Date:</span>
+                        <span style={{color: '#f8fafc'}}>{selectedAsset.purchase_date ? new Date(selectedAsset.purchase_date).toLocaleDateString() : 'N/A'}</span>
+                      </div>
+                      {selectedAsset.quantity && (
+                        <div className="flex justify-between text-sm">
+                          <span style={{color: '#94a3b8'}}>Quantity:</span>
+                          <span style={{color: '#f8fafc', fontWeight: 600}}>{selectedAsset.quantity}</span>
+                        </div>
+                      )}
+                      {selectedAsset.area && (
+                        <div className="flex justify-between text-sm">
+                          <span style={{color: '#94a3b8'}}>Area:</span>
+                          <span style={{color: '#f8fafc'}}>{selectedAsset.area} {selectedAsset.area_unit}</span>
+                        </div>
+                      )}
+                      {selectedAsset.weight && (
+                        <div className="flex justify-between text-sm">
+                          <span style={{color: '#94a3b8'}}>Weight:</span>
+                          <span style={{color: '#f8fafc'}}>{selectedAsset.weight} {selectedAsset.weight_unit}</span>
                         </div>
                       )}
                     </div>
-                  )}
 
-                  {/* More Details Button */}
-                  <Button 
-                    onClick={() => toast.info('Full edit modal - to be implemented')}
-                    className="w-full"
-                    variant="outline"
-                    style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
-                  >
-                    <Info className="w-4 h-4 mr-2" />
-                    View All Details
-                  </Button>
-                </CardContent>
-              </Card>
+                    {/* Loan Calculator Section - Only for Loans/Credit Cards */}
+                    {(selectedAsset.type === 'loan' || selectedAsset.type === 'credit_card') && (
+                      <div className="pt-4" style={{borderTop: '2px solid #2d1f3d'}}>
+                        <h3 className="text-base font-bold mb-3 flex items-center gap-2" style={{color: '#f8fafc'}}>
+                          <Calculator className="w-4 h-4" style={{color: '#E8C27C'}} />
+                          Repayment Calculator
+                        </h3>
+                        
+                        <Button 
+                          onClick={() => calculateLoanDetails(selectedAsset)}
+                          disabled={calculatingLoan}
+                          className="w-full mb-3"
+                          style={{background: 'linear-gradient(135deg, #E8C27C 0%, #F5D49F 100%)', color: '#0B0B11', fontSize: '0.875rem', padding: '0.625rem'}}
+                        >
+                          {calculatingLoan ? 'Calculating...' : 'Calculate Payment Schedule'}
+                        </Button>
+
+                        {loanCalcData && (
+                          <div className="space-y-3">
+                            {/* Summary Cards */}
+                            <div className="grid grid-cols-2 gap-2">
+                              <div className="p-2 rounded-lg" style={{background: 'rgba(168, 85, 247, 0.1)', border: '1px solid rgba(168, 85, 247, 0.3)'}}>
+                                <div className="text-xs mb-1" style={{color: '#94a3b8'}}>Monthly</div>
+                                <div className="text-base font-bold" style={{color: '#a855f7'}}>
+                                  ${loanCalcData.monthly_payment.toLocaleString()}
+                                </div>
+                              </div>
+                              <div className="p-2 rounded-lg" style={{background: 'rgba(255, 92, 115, 0.1)', border: '1px solid rgba(255, 92, 115, 0.3)'}}>
+                                <div className="text-xs mb-1" style={{color: '#94a3b8'}}>Interest</div>
+                                <div className="text-base font-bold" style={{color: '#FF5C73'}}>
+                                  ${loanCalcData.total_interest.toLocaleString()}
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* AI Tips */}
+                            {loanCalcData.ai_tips && !loanCalcData.ai_tips.includes('unavailable') && (
+                              <div className="p-3 rounded-lg" style={{background: 'rgba(232, 194, 124, 0.08)', border: '1px solid rgba(232, 194, 124, 0.2)'}}>
+                                <div className="flex items-center gap-2 mb-2">
+                                  <Sparkles className="w-3 h-3" style={{color: '#E8C27C'}} />
+                                  <span className="text-xs font-semibold" style={{color: '#E8C27C'}}>AI TIPS</span>
+                                </div>
+                                <div className="text-xs whitespace-pre-wrap" style={{color: '#cbd5e1', lineHeight: '1.5', maxHeight: '120px', overflowY: 'auto'}}>
+                                  {loanCalcData.ai_tips}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Amortization Preview */}
+                            <div>
+                              <div className="text-xs font-semibold mb-2" style={{color: '#94a3b8'}}>
+                                PAYMENT SCHEDULE (First 12 months)
+                              </div>
+                              <div style={{maxHeight: '200px', overflowY: 'auto'}}>
+                                <table className="w-full" style={{fontSize: '0.75rem'}}>
+                                  <thead style={{background: '#16001e', position: 'sticky', top: 0}}>
+                                    <tr>
+                                      <th className="p-1.5 text-left" style={{color: '#94a3b8'}}>Mo</th>
+                                      <th className="p-1.5 text-right" style={{color: '#94a3b8'}}>Principal</th>
+                                      <th className="p-1.5 text-right" style={{color: '#94a3b8'}}>Interest</th>
+                                      <th className="p-1.5 text-right" style={{color: '#94a3b8'}}>Balance</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {loanCalcData.amortization_schedule.slice(0, 12).map((entry) => (
+                                      <tr key={entry.month} style={{borderBottom: '1px solid rgba(255,255,255,0.03)'}}>
+                                        <td className="p-1.5" style={{color: '#cbd5e1'}}>{entry.month}</td>
+                                        <td className="p-1.5 text-right" style={{color: '#4BE0A1'}}>${entry.principal_payment.toLocaleString()}</td>
+                                        <td className="p-1.5 text-right" style={{color: '#FF5C73'}}>${entry.interest_payment.toLocaleString()}</td>
+                                        <td className="p-1.5 text-right" style={{color: '#94a3b8'}}>${entry.remaining_balance.toLocaleString()}</td>
+                                      </tr>
+                                    ))}
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* More Details Button */}
+                    <Button 
+                      onClick={() => toast.info('Full edit modal - to be implemented')}
+                      className="w-full"
+                      variant="outline"
+                      style={{borderColor: '#2d1f3d', color: '#94a3b8', fontSize: '0.875rem', padding: '0.625rem'}}
+                    >
+                      <Info className="w-4 h-4 mr-2" />
+                      View All Details
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
           )}
         </div>
