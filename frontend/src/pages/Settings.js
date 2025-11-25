@@ -1287,11 +1287,17 @@ export default function Settings() {
                   Configure access permissions for each nominee below
                 </p>
                 
-                {nominees.map((nominee) => (
+                {nominees.map((nominee, index) => (
                   <NomineeAccessCard 
                     key={nominee.id} 
-                    nominee={nominee} 
+                    nominee={nominee}
+                    index={index}
+                    isFirst={index === 0}
+                    isLast={index === nominees.length - 1}
                     onUpdate={fetchData}
+                    onEdit={handleEditNominee}
+                    onDelete={handleDeleteNominee}
+                    onMovePriority={handleMovePriority}
                   />
                 ))}
               </div>
