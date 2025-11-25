@@ -2528,13 +2528,32 @@ async def get_latest_insight(user: User = Depends(require_auth)):
 
 @api_router.post("/insights/generate", response_model=AIInsightResponse)
 async def generate_insights(user: User = Depends(require_auth)):
-    """Generate fresh AI insights and store them. Includes portfolio holdings."""
+    """Generate fresh AI insights and store them. Includes portfolio holdings. Filters by demo mode."""
     try:
         from emergentintegrations.llm.chat import LlmChat, UserMessage
         
-        # Fetch user's assets and portfolios
-        assets = await db.assets.find({"user_id": user.id}).to_list(1000)
-        portfolios = await db.portfolio_assets.find({"user_id": user.id}).to_list(1000)
+        # Fetch user's assets and portfolios - FILTER BY DEMO MODE
+        demo_prefix = f"demo_{user.id}_"
+        if user.demo_mode:
+            # Use only demo assets and portfolios
+            assets = await db.assets.find({
+                "user_id": user.id,
+                "id": {"$regex": f"^{demo_prefix}"}
+            }).to_list(1000)
+            portfolios = await db.portfolio_assets.find({
+                "user_id": user.id,
+                "id": {"$regex": f"^{demo_prefix}"}
+            }).to_list(1000)
+        else:
+            # Use only live assets and portfolios (exclude demo)
+            assets = await db.assets.find({
+                "user_id": user.id,
+                "id": {"$not": {"$regex": f"^{demo_prefix}"}}
+            }).to_list(1000)
+            portfolios = await db.portfolio_assets.find({
+                "user_id": user.id,
+                "id": {"$not": {"$regex": f"^{demo_prefix}"}}
+            }).to_list(1000)
         
         if not assets and not portfolios:
             basic_insight = AIInsight(
