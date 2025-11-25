@@ -81,7 +81,6 @@ export default function Layout({ children }) {
   const baseNavItems = [
     { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, testId: 'nav-dashboard' },
     { path: '/assets', label: 'Assets', icon: Wallet, testId: 'nav-assets' },
-    { path: '/loan-calculator', label: 'Loan Calculator', icon: FlaskConical, testId: 'nav-loan-calculator' },
     { path: '/insights', label: 'AI Insights', icon: Sparkles, testId: 'nav-insights' },
     { path: '/schedule-messages', label: 'Messages', icon: Calendar, testId: 'nav-messages' },
     { path: '/subscription', label: 'Plans', icon: Crown, testId: 'nav-subscription' },
