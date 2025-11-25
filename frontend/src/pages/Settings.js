@@ -1182,6 +1182,7 @@ export default function Settings() {
             )}
           </div>
         );
+      }
 
       case 'nominees':
         return (
