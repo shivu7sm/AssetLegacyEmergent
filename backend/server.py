@@ -1356,6 +1356,275 @@ async def cleanup_old_audit_logs(user: User = Depends(require_auth)):
         "deleted_count": result.deleted_count
     }
 
+
+# Demo Mode Routes
+@api_router.get("/demo/status")
+async def get_demo_status(user: User = Depends(require_auth)):
+    """Get current demo mode status"""
+    return {"demo_mode": user.demo_mode}
+
+@api_router.post("/demo/toggle")
+async def toggle_demo_mode(user: User = Depends(require_auth)):
+    """Toggle between live and demo mode"""
+    new_mode = not user.demo_mode
+    
+    await db.users.update_one(
+        {"id": user.id},
+        {"$set": {"demo_mode": new_mode}}
+    )
+    
+    # If switching to demo mode, ensure demo data exists
+    if new_mode:
+        await seed_demo_data(user.id)
+    
+    return {
+        "demo_mode": new_mode,
+        "message": f"Switched to {'Demo' if new_mode else 'Live'} mode"
+    }
+
+async def seed_demo_data(user_id: str):
+    """Create comprehensive demo data for user"""
+    demo_prefix = f"demo_{user_id}_"
+    
+    # Check if demo data already exists
+    existing_demo = await db.assets.find_one({"user_id": user_id, "id": {"$regex": f"^{demo_prefix}"}})
+    if existing_demo:
+        return  # Demo data already exists
+    
+    # Demo Assets
+    demo_assets = [
+        {
+            "id": f"{demo_prefix}bank1",
+            "user_id": user_id,
+            "name": "Chase Checking Account",
+            "type": "bank",
+            "purchase_currency": "USD",
+            "purchase_date": "2023-01-15",
+            "current_value": 15000,
+            "details": {
+                "account_number": "****1234",
+                "bank_name": "Chase Bank",
+                "account_type": "Checking"
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}bank2",
+            "user_id": user_id,
+            "name": "Savings Account - Emergency Fund",
+            "type": "bank",
+            "purchase_currency": "USD",
+            "purchase_date": "2022-06-10",
+            "current_value": 25000,
+            "details": {
+                "account_number": "****5678",
+                "bank_name": "Bank of America",
+                "account_type": "Savings"
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}crypto1",
+            "user_id": user_id,
+            "name": "Bitcoin Holdings",
+            "type": "crypto",
+            "purchase_currency": "USD",
+            "purchase_date": "2023-03-20",
+            "quantity": 0.5,
+            "unit_price": 40000,
+            "current_unit_price": 65000,
+            "current_value": 32500,
+            "details": {
+                "wallet_address": "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa",
+                "crypto_type": "BTC"
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}stock1",
+            "user_id": user_id,
+            "name": "Apple Stock",
+            "type": "stock",
+            "purchase_currency": "USD",
+            "purchase_date": "2023-02-15",
+            "quantity": 100,
+            "unit_price": 150,
+            "current_unit_price": 185,
+            "current_value": 18500,
+            "details": {
+                "ticker": "AAPL",
+                "broker": "Robinhood"
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}property1",
+            "user_id": user_id,
+            "name": "Family Home",
+            "type": "property",
+            "purchase_currency": "USD",
+            "purchase_date": "2020-05-10",
+            "current_value": 450000,
+            "details": {
+                "property_type": "Residential",
+                "area": 2500,
+                "price_per_area": 160,
+                "current_price_per_area": 180,
+                "location": "Austin, TX"
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}insurance1",
+            "user_id": user_id,
+            "name": "Life Insurance Policy",
+            "type": "insurance",
+            "purchase_currency": "USD",
+            "purchase_date": "2021-08-01",
+            "current_value": 500000,
+            "details": {
+                "policy_number": "LI-2021-12345",
+                "provider": "State Farm",
+                "policy_type": "Term Life",
+                "premium": 1200,
+                "coverage_amount": 500000
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}gold1",
+            "user_id": user_id,
+            "name": "Gold Bars",
+            "type": "gold",
+            "purchase_currency": "USD",
+            "purchase_date": "2022-11-05",
+            "quantity": 10,
+            "unit_price": 1850,
+            "current_unit_price": 2050,
+            "current_value": 20500,
+            "details": {
+                "purity": "24K",
+                "weight": "1 oz per bar",
+                "storage": "Bank Locker"
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        # Liabilities
+        {
+            "id": f"{demo_prefix}loan1",
+            "user_id": user_id,
+            "name": "Home Mortgage",
+            "type": "loan",
+            "purchase_currency": "USD",
+            "purchase_date": "2020-05-10",
+            "current_value": 320000,
+            "details": {
+                "loan_type": "Mortgage",
+                "bank_name": "Wells Fargo",
+                "interest_rate": 3.5,
+                "emi_amount": 1800,
+                "tenure_months": 360,
+                "remaining_months": 312
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}credit1",
+            "user_id": user_id,
+            "name": "Chase Sapphire Credit Card",
+            "type": "credit_card",
+            "purchase_currency": "USD",
+            "purchase_date": "2023-01-01",
+            "current_value": 8500,
+            "details": {
+                "card_number": "****4321",
+                "interest_rate": 18.99,
+                "credit_limit": 20000,
+                "min_payment": 250
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+    ]
+    
+    await db.assets.insert_many(demo_assets)
+    
+    # Demo Portfolio
+    demo_portfolio_id = f"{demo_prefix}portfolio1"
+    demo_portfolio = {
+        "id": demo_portfolio_id,
+        "user_id": user_id,
+        "name": "Binance Trading Account",
+        "provider_name": "binance",
+        "provider_type": "crypto_exchange",
+        "purchase_currency": "USD",
+        "total_value": 15000,
+        "holdings": [
+            {
+                "symbol": "BTC",
+                "name": "Bitcoin",
+                "quantity": 0.2,
+                "purchase_price": 45000,
+                "current_price": 65000,
+                "purchase_date": "2023-06-15",
+                "purchase_currency": "USD",
+                "asset_type": "crypto"
+            },
+            {
+                "symbol": "ETH",
+                "name": "Ethereum",
+                "quantity": 2.5,
+                "purchase_price": 2000,
+                "current_price": 3000,
+                "purchase_date": "2023-07-20",
+                "purchase_currency": "USD",
+                "asset_type": "crypto"
+            }
+        ],
+        "created_at": datetime.now(timezone.utc).isoformat()
+    }
+    await db.portfolio_assets.insert_one(demo_portfolio)
+    
+    # Demo Nominees
+    demo_nominees = [
+        {
+            "id": f"{demo_prefix}nominee1",
+            "user_id": user_id,
+            "name": "Jane Doe (Spouse)",
+            "email": "jane.demo@example.com",
+            "phone": "+1-555-0101",
+            "relationship": "spouse",
+            "priority": 1,
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}nominee2",
+            "user_id": user_id,
+            "name": "John Doe Jr. (Son)",
+            "email": "john.jr.demo@example.com",
+            "phone": "+1-555-0102",
+            "relationship": "child",
+            "priority": 2,
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+    ]
+    await db.nominees.insert_many(demo_nominees)
+    
+    # Demo DMS
+    demo_dms = {
+        "user_id": user_id,
+        "inactivity_days": 90,
+        "reminder_1_days": 60,
+        "reminder_2_days": 75,
+        "reminder_3_days": 85,
+        "is_active": True,
+        "last_reset": datetime.now(timezone.utc).isoformat(),
+        "created_at": datetime.now(timezone.utc).isoformat()
+    }
+    existing_dms = await db.dead_man_switches.find_one({"user_id": user_id})
+    if not existing_dms:
+        await db.dead_man_switches.insert_one(demo_dms)
+
+
 # Subscription Routes
 @api_router.get("/subscription/current")
 async def get_subscription(user: User = Depends(require_auth)):
