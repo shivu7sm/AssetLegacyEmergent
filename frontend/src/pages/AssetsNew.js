@@ -642,284 +642,122 @@ export default function AssetsNew() {
             </Card>
           </div>
 
-          {/* Detail Panel - Right Side - FIXED POSITION (Sidebar Mode) */}
-          {selectedAsset && detailViewMode === 'sidebar' && (
-            <div className="col-span-5" style={{position: 'relative'}}>
-              <div style={{position: 'sticky', top: '1rem', maxHeight: 'calc(100vh - 120px)', overflowY: 'auto'}}>
-                <Card style={{background: '#1a1229', borderColor: '#a855f7', borderWidth: '2px'}}>
-                  <CardHeader style={{borderBottom: '1px solid #2d1f3d', padding: '1rem'}}>
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <CardTitle style={{color: '#f8fafc', fontSize: '1.125rem'}}>{selectedAsset.name}</CardTitle>
-                        <p className="text-xs mt-1" style={{color: '#94a3b8'}}>Side Panel View</p>
-                      </div>
-                      <Button 
-                        size="sm" 
-                        onClick={() => {
-                          setSelectedAsset(null);
-                          setLoanCalcData(null);
-                        }} 
-                        style={{
-                          height: '32px', 
-                          width: '32px', 
-                          padding: 0,
-                          background: 'rgba(255, 92, 115, 0.15)',
-                          border: '1px solid rgba(255, 92, 115, 0.3)',
-                          color: '#FF5C73'
-                        }}
-                        title="Close panel"
-                      >
-                        <X className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4" style={{padding: '1rem'}}>
-                    {/* Asset Details */}
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span style={{color: '#94a3b8'}}>Type:</span>
-                        <span style={{color: '#f8fafc', fontWeight: 600}}>{selectedAsset.type}</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span style={{color: '#94a3b8'}}>Purchase Date:</span>
-                        <span style={{color: '#f8fafc'}}>{selectedAsset.purchase_date ? new Date(selectedAsset.purchase_date).toLocaleDateString() : 'N/A'}</span>
-                      </div>
-                      {selectedAsset.quantity && (
-                        <div className="flex justify-between text-sm">
-                          <span style={{color: '#94a3b8'}}>Quantity:</span>
-                          <span style={{color: '#f8fafc', fontWeight: 600}}>{selectedAsset.quantity}</span>
-                        </div>
-                      )}
-                      {selectedAsset.area && (
-                        <div className="flex justify-between text-sm">
-                          <span style={{color: '#94a3b8'}}>Area:</span>
-                          <span style={{color: '#f8fafc'}}>{selectedAsset.area} {selectedAsset.area_unit}</span>
-                        </div>
-                      )}
-                      {selectedAsset.weight && (
-                        <div className="flex justify-between text-sm">
-                          <span style={{color: '#94a3b8'}}>Weight:</span>
-                          <span style={{color: '#f8fafc'}}>{selectedAsset.weight} {selectedAsset.weight_unit}</span>
-                        </div>
-                      )}
-                    </div>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
-                    {/* Loan Calculator Section - Only for Loans/Credit Cards */}
-                    {(selectedAsset.type === 'loan' || selectedAsset.type === 'credit_card') && (
-                      <div className="pt-4" style={{borderTop: '2px solid #2d1f3d'}}>
-                        <h3 className="text-base font-bold mb-3 flex items-center gap-2" style={{color: '#f8fafc'}}>
-                          <Calculator className="w-4 h-4" style={{color: '#E8C27C'}} />
-                          Repayment Calculator
-                        </h3>
-                        
-                        <Button 
-                          onClick={() => calculateLoanDetails(selectedAsset)}
-                          disabled={calculatingLoan}
-                          className="w-full mb-3"
-                          style={{background: 'linear-gradient(135deg, #E8C27C 0%, #F5D49F 100%)', color: '#0B0B11', fontSize: '0.875rem', padding: '0.625rem'}}
-                        >
-                          {calculatingLoan ? 'Calculating...' : 'Calculate Payment Schedule'}
-                        </Button>
+        {/* Comprehensive Edit Asset Modal */}
+        {selectedAsset && editModalOpen && (
+          <Dialog open={editModalOpen} onOpenChange={setEditModalOpen}>
+            <DialogContent className="max-w-4xl" style={{background: '#1a1229', borderColor: '#2d1f3d', maxHeight: '90vh', overflowY: 'auto'}}>
+              <DialogHeader>
+                <DialogTitle style={{color: '#f8fafc', fontSize: '1.5rem'}}>
+                  Edit Asset: {selectedAsset.name}
+                </DialogTitle>
+              </DialogHeader>
+              
+              <div className="pt-4">
+                <p className="text-sm mb-4" style={{color: '#94a3b8'}}>
+                  Update asset details below. Changes are saved immediately.
+                </p>
+                
+                {/* Full edit form will go here - using AddAssetForm component */}
+                <AddAssetForm 
+                  editingAsset={selectedAsset}
+                  onSuccess={() => {
+                    setEditModalOpen(false);
+                    setSelectedAsset(null);
+                    fetchAssets();
+                  }}
+                  onCancel={() => {
+                    setEditModalOpen(false);
+                    setSelectedAsset(null);
+                  }}
+                />
+                
+                {/* Loan Calculator for Loans/Credit Cards */}
+                {(selectedAsset.type === 'loan' || selectedAsset.type === 'credit_card') && (
+                  <div className="mt-6 pt-6" style={{borderTop: '2px solid #2d1f3d'}}>
+                    <h3 className="text-lg font-bold mb-3 flex items-center gap-2" style={{color: '#f8fafc'}}>
+                      <Calculator className="w-5 h-5" style={{color: '#E8C27C'}} />
+                      Loan Repayment Calculator
+                    </h3>
+                    
+                    <Button 
+                      onClick={() => calculateLoanDetails(selectedAsset)}
+                      disabled={calculatingLoan}
+                      className="w-full mb-4"
+                      style={{background: 'linear-gradient(135deg, #E8C27C 0%, #F5D49F 100%)', color: '#0B0B11'}}
+                    >
+                      {calculatingLoan ? 'Calculating...' : 'Calculate Payment Schedule'}
+                    </Button>
 
-                        {loanCalcData && (
-                          <div className="space-y-3">
-                            {/* Summary Cards */}
-                            <div className="grid grid-cols-2 gap-2">
-                              <div className="p-2 rounded-lg" style={{background: 'rgba(168, 85, 247, 0.1)', border: '1px solid rgba(168, 85, 247, 0.3)'}}>
-                                <div className="text-xs mb-1" style={{color: '#94a3b8'}}>Monthly</div>
-                                <div className="text-base font-bold" style={{color: '#a855f7'}}>
-                                  ${loanCalcData.monthly_payment.toLocaleString()}
-                                </div>
-                              </div>
-                              <div className="p-2 rounded-lg" style={{background: 'rgba(255, 92, 115, 0.1)', border: '1px solid rgba(255, 92, 115, 0.3)'}}>
-                                <div className="text-xs mb-1" style={{color: '#94a3b8'}}>Interest</div>
-                                <div className="text-base font-bold" style={{color: '#FF5C73'}}>
-                                  ${loanCalcData.total_interest.toLocaleString()}
-                                </div>
-                              </div>
+                    {loanCalcData && (
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-2 gap-3">
+                          <div className="p-3 rounded-lg" style={{background: 'rgba(168, 85, 247, 0.1)', border: '1px solid rgba(168, 85, 247, 0.3)'}}>
+                            <div className="text-xs mb-1" style={{color: '#94a3b8'}}>Monthly Payment</div>
+                            <div className="text-xl font-bold" style={{color: '#a855f7'}}>
+                              ${loanCalcData.monthly_payment.toLocaleString()}
                             </div>
+                          </div>
+                          <div className="p-3 rounded-lg" style={{background: 'rgba(255, 92, 115, 0.1)', border: '1px solid rgba(255, 92, 115, 0.3)'}}>
+                            <div className="text-xs mb-1" style={{color: '#94a3b8'}}>Total Interest</div>
+                            <div className="text-xl font-bold" style={{color: '#FF5C73'}}>
+                              ${loanCalcData.total_interest.toLocaleString()}
+                            </div>
+                          </div>
+                        </div>
 
-                            {/* AI Tips */}
-                            {loanCalcData.ai_tips && !loanCalcData.ai_tips.includes('unavailable') && (
-                              <div className="p-3 rounded-lg" style={{background: 'rgba(232, 194, 124, 0.08)', border: '1px solid rgba(232, 194, 124, 0.2)'}}>
-                                <div className="flex items-center gap-2 mb-2">
-                                  <Sparkles className="w-3 h-3" style={{color: '#E8C27C'}} />
-                                  <span className="text-xs font-semibold" style={{color: '#E8C27C'}}>AI TIPS</span>
-                                </div>
-                                <div className="text-xs whitespace-pre-wrap" style={{color: '#cbd5e1', lineHeight: '1.5', maxHeight: '120px', overflowY: 'auto'}}>
-                                  {loanCalcData.ai_tips}
-                                </div>
-                              </div>
-                            )}
-
-                            {/* Amortization Preview */}
-                            <div>
-                              <div className="text-xs font-semibold mb-2" style={{color: '#94a3b8'}}>
-                                PAYMENT SCHEDULE (First 12 months)
-                              </div>
-                              <div style={{maxHeight: '200px', overflowY: 'auto'}}>
-                                <table className="w-full" style={{fontSize: '0.75rem'}}>
-                                  <thead style={{background: '#16001e', position: 'sticky', top: 0}}>
-                                    <tr>
-                                      <th className="p-1.5 text-left" style={{color: '#94a3b8'}}>Mo</th>
-                                      <th className="p-1.5 text-right" style={{color: '#94a3b8'}}>Principal</th>
-                                      <th className="p-1.5 text-right" style={{color: '#94a3b8'}}>Interest</th>
-                                      <th className="p-1.5 text-right" style={{color: '#94a3b8'}}>Balance</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {loanCalcData.amortization_schedule.slice(0, 12).map((entry) => (
-                                      <tr key={entry.month} style={{borderBottom: '1px solid rgba(255,255,255,0.03)'}}>
-                                        <td className="p-1.5" style={{color: '#cbd5e1'}}>{entry.month}</td>
-                                        <td className="p-1.5 text-right" style={{color: '#4BE0A1'}}>${entry.principal_payment.toLocaleString()}</td>
-                                        <td className="p-1.5 text-right" style={{color: '#FF5C73'}}>${entry.interest_payment.toLocaleString()}</td>
-                                        <td className="p-1.5 text-right" style={{color: '#94a3b8'}}>${entry.remaining_balance.toLocaleString()}</td>
-                                      </tr>
-                                    ))}
-                                  </tbody>
-                                </table>
-                              </div>
+                        {loanCalcData.ai_tips && !loanCalcData.ai_tips.includes('unavailable') && (
+                          <div className="p-4 rounded-lg" style={{background: 'rgba(232, 194, 124, 0.08)', border: '1px solid rgba(232, 194, 124, 0.2)'}}>
+                            <div className="flex items-center gap-2 mb-2">
+                              <Sparkles className="w-4 h-4" style={{color: '#E8C27C'}} />
+                              <span className="text-sm font-semibold" style={{color: '#E8C27C'}}>AI TIPS</span>
+                            </div>
+                            <div className="text-sm whitespace-pre-wrap" style={{color: '#cbd5e1', lineHeight: '1.6', maxHeight: '200px', overflowY: 'auto'}}>
+                              {loanCalcData.ai_tips}
                             </div>
                           </div>
                         )}
-                      </div>
-                    )}
 
-                    {/* More Details Button */}
-                    <Button 
-                      onClick={() => toast.info('Full edit modal - to be implemented')}
-                      className="w-full"
-                      variant="outline"
-                      style={{borderColor: '#2d1f3d', color: '#94a3b8', fontSize: '0.875rem', padding: '0.625rem'}}
-                    >
-                      <Info className="w-4 h-4 mr-2" />
-                      View All Details
-                    </Button>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          )}
-
-          {/* Detail Panel - Modal Mode */}
-          {selectedAsset && detailViewMode === 'modal' && (
-            <Dialog open={true} onOpenChange={() => {
-              setSelectedAsset(null);
-              setLoanCalcData(null);
-            }}>
-              <DialogContent className="max-w-3xl" style={{background: '#1a1229', borderColor: '#a855f7', borderWidth: '2px', maxHeight: '90vh', overflowY: 'auto'}}>
-                <DialogHeader>
-                  <DialogTitle style={{color: '#f8fafc', fontSize: '1.25rem'}}>{selectedAsset.name}</DialogTitle>
-                </DialogHeader>
-                <div className="space-y-4 pt-4">
-                  {/* Asset Details */}
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="flex justify-between text-sm p-2 rounded" style={{background: 'rgba(255,255,255,0.03)'}}>
-                      <span style={{color: '#94a3b8'}}>Type:</span>
-                      <span style={{color: '#f8fafc', fontWeight: 600}}>{selectedAsset.type}</span>
-                    </div>
-                    <div className="flex justify-between text-sm p-2 rounded" style={{background: 'rgba(255,255,255,0.03)'}}>
-                      <span style={{color: '#94a3b8'}}>Date:</span>
-                      <span style={{color: '#f8fafc'}}>{selectedAsset.purchase_date ? new Date(selectedAsset.purchase_date).toLocaleDateString() : 'N/A'}</span>
-                    </div>
-                    {selectedAsset.quantity && (
-                      <div className="flex justify-between text-sm p-2 rounded" style={{background: 'rgba(255,255,255,0.03)'}}>
-                        <span style={{color: '#94a3b8'}}>Quantity:</span>
-                        <span style={{color: '#f8fafc', fontWeight: 600}}>{selectedAsset.quantity}</span>
-                      </div>
-                    )}
-                    {selectedAsset.area && (
-                      <div className="flex justify-between text-sm p-2 rounded" style={{background: 'rgba(255,255,255,0.03)'}}>
-                        <span style={{color: '#94a3b8'}}>Area:</span>
-                        <span style={{color: '#f8fafc'}}>{selectedAsset.area} {selectedAsset.area_unit}</span>
+                        <div>
+                          <div className="text-xs font-semibold mb-2" style={{color: '#94a3b8'}}>
+                            PAYMENT SCHEDULE (First 12 months)
+                          </div>
+                          <div style={{maxHeight: '300px', overflowY: 'auto'}}>
+                            <table className="w-full" style={{fontSize: '0.813rem'}}>
+                              <thead style={{background: '#16001e', position: 'sticky', top: 0}}>
+                                <tr>
+                                  <th className="p-2 text-left" style={{color: '#94a3b8'}}>Month</th>
+                                  <th className="p-2 text-right" style={{color: '#94a3b8'}}>Principal</th>
+                                  <th className="p-2 text-right" style={{color: '#94a3b8'}}>Interest</th>
+                                  <th className="p-2 text-right" style={{color: '#94a3b8'}}>Balance</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {loanCalcData.amortization_schedule.slice(0, 12).map((entry) => (
+                                  <tr key={entry.month} style={{borderBottom: '1px solid rgba(255,255,255,0.03)'}}>
+                                    <td className="p-2" style={{color: '#cbd5e1'}}>{entry.month}</td>
+                                    <td className="p-2 text-right" style={{color: '#4BE0A1'}}>${entry.principal_payment.toLocaleString()}</td>
+                                    <td className="p-2 text-right" style={{color: '#FF5C73'}}>${entry.interest_payment.toLocaleString()}</td>
+                                    <td className="p-2 text-right" style={{color: '#94a3b8'}}>${entry.remaining_balance.toLocaleString()}</td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
                       </div>
                     )}
                   </div>
-
-                  {/* Loan Calculator for Modal View */}
-                  {(selectedAsset.type === 'loan' || selectedAsset.type === 'credit_card') && (
-                    <div className="pt-4" style={{borderTop: '2px solid #2d1f3d'}}>
-                      <h3 className="text-lg font-bold mb-3 flex items-center gap-2" style={{color: '#f8fafc'}}>
-                        <Calculator className="w-5 h-5" style={{color: '#E8C27C'}} />
-                        Repayment Calculator
-                      </h3>
-                      
-                      <Button 
-                        onClick={() => calculateLoanDetails(selectedAsset)}
-                        disabled={calculatingLoan}
-                        className="w-full mb-4"
-                        style={{background: 'linear-gradient(135deg, #E8C27C 0%, #F5D49F 100%)', color: '#0B0B11'}}
-                      >
-                        {calculatingLoan ? 'Calculating...' : 'Calculate Payment Schedule'}
-                      </Button>
-
-                      {loanCalcData && (
-                        <div className="space-y-4">
-                          <div className="grid grid-cols-2 gap-3">
-                            <div className="p-3 rounded-lg" style={{background: 'rgba(168, 85, 247, 0.1)', border: '1px solid rgba(168, 85, 247, 0.3)'}}>
-                              <div className="text-xs mb-1" style={{color: '#94a3b8'}}>Monthly Payment</div>
-                              <div className="text-xl font-bold" style={{color: '#a855f7'}}>
-                                ${loanCalcData.monthly_payment.toLocaleString()}
-                              </div>
-                            </div>
-                            <div className="p-3 rounded-lg" style={{background: 'rgba(255, 92, 115, 0.1)', border: '1px solid rgba(255, 92, 115, 0.3)'}}>
-                              <div className="text-xs mb-1" style={{color: '#94a3b8'}}>Total Interest</div>
-                              <div className="text-xl font-bold" style={{color: '#FF5C73'}}>
-                                ${loanCalcData.total_interest.toLocaleString()}
-                              </div>
-                            </div>
-                          </div>
-
-                          {loanCalcData.ai_tips && !loanCalcData.ai_tips.includes('unavailable') && (
-                            <div className="p-4 rounded-lg" style={{background: 'rgba(232, 194, 124, 0.08)', border: '1px solid rgba(232, 194, 124, 0.2)'}}>
-                              <div className="flex items-center gap-2 mb-2">
-                                <Sparkles className="w-4 h-4" style={{color: '#E8C27C'}} />
-                                <span className="text-sm font-semibold" style={{color: '#E8C27C'}}>AI TIPS</span>
-                              </div>
-                              <div className="text-sm whitespace-pre-wrap" style={{color: '#cbd5e1', lineHeight: '1.6', maxHeight: '200px', overflowY: 'auto'}}>
-                                {loanCalcData.ai_tips}
-                              </div>
-                            </div>
-                          )}
-
-                          <div>
-                            <div className="text-xs font-semibold mb-2" style={{color: '#94a3b8'}}>
-                              PAYMENT SCHEDULE (First 12 months)
-                            </div>
-                            <div style={{maxHeight: '300px', overflowY: 'auto'}}>
-                              <table className="w-full" style={{fontSize: '0.813rem'}}>
-                                <thead style={{background: '#16001e', position: 'sticky', top: 0}}>
-                                  <tr>
-                                    <th className="p-2 text-left" style={{color: '#94a3b8'}}>Month</th>
-                                    <th className="p-2 text-right" style={{color: '#94a3b8'}}>Principal</th>
-                                    <th className="p-2 text-right" style={{color: '#94a3b8'}}>Interest</th>
-                                    <th className="p-2 text-right" style={{color: '#94a3b8'}}>Balance</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {loanCalcData.amortization_schedule.slice(0, 12).map((entry) => (
-                                    <tr key={entry.month} style={{borderBottom: '1px solid rgba(255,255,255,0.03)'}}>
-                                      <td className="p-2" style={{color: '#cbd5e1'}}>{entry.month}</td>
-                                      <td className="p-2 text-right" style={{color: '#4BE0A1'}}>${entry.principal_payment.toLocaleString()}</td>
-                                      <td className="p-2 text-right" style={{color: '#FF5C73'}}>${entry.interest_payment.toLocaleString()}</td>
-                                      <td className="p-2 text-right" style={{color: '#94a3b8'}}>${entry.remaining_balance.toLocaleString()}</td>
-                                    </tr>
-                                  ))}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              </DialogContent>
-            </Dialog>
-          )}
-        </div>
-
-        {/* Add Asset Dialog */}
+                )}
+              </div>
+            </DialogContent>
+          </Dialog>
+        )}
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogContent className="max-w-2xl" style={{background: '#1a1229', borderColor: '#2d1f3d', maxHeight: '90vh', overflowY: 'auto'}}>
             <DialogHeader>
