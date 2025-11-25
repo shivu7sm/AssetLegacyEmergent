@@ -102,7 +102,11 @@ export default function Layout({ children }) {
   };
 
   return (
-    <div className="min-h-screen" style={{background: 'linear-gradient(135deg, #1a0b2e 0%, #16001e 50%, #2d0e3e 100%)'}}>
+    <div className="min-h-screen" style={{
+      background: dashboardTheme === 'modern' 
+        ? 'linear-gradient(180deg, #0B0B11 0%, #131622 100%)'
+        : 'linear-gradient(135deg, #1a0b2e 0%, #16001e 50%, #2d0e3e 100%)'
+    }}>
       {/* Header */}
       <header className="backdrop-blur-xl sticky top-0 z-50" style={{borderBottom: '1px solid #2d1f3d', background: 'rgba(15, 10, 30, 0.9)'}}>
         <div className="container mx-auto px-4 py-3">
