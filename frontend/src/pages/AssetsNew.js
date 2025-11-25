@@ -77,7 +77,17 @@ export default function AssetsNew() {
   useEffect(() => {
     fetchAssets();
     checkDemoMode();
+    fetchConnectedAccounts();
   }, []);
+
+  const fetchConnectedAccounts = async () => {
+    try {
+      const response = await axios.get(`${API}/nominees/my-accesses`, { withCredentials: true });
+      setConnectedAccounts(response.data.accessible_accounts || []);
+    } catch (error) {
+      console.error('Failed to fetch connected accounts:', error);
+    }
+  };
 
   const checkDemoMode = async () => {
     try {
