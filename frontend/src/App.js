@@ -184,6 +184,8 @@ function AppRoutes() {
           </ProtectedRoute>
         } 
       />
+      <Route path="/nominee-access" element={<NomineeAccess />} />
+      <Route path="/nominee-dashboard" element={<NomineeDashboard />} />
     </Routes>
   );
 }
