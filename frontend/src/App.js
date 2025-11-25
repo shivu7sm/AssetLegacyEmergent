@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from
 import axios from "axios";
 import LandingPage from "./pages/LandingPage";
 import Dashboard from "./pages/Dashboard";
-import Assets from "./pages/Assets";
+import Assets from "./pages/AssetsNew";
 import Settings from "./pages/Settings";
 import DigitalWill from "./pages/DigitalWill";
 import Documents from "./pages/Documents";
