@@ -90,15 +90,21 @@ export default function AssetsNew() {
   };
 
   const fetchAccountAssets = async (accountId, accessToken) => {
+    setLoading(true);
     try {
+      console.log('Fetching assets for account:', accountId, 'with token:', accessToken?.substring(0, 10) + '...');
       const response = await axios.get(`${API}/nominee/dashboard`, {
         params: { access_token: accessToken }
       });
+      console.log('Nominee dashboard response:', response.data);
       return response.data.assets || [];
     } catch (error) {
       console.error('Failed to fetch account assets:', error);
-      toast.error('Failed to load account assets');
+      console.error('Error details:', error.response?.data);
+      toast.error(`Failed to load account assets: ${error.response?.data?.detail || error.message}`);
       return [];
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -107,20 +113,30 @@ export default function AssetsNew() {
     const loadAccountAssets = async () => {
       if (activeAccount === 'own') {
         fetchAssets();
-      } else if (activeAccount === 'test_account') {
-        // Already have test account data
-      } else {
-        // It's a connected account
-        const account = connectedAccounts.find(a => a.account_id === activeAccount);
-        if (account && account.access_token) {
-          const accountAssets = await fetchAccountAssets(activeAccount, account.access_token);
-          setAssets(accountAssets);
+      } else if (activeAccount === 'test_account' && testAccountData) {
+        // Use test account data
+        const testAssets = [...(testAccountData.assets || []), ...(testAccountData.portfolios || [])];
+        setAssets(testAssets);
+        setLoading(false);
+      } else if (activeAccount !== 'own' && activeAccount !== 'test_account') {
+        // It's a connected account - wait for connectedAccounts to load
+        if (connectedAccounts.length > 0) {
+          const account = connectedAccounts.find(a => a.account_id === activeAccount);
+          if (account && account.access_token) {
+            console.log('Loading connected account:', account.account_name);
+            const accountAssets = await fetchAccountAssets(activeAccount, account.access_token);
+            setAssets(accountAssets);
+          } else {
+            console.error('Account not found or no access token:', activeAccount);
+            toast.error('Account access token not found');
+            setActiveAccount('own');
+          }
         }
       }
     };
     
     loadAccountAssets();
-  }, [activeAccount]);
+  }, [activeAccount, connectedAccounts, testAccountData]);
 
   const checkDemoMode = async () => {
     try {
