@@ -174,6 +174,8 @@ export default function Assets() {
   const [portfolioTotal, setPortfolioTotal] = useState(null);
   const [assetsTotal, setAssetsTotal] = useState(null);
   const [liabilitiesTotal, setLiabilitiesTotal] = useState(null);
+  const [purchaseTotal, setPurchaseTotal] = useState(null);
+  const [currentTotal, setCurrentTotal] = useState(null);
   
   // Portfolio-specific state
   const [portfolios, setPortfolios] = useState([]);
