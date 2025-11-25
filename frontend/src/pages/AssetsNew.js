@@ -75,7 +75,31 @@ export default function AssetsNew() {
 
   useEffect(() => {
     fetchAssets();
+    checkDemoMode();
   }, []);
+
+  const checkDemoMode = async () => {
+    try {
+      const response = await axios.get(`${API}/demo/status`, { withCredentials: true });
+      setDemoMode(response.data.demo_mode);
+      
+      // If in demo mode, fetch test account data
+      if (response.data.demo_mode && response.data.test_account_access) {
+        fetchTestAccountAssets();
+      }
+    } catch (error) {
+      console.error('Failed to check demo mode:', error);
+    }
+  };
+
+  const fetchTestAccountAssets = async () => {
+    try {
+      const response = await axios.get(`${API}/demo/test-account-assets`, { withCredentials: true });
+      setTestAccountData(response.data);
+    } catch (error) {
+      console.error('Failed to fetch test account:', error);
+    }
+  };
 
   const fetchAssets = async () => {
     try {
