@@ -207,6 +207,43 @@ backend:
         comment: "✅ PASSED - Real estate extended fields working correctly. Successfully created property with current_price_per_area field ($250/sqft). Dashboard calculation correctly uses current_price_per_area over price_per_area (1500 sqft × $250 = $375K). Field updates work properly. Asset and AssetCreate models both support the new field."
 
 frontend:
+frontend:
+  - task: "Assets Table Footer Fix"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/Assets.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Fixed table footer to properly calculate and display separate totals for Purchase Value and Current Value. Added new state variables purchaseTotal and currentTotal. Updated calculateTotals to track both values. Footer now shows: 'Calculating...' while loading, correct purchase total in column 5, correct current total in column 6, and overall gain/loss in column 7. All values aligned properly with their respective columns."
+
+  - task: "Set Default Asset View to Table"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/Assets.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Changed default view mode from 'grid' to 'table' in getInitialView() function. Table view is now the default when users first visit the Assets page or when no preference is saved."
+
+  - task: "Loan Repayment Calculator"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/LoanCalculator.js, /app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented complete Loan Repayment Calculator feature: Backend - Added /loan-calculator endpoint with amortization calculation logic and AI-powered debt reduction tips using OpenAI GPT-5 via emergentintegrations library. Frontend - Created new LoanCalculator.js page with form for principal, interest rate, tenure, and loan type selection. Displays: monthly payment, total interest, total repayment, full amortization schedule table, and AI-generated personalized debt reduction tips. Added route in App.js and navigation link in Layout.js. Uses Emergent LLM key for GPT-5 API calls."
+
   - task: "Net Worth Growth Rate Calculation Fix"
     implemented: true
     working: "NA"
