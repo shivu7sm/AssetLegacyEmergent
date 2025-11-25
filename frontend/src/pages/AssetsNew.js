@@ -68,7 +68,6 @@ export default function AssetsNew() {
   const [loanCalcData, setLoanCalcData] = useState(null);
   const [calculatingLoan, setCalculatingLoan] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [detailViewMode, setDetailViewMode] = useState('sidebar'); // 'sidebar' or 'modal'
   const [activeFilter, setActiveFilter] = useState('all'); // Filter by asset group
   const [activeAccount, setActiveAccount] = useState('own'); // 'own' or 'test_account' or account_id
   const [testAccountData, setTestAccountData] = useState(null);
