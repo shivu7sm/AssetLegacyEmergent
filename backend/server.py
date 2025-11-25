@@ -675,7 +675,18 @@ async def get_loan_schedule(asset_id: str, user: User = Depends(require_auth)):
 @api_router.get("/nominees", response_model=List[Nominee])
 async def get_nominees(user: User = Depends(require_auth)):
     """Get all nominees for the user, sorted by priority"""
-    nominees = await db.nominees.find({"user_id": user.id}, {"_id": 0}).to_list(100)
+    demo_prefix = f"demo_{user.id}_"
+    if user.demo_mode:
+        nominees = await db.nominees.find({
+            "user_id": user.id,
+            "id": {"$regex": f"^{demo_prefix}"}
+        }, {"_id": 0}).to_list(100)
+    else:
+        nominees = await db.nominees.find({
+            "user_id": user.id,
+            "id": {"$not": {"$regex": f"^{demo_prefix}"}}
+        }, {"_id": 0}).to_list(100)
+    
     for nominee in nominees:
         if isinstance(nominee.get('created_at'), str):
             nominee['created_at'] = datetime.fromisoformat(nominee['created_at'])
