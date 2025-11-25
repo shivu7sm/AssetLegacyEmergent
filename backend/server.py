@@ -4375,9 +4375,112 @@ app.add_middleware(
 
 @app.on_event("startup")
 async def startup_scheduler():
-    """Start the background job scheduler on application startup"""
+    """Start the background job scheduler and seed test account"""
     logger.info("Starting background job scheduler...")
     start_scheduler()
+    
+    # Seed universal test account for demo mode
+    await seed_universal_test_account()
+
+async def seed_universal_test_account():
+    """Create universal test account that all demo users can access"""
+    test_account_id = "test_account_universal"
+    
+    # Check if test account already exists
+    existing_user = await db.users.find_one({"id": test_account_id})
+    if existing_user:
+        return  # Already exists
+    
+    # Create test user
+    test_user = {
+        "id": test_account_id,
+        "email": "demo.portfolio@assetvault.com",
+        "name": "AssetVault Demo Portfolio",
+        "picture": None,
+        "role": "customer",
+        "demo_mode": False,
+        "last_activity": datetime.now(timezone.utc).isoformat(),
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "subscription_plan": "Family"
+    }
+    await db.users.insert_one(test_user)
+    
+    # Create comprehensive test assets
+    test_assets = [
+        # USA Assets
+        {
+            "id": f"test_bank_us1",
+            "user_id": test_account_id,
+            "name": "Wells Fargo Premier Checking",
+            "type": "bank",
+            "purchase_currency": "USD",
+            "purchase_date": "2022-01-15",
+            "total_value": 125000,
+            "current_value": 127500,
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"test_crypto_btc1",
+            "user_id": test_account_id,
+            "name": "Bitcoin Investment",
+            "type": "crypto",
+            "symbol": "BTC",
+            "purchase_currency": "USD",
+            "purchase_date": "2021-05-10",
+            "quantity": 2.5,
+            "unit_price": 35000,
+            "current_unit_price": 95000,
+            "total_value": 87500,
+            "current_value": 237500,
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"test_property_us1",
+            "user_id": test_account_id,
+            "name": "Luxury Penthouse - Manhattan",
+            "type": "property",
+            "purchase_currency": "USD",
+            "purchase_date": "2019-03-20",
+            "area": 3500,
+            "area_unit": "sqft",
+            "price_per_area": 1200,
+            "current_price_per_area": 1650,
+            "total_value": 4200000,
+            "current_value": 5775000,
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        # Singapore Assets
+        {
+            "id": f"test_bank_sg1",
+            "user_id": test_account_id,
+            "name": "OCBC Premium Banking Account",
+            "type": "bank",
+            "purchase_currency": "SGD",
+            "purchase_date": "2022-06-01",
+            "total_value": 180000,
+            "current_value": 185000,
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        # UK Assets
+        {
+            "id": f"test_stock_uk1",
+            "user_id": test_account_id,
+            "name": "HSBC Holdings PLC",
+            "type": "stock",
+            "symbol": "HSBA.L",
+            "purchase_currency": "GBP",
+            "purchase_date": "2021-09-15",
+            "quantity": 5000,
+            "unit_price": 4.5,
+            "current_unit_price": 6.2,
+            "total_value": 22500,
+            "current_value": 31000,
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+    ]
+    
+    await db.assets.insert_many(test_assets)
+    logger.info("Universal test account seeded successfully")
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
