@@ -493,11 +493,17 @@ export default function AssetsNew() {
                             return (
                               <tr 
                                 key={asset.id}
+                                onClick={() => {
+                                  if (!isEditing) {
+                                    setSelectedAsset(asset);
+                                    setEditModalOpen(true);
+                                  }
+                                }}
                                 className="cursor-pointer transition-all"
                                 style={{
-                                  background: selectedAsset?.id === asset.id ? 'rgba(232, 194, 124, 0.08)' : 'transparent',
+                                  background: 'transparent',
                                   borderBottom: '1px solid rgba(255,255,255,0.03)',
-                                  borderLeft: selectedAsset?.id === asset.id ? '3px solid #E8C27C' : '3px solid transparent'
+                                  borderLeft: '3px solid transparent'
                                 }}
                               >
                                 {/* Asset Name - Clickable but stops propagation for edit mode */}
