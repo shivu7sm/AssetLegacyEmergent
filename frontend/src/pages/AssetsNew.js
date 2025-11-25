@@ -505,29 +505,19 @@ export default function AssetsNew() {
                                   borderLeft: '3px solid transparent'
                                 }}
                               >
-                                {/* Asset Name - Clickable but stops propagation for edit mode */}
-                                <td className="p-3" onClick={(e) => {
-                                  if (!isEditing) setSelectedAsset(asset);
-                                  else e.stopPropagation();
+                                {/* Asset Name - Clickable */}
+                                <td className="p-3" onClick={() => {
+                                  setSelectedAsset(asset);
+                                  setEditModalOpen(true);
                                 }}>
-                                  {isEditing ? (
-                                    <Input 
-                                      value={editValues.name}
-                                      onChange={(e) => setEditValues({...editValues, name: e.target.value})}
-                                      className="bg-slate-800 border-slate-700 text-white text-sm"
-                                      style={{height: '32px', padding: '0.5rem'}}
-                                      onClick={(e) => e.stopPropagation()}
-                                    />
-                                  ) : (
-                                    <div className="flex items-center gap-2">
-                                      <span style={{color: '#f8fafc', fontWeight: 500}}>{asset.name}</span>
-                                      {asset.symbol && (
-                                        <span className="text-xs px-2 py-0.5 rounded" style={{background: '#2d1f3d', color: '#94a3b8'}}>
-                                          {asset.symbol}
-                                        </span>
-                                      )}
-                                    </div>
-                                  )}
+                                  <div className="flex items-center gap-2">
+                                    <span style={{color: '#f8fafc', fontWeight: 500}}>{asset.name}</span>
+                                    {asset.symbol && (
+                                      <span className="text-xs px-2 py-0.5 rounded" style={{background: '#2d1f3d', color: '#94a3b8'}}>
+                                        {asset.symbol}
+                                      </span>
+                                    )}
+                                  </div>
                                 </td>
                                 
                                 {/* Purchase Value - Original Currency */}
