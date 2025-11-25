@@ -972,10 +972,10 @@ async def get_nominee_dashboard(access_token: str):
     # Get nominees (they should see who else is a nominee)
     all_nominees = await db.nominees.find({"user_id": user_id}, {"_id": 0, "access_token": 0}).to_list(100)
     
-    # Calculate summary
+    # Calculate summary - handle None values
     total_assets = len(assets) + len(portfolios)
-    total_value = sum([a.get("current_value", a.get("total_value", 0)) for a in assets])
-    total_value += sum([p.get("total_value", 0) for p in portfolios])
+    total_value = sum([(a.get("current_value") or a.get("total_value") or 0) for a in assets])
+    total_value += sum([(p.get("total_value") or 0) for p in portfolios])
     
     return {
         "summary": {
