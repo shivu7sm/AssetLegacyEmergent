@@ -1699,17 +1699,17 @@ async def get_test_account_assets(user: User = Depends(require_auth)):
     if not user.demo_mode:
         raise HTTPException(status_code=403, detail="Test account only accessible in demo mode")
     
-    # Fetch test account assets (non-demo prefixed, belonging to test_account_universal)
+    # Fetch test account assets
     test_account_id = "test_account_universal"
     
-    # Get test account assets
+    # Get test account assets - exclude _id
     assets = await db.assets.find({
         "user_id": test_account_id
-    }).to_list(1000)
+    }, {"_id": 0}).to_list(1000)
     
     portfolios = await db.portfolio_assets.find({
         "user_id": test_account_id
-    }).to_list(1000)
+    }, {"_id": 0}).to_list(1000)
     
     return {
         "account_id": test_account_id,
