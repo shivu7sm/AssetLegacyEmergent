@@ -223,7 +223,7 @@ export default function Documents() {
 
   return (
     <Layout>
-      <div className="flex gap-6">
+      <div className="flex gap-6" style={{padding: '2rem 1.5rem', margin: '0 auto', maxWidth: '1600px'}}>
         {/* Left Sidebar - Asset Navigation */}
         <div className="w-64 flex-shrink-0">
           <Card style={{background: '#1a1229', borderColor: '#2d1f3d', position: 'sticky', top: '1rem'}}>
