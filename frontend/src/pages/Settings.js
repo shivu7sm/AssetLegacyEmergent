@@ -597,14 +597,6 @@ export default function Settings() {
           <div className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold mb-2" style={{color: '#f8fafc'}}>Profile</h2>
-              <p style={{color: '#94a3b8'}}>Your account information</p>
-            </div>
-            
-      case 'profile':
-        return (
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-2xl font-bold mb-2" style={{color: '#f8fafc'}}>Profile</h2>
               <p style={{color: '#94a3b8'}}>Manage your account information and personal details</p>
             </div>
             
