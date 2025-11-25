@@ -136,21 +136,50 @@ export default function Layout({ children }) {
 
             {/* Actions */}
             <div className="flex items-center gap-2 min-w-fit">
-              {/* Demo Mode Toggle */}
-              <button
-                onClick={toggleDemoMode}
-                disabled={togglingDemo}
-                className="flex items-center gap-2 px-3 py-2 rounded-lg transition-all text-sm font-medium"
-                style={{
-                  background: demoMode ? 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' : 'rgba(255,255,255,0.05)',
-                  color: demoMode ? '#fff' : '#94a3b8',
-                  border: demoMode ? 'none' : '1px solid #2d1f3d'
-                }}
-                title={demoMode ? 'Switch to Live Data' : 'Switch to Demo Mode'}
-              >
-                {demoMode ? <FlaskConical className="w-4 h-4" /> : <Database className="w-4 h-4" />}
-                <span className="hidden xl:inline">{demoMode ? 'Demo' : 'Live'}</span>
-              </button>
+              {/* Demo Mode Toggle - Prominent Display */}
+              <div className="relative">
+                <button
+                  onClick={toggleDemoMode}
+                  disabled={togglingDemo}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full transition-all text-sm font-bold shadow-lg"
+                  style={{
+                    background: demoMode 
+                      ? 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' 
+                      : 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                    color: '#fff',
+                    border: '2px solid rgba(255,255,255,0.3)',
+                    boxShadow: demoMode 
+                      ? '0 4px 12px rgba(245, 158, 11, 0.4)' 
+                      : '0 4px 12px rgba(16, 185, 129, 0.4)'
+                  }}
+                  title={demoMode ? 'Click to switch to Live Data' : 'Click to switch to Demo Mode'}
+                >
+                  {demoMode ? (
+                    <>
+                      <FlaskConical className="w-4 h-4" />
+                      <span>DEMO MODE</span>
+                      <span className="text-xs opacity-90">(Test Data)</span>
+                    </>
+                  ) : (
+                    <>
+                      <Database className="w-4 h-4" />
+                      <span>LIVE MODE</span>
+                      <span className="text-xs opacity-90">(Real Data)</span>
+                    </>
+                  )}
+                </button>
+                
+                {/* Pulsing indicator */}
+                <span 
+                  className="absolute top-0 right-0 w-3 h-3 rounded-full animate-pulse"
+                  style={{
+                    background: demoMode ? '#f59e0b' : '#10b981',
+                    boxShadow: demoMode 
+                      ? '0 0 8px rgba(245, 158, 11, 0.6)' 
+                      : '0 0 8px rgba(16, 185, 129, 0.6)'
+                  }}
+                />
+              </div>
 
               {/* Currency Selector */}
               <Select value={selectedCurrency} onValueChange={handleCurrencyChange}>
