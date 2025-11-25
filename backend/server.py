@@ -911,6 +911,19 @@ async def get_nominee_dashboard(access_token: str):
     
     user_id = nominee["user_id"]
     
+    # Log dashboard access
+    audit_log = {
+        "user_id": user_id,
+        "action": "nominee_viewed_dashboard",
+        "details": {
+            "nominee_name": nominee.get("name"),
+            "nominee_email": nominee.get("email")
+        },
+        "ip_address": "unknown",
+        "timestamp": datetime.now(timezone.utc).isoformat()
+    }
+    await db.audit_logs.insert_one(audit_log)
+    
     # Get all assets (excluding demo data)
     demo_prefix = f"demo_{user_id}_"
     assets = await db.assets.find({
