@@ -580,12 +580,6 @@ export default function AssetsNew() {
             </Card>
           </div>
 
-                </table>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
         {/* Comprehensive Edit Asset Modal */}
         {selectedAsset && editModalOpen && (
           <Dialog open={editModalOpen} onOpenChange={setEditModalOpen}>
