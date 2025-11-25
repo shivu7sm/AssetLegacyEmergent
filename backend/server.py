@@ -982,6 +982,35 @@ async def get_nominee_dashboard(access_token: str):
     total_value = sum([(a.get("current_value") or a.get("total_value") or 0) for a in assets])
     total_value += sum([(p.get("total_value") or 0) for p in portfolios])
     
+    # Convert datetime fields to ISO strings for JSON serialization
+    for asset in assets:
+        if isinstance(asset.get('created_at'), datetime):
+            asset['created_at'] = asset['created_at'].isoformat()
+        if isinstance(asset.get('updated_at'), datetime):
+            asset['updated_at'] = asset['updated_at'].isoformat()
+    
+    for portfolio in portfolios:
+        if isinstance(portfolio.get('created_at'), datetime):
+            portfolio['created_at'] = portfolio['created_at'].isoformat()
+    
+    for doc in documents:
+        if isinstance(doc.get('created_at'), datetime):
+            doc['created_at'] = doc['created_at'].isoformat()
+        if isinstance(doc.get('uploaded_at'), datetime):
+            doc['uploaded_at'] = doc['uploaded_at'].isoformat()
+    
+    if will:
+        if isinstance(will.get('created_at'), datetime):
+            will['created_at'] = will['created_at'].isoformat()
+        if isinstance(will.get('updated_at'), datetime):
+            will['updated_at'] = will['updated_at'].isoformat()
+    
+    for nom in all_nominees:
+        if isinstance(nom.get('created_at'), datetime):
+            nom['created_at'] = nom['created_at'].isoformat()
+        if isinstance(nom.get('last_accessed_at'), datetime):
+            nom['last_accessed_at'] = nom['last_accessed_at'].isoformat()
+    
     return {
         "summary": {
             "total_assets": total_assets,
