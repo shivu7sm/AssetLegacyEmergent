@@ -577,6 +577,7 @@ export default function AssetsNew() {
             </div>
           )}
         </div>
+        </div>
       </div>
     </Layout>
   );
