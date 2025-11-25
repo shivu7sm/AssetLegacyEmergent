@@ -211,8 +211,10 @@ function SecurityAuditSection({ user }) {
 const SECTIONS = [
   { id: 'profile', label: 'Profile', icon: User },
   { id: 'preferences', label: 'Preferences', icon: Eye },
+  { id: 'appearance', label: 'Appearance', icon: SettingsIcon },
   { id: 'nominees', label: 'Nominees', icon: Users },
   { id: 'dms', label: 'Dead Man\'s Switch', icon: Clock },
+  { id: 'demo', label: 'Demo Data', icon: RefreshCw },
   { id: 'connected', label: 'Connected Accounts', icon: Link },
   { id: 'subscription', label: 'Subscription & Billing', icon: CreditCard },
   { id: 'security', label: 'Security', icon: Shield },
