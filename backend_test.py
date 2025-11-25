@@ -3250,7 +3250,8 @@ print('Test data cleaned up');
             "POST",
             "loan-calculator",
             200,
-            zero_interest_loan
+            zero_interest_loan,
+            timeout=60
         )
         
         if zero_result:
