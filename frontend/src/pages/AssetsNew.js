@@ -487,14 +487,17 @@ export default function AssetsNew() {
             </Card>
           </div>
 
-          {/* Detail Panel - Right Side - FIXED POSITION */}
-          {selectedAsset && (
+          {/* Detail Panel - Right Side - FIXED POSITION (Sidebar Mode) */}
+          {selectedAsset && detailViewMode === 'sidebar' && (
             <div className="col-span-5" style={{position: 'relative'}}>
               <div style={{position: 'sticky', top: '1rem', maxHeight: 'calc(100vh - 120px)', overflowY: 'auto'}}>
                 <Card style={{background: '#1a1229', borderColor: '#a855f7', borderWidth: '2px'}}>
                   <CardHeader style={{borderBottom: '1px solid #2d1f3d', padding: '1rem'}}>
                     <div className="flex justify-between items-start">
-                      <CardTitle style={{color: '#f8fafc', fontSize: '1.125rem'}}>{selectedAsset.name}</CardTitle>
+                      <div>
+                        <CardTitle style={{color: '#f8fafc', fontSize: '1.125rem'}}>{selectedAsset.name}</CardTitle>
+                        <p className="text-xs mt-1" style={{color: '#94a3b8'}}>Side Panel View</p>
+                      </div>
                       <Button 
                         size="sm" 
                         onClick={() => {
@@ -509,6 +512,7 @@ export default function AssetsNew() {
                           border: '1px solid rgba(255, 92, 115, 0.3)',
                           color: '#FF5C73'
                         }}
+                        title="Close panel"
                       >
                         <X className="w-4 h-4" />
                       </Button>
