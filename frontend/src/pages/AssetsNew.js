@@ -89,6 +89,39 @@ export default function AssetsNew() {
     }
   };
 
+  const fetchAccountAssets = async (accountId, accessToken) => {
+    try {
+      const response = await axios.get(`${API}/nominee/dashboard`, {
+        params: { access_token: accessToken }
+      });
+      return response.data.assets || [];
+    } catch (error) {
+      console.error('Failed to fetch account assets:', error);
+      toast.error('Failed to load account assets');
+      return [];
+    }
+  };
+
+  // Update assets when account switches
+  useEffect(() => {
+    const loadAccountAssets = async () => {
+      if (activeAccount === 'own') {
+        fetchAssets();
+      } else if (activeAccount === 'test_account') {
+        // Already have test account data
+      } else {
+        // It's a connected account
+        const account = connectedAccounts.find(a => a.account_id === activeAccount);
+        if (account && account.access_token) {
+          const accountAssets = await fetchAccountAssets(activeAccount, account.access_token);
+          setAssets(accountAssets);
+        }
+      }
+    };
+    
+    loadAccountAssets();
+  }, [activeAccount]);
+
   const checkDemoMode = async () => {
     try {
       const response = await axios.get(`${API}/demo/status`, { withCredentials: true });
