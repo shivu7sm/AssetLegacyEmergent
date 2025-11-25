@@ -228,43 +228,58 @@
 }
 
 /* ========================================
-   🔶 8. TABLES
+   🔶 8. TABLES - IMPROVED STYLING
    ======================================== */
 .modern-theme table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
   color: var(--text-body);
+  font-size: 0.875rem; /* Smaller font */
 }
 
 .modern-theme table thead,
 .modern-theme table thead tr,
 .modern-theme table thead th {
-  background: #181A22 !important;
-  color: var(--text-subheading) !important;
+  background: #0E0F16 !important; /* Darker header */
+  color: rgba(255,255,255,0.6) !important;
   font-weight: 600;
-  font-size: 0.875rem;
+  font-size: 0.75rem; /* Even smaller for headers */
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
+  padding: 0.75rem 1rem !important; /* Reduced padding */
 }
 
 .modern-theme table tbody tr {
   background: var(--surface-1) !important;
-  border-bottom: 1px solid rgba(255,255,255,0.04) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.03) !important; /* Subtle gridlines */
+  transition: all 0.15s ease;
 }
 
 .modern-theme table tbody tr:nth-child(odd) {
-  background: #1B1D25 !important;
+  background: rgba(255,255,255,0.02) !important; /* Very subtle alternating */
 }
 
 .modern-theme table tbody tr:hover {
-  background: rgba(255,255,255,0.05) !important;
+  background: rgba(232, 194, 124, 0.05) !important; /* Gold tint on hover */
+  border-left: 2px solid var(--accent-gold);
 }
 
 .modern-theme table td,
 .modern-theme table th {
-  padding: 1rem;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
+  padding: 0.65rem 1rem !important; /* Compact padding */
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+
+/* Group header rows - special styling */
+.modern-theme table tbody tr[class*="group"] {
+  background: rgba(168, 85, 247, 0.08) !important;
+  border-top: 2px solid rgba(168, 85, 247, 0.3) !important;
+  border-bottom: 1px solid rgba(168, 85, 247, 0.2) !important;
+}
+
+.modern-theme table tbody tr[class*="group"]:hover {
+  background: rgba(168, 85, 247, 0.12) !important;
 }
 
 /* ========================================
