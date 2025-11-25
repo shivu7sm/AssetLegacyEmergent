@@ -7,6 +7,17 @@ import { ShieldCheck, Lock, Clock, Users, DollarSign, TrendingUp, Play, AlertCir
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
+// Color System
+const COLORS = {
+  primary: '#EB3349',
+  primaryEnd: '#F45C43',
+  secondary: '#FFB347',
+  highlight: '#FFC300',
+  cream: '#FFE29F',
+  dark: '#1A1A1A',
+  darkGray: '#333333'
+};
+
 export default function LandingPage() {
   const navigate = useNavigate();
 
@@ -30,33 +41,20 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen" style={{
-      background: 'linear-gradient(135deg, #EB3349 0%, #F45C43 100%)',
-      position: 'relative',
       fontFamily: '"Poppins", "Montserrat", sans-serif'
     }}>
-      {/* Hexagon Grid Overlay */}
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundImage: `
-          repeating-linear-gradient(0deg, rgba(255,255,255,0.08) 0px, transparent 1px, transparent 60px, rgba(255,255,255,0.08) 61px),
-          repeating-linear-gradient(60deg, rgba(255,255,255,0.08) 0px, transparent 1px, transparent 60px, rgba(255,255,255,0.08) 61px),
-          repeating-linear-gradient(120deg, rgba(255,255,255,0.08) 0px, transparent 1px, transparent 60px, rgba(255,255,255,0.08) 61px)
-        `,
-        pointerEvents: 'none',
-        zIndex: 1
-      }} />
-
       {/* Content Layer */}
-      <div style={{ position: 'relative', zIndex: 2 }}>
+      <div style={{ position: 'relative' }}>
         {/* Header */}
-        <header className="backdrop-blur-sm sticky top-0 z-50" style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+        <header className="backdrop-blur-sm sticky top-0 z-50" style={{ 
+          borderBottom: '1px solid rgba(255,255,255,0.1)',
+          background: `url('/patterns/iso-cube.svg'), linear-gradient(135deg, ${COLORS.primary} 0%, ${COLORS.primaryEnd} 100%)`,
+          backgroundSize: '250px 250px, cover',
+          backgroundBlendMode: 'overlay'
+        }}>
           <div className="container mx-auto px-6 py-5 flex justify-between items-center">
             <div className="flex items-center gap-3">
-              <ShieldCheck className="w-9 h-9" style={{ color: '#FFC300' }} />
+              <ShieldCheck className="w-9 h-9" style={{ color: COLORS.highlight }} />
               <h1 className="text-3xl font-bold" style={{ color: '#fff', letterSpacing: '-0.02em' }}>AssetVault</h1>
             </div>
             
@@ -72,12 +70,12 @@ export default function LandingPage() {
               onClick={handleLogin}
               className="font-semibold px-8 py-6 text-base"
               style={{
-                background: '#FFC300',
-                color: '#1a1a1a',
+                background: COLORS.highlight,
+                color: COLORS.dark,
                 borderRadius: '999px',
                 border: 'none',
                 letterSpacing: '0.02em',
-                boxShadow: '0 4px 20px rgba(255, 195, 0, 0.3)'
+                boxShadow: `0 4px 20px rgba(255, 195, 0, 0.3)`
               }}
             >
               Get Started Free
@@ -85,12 +83,17 @@ export default function LandingPage() {
           </div>
         </header>
 
-        {/* Hero Section */}
-        <section className="py-24 md:py-32">
+        {/* Hero Section - Primary Gradient with Cube Pattern */}
+        <section className="py-24 md:py-32" style={{
+          background: `url('/patterns/iso-cube.svg'), linear-gradient(135deg, ${COLORS.primary} 0%, ${COLORS.primaryEnd} 100%)`,
+          backgroundSize: '250px 250px, cover',
+          backgroundBlendMode: 'overlay',
+          position: 'relative'
+        }}>
           <div className="container mx-auto px-6">
             <div className="max-w-5xl mx-auto text-center">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8" style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(10px)' }}>
-                <Zap className="w-4 h-4" style={{ color: '#FFC300' }} />
+                <Zap className="w-4 h-4" style={{ color: COLORS.highlight }} />
                 <span className="text-white text-sm font-medium" style={{ letterSpacing: '0.03em' }}>Protect Your Legacy Today</span>
               </div>
 
@@ -99,7 +102,7 @@ export default function LandingPage() {
                 letterSpacing: '-0.03em'
               }}>
                 Your Assets.<br />Your Legacy.<br />
-                <span style={{ color: '#FFC300' }}>Forever Protected.</span>
+                <span style={{ color: COLORS.highlight }}>Forever Protected.</span>
               </h1>
               
               <p className="text-xl md:text-2xl mb-12 max-w-3xl mx-auto" style={{ 
@@ -116,8 +119,8 @@ export default function LandingPage() {
                   onClick={handleLogin}
                   className="font-bold px-10 py-7 text-lg"
                   style={{
-                    background: '#FFC300',
-                    color: '#1a1a1a',
+                    background: COLORS.highlight,
+                    color: COLORS.dark,
                     borderRadius: '999px',
                     border: 'none',
                     letterSpacing: '0.02em',
@@ -147,17 +150,17 @@ export default function LandingPage() {
 
               <div className="mt-12 flex items-center justify-center gap-8 text-white">
                 <div className="text-center">
-                  <div className="text-3xl font-bold" style={{ color: '#FFC300' }}>5K+</div>
+                  <div className="text-3xl font-bold" style={{ color: COLORS.highlight }}>5K+</div>
                   <div className="text-sm opacity-90" style={{ letterSpacing: '0.02em' }}>Active Users</div>
                 </div>
                 <div className="h-12 w-px" style={{ background: 'rgba(255,255,255,0.2)' }} />
                 <div className="text-center">
-                  <div className="text-3xl font-bold" style={{ color: '#FFC300' }}>₹50Cr+</div>
+                  <div className="text-3xl font-bold" style={{ color: COLORS.highlight }}>₹50Cr+</div>
                   <div className="text-sm opacity-90" style={{ letterSpacing: '0.02em' }}>Assets Protected</div>
                 </div>
                 <div className="h-12 w-px" style={{ background: 'rgba(255,255,255,0.2)' }} />
                 <div className="text-center">
-                  <div className="text-3xl font-bold" style={{ color: '#FFC300' }}>99.9%</div>
+                  <div className="text-3xl font-bold" style={{ color: COLORS.highlight }}>99.9%</div>
                   <div className="text-sm opacity-90" style={{ letterSpacing: '0.02em' }}>Uptime</div>
                 </div>
               </div>
@@ -165,12 +168,17 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* The Uncomfortable Truth Section */}
-        <section id="why" className="py-20" style={{ background: 'rgba(0,0,0,0.15)' }}>
+        {/* The Uncomfortable Truth Section - Still warm but darker */}
+        <section id="why" className="py-20" style={{ 
+          background: `url('/patterns/iso-cube.svg'), linear-gradient(135deg, ${COLORS.primaryEnd} 0%, #D43D51 100%)`,
+          backgroundSize: '250px 250px, cover',
+          backgroundBlendMode: 'overlay',
+          boxShadow: 'inset 0 4px 20px rgba(0,0,0,0.1)'
+        }}>
           <div className="container mx-auto px-6">
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-12">
-                <AlertCircle className="w-16 h-16 mx-auto mb-4" style={{ color: '#FFC300' }} />
+                <AlertCircle className="w-16 h-16 mx-auto mb-4" style={{ color: COLORS.highlight }} />
                 <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ color: '#fff', letterSpacing: '-0.02em' }}>
                   The Uncomfortable Truth
                 </h2>
@@ -181,7 +189,7 @@ export default function LandingPage() {
               </div>
 
               <div className="grid md:grid-cols-2 gap-6">
-                <div className="p-8 rounded-3xl" style={{ background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)' }}>
+                <div className="p-8 rounded-3xl" style={{ background: 'rgba(0,0,0,0.15)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)' }}>
                   <div className="text-5xl mb-4">🏦</div>
                   <h3 className="text-2xl font-bold mb-3" style={{ color: '#fff' }}>Your Liabilities</h3>
                   <p style={{ color: 'rgba(255,255,255,0.85)', lineHeight: '1.7' }}>
@@ -189,17 +197,17 @@ export default function LandingPage() {
                   </p>
                 </div>
 
-                <div className="p-8 rounded-3xl" style={{ background: 'rgba(255,195,0,0.15)', backdropFilter: 'blur(10px)', border: '2px solid #FFC300' }}>
+                <div className="p-8 rounded-3xl" style={{ background: COLORS.highlight, border: '2px solid rgba(255,255,255,0.3)' }}>
                   <div className="text-5xl mb-4">💎</div>
-                  <h3 className="text-2xl font-bold mb-3" style={{ color: '#FFC300' }}>Your Assets?</h3>
-                  <p style={{ color: '#fff', lineHeight: '1.7' }}>
+                  <h3 className="text-2xl font-bold mb-3" style={{ color: COLORS.dark }}>Your Assets?</h3>
+                  <p style={{ color: COLORS.dark, lineHeight: '1.7' }}>
                     Insurance policies, investments, bank lockers, crypto wallets - scattered everywhere. Lost forever without a record.
                   </p>
                 </div>
               </div>
 
               <div className="mt-12 p-8 rounded-3xl text-center" style={{ background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(10px)' }}>
-                <Heart className="w-12 h-12 mx-auto mb-4" style={{ color: '#FFC300' }} />
+                <Heart className="w-12 h-12 mx-auto mb-4" style={{ color: COLORS.highlight }} />
                 <h3 className="text-2xl font-bold mb-3" style={{ color: '#fff' }}>Don't Let Your Legacy Disappear</h3>
                 <p className="text-lg" style={{ color: 'rgba(255,255,255,0.9)' }}>
                   Millions in unclaimed assets sit in government custody because families didn't know they existed. 
@@ -210,14 +218,18 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Features Section */}
-        <section id="features" className="py-20">
+        {/* Features Section - Warm Orange Gradient */}
+        <section id="features" className="py-20" style={{
+          background: `url('/patterns/iso-cube.svg'), linear-gradient(135deg, ${COLORS.primaryEnd} 0%, ${COLORS.secondary} 100%)`,
+          backgroundSize: '250px 250px, cover',
+          backgroundBlendMode: 'overlay'
+        }}>
           <div className="container mx-auto px-6">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: '#fff', letterSpacing: '-0.02em' }}>
                 Everything You Need to Protect Your Legacy
               </h2>
-              <p className="text-xl" style={{ color: 'rgba(255,255,255,0.85)' }}>
+              <p className="text-xl" style={{ color: 'rgba(255,255,255,0.9)' }}>
                 Comprehensive tools designed for Indian families
               </p>
             </div>
@@ -259,18 +271,19 @@ export default function LandingPage() {
                   key={index}
                   className="p-8 rounded-3xl transition-all hover:scale-105"
                   style={{
-                    background: 'rgba(255,255,255,0.1)',
+                    background: 'rgba(255,255,255,0.15)',
                     backdropFilter: 'blur(10px)',
-                    border: '1px solid rgba(255,255,255,0.2)'
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.1)'
                   }}
                 >
-                  <div className="mb-4" style={{ color: '#FFC300' }}>
+                  <div className="mb-4" style={{ color: '#fff' }}>
                     {feature.icon}
                   </div>
                   <h3 className="text-2xl font-bold mb-3" style={{ color: '#fff' }}>
                     {feature.title}
                   </h3>
-                  <p style={{ color: 'rgba(255,255,255,0.85)', lineHeight: '1.7' }}>
+                  <p style={{ color: 'rgba(255,255,255,0.9)', lineHeight: '1.7' }}>
                     {feature.description}
                   </p>
                 </div>
@@ -279,11 +292,15 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* How It Works */}
-        <section className="py-20" style={{ background: 'rgba(0,0,0,0.15)' }}>
+        {/* How It Works - Lighter Orange */}
+        <section className="py-20" style={{ 
+          background: `url('/patterns/iso-cube.svg'), linear-gradient(135deg, ${COLORS.secondary} 0%, ${COLORS.cream} 100%)`,
+          backgroundSize: '250px 250px, cover',
+          backgroundBlendMode: 'overlay'
+        }}>
           <div className="container mx-auto px-6">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: '#fff', letterSpacing: '-0.02em' }}>
+              <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: COLORS.darkGray, letterSpacing: '-0.02em' }}>
                 Simple 3-Step Process
               </h2>
             </div>
@@ -310,14 +327,14 @@ export default function LandingPage() {
                   <div key={index} className="text-center">
                     <div 
                       className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold"
-                      style={{ background: '#FFC300', color: '#1a1a1a' }}
+                      style={{ background: COLORS.highlight, color: COLORS.dark, boxShadow: '0 8px 24px rgba(255, 195, 0, 0.3)' }}
                     >
                       {item.step}
                     </div>
-                    <h3 className="text-2xl font-bold mb-3" style={{ color: '#fff' }}>
+                    <h3 className="text-2xl font-bold mb-3" style={{ color: COLORS.dark }}>
                       {item.title}
                     </h3>
-                    <p style={{ color: 'rgba(255,255,255,0.85)', lineHeight: '1.7' }}>
+                    <p style={{ color: COLORS.darkGray, lineHeight: '1.7' }}>
                       {item.description}
                     </p>
                   </div>
@@ -327,14 +344,18 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Pricing Section */}
-        <section id="pricing" className="py-20">
+        {/* Pricing Section - Premium Cream */}
+        <section id="pricing" className="py-20" style={{
+          background: `url('/patterns/iso-cube.svg'), linear-gradient(135deg, ${COLORS.cream} 0%, #FFF5E1 100%)`,
+          backgroundSize: '250px 250px, cover',
+          backgroundBlendMode: 'overlay'
+        }}>
           <div className="container mx-auto px-6">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: '#fff', letterSpacing: '-0.02em' }}>
+              <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: COLORS.darkGray, letterSpacing: '-0.02em' }}>
                 Simple, Transparent Pricing
               </h2>
-              <p className="text-xl" style={{ color: 'rgba(255,255,255,0.85)' }}>
+              <p className="text-xl" style={{ color: COLORS.darkGray }}>
                 Choose the plan that's right for your family
               </p>
             </div>
@@ -367,35 +388,36 @@ export default function LandingPage() {
                   key={index}
                   className="p-8 rounded-3xl"
                   style={{
-                    background: plan.highlight ? '#FFC300' : 'rgba(255,255,255,0.1)',
+                    background: plan.highlight ? COLORS.highlight : 'rgba(255,255,255,0.8)',
                     backdropFilter: 'blur(10px)',
-                    border: plan.highlight ? 'none' : '1px solid rgba(255,255,255,0.2)',
-                    transform: plan.highlight ? 'scale(1.05)' : 'scale(1)'
+                    border: plan.highlight ? 'none' : `2px solid ${COLORS.secondary}`,
+                    transform: plan.highlight ? 'scale(1.05)' : 'scale(1)',
+                    boxShadow: plan.highlight ? '0 12px 40px rgba(255, 195, 0, 0.3)' : '0 4px 20px rgba(0,0,0,0.05)'
                   }}
                 >
                   {plan.highlight && (
                     <div className="text-center mb-4">
-                      <span className="inline-block px-4 py-1 rounded-full text-sm font-bold" style={{ background: '#1a1a1a', color: '#FFC300' }}>
+                      <span className="inline-block px-4 py-1 rounded-full text-sm font-bold" style={{ background: COLORS.dark, color: COLORS.highlight }}>
                         MOST POPULAR
                       </span>
                     </div>
                   )}
-                  <h3 className="text-2xl font-bold mb-2" style={{ color: plan.highlight ? '#1a1a1a' : '#fff' }}>
+                  <h3 className="text-2xl font-bold mb-2" style={{ color: plan.highlight ? COLORS.dark : COLORS.darkGray }}>
                     {plan.name}
                   </h3>
                   <div className="mb-6">
-                    <span className="text-5xl font-bold" style={{ color: plan.highlight ? '#1a1a1a' : '#FFC300' }}>
+                    <span className="text-5xl font-bold" style={{ color: plan.highlight ? COLORS.dark : COLORS.primary }}>
                       {plan.price}
                     </span>
-                    <span className="text-lg" style={{ color: plan.highlight ? '#1a1a1a' : 'rgba(255,255,255,0.7)' }}>
+                    <span className="text-lg" style={{ color: plan.highlight ? COLORS.dark : COLORS.darkGray }}>
                       /{plan.period}
                     </span>
                   </div>
                   <ul className="space-y-3 mb-8">
                     {plan.features.map((feature, i) => (
                       <li key={i} className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: plan.highlight ? '#1a1a1a' : '#FFC300' }} />
-                        <span style={{ color: plan.highlight ? '#1a1a1a' : 'rgba(255,255,255,0.9)' }}>{feature}</span>
+                        <CheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: plan.highlight ? COLORS.dark : COLORS.primary }} />
+                        <span style={{ color: plan.highlight ? COLORS.dark : COLORS.darkGray }}>{feature}</span>
                       </li>
                     ))}
                   </ul>
@@ -403,8 +425,8 @@ export default function LandingPage() {
                     onClick={handleLogin}
                     className="w-full font-bold py-6 text-base"
                     style={{
-                      background: plan.highlight ? '#1a1a1a' : '#FFC300',
-                      color: plan.highlight ? '#FFC300' : '#1a1a1a',
+                      background: plan.highlight ? COLORS.dark : COLORS.highlight,
+                      color: plan.highlight ? COLORS.highlight : COLORS.dark,
                       borderRadius: '999px',
                       border: 'none'
                     }}
@@ -417,8 +439,12 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* FAQ Section */}
-        <section id="faq" className="py-20" style={{ background: 'rgba(0,0,0,0.15)' }}>
+        {/* FAQ Section - Back to warm */}
+        <section id="faq" className="py-20" style={{ 
+          background: `url('/patterns/iso-cube.svg'), linear-gradient(135deg, ${COLORS.secondary} 0%, ${COLORS.primaryEnd} 100%)`,
+          backgroundSize: '250px 250px, cover',
+          backgroundBlendMode: 'overlay'
+        }}>
           <div className="container mx-auto px-6">
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-16">
@@ -453,12 +479,12 @@ export default function LandingPage() {
                   <div 
                     key={index}
                     className="p-6 rounded-2xl"
-                    style={{ background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(10px)' }}
+                    style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)' }}
                   >
-                    <h3 className="text-xl font-bold mb-3" style={{ color: '#FFC300' }}>
+                    <h3 className="text-xl font-bold mb-3" style={{ color: COLORS.highlight }}>
                       {faq.q}
                     </h3>
-                    <p style={{ color: 'rgba(255,255,255,0.85)', lineHeight: '1.7' }}>
+                    <p style={{ color: 'rgba(255,255,255,0.9)', lineHeight: '1.7' }}>
                       {faq.a}
                     </p>
                   </div>
@@ -468,8 +494,12 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="py-24">
+        {/* CTA Section - Bright highlight */}
+        <section className="py-24" style={{
+          background: `url('/patterns/iso-cube.svg'), linear-gradient(135deg, ${COLORS.primary} 0%, ${COLORS.primaryEnd} 100%)`,
+          backgroundSize: '250px 250px, cover',
+          backgroundBlendMode: 'overlay'
+        }}>
           <div className="container mx-auto px-6">
             <div className="max-w-4xl mx-auto text-center">
               <h2 className="text-4xl md:text-6xl font-bold mb-6" style={{ color: '#fff', letterSpacing: '-0.02em' }}>
@@ -482,8 +512,8 @@ export default function LandingPage() {
                 onClick={handleLogin}
                 className="font-bold px-12 py-8 text-xl"
                 style={{
-                  background: '#FFC300',
-                  color: '#1a1a1a',
+                  background: COLORS.highlight,
+                  color: COLORS.dark,
                   borderRadius: '999px',
                   border: 'none',
                   letterSpacing: '0.02em',
@@ -497,13 +527,18 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Footer */}
-        <footer className="py-12" style={{ background: 'rgba(0,0,0,0.2)', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+        {/* Footer - Dark with subtle pattern */}
+        <footer className="py-12" style={{ 
+          background: `url('/patterns/iso-cube.svg'), ${COLORS.dark}`,
+          backgroundSize: '250px 250px',
+          backgroundBlendMode: 'overlay',
+          borderTop: `1px solid ${COLORS.darkGray}`
+        }}>
           <div className="container mx-auto px-6">
             <div className="grid md:grid-cols-4 gap-8 mb-8">
               <div>
                 <div className="flex items-center gap-2 mb-4">
-                  <ShieldCheck className="w-7 h-7" style={{ color: '#FFC300' }} />
+                  <ShieldCheck className="w-7 h-7" style={{ color: COLORS.highlight }} />
                   <h3 className="text-xl font-bold" style={{ color: '#fff' }}>AssetVault</h3>
                 </div>
                 <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>
@@ -514,32 +549,32 @@ export default function LandingPage() {
               <div>
                 <h4 className="font-bold mb-4" style={{ color: '#fff' }}>Product</h4>
                 <ul className="space-y-2">
-                  <li><a href="#features" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Features</a></li>
-                  <li><a href="#pricing" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Pricing</a></li>
-                  <li><a href="#faq" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>FAQ</a></li>
+                  <li><a href="#features" className="hover:text-yellow-300 transition-colors" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Features</a></li>
+                  <li><a href="#pricing" className="hover:text-yellow-300 transition-colors" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Pricing</a></li>
+                  <li><a href="#faq" className="hover:text-yellow-300 transition-colors" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>FAQ</a></li>
                 </ul>
               </div>
               
               <div>
                 <h4 className="font-bold mb-4" style={{ color: '#fff' }}>Legal</h4>
                 <ul className="space-y-2">
-                  <li><a href="#" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Privacy Policy</a></li>
-                  <li><a href="#" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Terms of Service</a></li>
-                  <li><a href="#" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Security</a></li>
+                  <li><a href="#" className="hover:text-yellow-300 transition-colors" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Privacy Policy</a></li>
+                  <li><a href="#" className="hover:text-yellow-300 transition-colors" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Terms of Service</a></li>
+                  <li><a href="#" className="hover:text-yellow-300 transition-colors" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Security</a></li>
                 </ul>
               </div>
               
               <div>
                 <h4 className="font-bold mb-4" style={{ color: '#fff' }}>Connect</h4>
                 <ul className="space-y-2">
-                  <li><a href="#" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Support</a></li>
-                  <li><a href="#" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Contact Us</a></li>
-                  <li><a href="#" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Blog</a></li>
+                  <li><a href="#" className="hover:text-yellow-300 transition-colors" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Support</a></li>
+                  <li><a href="#" className="hover:text-yellow-300 transition-colors" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Contact Us</a></li>
+                  <li><a href="#" className="hover:text-yellow-300 transition-colors" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Blog</a></li>
                 </ul>
               </div>
             </div>
             
-            <div className="pt-8" style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+            <div className="pt-8" style={{ borderTop: `1px solid ${COLORS.darkGray}` }}>
               <p className="text-center" style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.9rem' }}>
                 © 2025 AssetVault. All rights reserved. Made with ❤️ for Indian families.
               </p>
