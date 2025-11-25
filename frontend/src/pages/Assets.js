@@ -1346,14 +1346,19 @@ export default function Assets() {
                         <td className="p-4 text-right" style={{color: '#94a3b8', fontWeight: 600}}>
                           {/* Original Value column - skip */}
                         </td>
-                        <td className="p-4 text-right" style={{color: '#f8fafc', fontWeight: 600, fontSize: '1rem'}}>
-                          {assetsTotal !== null ? formatCurrency(assetsTotal, selectedCurrency, currencyFormat) : 'Calculating...'}
+                        <td className="p-4 text-right" style={{color: '#cbd5e1', fontWeight: 600, fontSize: '1rem'}}>
+                          {purchaseTotal !== null ? formatCurrency(purchaseTotal, selectedCurrency, currencyFormat) : 'Calculating...'}
                         </td>
                         <td className="p-4 text-right" style={{color: '#ec4899', fontWeight: 700, fontSize: '1.2rem'}}>
-                          {assetsTotal !== null ? formatCurrency(assetsTotal, selectedCurrency, currencyFormat) : 'Calculating...'}
+                          {currentTotal !== null ? formatCurrency(currentTotal, selectedCurrency, currencyFormat) : 'Calculating...'}
                         </td>
-                        <td className="p-4 text-right" style={{color: assetsTotal > 0 ? '#10b981' : '#ef4444', fontWeight: 600}}>
-                          {/* Gain/Loss will show in current column */}
+                        <td className="p-4 text-right" style={{fontWeight: 600, fontSize: '1rem'}}>
+                          {(purchaseTotal !== null && currentTotal !== null) ? (
+                            <div style={{color: (currentTotal - purchaseTotal) > 0 ? '#22c55e' : '#ef4444'}}>
+                              {(currentTotal - purchaseTotal) > 0 ? '+' : ''}
+                              {formatCurrency(currentTotal - purchaseTotal, selectedCurrency, currencyFormat)}
+                            </div>
+                          ) : null}
                         </td>
                         <td></td>
                       </tr>
