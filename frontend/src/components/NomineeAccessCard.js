@@ -30,25 +30,48 @@ export default function NomineeAccessCard({ nominee, onUpdate, onEdit, onDelete,
     }
   };
 
-  const revokeAccess = async () => {
-    if (!window.confirm(`Revoke access for ${nominee.name}? They will no longer be able to view your portfolio.`)) return;
+  const revokeAccess = async (skipConfirm = false) => {
+    if (!skipConfirm && !window.confirm(`Revoke access for ${nominee.name}? They will no longer be able to view your portfolio.`)) return;
     
     try {
       await axios.post(`${API}/nominees/${nominee.id}/revoke-access`, {}, { withCredentials: true });
-      toast.success('Access revoked');
+      if (!skipConfirm) {
+        toast.success('Access revoked');
+      }
       setAccessLink(null);
       setShowLink(false);
       onUpdate();
     } catch (error) {
       console.error('Failed to revoke access:', error);
-      toast.error('Failed to revoke access');
+      if (!skipConfirm) {
+        toast.error('Failed to revoke access');
+      }
     }
   };
 
   const updateAccessType = async (type) => {
     try {
       await axios.put(`${API}/nominees/${nominee.id}/access-type?access_type=${type}`, {}, { withCredentials: true });
-      toast.success(`Access type updated to: ${type === 'immediate' ? 'Immediate' : 'After DMS'}`);
+      
+      // Auto-grant access for immediate, auto-revoke for after_dms
+      if (type === 'immediate' && !nominee.access_granted) {
+        // Generate access automatically
+        await generateAccess();
+        toast.success('Access type set to Immediate - Access granted automatically!');
+      } else if (type === 'after_dms' && nominee.access_granted) {
+        // Revoke access automatically
+        await revokeAccess(true); // Pass true to skip confirmation
+        toast.success('Access type set to After DMS - Access revoked until DMS triggers');
+      } else if (type === 'temporary') {
+        // Generate temporary 7-day access
+        if (!nominee.access_granted) {
+          await generateAccess();
+        }
+        toast.success('Temporary access granted for 7 days');
+      } else {
+        toast.success(`Access type updated to: ${type}`);
+      }
+      
       onUpdate();
     } catch (error) {
       console.error('Failed to update access type:', error);
