@@ -54,14 +54,22 @@
 .modern-theme {
   position: relative;
   min-height: 100vh;
-  background: var(--app-bg-gradient);
+  background: var(--app-bg-gradient) !important;
   color: var(--text-body);
 }
 
-/* Main content area background */
+/* Main content area background - force dark background */
 .modern-theme > div,
-.modern-theme main {
-  background: var(--app-bg-main);
+.modern-theme main,
+.modern-theme [class*="container"],
+.modern-theme [class*="space-y"] {
+  background: var(--app-bg-main) !important;
+}
+
+/* Layout wrapper background */
+.modern-theme [data-testid*="container"],
+.modern-theme [class*="min-h-screen"] {
+  background: var(--app-bg-gradient) !important;
 }
 
 /* ========================================
