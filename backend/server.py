@@ -1810,14 +1810,14 @@ async def seed_demo_data(user_id: str):
         "provider_name": "binance",
         "provider_type": "crypto_exchange",
         "purchase_currency": "USD",
-        "total_value": 15000,
+        "total_value": 22500,
         "holdings": [
             {
                 "symbol": "BTC",
                 "name": "Bitcoin",
-                "quantity": 0.2,
+                "quantity": 0.15,
                 "purchase_price": 45000,
-                "current_price": 65000,
+                "current_price": 95000,
                 "purchase_date": "2023-06-15",
                 "purchase_currency": "USD",
                 "asset_type": "crypto"
@@ -1825,10 +1825,20 @@ async def seed_demo_data(user_id: str):
             {
                 "symbol": "ETH",
                 "name": "Ethereum",
-                "quantity": 2.5,
+                "quantity": 3.2,
                 "purchase_price": 2000,
-                "current_price": 3000,
+                "current_price": 3500,
                 "purchase_date": "2023-07-20",
+                "purchase_currency": "USD",
+                "asset_type": "crypto"
+            },
+            {
+                "symbol": "SOL",
+                "name": "Solana",
+                "quantity": 50,
+                "purchase_price": 25,
+                "current_price": 110,
+                "purchase_date": "2023-08-10",
                 "purchase_currency": "USD",
                 "asset_type": "crypto"
             }
@@ -1837,7 +1847,200 @@ async def seed_demo_data(user_id: str):
     }
     await db.portfolio_assets.insert_one(demo_portfolio)
     
-    # Demo Nominees
+    # Demo Documents
+    demo_documents = [
+        {
+            "id": f"{demo_prefix}doc1",
+            "user_id": user_id,
+            "name": "Life Insurance Policy Document",
+            "category": "insurance",
+            "file_path": "demo/life_insurance_policy.pdf",
+            "file_size": 2457600,  # 2.4 MB
+            "mime_type": "application/pdf",
+            "description": "State Farm Term Life Insurance Policy - $750,000 coverage",
+            "uploaded_at": datetime.now(timezone.utc).isoformat(),
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}doc2",
+            "user_id": user_id,
+            "name": "Home Deed - Austin Property",
+            "category": "property",
+            "file_path": "demo/home_deed_austin.pdf",
+            "file_size": 1843200,  # 1.8 MB
+            "mime_type": "application/pdf",
+            "description": "Property deed for 123 Oak Street, Austin, TX",
+            "uploaded_at": datetime.now(timezone.utc).isoformat(),
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}doc3",
+            "user_id": user_id,
+            "name": "401k Statement Q4 2024",
+            "category": "investment",
+            "file_path": "demo/401k_statement_q4_2024.pdf",
+            "file_size": 892800,  # 870 KB
+            "mime_type": "application/pdf",
+            "description": "Vanguard 401(k) quarterly statement",
+            "uploaded_at": datetime.now(timezone.utc).isoformat(),
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}doc4",
+            "user_id": user_id,
+            "name": "Bank Statement - November 2024",
+            "category": "bank",
+            "file_path": "demo/bank_statement_nov_2024.pdf",
+            "file_size": 512000,  # 500 KB
+            "mime_type": "application/pdf",
+            "description": "Chase Bank checking account statement",
+            "uploaded_at": datetime.now(timezone.utc).isoformat(),
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}doc5",
+            "user_id": user_id,
+            "name": "Car Title - Tesla Model Y",
+            "category": "vehicle",
+            "file_path": "demo/car_title_tesla.pdf",
+            "file_size": 614400,  # 600 KB
+            "mime_type": "application/pdf",
+            "description": "Vehicle title and registration documents",
+            "uploaded_at": datetime.now(timezone.utc).isoformat(),
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+    ]
+    await db.documents.insert_many(demo_documents)
+    
+    # Demo Digital Will
+    demo_will = {
+        "user_id": user_id,
+        "content": """LAST WILL AND TESTAMENT
+
+I, [Your Name], being of sound mind and memory, do hereby declare this to be my Last Will and Testament.
+
+ARTICLE I: FAMILY
+I am married to Jane Doe and have two children:
+- John Doe Jr. (Son, age 15)
+- Sarah Doe (Daughter, age 12)
+
+ARTICLE II: EXECUTOR
+I appoint Jane Doe as the Executor of this Will. If Jane Doe is unable or unwilling to serve, I appoint my brother, Michael Doe, as alternate Executor.
+
+ARTICLE III: ASSETS DISTRIBUTION
+1. Primary Residence (Austin, TX): To be transferred to Jane Doe
+2. Rental Property (Miami, FL): To be held in trust for children until age 25
+3. Investment Accounts (401k, IRA): To be split equally between Jane Doe and children's education trust
+4. Cryptocurrency Holdings: 50% to Jane Doe, 50% to children's trust
+5. Life Insurance Proceeds: To be deposited in children's education trust
+
+ARTICLE IV: GUARDIANSHIP
+If Jane Doe is unable to care for our minor children, I appoint my sister, Emily Doe, as their guardian.
+
+ARTICLE V: TRUSTS
+I establish an education trust for my children to be managed by Jane Doe until each child reaches age 25.
+
+ARTICLE VI: DIGITAL ASSETS
+All digital assets, online accounts, and cryptocurrency wallets should be accessed using my AssetVault account. Login credentials are held by my trusted executor.
+
+ARTICLE VII: FINAL INSTRUCTIONS
+- Funeral: Simple ceremony, no elaborate arrangements
+- Cremation preferred
+- Memorial donations to American Heart Association
+
+This Will revokes all previous Wills and Codicils.
+
+Signed: [Your Signature]
+Date: November 15, 2024
+Witnesses: [To be completed with legal counsel]
+
+---
+DEMO NOTE: This is sample demo content. Please consult with a legal professional to create your actual will.""",
+        "last_updated": datetime.now(timezone.utc).isoformat(),
+        "created_at": datetime.now(timezone.utc).isoformat()
+    }
+    await db.digital_wills.insert_one(demo_will)
+    
+    # Demo Scheduled Messages
+    demo_messages = [
+        {
+            "id": f"{demo_prefix}msg1",
+            "user_id": user_id,
+            "recipient_email": "jane.demo@example.com",
+            "recipient_name": "Jane Doe",
+            "subject": "Happy Anniversary, My Love! 💕",
+            "message": """My Dearest Jane,
+
+Happy Anniversary! If you're reading this, it means I've scheduled this message to reach you on our special day.
+
+I want you to know how much you mean to me. Every year with you has been a blessing. Thank you for being my partner, my best friend, and the love of my life.
+
+Remember our first date at that little Italian restaurant? You wore that blue dress, and I knew right then that I wanted to spend my life with you.
+
+Here's to many more years together!
+
+All my love,
+[Your Name]""",
+            "send_date": (datetime.now(timezone.utc) + timedelta(days=45)).isoformat(),
+            "status": "scheduled",
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}msg2",
+            "user_id": user_id,
+            "recipient_email": "john.jr.demo@example.com",
+            "recipient_name": "John Doe Jr.",
+            "subject": "Happy 16th Birthday, Son! 🎂",
+            "message": """Dear John,
+
+Happy 16th Birthday! You're officially old enough to drive now - scary thought for your old dad!
+
+I'm so proud of the young man you're becoming. Your dedication to your studies and your kindness to others make me incredibly proud every day.
+
+A few things I want you to remember as you grow:
+- Always be honest, even when it's hard
+- Treat everyone with respect
+- Chase your dreams, but work hard for them
+- Your family will always be there for you
+
+Enjoy your special day!
+
+Love,
+Dad""",
+            "send_date": (datetime.now(timezone.utc) + timedelta(days=120)).isoformat(),
+            "status": "scheduled",
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}msg3",
+            "user_id": user_id,
+            "recipient_email": "sarah.demo@example.com",
+            "recipient_name": "Sarah Doe",
+            "subject": "Graduation Day Message 🎓",
+            "message": """My Sweet Sarah,
+
+If you're reading this on your high school graduation day, I want you to know how incredibly proud I am of you!
+
+Watching you grow from a little girl into this amazing young woman has been one of the greatest joys of my life. Your creativity, your compassion, and your determination inspire me every day.
+
+As you head off to college and start this new chapter:
+- Trust your instincts
+- Don't be afraid to fail - that's how we learn
+- Stay curious and keep asking questions
+- Remember that home is always here for you
+
+The world is lucky to have you. Go make your mark!
+
+All my love,
+Dad""",
+            "send_date": (datetime.now(timezone.utc) + timedelta(days=1095)).isoformat(),  # ~3 years
+            "status": "scheduled",
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+    ]
+    await db.scheduled_messages.insert_many(demo_messages)
+    
+    # Demo Nominees (keep existing)
     demo_nominees = [
         {
             "id": f"{demo_prefix}nominee1",
@@ -1862,7 +2065,7 @@ async def seed_demo_data(user_id: str):
     ]
     await db.nominees.insert_many(demo_nominees)
     
-    # Demo DMS
+    # Demo DMS (keep existing)
     demo_dms = {
         "user_id": user_id,
         "inactivity_days": 90,
