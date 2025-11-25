@@ -252,30 +252,45 @@ export default function AssetsNew() {
                 <p className="text-lg" style={{color: 'rgba(255,255,255,0.65)'}}>Manage your wealth in one place</p>
               </div>
               
-              {/* Account Switcher - Demo Mode Only */}
-              {demoMode && testAccountData && (
+              {/* Account Switcher - Demo Mode & Connected Accounts */}
+              {((demoMode && testAccountData) || connectedAccounts.length > 0) && (
                 <div className="ml-6">
                   <Label className="text-xs mb-2 block" style={{color: '#94a3b8'}}>VIEWING ACCOUNT</Label>
                   <Select value={activeAccount} onValueChange={setActiveAccount}>
-                    <SelectTrigger className="bg-slate-800 border-slate-700 text-white" style={{width: '280px'}}>
+                    <SelectTrigger className="bg-slate-800 border-slate-700 text-white" style={{width: '320px'}}>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent className="bg-slate-800 border-slate-700">
+                      {/* Own Account */}
                       <SelectItem value="own" className="text-white">
                         <div className="flex items-center gap-2">
                           <div className="w-2 h-2 rounded-full" style={{background: '#a855f7'}}></div>
-                          <span>My Demo Portfolio</span>
+                          <span>My Portfolio</span>
                         </div>
                       </SelectItem>
-                      <SelectItem value="test_account" className="text-white">
-                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 rounded-full" style={{background: '#10b981'}}></div>
-                          <span>🔍 {testAccountData.account_name} (Read-Only)</span>
-                        </div>
-                      </SelectItem>
+                      
+                      {/* Test Account - Demo Mode Only */}
+                      {demoMode && testAccountData && (
+                        <SelectItem value="test_account" className="text-white">
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 rounded-full" style={{background: '#f59e0b'}}></div>
+                            <span>🔍 {testAccountData.account_name} (Demo)</span>
+                          </div>
+                        </SelectItem>
+                      )}
+                      
+                      {/* Connected Accounts Where User is Nominee */}
+                      {connectedAccounts.map((account) => (
+                        <SelectItem key={account.account_id} value={account.account_id} className="text-white">
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 rounded-full" style={{background: '#10b981'}}></div>
+                            <span>👤 {account.account_name} ({account.access_type})</span>
+                          </div>
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
-                  {activeAccount === 'test_account' && (
+                  {activeAccount !== 'own' && (
                     <p className="text-xs mt-1" style={{color: '#10b981'}}>
                       ✓ Viewing as nominee - Read-only access
                     </p>
