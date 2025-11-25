@@ -187,7 +187,7 @@ export default function LandingPage() {
               color: '#fff',
               letterSpacing: '-0.03em'
             }}>
-              Life is Uncertain.<br
+              Life is Uncertain.<br/>
               <span style={{ color: HIGHLIGHT }}>Your Legacy Doesn't Have to Be</span>
             </h1>
             
