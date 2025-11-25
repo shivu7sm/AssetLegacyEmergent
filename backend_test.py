@@ -3104,7 +3104,8 @@ print('Test data cleaned up');
             "POST",
             "loan-calculator",
             200,
-            basic_loan
+            basic_loan,
+            timeout=60  # Longer timeout for AI generation
         )
         
         if basic_result:
