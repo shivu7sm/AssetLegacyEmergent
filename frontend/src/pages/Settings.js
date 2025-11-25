@@ -12,6 +12,7 @@ import { toast } from 'sonner';
 import { User, Settings as SettingsIcon, Eye, Globe, Shield, CreditCard, Users, Clock, RefreshCw, Link, Bell, AlertTriangle, ChevronUp, ChevronDown, Trash2, Heart, Palette } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 import { useTheme } from '@/context/ThemeContext';
+import NomineeAccessCard from '@/components/NomineeAccessCard';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
