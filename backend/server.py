@@ -1432,7 +1432,7 @@ async def toggle_demo_mode(user: User = Depends(require_auth)):
     }
 
 async def seed_demo_data(user_id: str):
-    """Create comprehensive demo data for user"""
+    """Create comprehensive demo data for user with realistic values"""
     demo_prefix = f"demo_{user_id}_"
     
     # Check if demo data already exists
@@ -1440,8 +1440,9 @@ async def seed_demo_data(user_id: str):
     if existing_demo:
         return  # Demo data already exists
     
-    # Demo Assets
+    # Demo Assets - Expanded with more realistic data
     demo_assets = [
+        # Bank Accounts
         {
             "id": f"{demo_prefix}bank1",
             "user_id": user_id,
@@ -1449,6 +1450,7 @@ async def seed_demo_data(user_id: str):
             "type": "bank",
             "purchase_currency": "USD",
             "purchase_date": "2023-01-15",
+            "total_value": 15000,
             "current_value": 15000,
             "details": {
                 "account_number": "****1234",
@@ -1464,7 +1466,8 @@ async def seed_demo_data(user_id: str):
             "type": "bank",
             "purchase_currency": "USD",
             "purchase_date": "2022-06-10",
-            "current_value": 25000,
+            "total_value": 45000,
+            "current_value": 45000,
             "details": {
                 "account_number": "****5678",
                 "bank_name": "Bank of America",
@@ -1473,16 +1476,35 @@ async def seed_demo_data(user_id: str):
             "created_at": datetime.now(timezone.utc).isoformat()
         },
         {
+            "id": f"{demo_prefix}bank3",
+            "user_id": user_id,
+            "name": "Wells Fargo Money Market",
+            "type": "bank",
+            "purchase_currency": "USD",
+            "purchase_date": "2023-03-01",
+            "total_value": 28000,
+            "current_value": 28500,
+            "details": {
+                "account_number": "****9012",
+                "bank_name": "Wells Fargo",
+                "account_type": "Money Market"
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        # Crypto
+        {
             "id": f"{demo_prefix}crypto1",
             "user_id": user_id,
             "name": "Bitcoin Holdings",
             "type": "crypto",
+            "symbol": "BTC",
             "purchase_currency": "USD",
             "purchase_date": "2023-03-20",
-            "quantity": 0.5,
+            "quantity": 0.75,
             "unit_price": 40000,
-            "current_unit_price": 65000,
-            "current_value": 32500,
+            "current_unit_price": 95000,
+            "total_value": 30000,
+            "current_value": 71250,
             "details": {
                 "wallet_address": "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa",
                 "crypto_type": "BTC"
@@ -1490,16 +1512,38 @@ async def seed_demo_data(user_id: str):
             "created_at": datetime.now(timezone.utc).isoformat()
         },
         {
+            "id": f"{demo_prefix}crypto2",
+            "user_id": user_id,
+            "name": "Ethereum Holdings",
+            "type": "crypto",
+            "symbol": "ETH",
+            "purchase_currency": "USD",
+            "purchase_date": "2023-05-15",
+            "quantity": 8,
+            "unit_price": 2200,
+            "current_unit_price": 3500,
+            "total_value": 17600,
+            "current_value": 28000,
+            "details": {
+                "wallet_address": "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb",
+                "crypto_type": "ETH"
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        # Stocks
+        {
             "id": f"{demo_prefix}stock1",
             "user_id": user_id,
-            "name": "Apple Stock",
+            "name": "Apple Inc.",
             "type": "stock",
+            "symbol": "AAPL",
             "purchase_currency": "USD",
             "purchase_date": "2023-02-15",
-            "quantity": 100,
+            "quantity": 150,
             "unit_price": 150,
-            "current_unit_price": 185,
-            "current_value": 18500,
+            "current_unit_price": 230,
+            "total_value": 22500,
+            "current_value": 34500,
             "details": {
                 "ticker": "AAPL",
                 "broker": "Robinhood"
@@ -1507,22 +1551,129 @@ async def seed_demo_data(user_id: str):
             "created_at": datetime.now(timezone.utc).isoformat()
         },
         {
+            "id": f"{demo_prefix}stock2",
+            "user_id": user_id,
+            "name": "Tesla Inc.",
+            "type": "stock",
+            "symbol": "TSLA",
+            "purchase_currency": "USD",
+            "purchase_date": "2023-06-20",
+            "quantity": 50,
+            "unit_price": 250,
+            "current_unit_price": 380,
+            "total_value": 12500,
+            "current_value": 19000,
+            "details": {
+                "ticker": "TSLA",
+                "broker": "E*TRADE"
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}stock3",
+            "user_id": user_id,
+            "name": "Microsoft Corporation",
+            "type": "stock",
+            "symbol": "MSFT",
+            "purchase_currency": "USD",
+            "purchase_date": "2022-11-10",
+            "quantity": 80,
+            "unit_price": 280,
+            "current_unit_price": 425,
+            "total_value": 22400,
+            "current_value": 34000,
+            "details": {
+                "ticker": "MSFT",
+                "broker": "Fidelity"
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        # Real Estate
+        {
             "id": f"{demo_prefix}property1",
             "user_id": user_id,
-            "name": "Family Home",
+            "name": "Family Home - Austin, TX",
             "type": "property",
             "purchase_currency": "USD",
             "purchase_date": "2020-05-10",
-            "current_value": 450000,
+            "area": 2500,
+            "area_unit": "sqft",
+            "price_per_area": 160,
+            "current_price_per_area": 220,
+            "total_value": 400000,
+            "current_value": 550000,
+            "location": {
+                "address": "123 Oak Street, Austin, TX 78701",
+                "lat": "",
+                "lng": ""
+            },
             "details": {
                 "property_type": "Residential",
                 "area": 2500,
                 "price_per_area": 160,
-                "current_price_per_area": 180,
+                "current_price_per_area": 220,
                 "location": "Austin, TX"
             },
             "created_at": datetime.now(timezone.utc).isoformat()
         },
+        {
+            "id": f"{demo_prefix}property2",
+            "user_id": user_id,
+            "name": "Rental Property - Miami",
+            "type": "property",
+            "purchase_currency": "USD",
+            "purchase_date": "2021-08-15",
+            "area": 1200,
+            "area_unit": "sqft",
+            "price_per_area": 180,
+            "current_price_per_area": 210,
+            "total_value": 216000,
+            "current_value": 252000,
+            "location": {
+                "address": "456 Beach Blvd, Miami, FL 33139",
+                "lat": "",
+                "lng": ""
+            },
+            "details": {
+                "property_type": "Rental",
+                "monthly_rental_income": 2800
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        # Investments
+        {
+            "id": f"{demo_prefix}investment1",
+            "user_id": user_id,
+            "name": "401(k) Retirement Fund",
+            "type": "investment",
+            "purchase_currency": "USD",
+            "purchase_date": "2018-01-01",
+            "total_value": 85000,
+            "current_value": 125000,
+            "details": {
+                "investment_type": "401k",
+                "provider": "Vanguard",
+                "annual_contribution": 19500
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}investment2",
+            "user_id": user_id,
+            "name": "Roth IRA",
+            "type": "investment",
+            "purchase_currency": "USD",
+            "purchase_date": "2019-03-15",
+            "total_value": 32000,
+            "current_value": 48000,
+            "details": {
+                "investment_type": "Roth IRA",
+                "provider": "Fidelity",
+                "annual_contribution": 6500
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        # Insurance
         {
             "id": f"{demo_prefix}insurance1",
             "user_id": user_id,
@@ -1530,31 +1681,57 @@ async def seed_demo_data(user_id: str):
             "type": "insurance",
             "purchase_currency": "USD",
             "purchase_date": "2021-08-01",
-            "current_value": 500000,
+            "total_value": 750000,
+            "current_value": 750000,
             "details": {
                 "policy_number": "LI-2021-12345",
                 "provider": "State Farm",
                 "policy_type": "Term Life",
-                "premium": 1200,
-                "coverage_amount": 500000
+                "premium": 150,
+                "coverage_amount": 750000
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        # Precious Metals
+        {
+            "id": f"{demo_prefix}precious1",
+            "user_id": user_id,
+            "name": "Gold Bars",
+            "type": "precious_metals",
+            "purchase_currency": "USD",
+            "purchase_date": "2022-11-05",
+            "weight": 300,
+            "weight_unit": "gram",
+            "purity": "99.9%",
+            "unit_price": 60,
+            "current_unit_price": 70,
+            "total_value": 18000,
+            "current_value": 21000,
+            "details": {
+                "purity": "99.9%",
+                "weight": "300g",
+                "storage": "Bank Locker"
             },
             "created_at": datetime.now(timezone.utc).isoformat()
         },
         {
-            "id": f"{demo_prefix}gold1",
+            "id": f"{demo_prefix}precious2",
             "user_id": user_id,
-            "name": "Gold Bars",
-            "type": "gold",
+            "name": "Silver Coins Collection",
+            "type": "precious_metals",
             "purchase_currency": "USD",
-            "purchase_date": "2022-11-05",
-            "quantity": 10,
-            "unit_price": 1850,
-            "current_unit_price": 2050,
-            "current_value": 20500,
+            "purchase_date": "2023-04-20",
+            "weight": 1000,
+            "weight_unit": "gram",
+            "purity": "92.5%",
+            "unit_price": 0.75,
+            "current_unit_price": 0.90,
+            "total_value": 750,
+            "current_value": 900,
             "details": {
-                "purity": "24K",
-                "weight": "1 oz per bar",
-                "storage": "Bank Locker"
+                "purity": "92.5%",
+                "weight": "1kg",
+                "type": "American Eagle coins"
             },
             "created_at": datetime.now(timezone.utc).isoformat()
         },
@@ -1566,7 +1743,11 @@ async def seed_demo_data(user_id: str):
             "type": "loan",
             "purchase_currency": "USD",
             "purchase_date": "2020-05-10",
-            "current_value": 320000,
+            "principal_amount": 350000,
+            "interest_rate": 3.5,
+            "tenure_months": 360,
+            "total_value": 350000,
+            "current_value": 310000,
             "details": {
                 "loan_type": "Mortgage",
                 "bank_name": "Wells Fargo",
@@ -1584,12 +1765,35 @@ async def seed_demo_data(user_id: str):
             "type": "credit_card",
             "purchase_currency": "USD",
             "purchase_date": "2023-01-01",
-            "current_value": 8500,
+            "total_value": 5200,
+            "current_value": 5200,
             "details": {
                 "card_number": "****4321",
                 "interest_rate": 18.99,
-                "credit_limit": 20000,
-                "min_payment": 250
+                "credit_limit": 25000,
+                "min_payment": 150
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}loan2",
+            "user_id": user_id,
+            "name": "Car Loan - Tesla Model Y",
+            "type": "loan",
+            "purchase_currency": "USD",
+            "purchase_date": "2023-07-01",
+            "principal_amount": 55000,
+            "interest_rate": 4.5,
+            "tenure_months": 60,
+            "total_value": 55000,
+            "current_value": 48000,
+            "details": {
+                "loan_type": "Auto Loan",
+                "bank_name": "Tesla Financing",
+                "interest_rate": 4.5,
+                "emi_amount": 1025,
+                "tenure_months": 60,
+                "remaining_months": 52
             },
             "created_at": datetime.now(timezone.utc).isoformat()
         }
