@@ -324,6 +324,119 @@ export default function AddAssetForm({ onSuccess, onCancel }) {
           </div>
         )}
 
+        {/* Vehicle */}
+        {formData.type === 'vehicle' && (
+          <>
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <Label className="text-slate-300">Make</Label>
+                <Input
+                  value={formData.make || ''}
+                  onChange={(e) => setFormData({ ...formData, make: e.target.value })}
+                  placeholder="Tesla"
+                  className="bg-slate-800 border-slate-700 text-white"
+                />
+              </div>
+              <div>
+                <Label className="text-slate-300">Model</Label>
+                <Input
+                  value={formData.model || ''}
+                  onChange={(e) => setFormData({ ...formData, model: e.target.value })}
+                  placeholder="Model Y"
+                  className="bg-slate-800 border-slate-700 text-white"
+                />
+              </div>
+              <div>
+                <Label className="text-slate-300">Year</Label>
+                <Input
+                  type="number"
+                  value={formData.year || ''}
+                  onChange={(e) => setFormData({ ...formData, year: e.target.value })}
+                  placeholder="2023"
+                  className="bg-slate-800 border-slate-700 text-white"
+                />
+              </div>
+            </div>
+            <div>
+              <Label className="text-slate-300">Purchase Value *</Label>
+              <Input
+                type="number"
+                step="any"
+                value={formData.total_value}
+                onChange={(e) => setFormData({ ...formData, total_value: e.target.value })}
+                placeholder="65000"
+                required
+                className="bg-slate-800 border-slate-700 text-white"
+              />
+            </div>
+          </>
+        )}
+
+        {/* NFT */}
+        {formData.type === 'nft' && (
+          <>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label className="text-slate-300">Collection Name</Label>
+                <Input
+                  value={formData.collection || ''}
+                  onChange={(e) => setFormData({ ...formData, collection: e.target.value })}
+                  placeholder="Bored Ape Yacht Club"
+                  className="bg-slate-800 border-slate-700 text-white"
+                />
+              </div>
+              <div>
+                <Label className="text-slate-300">Token ID</Label>
+                <Input
+                  value={formData.token_id || ''}
+                  onChange={(e) => setFormData({ ...formData, token_id: e.target.value })}
+                  placeholder="4521"
+                  className="bg-slate-800 border-slate-700 text-white"
+                />
+              </div>
+            </div>
+            <div>
+              <Label className="text-slate-300">Purchase Price (ETH) *</Label>
+              <Input
+                type="number"
+                step="any"
+                value={formData.total_value}
+                onChange={(e) => setFormData({ ...formData, total_value: e.target.value })}
+                placeholder="45"
+                required
+                className="bg-slate-800 border-slate-700 text-white"
+              />
+            </div>
+          </>
+        )}
+
+        {/* Mutual Fund */}
+        {formData.type === 'mutual_fund' && (
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label className="text-slate-300">Fund Name</Label>
+              <Input
+                value={formData.fund_name || ''}
+                onChange={(e) => setFormData({ ...formData, fund_name: e.target.value })}
+                placeholder="Vanguard S&P 500"
+                className="bg-slate-800 border-slate-700 text-white"
+              />
+            </div>
+            <div>
+              <Label className="text-slate-300">Total Investment *</Label>
+              <Input
+                type="number"
+                step="any"
+                value={formData.total_value}
+                onChange={(e) => setFormData({ ...formData, total_value: e.target.value })}
+                placeholder="25000"
+                required
+                className="bg-slate-800 border-slate-700 text-white"
+              />
+            </div>
+          </div>
+        )}
+
         {/* Other assets - simple total value */}
         {!['crypto', 'stock', 'precious_metals', 'property', 'loan', 'credit_card'].includes(formData.type) && (
           <div>
