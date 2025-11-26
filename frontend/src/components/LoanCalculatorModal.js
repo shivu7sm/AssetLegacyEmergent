@@ -1,35 +1,48 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Calculator, Sparkles, TrendingDown } from 'lucide-react';
-import { calculateLoanSummary } from '@/utils/loanCalculator';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { toast } from 'sonner';
+import { Calculator, Sparkles, TrendingDown, DollarSign, Calendar, Percent } from 'lucide-react';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
+
+const LOAN_TYPES = [
+  { value: 'personal', label: 'Personal Loan', icon: '👤' },
+  { value: 'home', label: 'Home/Mortgage', icon: '🏠' },
+  { value: 'auto', label: 'Auto Loan', icon: '🚗' },
+  { value: 'credit_card', label: 'Credit Card Debt', icon: '💳' },
+  { value: 'education', label: 'Education Loan', icon: '🎓' },
+  { value: 'business', label: 'Business Loan', icon: '💼' }
+];
 
 export default function LoanCalculatorModal({ asset, open, onClose }) {
-  const [loanParams, setLoanParams] = useState({
-    principal: asset?.principal_amount || asset?.total_value || 0,
-    interestRate: asset?.interest_rate || 8.5,
-    tenure: asset?.tenure_months || 60
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    principal: '',
+    annual_interest_rate: '',
+    tenure_months: '',
+    loan_type: 'personal'
   });
+  const [result, setResult] = useState(null);
 
-  const [loanData, setLoanData] = useState(null);
-
-  const handleCalculate = () => {
-    const result = calculateLoanSummary(loanParams.principal, loanParams.interestRate, loanParams.tenure);
-    setLoanData(result);
-  };
-
-  const recalculate = (newParams) => {
-    setLoanParams(newParams);
-    if (loanData) {
-      const result = calculateLoanSummary(newParams.principal, newParams.interestRate, newParams.tenure);
-      setLoanData(result);
+  // Initialize form data when asset changes or modal opens
+  useEffect(() => {
+    if (open && asset) {
+      const loanType = asset.type === 'credit_card' ? 'credit_card' : 'personal';
+      setFormData({
+        principal: asset.principal_amount || asset.total_value || '',
+        annual_interest_rate: asset.interest_rate || '',
+        tenure_months: asset.tenure_months || '',
+        loan_type: loanType
+      });
+      setResult(null);
     }
-  };
-
-  const originalInterest = asset?.interest_rate || 8.5;
-  const originalTenure = asset?.tenure_months || 60;
-  const hasSavings = loanData && (loanParams.interestRate < originalInterest || loanParams.tenure < originalTenure);
+  }, [open, asset]);
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
