@@ -82,6 +82,15 @@ export default function AssetsNew() {
     fetchConnectedAccounts();
   }, []);
 
+  // Show converting state when currency changes
+  useEffect(() => {
+    if (assets.length > 0) {
+      setConverting(true);
+      const timer = setTimeout(() => setConverting(false), 800);
+      return () => clearTimeout(timer);
+    }
+  }, [selectedCurrency]);
+
   const fetchConnectedAccounts = async () => {
     try {
       const response = await axios.get(`${API}/nominees/my-accesses`, { withCredentials: true });
