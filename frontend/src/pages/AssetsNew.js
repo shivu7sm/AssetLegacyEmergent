@@ -74,6 +74,7 @@ export default function AssetsNew() {
   const [testAccountData, setTestAccountData] = useState(null);
   const [demoMode, setDemoMode] = useState(false);
   const [connectedAccounts, setConnectedAccounts] = useState([]);
+  const [converting, setConverting] = useState(false);
 
   useEffect(() => {
     fetchAssets();
