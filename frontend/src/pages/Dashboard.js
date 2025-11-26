@@ -417,8 +417,8 @@ export default function Dashboard() {
             </div>
           </>
         ) : (
-          /* Standard Layout - Original 3-column grid */
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          /* Standard Layout - 4-column grid with DMS card */
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Card 
               data-testid="total-assets-card" 
               className="overflow-hidden transition-all hover:shadow-lg card"
@@ -493,6 +493,29 @@ export default function Dashboard() {
                   </div>
                   <div className="p-3 rounded-xl" style={{background: summary?.has_nominee ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)'}}>
                     <Shield className="w-8 h-8" style={{color: summary?.has_nominee ? '#10b981' : '#f59e0b'}} />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card 
+              data-testid="dms-status-card" 
+              className="overflow-hidden transition-all hover:shadow-lg card"
+              style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: summary?.has_dms ? '#10b981' : '#f59e0b'}}
+            >
+              <CardContent className="p-6">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <p className="text-sm font-medium mb-2" style={{color: '#94a3b8', letterSpacing: '0.5px'}}>DEAD MAN'S SWITCH</p>
+                    <div className="text-2xl font-bold mb-1" style={{color: summary?.has_dms ? '#10b981' : '#f59e0b', fontFamily: 'Inter, sans-serif'}} data-testid="dms-status">
+                      {summary?.has_dms ? '✓ Active' : 'Not Set'}
+                    </div>
+                    <p className="text-xs" style={{color: '#64748b'}}>
+                      {summary?.has_dms ? 'Monitoring enabled' : 'Setup required'}
+                    </p>
+                  </div>
+                  <div className="p-3 rounded-xl" style={{background: summary?.has_dms ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)'}}>
+                    <HeartPulse className="w-8 h-8" style={{color: summary?.has_dms ? '#10b981' : '#f59e0b'}} />
                   </div>
                 </div>
               </CardContent>
