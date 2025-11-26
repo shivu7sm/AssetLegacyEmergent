@@ -2783,6 +2783,47 @@ Dad""",
     existing_dms = await db.dead_man_switches.find_one({"user_id": user_id})
     if not existing_dms:
         await db.dead_man_switches.insert_one(demo_dms)
+    
+    # Demo AI Insight - Create a comprehensive insight snapshot
+    demo_insight = {
+        "id": f"{demo_prefix}insight1",
+        "user_id": user_id,
+        "portfolio_summary": "Your portfolio demonstrates strong diversification across multiple asset classes with a healthy balance of liquid and long-term investments. Total net worth stands at approximately $520,000, with a well-balanced mix of real estate, stocks, cryptocurrencies, and cash reserves.",
+        "asset_distribution_analysis": "Your asset allocation shows 45% in real estate, 25% in equities and portfolios, 15% in cash and liquid assets, 10% in cryptocurrencies, and 5% in precious metals. This distribution provides both stability through real estate and growth potential through equities and crypto.",
+        "allocation_recommendations": [
+            "Consider increasing emergency fund to cover 6 months of expenses for optimal financial security",
+            "Evaluate rebalancing crypto holdings if they exceed 15% of total portfolio due to volatility",
+            "Review real estate holdings for diversification opportunities in different geographic locations",
+            "Consider tax-advantaged retirement accounts to optimize long-term growth"
+        ],
+        "advantages": [
+            "Strong real estate foundation providing stable, appreciating assets",
+            "Diversified across traditional and alternative investments",
+            "Healthy emergency fund in liquid bank accounts",
+            "Multi-currency holdings providing natural hedge against currency fluctuations",
+            "Active portfolio management with both US and international exposure"
+        ],
+        "risks": [
+            "Real estate concentration may limit liquidity in emergencies",
+            "Cryptocurrency holdings carry high volatility risk",
+            "Outstanding loan obligations require consistent cash flow management",
+            "Some investments may not be optimally diversified within their asset class",
+            "Currency exposure may introduce foreign exchange risk"
+        ],
+        "action_items": [
+            "Schedule quarterly portfolio rebalancing reviews",
+            "Set up automatic transfers to build emergency fund to 6-month target",
+            "Review and optimize tax strategy with a financial advisor",
+            "Consider dollar-cost averaging for crypto investments to reduce volatility impact",
+            "Document all account access information in secure location for nominees"
+        ],
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "created_at": datetime.now(timezone.utc).isoformat()
+    }
+    # Remove existing demo insights if force reseeding
+    if force:
+        await db.ai_insights.delete_many({"user_id": user_id, "id": {"$regex": f"^{demo_prefix}"}})
+    await db.ai_insights.insert_one(demo_insight)
 
 
 # Subscription Routes
