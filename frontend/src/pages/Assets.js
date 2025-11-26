@@ -557,6 +557,11 @@ export default function Assets() {
     }
   };
 
+  const handleCalculateLoan = (asset) => {
+    setCalculatingLoanAsset(asset);
+    setLoanCalculatorOpen(true);
+  };
+
   const handleEdit = (asset) => {
     setEditingAsset(asset);
     setFormData({
