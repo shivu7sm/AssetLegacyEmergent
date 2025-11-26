@@ -1880,6 +1880,16 @@ export default function Assets() {
           </div>
         )}
       </div>
+      
+      {/* Loan Calculator Modal */}
+      <LoanCalculatorModal 
+        asset={calculatingLoanAsset}
+        open={loanCalculatorOpen}
+        onClose={() => {
+          setLoanCalculatorOpen(false);
+          setCalculatingLoanAsset(null);
+        }}
+      />
     </Layout>
   );
 }
