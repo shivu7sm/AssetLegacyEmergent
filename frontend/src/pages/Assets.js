@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 import { Plus, Edit, Trash2, DollarSign, TrendingUp, Grid, List, Filter, Calculator, MapPin } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 import { formatCurrency, convertCurrency } from '@/utils/currencyConversion';
+import LoanCalculatorModal from '@/components/LoanCalculatorModal';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
