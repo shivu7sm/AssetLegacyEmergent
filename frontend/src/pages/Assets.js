@@ -129,6 +129,17 @@ function AssetTableRow({ asset, typeInfo, purchaseValueOriginal, currentValueOri
       </td>
       <td className="p-4 text-right">
         <div className="flex justify-end gap-2">
+          {isLiability && (
+            <Button 
+              onClick={() => handleCalculateLoan(asset)}
+              variant="outline"
+              size="sm"
+              style={{borderColor: '#a855f7', color: '#a855f7'}}
+              title="Calculate Loan"
+            >
+              <Calculator className="w-4 h-4" />
+            </Button>
+          )}
           <Button 
             onClick={() => handleEdit(asset)}
             variant="outline"
