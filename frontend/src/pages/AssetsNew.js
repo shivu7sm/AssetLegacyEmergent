@@ -227,22 +227,20 @@ export default function AssetsNew() {
       return;
     }
 
-    setCalculatingLoan(true);
-    try {
-      const response = await axios.post(`${API}/loan-calculator`, {
-        principal: asset.principal_amount || asset.total_value,
-        annual_interest_rate: asset.interest_rate,
-        tenure_months: asset.tenure_months,
-        loan_type: asset.type
-      }, { withCredentials: true });
-      
-      setLoanCalcData(response.data);
-    } catch (error) {
-      console.error('Loan calculation failed:', error);
-      toast.error('Failed to calculate loan details');
-    } finally {
-      setCalculatingLoan(false);
-    }
+    // Use client-side calculation (instant, no API call)
+    const principal = asset.principal_amount || asset.total_value;
+    const rate = loanParams.interestRate || asset.interest_rate;
+    const months = loanParams.tenure || asset.tenure_months;
+    
+    const result = calculateLoanSummary(principal, rate, months);
+    setLoanCalcData(result);
+    setLoanParams({ interestRate: rate, tenure: months });
+  };
+
+  // Real-time recalculation when sliders change
+  const recalculateLoan = (principal, rate, months) => {
+    const result = calculateLoanSummary(principal, rate, months);
+    setLoanCalcData(result);
   };
 
   const handleDeleteAsset = async (assetId) => {
