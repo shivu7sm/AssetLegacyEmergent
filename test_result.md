@@ -212,7 +212,7 @@ backend:
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
@@ -220,6 +220,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "PASSED - Demo reseed creates 18 assets, 5 documents (4 linked), 1 will with 3 beneficiaries, 3 scheduled messages. All demo data properly prefixed."
+      - working: "NA"
+        agent: "main"
+        comment: "ENHANCED - Added comprehensive AI insights snapshot to demo data. Now creates a detailed AI insight with portfolio_summary, asset_distribution_analysis, allocation_recommendations (4 items), advantages (5 items), risks (5 items), and action_items (5 items). Demo insight is prefixed with demo_{user_id}_ for proper filtering. Insight is automatically deleted and recreated on force reseed to ensure fresh data."
   
   - task: "Loan Calculator with Timeout"
     implemented: true
