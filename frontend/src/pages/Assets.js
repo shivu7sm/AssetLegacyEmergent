@@ -1355,6 +1355,7 @@ export default function Assets() {
                             getConversionRate={getConversionRate}
                             handleEdit={handleEdit}
                             handleDelete={handleDelete}
+                            handleCalculateLoan={handleCalculateLoan}
                           />
                         );
                       })}
