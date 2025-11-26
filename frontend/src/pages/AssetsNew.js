@@ -615,18 +615,67 @@ export default function AssetsNew() {
                       Loan Repayment Calculator
                     </h3>
                     
-                    <Button 
-                      onClick={() => calculateLoanDetails(selectedAsset)}
-                      disabled={calculatingLoan}
-                      className="w-full mb-4"
-                      style={{background: 'linear-gradient(135deg, #E8C27C 0%, #F5D49F 100%)', color: '#0B0B11'}}
-                    >
-                      {calculatingLoan ? 'Calculating...' : 'Calculate Payment Schedule'}
-                    </Button>
-
-                    {loanCalcData && (
+                    {!loanCalcData ? (
+                      <Button 
+                        onClick={() => calculateLoanDetails(selectedAsset)}
+                        className="w-full mb-4"
+                        style={{background: 'linear-gradient(135deg, #E8C27C 0%, #F5D49F 100%)', color: '#0B0B11'}}
+                      >
+                        Calculate Payment Schedule
+                      </Button>
+                    ) : (
                       <div className="space-y-4">
-                        <div className="grid grid-cols-2 gap-3">
+                        {/* Interactive Sliders */}
+                        <div className="grid grid-cols-2 gap-4 p-4 rounded-lg" style={{background: 'rgba(232, 194, 124, 0.05)', border: '1px solid rgba(232, 194, 124, 0.2)'}}>
+                          <div>
+                            <Label className="text-slate-300 text-sm mb-2 flex justify-between">
+                              <span>Interest Rate (%)</span>
+                              <span className="font-bold" style={{color: '#E8C27C'}}>{loanParams.interestRate}%</span>
+                            </Label>
+                            <input
+                              type="range"
+                              min="0"
+                              max="30"
+                              step="0.5"
+                              value={loanParams.interestRate}
+                              onChange={(e) => {
+                                const newRate = parseFloat(e.target.value);
+                                setLoanParams({...loanParams, interestRate: newRate});
+                                recalculateLoan(selectedAsset.principal_amount, newRate, loanParams.tenure);
+                              }}
+                              className="w-full"
+                              style={{accentColor: '#E8C27C'}}
+                            />
+                            <p className="text-xs mt-1" style={{color: '#64748b'}}>Adjust to see impact</p>
+                          </div>
+                          
+                          <div>
+                            <Label className="text-slate-300 text-sm mb-2 flex justify-between">
+                              <span>Tenure (months)</span>
+                              <span className="font-bold" style={{color: '#E8C27C'}}>{loanParams.tenure} mo</span>
+                            </Label>
+                            <input
+                              type="range"
+                              min="6"
+                              max="360"
+                              step="6"
+                              value={loanParams.tenure}
+                              onChange={(e) => {
+                                const newTenure = parseInt(e.target.value);
+                                setLoanParams({...loanParams, tenure: newTenure});
+                                recalculateLoan(selectedAsset.principal_amount, loanParams.interestRate, newTenure);
+                              }}
+                              className="w-full"
+                              style={{accentColor: '#E8C27C'}}
+                            />
+                            <p className="text-xs mt-1" style={{color: '#64748b'}}>
+                              {Math.floor(loanParams.tenure / 12)} years {loanParams.tenure % 12} months
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Summary Cards */}
+                        <div className="grid grid-cols-3 gap-3">
                           <div className="p-3 rounded-lg" style={{background: 'rgba(168, 85, 247, 0.1)', border: '1px solid rgba(168, 85, 247, 0.3)'}}>
                             <div className="text-xs mb-1" style={{color: '#94a3b8'}}>Monthly Payment</div>
                             <div className="text-xl font-bold" style={{color: '#a855f7'}}>
@@ -639,47 +688,63 @@ export default function AssetsNew() {
                               ${loanCalcData.total_interest.toLocaleString()}
                             </div>
                           </div>
+                          <div className="p-3 rounded-lg" style={{background: 'rgba(75, 224, 161, 0.1)', border: '1px solid rgba(75, 224, 161, 0.3)'}}>
+                            <div className="text-xs mb-1" style={{color: '#94a3b8'}}>Total Amount</div>
+                            <div className="text-xl font-bold" style={{color: '#4BE0A1'}}>
+                              ${loanCalcData.total_amount.toLocaleString()}
+                            </div>
+                          </div>
                         </div>
 
-                        {loanCalcData.ai_tips && !loanCalcData.ai_tips.includes('unavailable') && (
-                          <div className="p-4 rounded-lg" style={{background: 'rgba(232, 194, 124, 0.08)', border: '1px solid rgba(232, 194, 124, 0.2)'}}>
-                            <div className="flex items-center gap-2 mb-2">
-                              <Sparkles className="w-4 h-4" style={{color: '#E8C27C'}} />
-                              <span className="text-sm font-semibold" style={{color: '#E8C27C'}}>AI TIPS</span>
-                            </div>
-                            <div className="text-sm whitespace-pre-wrap" style={{color: '#cbd5e1', lineHeight: '1.6', maxHeight: '200px', overflowY: 'auto'}}>
-                              {loanCalcData.ai_tips}
-                            </div>
+                        {/* Savings Indicator */}
+                        {(loanParams.interestRate < selectedAsset.interest_rate || loanParams.tenure < selectedAsset.tenure_months) && (
+                          <div className="p-3 rounded-lg" style={{background: 'rgba(75, 224, 161, 0.1)', border: '1px solid rgba(75, 224, 161, 0.3)'}}>
+                            <p className="text-sm font-semibold" style={{color: '#4BE0A1'}}>
+                              💰 Potential Savings Detected!
+                            </p>
+                            <p className="text-xs" style={{color: '#cbd5e1'}}>
+                              By adjusting your loan terms, you could save on interest. Consider refinancing.
+                            </p>
                           </div>
                         )}
 
+                        {/* Amortization Schedule */}
                         <div>
                           <div className="text-xs font-semibold mb-2" style={{color: '#94a3b8'}}>
                             PAYMENT SCHEDULE (First 12 months)
                           </div>
-                          <div style={{maxHeight: '300px', overflowY: 'auto'}}>
-                            <table className="w-full" style={{fontSize: '0.813rem'}}>
+                          <div style={{maxHeight: '200px', overflowY: 'auto'}}>
+                            <table className="w-full" style={{fontSize: '0.75rem'}}>
                               <thead style={{background: '#16001e', position: 'sticky', top: 0}}>
                                 <tr>
-                                  <th className="p-2 text-left" style={{color: '#94a3b8'}}>Month</th>
-                                  <th className="p-2 text-right" style={{color: '#94a3b8'}}>Principal</th>
-                                  <th className="p-2 text-right" style={{color: '#94a3b8'}}>Interest</th>
-                                  <th className="p-2 text-right" style={{color: '#94a3b8'}}>Balance</th>
+                                  <th className="p-1.5 text-left" style={{color: '#94a3b8'}}>Mo</th>
+                                  <th className="p-1.5 text-right" style={{color: '#94a3b8'}}>Principal</th>
+                                  <th className="p-1.5 text-right" style={{color: '#94a3b8'}}>Interest</th>
+                                  <th className="p-1.5 text-right" style={{color: '#94a3b8'}}>Balance</th>
                                 </tr>
                               </thead>
                               <tbody>
                                 {loanCalcData.amortization_schedule.slice(0, 12).map((entry) => (
                                   <tr key={entry.month} style={{borderBottom: '1px solid rgba(255,255,255,0.03)'}}>
-                                    <td className="p-2" style={{color: '#cbd5e1'}}>{entry.month}</td>
-                                    <td className="p-2 text-right" style={{color: '#4BE0A1'}}>${entry.principal_payment.toLocaleString()}</td>
-                                    <td className="p-2 text-right" style={{color: '#FF5C73'}}>${entry.interest_payment.toLocaleString()}</td>
-                                    <td className="p-2 text-right" style={{color: '#94a3b8'}}>${entry.remaining_balance.toLocaleString()}</td>
+                                    <td className="p-1.5" style={{color: '#cbd5e1'}}>{entry.month}</td>
+                                    <td className="p-1.5 text-right" style={{color: '#4BE0A1'}}>${entry.principal_payment.toLocaleString()}</td>
+                                    <td className="p-1.5 text-right" style={{color: '#FF5C73'}}>${entry.interest_payment.toLocaleString()}</td>
+                                    <td className="p-1.5 text-right" style={{color: '#94a3b8'}}>${entry.remaining_balance.toLocaleString()}</td>
                                   </tr>
                                 ))}
                               </tbody>
                             </table>
                           </div>
                         </div>
+                        
+                        <Button 
+                          onClick={() => setLoanCalcData(null)}
+                          variant="outline"
+                          size="sm"
+                          style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+                        >
+                          Reset Calculator
+                        </Button>
                       </div>
                     )}
                   </div>
