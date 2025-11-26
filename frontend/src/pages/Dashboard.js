@@ -524,30 +524,115 @@ export default function Dashboard() {
         )}
 
         {/* Financial Ratios - Both Themes */}
-        {summary?.financial_ratios && (
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-bold" style={{color: '#f8fafc', fontFamily: 'Space Grotesk, sans-serif'}}>
-                Financial Health Indicators
-              </h2>
-              {/* Legend */}
-              <div className="flex gap-4 text-sm">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full" style={{background: '#10b981'}}></div>
-                  <span style={{color: '#94a3b8'}}>Good</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full" style={{background: '#f59e0b'}}></div>
-                  <span style={{color: '#94a3b8'}}>Caution</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full" style={{background: '#ef4444'}}></div>
-                  <span style={{color: '#94a3b8'}}>Alert</span>
+        {summary?.financial_ratios && (() => {
+          // Collect all ratios with their status
+          const ratios = [
+            { key: 'debt_to_asset_ratio', data: summary.financial_ratios.debt_to_asset_ratio, label: 'DEBT-TO-ASSET RATIO' },
+            { key: 'liquidity_ratio', data: summary.financial_ratios.liquidity_ratio, label: 'LIQUIDITY RATIO' },
+            { key: 'net_worth_growth', data: summary.financial_ratios.net_worth_growth, label: 'NET WORTH GROWTH' },
+            { key: 'diversification_score', data: summary.financial_ratios.diversification_score, label: 'DIVERSIFICATION' },
+            { key: 'emergency_fund_ratio', data: summary.financial_ratios.emergency_fund_ratio, label: 'EMERGENCY FUND' },
+            { key: 'debt_service_coverage', data: summary.financial_ratios.debt_service_coverage, label: 'DEBT COVERAGE' }
+          ];
+
+          // Sort ratios: good (left), warning/caution (middle), bad/alert (right)
+          const statusOrder = { 'good': 1, 'warning': 2, 'neutral': 2, 'bad': 3, 'alert': 3 };
+          const sortedRatios = ratios.sort((a, b) => {
+            const orderA = statusOrder[a.data?.status] || 2;
+            const orderB = statusOrder[b.data?.status] || 2;
+            return orderA - orderB;
+          });
+
+          return (
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-2xl font-bold" style={{color: '#f8fafc', fontFamily: 'Space Grotesk, sans-serif'}}>
+                  Financial Health Indicators
+                </h2>
+                {/* Legend */}
+                <div className="flex gap-4 text-sm">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full" style={{background: '#10b981'}}></div>
+                    <span style={{color: '#94a3b8'}}>Healthy</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full" style={{background: '#f59e0b'}}></div>
+                    <span style={{color: '#94a3b8'}}>Caution</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full" style={{background: '#ef4444'}}></div>
+                    <span style={{color: '#94a3b8'}}>Alert</span>
+                  </div>
                 </div>
               </div>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">{sortedRatios.map((ratio) => {
+                const status = ratio.data?.status;
+                const borderColor = status === 'good' ? '#10b981' : 
+                                   status === 'warning' || status === 'neutral' ? '#f59e0b' : '#ef4444';
+                const textColor = status === 'good' ? '#10b981' : 
+                                 status === 'warning' || status === 'neutral' ? '#f59e0b' : '#ef4444';
+                
+                // Get interpretation text based on ratio type
+                const getInterpretation = () => {
+                  switch(ratio.key) {
+                    case 'debt_to_asset_ratio':
+                      return ratio.data?.value < 30 ? '✓ Healthy level' : 
+                             ratio.data?.value < 50 ? '⚠ Monitor closely' : '⚠ High debt burden';
+                    case 'liquidity_ratio':
+                      return ratio.data?.value >= 1.5 ? '✓ Strong liquidity' : 
+                             ratio.data?.value >= 1.0 ? '⚠ Adequate liquidity' : '⚠ Low liquidity';
+                    case 'net_worth_growth':
+                      return ratio.data?.value > 0 ? '✓ Positive growth' : 
+                             ratio.data?.display === 'N/A' ? 'ℹ Need more snapshots' : '⚠ Declining';
+                    case 'diversification_score':
+                      return ratio.data?.value >= 60 ? '✓ Well diversified' : 
+                             ratio.data?.value >= 30 ? '⚠ Add more variety' : '⚠ High concentration risk';
+                    case 'emergency_fund_ratio':
+                      return ratio.data?.value >= 3 ? '✓ Safe coverage' : 
+                             ratio.data?.value >= 1 ? '⚠ Build reserves' : '⚠ Critical shortage';
+                    case 'debt_service_coverage':
+                      return ratio.data?.display === 'N/A' ? 'ℹ No debt obligations' :
+                             ratio.data?.value >= 1.5 ? '✓ Strong coverage' : 
+                             ratio.data?.value >= 1.0 ? '⚠ Adequate coverage' : '⚠ Payment stress';
+                    default:
+                      return '';
+                  }
+                };
+
+                return (
+                  <Card 
+                    key={ratio.key}
+                    className="overflow-hidden transition-all hover:shadow-lg"
+                    style={{
+                      background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', 
+                      borderColor: borderColor
+                    }}
+                  >
+                    <CardContent className="p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="text-xs font-semibold" style={{color: '#94a3b8'}}>{ratio.label}</h3>
+                        <div 
+                          className="w-2 h-2 rounded-full"
+                          style={{background: borderColor}}
+                        />
+                      </div>
+                      <div 
+                        className="text-2xl font-bold mb-1"
+                        style={{color: textColor}}
+                      >
+                        {ratio.data?.display}
+                      </div>
+                      <p className="text-xs leading-tight mb-1" style={{color: '#64748b'}}>
+                        {ratio.data?.description}
+                      </p>
+                      <p className="text-xs" style={{color: '#94a3b8', fontStyle: 'italic'}}>
+                        {getInterpretation()}
+                      </p>
+                    </CardContent>
+                  </Card>
+                );
+              })}</div>
               {/* Debt-to-Asset Ratio */}
               <Card 
                 className="overflow-hidden transition-all hover:shadow-lg"
