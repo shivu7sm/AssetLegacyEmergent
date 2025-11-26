@@ -392,7 +392,19 @@ export default function AssetsNew() {
         </div>
 
         {/* Main Layout: Full Width Table */}
-        <div className="w-full">
+        <div className="w-full relative">
+          {/* Converting Overlay */}
+          {converting && (
+            <div className="absolute inset-0 bg-black bg-opacity-50 z-20 flex items-center justify-center rounded-lg">
+              <div className="p-4 rounded-lg" style={{background: '#1a1229', border: '2px solid #E8C27C'}}>
+                <div className="flex items-center gap-3">
+                  <div className="w-6 h-6 border-2 border-t-transparent rounded-full animate-spin" style={{borderColor: '#E8C27C', borderTopColor: 'transparent'}}></div>
+                  <span style={{color: '#E8C27C', fontWeight: 600}}>Converting to {selectedCurrency}...</span>
+                </div>
+              </div>
+            </div>
+          )}
+          
           <Card style={{background: '#1a1229', borderColor: '#2d1f3d', padding: 0}}>
             <CardContent className="p-0">
               <div style={{maxHeight: 'calc(100vh - 280px)', overflowY: 'auto'}}>
