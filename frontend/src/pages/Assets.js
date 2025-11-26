@@ -195,6 +195,10 @@ export default function Assets() {
   const [portfolioDialogOpen, setPortfolioDialogOpen] = useState(false);
   const [holdingDialogOpen, setHoldingDialogOpen] = useState(false);
   const [editingHolding, setEditingHolding] = useState(null);
+  
+  // Loan Calculator state
+  const [loanCalculatorOpen, setLoanCalculatorOpen] = useState(false);
+  const [calculatingLoanAsset, setCalculatingLoanAsset] = useState(null);
   const [formData, setFormData] = useState({
     type: 'crypto',
     name: '',
