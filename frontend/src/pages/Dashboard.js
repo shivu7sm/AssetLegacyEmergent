@@ -174,13 +174,13 @@ export default function Dashboard() {
   
   return (
     <Layout>
-      <div className={`${dashboardTheme}-theme space-y-8`} data-testid="dashboard-container" style={dashboardTheme === 'modern' ? {padding: '2rem', background: theme.background} : {padding: '2rem 0'}}>
+      <div className={`${dashboardTheme}-theme space-y-8`} data-testid="dashboard-container" style={dashboardTheme === 'modern' ? {padding: '2rem', background: '#0b0b11'} : {padding: '2rem 0'}}>
         {/* Header */}
         <div>
-          <h1 className={`${dashboardTheme === 'modern' ? 'text-3xl' : 'text-4xl'} font-bold mb-2`} style={dashboardTheme === 'modern' ? {fontFamily: 'Inter, sans-serif', color: theme.text} : {fontFamily: 'Space Grotesk, sans-serif', color: theme.text}} data-testid="dashboard-title">
+          <h1 className={`${dashboardTheme === 'modern' ? 'text-3xl' : 'text-4xl'} font-bold mb-2`} style={dashboardTheme === 'modern' ? {fontFamily: 'Inter, sans-serif', color: '#FFFFFF'} : {fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}} data-testid="dashboard-title">
             {dashboardTheme === 'modern' ? 'Dashboard' : 'Financial Dashboard'}
           </h1>
-          <p style={dashboardTheme === 'modern' ? {color: theme.textSecondary, fontSize: '0.9375rem'} : {color: theme.textTertiary}}>
+          <p style={dashboardTheme === 'modern' ? {color: 'rgba(255,255,255,0.65)', fontSize: '0.9375rem'} : {color: theme.textTertiary}}>
             {dashboardTheme === 'modern' ? 'Your complete financial overview' : 'Overview of your assets and financial health'}
           </p>
         </div>
@@ -190,11 +190,11 @@ export default function Dashboard() {
           <Card 
             className="border-l-4 mb-6"
             style={{
-              background: theme.cardBg,
-              borderColor: theme.warning,
-              borderLeftWidth: '4px',
-              borderWidth: '1px',
-              borderStyle: 'solid'
+              background: dashboardTheme === 'modern' 
+                ? 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)' 
+                : 'linear-gradient(135deg, #3d2e0e 0%, #4d3810 100%)',
+              borderColor: '#f59e0b',
+              borderLeftWidth: '4px'
             }}
           >
             <CardContent className="py-6">
@@ -204,15 +204,15 @@ export default function Dashboard() {
                     className="w-14 h-14 rounded-full flex items-center justify-center animate-pulse"
                     style={{background: 'rgba(245, 158, 11, 0.2)'}}
                   >
-                    <svg className="w-8 h-8" style={{color: theme.warning}} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-8 h-8" style={{color: '#f59e0b'}} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
                     </svg>
                   </div>
                   <div>
-                    <div className="text-xl font-bold mb-1" style={{color: theme.warning}}>
+                    <div className="text-xl font-bold mb-1" style={{color: dashboardTheme === 'modern' ? '#92400e' : '#fbbf24'}}>
                       🧪 You're in DEMO MODE
                     </div>
-                    <p className="text-sm" style={{color: theme.textSecondary}}>
+                    <p className="text-sm" style={{color: dashboardTheme === 'modern' ? '#78350f' : '#cbd5e1'}}>
                       All data shown is test data. <strong>Explore features risk-free!</strong> Switch to Live Mode to enter your real assets.
                     </p>
                   </div>
@@ -230,12 +230,12 @@ export default function Dashboard() {
                         }));
                         navigate('/nominee-dashboard');
                       }}
-                      style={{background: `rgba(168, 85, 247, ${theme.name === 'dark' ? '0.2' : '0.1'})`, border: `1px solid ${theme.primary}`, color: theme.primary}}
+                      style={{background: 'rgba(168, 85, 247, 0.2)', border: '1px solid rgba(168, 85, 247, 0.4)', color: '#a855f7'}}
                     >
                       <Eye className="w-3 h-3 mr-2" />
                       Preview Nominee View
                     </Button>
-                    <div className="flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold" style={{background: theme.warning, color: '#fff'}}>
+                    <div className="flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold" style={{background: '#f59e0b', color: '#fff'}}>
                       <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
                       DEMO
                     </div>
@@ -251,21 +251,21 @@ export default function Dashboard() {
           <Card 
             className="border-l-4"
             style={{
-              background: theme.cardBg,
-              borderColor: theme.error,
-              borderLeftWidth: '4px',
-              borderWidth: '1px',
-              borderStyle: 'solid'
+              background: dashboardTheme === 'modern' 
+                ? 'linear-gradient(135deg, #fff5f5 0%, #ffe5e5 100%)' 
+                : 'linear-gradient(135deg, #2d0e1e 0%, #3d1828 100%)',
+              borderColor: '#ef4444',
+              borderLeftWidth: '4px'
             }}
           >
             <CardHeader>
-              <CardTitle className="flex items-center gap-3" style={{color: theme.error}}>
+              <CardTitle className="flex items-center gap-3" style={{color: dashboardTheme === 'modern' ? '#991b1b' : '#fca5a5'}}>
                 <AlertCircle className="w-6 h-6" />
                 <span>Complete Your Profile Setup</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="mb-4" style={{color: theme.textSecondary, fontSize: '0.9375rem'}}>
+              <p className="mb-4" style={{color: dashboardTheme === 'modern' ? '#7f1d1d' : '#cbd5e1', fontSize: '0.9375rem'}}>
                 Secure your legacy by completing these essential steps. Your loved ones will thank you.
               </p>
               
@@ -274,9 +274,9 @@ export default function Dashboard() {
                   <div 
                     className="flex items-center justify-between p-4 rounded-lg transition-all hover:shadow-md cursor-pointer"
                     style={{
-                      background: theme.backgroundSecondary,
+                      background: dashboardTheme === 'modern' ? '#fff' : 'rgba(26, 18, 41, 0.5)',
                       border: '1px solid',
-                      borderColor: theme.border
+                      borderColor: dashboardTheme === 'modern' ? '#fecaca' : '#3d1828'
                     }}
                     onClick={() => navigate('/settings?tab=nominees')}
                   >
@@ -285,20 +285,20 @@ export default function Dashboard() {
                         className="w-10 h-10 rounded-full flex items-center justify-center"
                         style={{background: 'rgba(239, 68, 68, 0.1)'}}
                       >
-                        <Shield className="w-5 h-5" style={{color: theme.error}} />
+                        <Shield className="w-5 h-5" style={{color: '#ef4444'}} />
                       </div>
                       <div>
-                        <div className="font-semibold" style={{color: theme.text}}>
+                        <div className="font-semibold" style={{color: dashboardTheme === 'modern' ? '#1a1f36' : '#f8fafc'}}>
                           Add a Nominee
                         </div>
-                        <div className="text-sm" style={{color: theme.textSecondary}}>
+                        <div className="text-sm" style={{color: dashboardTheme === 'modern' ? '#697386' : '#94a3b8'}}>
                           Designate someone to inherit your assets
                         </div>
                       </div>
                     </div>
                     <Button 
                       size="sm"
-                      style={{background: theme.error, color: '#fff'}}
+                      style={{background: '#ef4444', color: '#fff'}}
                     >
                       Set Up Now →
                     </Button>
@@ -309,9 +309,9 @@ export default function Dashboard() {
                   <div 
                     className="flex items-center justify-between p-4 rounded-lg transition-all hover:shadow-md cursor-pointer"
                     style={{
-                      background: theme.backgroundSecondary,
+                      background: dashboardTheme === 'modern' ? '#fff' : 'rgba(26, 18, 41, 0.5)',
                       border: '1px solid',
-                      borderColor: theme.border
+                      borderColor: dashboardTheme === 'modern' ? '#fecaca' : '#3d1828'
                     }}
                     onClick={() => navigate('/settings?tab=dms')}
                   >
@@ -320,20 +320,20 @@ export default function Dashboard() {
                         className="w-10 h-10 rounded-full flex items-center justify-center"
                         style={{background: 'rgba(239, 68, 68, 0.1)'}}
                       >
-                        <Clock className="w-5 h-5" style={{color: theme.error}} />
+                        <Clock className="w-5 h-5" style={{color: '#ef4444'}} />
                       </div>
                       <div>
-                        <div className="font-semibold" style={{color: theme.text}}>
+                        <div className="font-semibold" style={{color: dashboardTheme === 'modern' ? '#1a1f36' : '#f8fafc'}}>
                           Enable Dead Man's Switch
                         </div>
-                        <div className="text-sm" style={{color: theme.textSecondary}}>
+                        <div className="text-sm" style={{color: dashboardTheme === 'modern' ? '#697386' : '#94a3b8'}}>
                           Automatic notifications if you're inactive
                         </div>
                       </div>
                     </div>
                     <Button 
                       size="sm"
-                      style={{background: theme.error, color: '#fff'}}
+                      style={{background: '#ef4444', color: '#fff'}}
                     >
                       Set Up Now →
                     </Button>
@@ -341,8 +341,8 @@ export default function Dashboard() {
                 )}
               </div>
 
-              <div className="mt-4 p-3 rounded-lg" style={{background: `rgba(239, 68, 68, ${theme.name === 'dark' ? '0.1' : '0.05'})`}}>
-                <p className="text-xs" style={{color: theme.textSecondary}}>
+              <div className="mt-4 p-3 rounded-lg" style={{background: dashboardTheme === 'modern' ? 'rgba(239, 68, 68, 0.05)' : 'rgba(239, 68, 68, 0.1)'}}>
+                <p className="text-xs" style={{color: dashboardTheme === 'modern' ? '#7f1d1d' : '#cbd5e1'}}>
                   💡 <strong>Why this matters:</strong> Without these safeguards, your assets could be lost forever to your family. 
                   Complete setup takes less than 5 minutes.
                 </p>
@@ -366,7 +366,7 @@ export default function Dashboard() {
                     <div className="stat-value">
                       {formatCurrency(netWorthValue, selectedCurrency, currencyFormat)}
                     </div>
-                    <p className="text-sm mt-2" style={{color: theme.textSecondary}}>
+                    <p className="text-sm mt-2" style={{color: 'rgba(255,255,255,0.8)'}}>
                       {selectedCurrency} • {isPositive ? 'Healthy portfolio' : 'Review recommended'}
                     </p>
                   </div>
@@ -422,19 +422,19 @@ export default function Dashboard() {
             <Card 
               data-testid="total-assets-card" 
               className="overflow-hidden transition-all hover:shadow-lg card"
-              style={{background: theme.cardBg, borderColor: theme.info, boxShadow: theme.cardShadow}}
+              style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#3b82f6'}}
             >
               <CardContent className="p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <p className="text-sm font-medium mb-2" style={{color: theme.textTertiary, letterSpacing: '0.5px'}}>TOTAL ASSETS</p>
-                    <div className="text-4xl font-bold mb-1" style={{color: theme.text, fontFamily: 'Inter, sans-serif'}} data-testid="total-assets-count">
+                    <div className="text-4xl font-bold mb-1" style={{color: '#f8fafc', fontFamily: 'Inter, sans-serif'}} data-testid="total-assets-count">
                       {summary?.total_assets || 0}
                     </div>
                     <p className="text-xs" style={{color: theme.textMuted}}>items tracked</p>
                   </div>
                   <div className="p-3 rounded-xl" style={{background: 'rgba(59, 130, 246, 0.1)'}}>
-                    <DollarSign className="w-8 h-8" style={{color: theme.info}} />
+                    <DollarSign className="w-8 h-8" style={{color: '#3b82f6'}} />
                   </div>
                 </div>
               </CardContent>
@@ -444,10 +444,9 @@ export default function Dashboard() {
               data-testid="net-worth-card" 
               className="overflow-hidden transition-all hover:shadow-lg card"
               style={{
-                background: theme.cardBg, 
-                borderColor: isPositive ? theme.success : theme.error, 
-                borderWidth: '2px',
-                boxShadow: theme.cardShadow
+                background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', 
+                borderColor: isPositive ? '#10b981' : '#ef4444', 
+                borderWidth: '2px'
               }}
             >
               <CardContent className="p-6">
@@ -456,7 +455,7 @@ export default function Dashboard() {
                     <p className="text-sm font-medium mb-2" style={{color: theme.textTertiary, letterSpacing: '0.5px'}}>NET WORTH</p>
                     <div 
                       className="text-3xl font-bold mb-1"
-                      style={{color: isPositive ? theme.success : theme.error, fontFamily: 'Inter, sans-serif'}} 
+                      style={{color: isPositive ? '#10b981' : '#ef4444', fontFamily: 'Inter, sans-serif'}} 
                       data-testid="net-worth-value"
                     >
                       {formatCurrency(netWorthValue, selectedCurrency, currencyFormat)}
@@ -467,9 +466,9 @@ export default function Dashboard() {
                   </div>
                   <div className="p-3 rounded-xl" style={{background: isPositive ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)'}}>
                     {isPositive ? (
-                      <TrendingUp className="w-8 h-8" style={{color: theme.success}} />
+                      <TrendingUp className="w-8 h-8" style={{color: '#10b981'}} />
                     ) : (
-                      <TrendingDown className="w-8 h-8" style={{color: theme.error}} />
+                      <TrendingDown className="w-8 h-8" style={{color: '#ef4444'}} />
                     )}
                   </div>
                 </div>
@@ -479,13 +478,13 @@ export default function Dashboard() {
             <Card 
               data-testid="nominee-status-card" 
               className="overflow-hidden transition-all hover:shadow-lg card"
-              style={{background: theme.cardBg, borderColor: summary?.has_nominee ? theme.success : theme.warning, boxShadow: theme.cardShadow}}
+              style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: summary?.has_nominee ? '#10b981' : '#f59e0b'}}
             >
               <CardContent className="p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <p className="text-sm font-medium mb-2" style={{color: theme.textTertiary, letterSpacing: '0.5px'}}>NOMINEE</p>
-                    <div className="text-2xl font-bold mb-1" style={{color: summary?.has_nominee ? theme.success : theme.warning, fontFamily: 'Inter, sans-serif'}} data-testid="nominee-status">
+                    <div className="text-2xl font-bold mb-1" style={{color: summary?.has_nominee ? '#10b981' : '#f59e0b', fontFamily: 'Inter, sans-serif'}} data-testid="nominee-status">
                       {summary?.has_nominee ? '✓ Configured' : 'Not Set'}
                     </div>
                     <p className="text-xs" style={{color: theme.textMuted}}>
@@ -493,7 +492,7 @@ export default function Dashboard() {
                     </p>
                   </div>
                   <div className="p-3 rounded-xl" style={{background: summary?.has_nominee ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)'}}>
-                    <Shield className="w-8 h-8" style={{color: summary?.has_nominee ? theme.success : theme.warning}} />
+                    <Shield className="w-8 h-8" style={{color: summary?.has_nominee ? '#10b981' : '#f59e0b'}} />
                   </div>
                 </div>
               </CardContent>
@@ -502,13 +501,13 @@ export default function Dashboard() {
             <Card 
               data-testid="dms-status-card" 
               className="overflow-hidden transition-all hover:shadow-lg card"
-              style={{background: theme.cardBg, borderColor: summary?.has_dms ? theme.success : theme.warning, boxShadow: theme.cardShadow}}
+              style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: summary?.has_dms ? '#10b981' : '#f59e0b'}}
             >
               <CardContent className="p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <p className="text-sm font-medium mb-2" style={{color: theme.textTertiary, letterSpacing: '0.5px'}}>DEAD MAN'S SWITCH</p>
-                    <div className="text-2xl font-bold mb-1" style={{color: summary?.has_dms ? theme.success : theme.warning, fontFamily: 'Inter, sans-serif'}} data-testid="dms-status">
+                    <div className="text-2xl font-bold mb-1" style={{color: summary?.has_dms ? '#10b981' : '#f59e0b', fontFamily: 'Inter, sans-serif'}} data-testid="dms-status">
                       {summary?.has_dms ? '✓ Active' : 'Not Set'}
                     </div>
                     <p className="text-xs" style={{color: theme.textMuted}}>
@@ -516,7 +515,7 @@ export default function Dashboard() {
                     </p>
                   </div>
                   <div className="p-3 rounded-xl" style={{background: summary?.has_dms ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)'}}>
-                    <HeartPulse className="w-8 h-8" style={{color: summary?.has_dms ? theme.success : theme.warning}} />
+                    <HeartPulse className="w-8 h-8" style={{color: summary?.has_dms ? '#10b981' : '#f59e0b'}} />
                   </div>
                 </div>
               </CardContent>
@@ -547,7 +546,7 @@ export default function Dashboard() {
           return (
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-2xl font-bold" style={{color: theme.text, fontFamily: 'Space Grotesk, sans-serif'}}>
+                <h2 className="text-2xl font-bold" style={{color: '#f8fafc', fontFamily: 'Space Grotesk, sans-serif'}}>
                   Financial Health Indicators
                 </h2>
                 {/* Legend */}
@@ -606,9 +605,8 @@ export default function Dashboard() {
                     key={ratio.key}
                     className="overflow-hidden transition-all hover:shadow-lg"
                     style={{
-                      background: theme.cardBg, 
-                      borderColor: borderColor,
-                      boxShadow: theme.cardShadow
+                      background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', 
+                      borderColor: borderColor
                     }}
                   >
                     <CardContent className="p-4">
@@ -641,12 +639,12 @@ export default function Dashboard() {
 
         {/* Alerts */}
         {(!summary?.has_nominee || !summary?.has_dms) && (
-          <Card data-testid="setup-alert" style={{background: `rgba(251, 191, 36, ${theme.name === 'dark' ? '0.1' : '0.05'})`, borderColor: `rgba(251, 191, 36, ${theme.name === 'dark' ? '0.3' : '0.2'})`, boxShadow: theme.cardShadow}}>
+          <Card data-testid="setup-alert" style={{background: 'rgba(251, 191, 36, 0.1)', borderColor: 'rgba(251, 191, 36, 0.3)'}}>
             <CardContent className="pt-6">
               <div className="flex items-start gap-4">
-                <AlertCircle className="w-6 h-6 flex-shrink-0 mt-1" style={{color: theme.warning}} />
+                <AlertCircle className="w-6 h-6 flex-shrink-0 mt-1" style={{color: '#fbbf24'}} />
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold mb-2" style={{color: theme.warning}}>Setup Required</h3>
+                  <h3 className="text-lg font-semibold mb-2" style={{color: '#fbbf24'}}>Setup Required</h3>
                   <p className="mb-4" style={{color: theme.textSecondary}}>
                     {!summary?.has_nominee && 'Please add a nominee to ensure your assets reach the right person. '}
                     {!summary?.has_dms && 'Configure the dead man switch for automated protection.'}
@@ -655,7 +653,7 @@ export default function Dashboard() {
                     data-testid="complete-setup-btn"
                     onClick={() => navigate('/settings')} 
                     className="text-white rounded-full"
-                    style={{background: theme.warning}}
+                    style={{background: '#f59e0b'}}
                   >
                     Complete Setup
                   </Button>
@@ -724,7 +722,7 @@ export default function Dashboard() {
                   <div className="space-y-4">
                     <table className="w-full">
                       <thead>
-                        <tr style={{borderBottom: `2px solid ${theme.border}`}}>
+                        <tr style={{borderBottom: '2px solid #2d1f3d'}}>
                           <th className="text-left py-3 px-2" style={{color: theme.textTertiary, fontSize: '12px', fontWeight: 600}}>CATEGORY</th>
                           <th className="text-right py-3 px-2" style={{color: theme.textTertiary, fontSize: '12px', fontWeight: 600}}>VALUE</th>
                           <th className="text-right py-3 px-2" style={{color: theme.textTertiary, fontSize: '12px', fontWeight: 600}}>%</th>
@@ -732,14 +730,14 @@ export default function Dashboard() {
                       </thead>
                       <tbody>
                         {comparisonData.map((item, index) => (
-                          <tr key={index} style={{borderBottom: `1px solid ${theme.border}`}}>
+                          <tr key={index} style={{borderBottom: '1px solid #1a1229'}}>
                             <td className="py-3 px-2">
                               <div className="flex items-center gap-2">
                                 <div 
                                   className="w-3 h-3 rounded-full" 
                                   style={{background: item.color}}
                                 />
-                                <span style={{color: theme.text, fontWeight: 500}}>{item.name}</span>
+                                <span style={{color: '#f8fafc', fontWeight: 500}}>{item.name}</span>
                               </div>
                             </td>
                             <td className="text-right py-3 px-2" style={{color: theme.textSecondary, fontWeight: 600}}>
@@ -754,8 +752,8 @@ export default function Dashboard() {
                     </table>
                     <div className="pt-4 border-t-2" style={{borderColor: theme.border}}>
                       <div className="flex justify-between items-center">
-                        <span style={{color: theme.text, fontWeight: 600, fontSize: '16px'}}>Net Worth</span>
-                        <span style={{color: theme.primary, fontWeight: 700, fontSize: '18px'}}>
+                        <span style={{color: '#f8fafc', fontWeight: 600, fontSize: '16px'}}>Net Worth</span>
+                        <span style={{color: '#ec4899', fontWeight: 700, fontSize: '18px'}}>
                           {formatCurrency(summary?.net_worth || 0, selectedCurrency, currencyFormat)}
                         </span>
                       </div>
@@ -816,7 +814,7 @@ export default function Dashboard() {
                   <div className="space-y-4">
                     <table className="w-full">
                       <thead>
-                        <tr style={{borderBottom: `2px solid ${theme.border}`}}>
+                        <tr style={{borderBottom: '2px solid #2d1f3d'}}>
                           <th className="text-left py-3 px-2" style={{color: theme.textTertiary, fontSize: '12px', fontWeight: 600}}>ASSET TYPE</th>
                           <th className="text-right py-3 px-2" style={{color: theme.textTertiary, fontSize: '12px', fontWeight: 600}}>VALUE</th>
                           <th className="text-right py-3 px-2" style={{color: theme.textTertiary, fontSize: '12px', fontWeight: 600}}>%</th>
@@ -824,14 +822,14 @@ export default function Dashboard() {
                       </thead>
                       <tbody>
                         {assetDistributionData.map((item, index) => (
-                          <tr key={index} style={{borderBottom: `1px solid ${theme.border}`}}>
+                          <tr key={index} style={{borderBottom: '1px solid #1a1229'}}>
                             <td className="py-3 px-2">
                               <div className="flex items-center gap-2">
                                 <div 
                                   className="w-3 h-3 rounded-full" 
                                   style={{background: item.color}}
                                 />
-                                <span style={{color: theme.text, fontWeight: 500}}>{item.name}</span>
+                                <span style={{color: '#f8fafc', fontWeight: 500}}>{item.name}</span>
                               </div>
                             </td>
                             <td className="text-right py-3 px-2" style={{color: theme.textSecondary, fontWeight: 600}}>
@@ -846,8 +844,8 @@ export default function Dashboard() {
                     </table>
                     <div className="pt-4 border-t-2" style={{borderColor: theme.border}}>
                       <div className="flex justify-between items-center">
-                        <span style={{color: theme.text, fontWeight: 600, fontSize: '16px'}}>Total Assets</span>
-                        <span style={{color: theme.success, fontWeight: 700, fontSize: '18px'}}>
+                        <span style={{color: '#f8fafc', fontWeight: 600, fontSize: '16px'}}>Total Assets</span>
+                        <span style={{color: '#10b981', fontWeight: 700, fontSize: '18px'}}>
                           {formatCurrency(summary?.total_assets_value || 0, selectedCurrency, currencyFormat)}
                         </span>
                       </div>
@@ -900,7 +898,7 @@ export default function Dashboard() {
                   <div className="space-y-4">
                     <table className="w-full">
                       <thead>
-                        <tr style={{borderBottom: `2px solid ${theme.border}`}}>
+                        <tr style={{borderBottom: '2px solid #2d1f3d'}}>
                           <th className="text-left py-3 px-2" style={{color: theme.textTertiary, fontSize: '12px', fontWeight: 600}}>DEBT TYPE</th>
                           <th className="text-right py-3 px-2" style={{color: theme.textTertiary, fontSize: '12px', fontWeight: 600}}>VALUE</th>
                           <th className="text-right py-3 px-2" style={{color: theme.textTertiary, fontSize: '12px', fontWeight: 600}}>%</th>
@@ -908,17 +906,17 @@ export default function Dashboard() {
                       </thead>
                       <tbody>
                         {liabilityDistributionData.map((item, index) => (
-                          <tr key={index} style={{borderBottom: `1px solid ${theme.border}`}}>
+                          <tr key={index} style={{borderBottom: '1px solid #1a1229'}}>
                             <td className="py-3 px-2">
                               <div className="flex items-center gap-2">
                                 <div 
                                   className="w-3 h-3 rounded-full" 
                                   style={{background: item.color}}
                                 />
-                                <span style={{color: theme.text, fontWeight: 500}}>{item.name}</span>
+                                <span style={{color: '#f8fafc', fontWeight: 500}}>{item.name}</span>
                               </div>
                             </td>
-                            <td className="text-right py-3 px-2" style={{color: theme.error, fontWeight: 600}}>
+                            <td className="text-right py-3 px-2" style={{color: '#f87171', fontWeight: 600}}>
                               {formatCurrency(item.value, selectedCurrency, currencyFormat)}
                             </td>
                             <td className="text-right py-3 px-2" style={{color: item.color, fontWeight: 600}}>
@@ -930,8 +928,8 @@ export default function Dashboard() {
                     </table>
                     <div className="pt-4 border-t-2" style={{borderColor: theme.border}}>
                       <div className="flex justify-between items-center">
-                        <span style={{color: theme.text, fontWeight: 600, fontSize: '16px'}}>Total Liabilities</span>
-                        <span style={{color: theme.error, fontWeight: 700, fontSize: '18px'}}>
+                        <span style={{color: '#f8fafc', fontWeight: 600, fontSize: '16px'}}>Total Liabilities</span>
+                        <span style={{color: '#dc2626', fontWeight: 700, fontSize: '18px'}}>
                           {formatCurrency(summary?.total_liabilities_value || 0, selectedCurrency, currencyFormat)}
                         </span>
                       </div>
@@ -948,11 +946,11 @@ export default function Dashboard() {
 
         {/* AI Financial Insights Card */}
         {summary?.total_assets > 0 && (
-          <Card style={{background: theme.cardBg, borderColor: theme.primary, boxShadow: theme.cardShadow}}>
+          <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#a855f7'}}>
             <CardHeader>
               <div className="flex items-center gap-3">
-                <Sparkles className="w-6 h-6" style={{color: theme.primary}} />
-                <CardTitle style={{color: theme.text}}>AI Financial Insights</CardTitle>
+                <Sparkles className="w-6 h-6" style={{color: '#a855f7'}} />
+                <CardTitle style={{color: '#f8fafc'}}>AI Financial Insights</CardTitle>
               </div>
               <p className="text-sm mt-1" style={{color: theme.textTertiary}}>Powered by AI analysis of your portfolio</p>
             </CardHeader>
@@ -960,7 +958,7 @@ export default function Dashboard() {
               <Button
                 onClick={() => navigate('/insights')}
                 className="text-white rounded-full w-full sm:w-auto"
-                style={{background: theme.primaryGradient}}
+                style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
               >
                 <Sparkles className="w-4 h-4 mr-2" />
                 View AI Insights & Recommendations
@@ -970,21 +968,21 @@ export default function Dashboard() {
         )}
 
         {/* Portfolio Guide Card */}
-        <Card style={{background: theme.cardBg, borderColor: theme.primary, borderWidth: '2px', boxShadow: theme.cardShadow}}>
+        <Card style={{background: 'linear-gradient(135deg, #2d1f3d 0%, #1a1229 100%)', borderColor: '#a855f7', borderWidth: '2px'}}>
           <CardContent className="p-6">
             <div className="flex items-start gap-4">
               <div className="p-3 rounded-xl" style={{background: 'rgba(168, 85, 247, 0.1)'}}>
-                <BookOpen className="w-8 h-8" style={{color: theme.primary}} />
+                <BookOpen className="w-8 h-8" style={{color: '#a855f7'}} />
               </div>
               <div className="flex-1">
-                <h3 className="text-xl font-bold mb-2" style={{color: theme.text}}>Track Exchange Portfolios</h3>
+                <h3 className="text-xl font-bold mb-2" style={{color: '#f8fafc'}}>Track Exchange Portfolios</h3>
                 <p className="mb-4" style={{color: theme.textTertiary}}>
                   Create portfolio assets to track multiple holdings from exchanges like Binance, Zerodha, or Robinhood in one place
                 </p>
                 <Button
                   onClick={() => navigate('/portfolio-guide')}
                   className="text-white rounded-full"
-                  style={{background: theme.primaryGradient}}
+                  style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
                 >
                   <BookOpen className="w-4 h-4 mr-2" />
                   Learn How to Create Portfolios
@@ -1005,7 +1003,7 @@ export default function Dashboard() {
                 data-testid="add-asset-btn"
                 onClick={() => navigate('/assets')} 
                 className="text-white justify-start rounded-xl h-14"
-                style={{background: theme.primaryGradient}}
+                style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
               >
                 <Plus className="w-5 h-5 mr-3" />
                 Add New Asset
