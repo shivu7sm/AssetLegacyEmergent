@@ -993,9 +993,9 @@ export default function Dashboard() {
         </Card>
 
         {/* Quick Actions */}
-        <Card data-testid="quick-actions-card" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+        <Card data-testid="quick-actions-card" style={{background: theme.backgroundSecondary, borderColor: theme.border, boxShadow: theme.cardShadow}}>
           <CardHeader>
-            <CardTitle style={{color: '#f8fafc'}}>Quick Actions</CardTitle>
+            <CardTitle style={{color: theme.text}}>Quick Actions</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
