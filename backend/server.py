@@ -4429,7 +4429,6 @@ async def get_regime_comparison(user: User = Depends(require_auth)):
     deductions_80d = min(deductions_80d, 50000)
     total_deductions = deductions_80c + deductions_80d
     
-    taxable_income_old = max(annual_income - total_deductions, 0)
     old_regime_final_tax = old_regime_tax - (total_deductions * 0.30 if annual_income > 1000000 else total_deductions * 0.20)
     old_regime_final_tax = max(old_regime_final_tax, 0)
     
