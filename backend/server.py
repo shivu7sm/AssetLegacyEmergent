@@ -4479,6 +4479,350 @@ async def get_regime_comparison(user: User = Depends(require_auth)):
         rationale=rationale
     )
 
+@api_router.get("/tax-blueprint/tax-benefits-guide")
+async def get_tax_benefits_guide(user: User = Depends(require_auth)):
+    """Get comprehensive tax benefits guide based on user profile"""
+    profile = await db.tax_profiles.find_one({"user_id": user.id}, {"_id": 0})
+    
+    # Common deductions for all
+    common_deductions = [
+        {
+            "section": "80C",
+            "name": "Life Insurance Premium",
+            "limit": 150000,
+            "description": "Premium paid for life insurance policies",
+            "applicable": True
+        },
+        {
+            "section": "80C",
+            "name": "Employee Provident Fund (EPF)",
+            "limit": 150000,
+            "description": "Contribution to EPF (auto-deducted from salary)",
+            "applicable": True
+        },
+        {
+            "section": "80C",
+            "name": "Public Provident Fund (PPF)",
+            "limit": 150000,
+            "description": "Investment in PPF account (7.1% interest, 15-year lock-in)",
+            "applicable": True
+        },
+        {
+            "section": "80C",
+            "name": "ELSS Mutual Funds",
+            "limit": 150000,
+            "description": "Equity-Linked Savings Scheme (3-year lock-in, market-linked returns)",
+            "applicable": True
+        },
+        {
+            "section": "80C",
+            "name": "National Pension System (NPS)",
+            "limit": 150000,
+            "description": "Contribution to NPS Tier-I (retirement planning)",
+            "applicable": True
+        },
+        {
+            "section": "80C",
+            "name": "Tax-Saving Fixed Deposit",
+            "limit": 150000,
+            "description": "5-year FD with tax benefit (7% interest)",
+            "applicable": True
+        },
+        {
+            "section": "80C",
+            "name": "Sukanya Samriddhi Yojana",
+            "limit": 150000,
+            "description": "For girl child education (8.2% interest)",
+            "applicable": profile and profile.get("children_count", 0) > 0
+        },
+        {
+            "section": "80C",
+            "name": "Tuition Fees",
+            "limit": 150000,
+            "description": "School/college fees for up to 2 children",
+            "applicable": profile and profile.get("children_count", 0) > 0
+        },
+        {
+            "section": "80CCD(1B)",
+            "name": "Additional NPS Contribution",
+            "limit": 50000,
+            "description": "Additional deduction over 80C limit for NPS",
+            "applicable": True
+        },
+        {
+            "section": "80D",
+            "name": "Health Insurance - Self & Family",
+            "limit": 25000,
+            "description": "Premium for health insurance (self, spouse, children)",
+            "applicable": True
+        },
+        {
+            "section": "80D",
+            "name": "Health Insurance - Parents (Below 60)",
+            "limit": 25000,
+            "description": "Premium for parents' health insurance",
+            "applicable": profile and profile.get("dependent_parents") != "none"
+        },
+        {
+            "section": "80D",
+            "name": "Health Insurance - Senior Citizen Parents",
+            "limit": 50000,
+            "description": "Premium for parents above 60 years",
+            "applicable": profile and profile.get("dependent_parents") in ["one_senior", "two_senior"]
+        },
+        {
+            "section": "80E",
+            "name": "Education Loan Interest",
+            "limit": "No Limit",
+            "description": "Interest on education loan for higher studies (for 8 years)",
+            "applicable": True
+        },
+        {
+            "section": "80G",
+            "name": "Donations to Charity",
+            "limit": "50-100% of donation",
+            "description": "Donations to registered NGOs, PM Relief Fund, etc.",
+            "applicable": True
+        },
+        {
+            "section": "24B",
+            "name": "Home Loan Interest",
+            "limit": 200000,
+            "description": "Interest on home loan for self-occupied property",
+            "applicable": profile and profile.get("home_loan_interest", 0) > 0
+        },
+        {
+            "section": "80EE",
+            "name": "Home Loan Interest (First-time Buyers)",
+            "limit": 50000,
+            "description": "Additional deduction for first-time home buyers (loan up to ₹35L, property value up to ₹50L)",
+            "applicable": True
+        },
+        {
+            "section": "80TTA",
+            "name": "Savings Account Interest",
+            "limit": 10000,
+            "description": "Interest earned on savings account",
+            "applicable": True
+        },
+        {
+            "section": "80TTB",
+            "name": "Savings Interest (Senior Citizens)",
+            "limit": 50000,
+            "description": "Interest on savings/FD for senior citizens",
+            "applicable": False
+        }
+    ]
+    
+    # Lesser-known benefits
+    lesser_known = [
+        {
+            "name": "TCS (Tax Collected at Source) on Car Purchase",
+            "description": "If you buy a car/vehicle above ₹10 lakhs, 1% TCS is collected. This can be claimed as refund in ITR.",
+            "how_to_claim": "Show TCS certificate from dealer in ITR filing under 'TCS' section",
+            "potential_saving": "₹10,000 - ₹50,000"
+        },
+        {
+            "name": "TCS on Foreign Remittance",
+            "description": "TCS of 5% collected on foreign remittance above ₹7 lakhs (under LRS). Can be claimed back.",
+            "how_to_claim": "Enter TCS details in ITR under 'Taxes Paid' section",
+            "potential_saving": "₹35,000+"
+        },
+        {
+            "name": "Capital Gains Rollover (Section 54)",
+            "description": "If you sell a house and buy another within 2 years, capital gains tax is exempt",
+            "how_to_claim": "Invest in new property within 2 years, show in ITR",
+            "potential_saving": "Entire capital gains tax (20%+)"
+        },
+        {
+            "name": "Capital Gains Exemption (Section 54EC)",
+            "description": "Invest capital gains in REC/NHAI bonds within 6 months to save tax",
+            "how_to_claim": "Buy bonds up to ₹50 lakhs, 5-year lock-in",
+            "potential_saving": "Up to ₹10 lakhs"
+        },
+        {
+            "name": "Standard Deduction",
+            "description": "₹50,000 automatic deduction for salaried individuals (no proof needed)",
+            "how_to_claim": "Auto-applied in ITR, ensure employer has deducted",
+            "potential_saving": "₹15,000 (30% bracket)"
+        },
+        {
+            "name": "Leave Travel Allowance (LTA)",
+            "description": "Tax exemption on travel within India (2 journeys in 4 years)",
+            "how_to_claim": "Submit travel bills to employer",
+            "potential_saving": "Up to ₹30,000"
+        },
+        {
+            "name": "House Rent Allowance (HRA)",
+            "description": "If living in rented house, HRA is partially tax-exempt",
+            "how_to_claim": "Submit rent receipts to employer",
+            "potential_saving": "₹50,000 - ₹1,00,000"
+        }
+    ]
+    
+    # Capital gains investment account
+    capital_gains_info = {
+        "name": "Capital Gains Account Scheme (CGAS)",
+        "description": "Special savings account to deposit capital gains and get time to reinvest",
+        "benefits": [
+            "Deposit sale proceeds before ITR filing due date",
+            "Get 2-3 years to find and buy new property",
+            "Money earns interest while you search",
+            "Prevents immediate tax payment"
+        ],
+        "how_to_open": [
+            "Open account with any nationalized bank",
+            "Fill Form A (for immovable property) or Form B (for shares)",
+            "Deposit amount within ITR filing deadline",
+            "Use funds within 2-3 years for exempt investment"
+        ],
+        "where_to_open": "SBI, PNB, Bank of Baroda, ICICI, HDFC (nationalized banks preferred)"
+    }
+    
+    return {
+        "common_deductions": common_deductions,
+        "lesser_known_benefits": lesser_known,
+        "capital_gains_account": capital_gains_info,
+        "total_potential_saving": "₹2,00,000 - ₹5,00,000 annually"
+    }
+
+@api_router.get("/tax-blueprint/wealth-structures")
+async def get_wealth_structures_guide(user: User = Depends(require_auth)):
+    """Get guide on HUF and Trust structures for wealth management"""
+    
+    huf_info = {
+        "name": "Hindu Undivided Family (HUF)",
+        "what_is_it": "A separate legal entity for Hindu families that can own assets and earn income",
+        "tax_benefits": [
+            "Separate PAN and tax slab (up to ₹2.5L exempt)",
+            "Additional ₹1.5L deduction under Section 80C",
+            "Can claim all deductions like individual",
+            "Total potential saving: ₹78,000/year (30% bracket)"
+        ],
+        "how_it_works": [
+            "Minimum 2 members needed (you + spouse/children)",
+            "Karta (head) manages HUF assets",
+            "Can transfer ancestral property or gift money to HUF",
+            "HUF can run business, invest in stocks, buy property"
+        ],
+        "pros": [
+            "Additional tax exemption (saves ₹78,000/year)",
+            "Asset protection (separate from personal assets)",
+            "Wealth distribution to family members",
+            "Business income can be split"
+        ],
+        "cons": [
+            "Requires maintaining separate accounts",
+            "Complex accounting and ITR filing",
+            "Cannot dissolve easily",
+            "Gift to HUF becomes HUF property permanently"
+        ],
+        "how_to_setup": [
+            "Draft HUF deed on stamp paper (₹100-500)",
+            "Apply for HUF PAN card online",
+            "Open HUF bank account",
+            "Transfer funds as gift (maintain gift deed)",
+            "File separate ITR for HUF annually"
+        ],
+        "ideal_for": "Individuals with income > ₹15 lakhs, ancestral property, or family business",
+        "cost": "₹5,000 - ₹20,000 (lawyer + CA fees)"
+    }
+    
+    trust_info = {
+        "name": "Private Trust for Asset Protection",
+        "what_is_it": "Legal entity to hold and manage assets for beneficiaries (family members)",
+        "types": [
+            {
+                "name": "Revocable Trust",
+                "description": "Can be modified/dissolved by settlor",
+                "use_case": "Estate planning, will alternative"
+            },
+            {
+                "name": "Irrevocable Trust",
+                "description": "Cannot be changed once created",
+                "use_case": "Asset protection, creditor protection"
+            },
+            {
+                "name": "Charitable Trust",
+                "description": "For social/religious purposes",
+                "use_case": "Tax-exempt donations, CSR activities"
+            }
+        ],
+        "benefits_for_asset_tracking": [
+            "Centralized ownership of multiple assets",
+            "Professional management by trustees",
+            "Succession planning (avoids probate)",
+            "Asset protection from creditors/lawsuits",
+            "Tax efficiency (trust income taxed separately)",
+            "Privacy (trust details not public)"
+        ],
+        "pros": [
+            "Assets protected from personal liabilities",
+            "Smooth transfer to next generation",
+            "Professional asset management",
+            "Can avoid probate (faster inheritance)",
+            "Tax planning opportunities",
+            "Creditor protection for beneficiaries"
+        ],
+        "cons": [
+            "High setup cost (₹50,000 - ₹2,00,000)",
+            "Annual compliance (ITR, audit if income > ₹2.5L)",
+            "Irrevocable trusts cannot be dissolved",
+            "Complex taxation (30% flat rate on income)",
+            "Requires professional trustees",
+            "Loss of direct control over assets"
+        ],
+        "how_to_setup": [
+            "Consult trust lawyer (estate planning specialist)",
+            "Draft trust deed (on stamp paper worth 0.25-1% of asset value)",
+            "Register trust with Sub-Registrar",
+            "Apply for trust PAN and bank account",
+            "Transfer assets to trust (maintain proper documents)",
+            "Appoint trustees (minimum 2 recommended)",
+            "File annual ITR-7 for trust"
+        ],
+        "taxation": {
+            "trust_income": "30% flat rate (no slabs)",
+            "beneficiary_distribution": "Tax-free in hands of beneficiary",
+            "capital_gains": "Same as individual (LTCG/STCG rules apply)"
+        },
+        "ideal_for": "Individuals with assets > ₹1 crore, multiple properties, family business, or succession planning needs",
+        "cost_breakdown": {
+            "setup": "₹50,000 - ₹2,00,000",
+            "stamp_duty": "0.25-1% of asset value",
+            "annual_compliance": "₹25,000 - ₹1,00,000",
+            "trustee_fees": "Negotiable (family can be trustees)"
+        },
+        "when_to_consider": [
+            "Net worth > ₹1 crore",
+            "Multiple immovable properties",
+            "Business succession planning needed",
+            "Want to protect assets from business risks",
+            "Planning for special needs children",
+            "Concerned about legal disputes"
+        ]
+    }
+    
+    return {
+        "huf": huf_info,
+        "trust": trust_info,
+        "comparison": {
+            "huf": {
+                "cost": "Low (₹5,000 - ₹20,000)",
+                "complexity": "Moderate",
+                "tax_benefit": "High (₹78,000+/year)",
+                "asset_protection": "Moderate"
+            },
+            "trust": {
+                "cost": "High (₹50,000 - ₹2,00,000)",
+                "complexity": "High",
+                "tax_benefit": "Moderate",
+                "asset_protection": "Very High"
+            }
+        },
+        "recommendation": "Start with HUF for tax benefits, consider Trust when net worth exceeds ₹1 crore"
+    }
+
 @api_router.post("/tax-blueprint/generate")
 async def generate_blueprint(force_refresh: bool = False, user: User = Depends(require_auth)):
     """Generate AI-powered Tax & Wealth Blueprint"""
