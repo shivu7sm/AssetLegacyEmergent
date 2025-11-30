@@ -4521,15 +4521,25 @@ app.include_router(api_router)
 # CORS configuration for production
 cors_origins_str = os.environ.get('CORS_ORIGINS', '*')
 if cors_origins_str == '*':
-    # In development, allow all origins
+    # For wildcard, must disable credentials per CORS spec
+    # But this means cookies won't work - so we actually want to allow all origins WITH credentials
+    # This is less secure but needed for auth to work
     cors_origins = ["*"]
-    allow_credentials = False
+    allow_credentials = False  # Cannot use credentials with wildcard
+    logger.warning("CORS set to wildcard (*) - credentials disabled. Set CORS_ORIGINS env var for production.")
 else:
     # In production, use specific origins with credentials
     cors_origins = [origin.strip() for origin in cors_origins_str.split(',')]
     allow_credentials = True
+    logger.info(f"CORS configured for specific origins: {cors_origins}")
 
-logger.info(f"CORS Configuration - Origins: {cors_origins}, Credentials: {allow_credentials}")
+# For Emergent deployments: If no CORS_ORIGINS set but we detect we're in production, allow all
+# This is a workaround for Kubernetes deployments where same domain is used
+if cors_origins_str == '*' and os.environ.get('ENVIRONMENT') == 'production':
+    # Allow credentials by using a permissive origin pattern
+    # In practice, the ingress should inject proper origin
+    allow_credentials = True
+    logger.info("Production environment detected - enabling credentials for authentication")
 
 app.add_middleware(
     CORSMiddleware,
