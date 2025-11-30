@@ -804,9 +804,9 @@ export default function Dashboard() {
             </Card>
 
             {/* Asset Distribution Data Table */}
-            <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+            <Card style={{background: theme.backgroundSecondary, borderColor: theme.border, boxShadow: theme.cardShadow}}>
               <CardHeader>
-                <CardTitle style={{color: '#f8fafc'}}>Asset Details</CardTitle>
+                <CardTitle style={{color: theme.text}}>Asset Details</CardTitle>
                 <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Asset type breakdown</p>
               </CardHeader>
               <CardContent>
