@@ -376,6 +376,100 @@ class AuditLog(BaseModel):
     is_admin_action: bool = False
     timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
+# Income & Expense Models
+class MonthlyIncome(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    month: str  # YYYY-MM format
+    source: str  # "salary", "business", "freelance", "rental", "investment", "other"
+    description: str
+    amount_before_tax: float
+    tax_deducted: float = 0.0
+    amount_after_tax: float
+    currency: str = "USD"
+    payment_date: Optional[str] = None  # YYYY-MM-DD
+    notes: Optional[str] = None
+    recurring: bool = True  # Is this a recurring income?
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class MonthlyIncomeCreate(BaseModel):
+    month: str
+    source: str
+    description: str
+    amount_before_tax: float
+    tax_deducted: Optional[float] = 0.0
+    currency: Optional[str] = "USD"
+    payment_date: Optional[str] = None
+    notes: Optional[str] = None
+    recurring: Optional[bool] = True
+
+class MonthlyIncomeUpdate(BaseModel):
+    source: Optional[str] = None
+    description: Optional[str] = None
+    amount_before_tax: Optional[float] = None
+    tax_deducted: Optional[float] = None
+    currency: Optional[str] = None
+    payment_date: Optional[str] = None
+    notes: Optional[str] = None
+    recurring: Optional[bool] = None
+
+class MonthlyExpense(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    month: str  # YYYY-MM format
+    category: str  # From predefined categories
+    subcategory: Optional[str] = None
+    description: str
+    amount: float
+    currency: str = "USD"
+    payment_method: Optional[str] = None  # "cash", "credit_card", "debit_card", "upi", "bank_transfer"
+    payment_date: Optional[str] = None  # YYYY-MM-DD
+    is_recurring: bool = False
+    is_essential: bool = True
+    notes: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class MonthlyExpenseCreate(BaseModel):
+    month: str
+    category: str
+    subcategory: Optional[str] = None
+    description: str
+    amount: float
+    currency: Optional[str] = "USD"
+    payment_method: Optional[str] = None
+    payment_date: Optional[str] = None
+    is_recurring: Optional[bool] = False
+    is_essential: Optional[bool] = True
+    notes: Optional[str] = None
+
+class MonthlyExpenseUpdate(BaseModel):
+    category: Optional[str] = None
+    subcategory: Optional[str] = None
+    description: Optional[str] = None
+    amount: Optional[float] = None
+    currency: Optional[str] = None
+    payment_method: Optional[str] = None
+    payment_date: Optional[str] = None
+    is_recurring: Optional[bool] = None
+    is_essential: Optional[bool] = None
+    notes: Optional[str] = None
+
+class MonthlySummary(BaseModel):
+    month: str
+    total_income_before_tax: float
+    total_tax_deducted: float
+    total_income_after_tax: float
+    total_expenses: float
+    net_savings: float
+    savings_rate: float  # Percentage
+    currency: str
+    income_by_source: Dict[str, float] = {}
+    expenses_by_category: Dict[str, float] = {}
+
 # Auth Helper
 async def get_current_user(request: Request) -> Optional[User]:
     session_token = request.cookies.get("session_token")
