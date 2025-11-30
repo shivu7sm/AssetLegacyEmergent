@@ -393,6 +393,7 @@ class MonthlyIncome(BaseModel):
     payment_date: Optional[str] = None  # YYYY-MM-DD
     notes: Optional[str] = None
     recurring: bool = True  # Is this a recurring income?
+    demo_mode: bool = False  # Whether this is demo data
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
