@@ -107,9 +107,9 @@ export default function NomineeAccessCard({ nominee, onUpdate, onEdit, onDelete,
               height: '24px', 
               width: '36px', 
               padding: 0,
-              background: isFirst ? 'rgba(255,255,255,0.05)' : 'rgba(168, 85, 247, 0.15)',
+              background: isFirst ? theme.backgroundTertiary : 'rgba(168, 85, 247, 0.15)',
               border: '1px solid rgba(168, 85, 247, 0.3)',
-              color: isFirst ? '#64748b' : '#a855f7',
+              color: isFirst ? theme.textMuted : '#a855f7',
               marginBottom: '2px'
             }}
           >
@@ -123,9 +123,9 @@ export default function NomineeAccessCard({ nominee, onUpdate, onEdit, onDelete,
               height: '24px', 
               width: '36px', 
               padding: 0,
-              background: isLast ? 'rgba(255,255,255,0.05)' : 'rgba(168, 85, 247, 0.15)',
+              background: isLast ? theme.backgroundTertiary : 'rgba(168, 85, 247, 0.15)',
               border: '1px solid rgba(168, 85, 247, 0.3)',
-              color: isLast ? '#64748b' : '#a855f7'
+              color: isLast ? theme.textMuted : '#a855f7'
             }}
           >
             <ChevronDown className="w-4 h-4" />
