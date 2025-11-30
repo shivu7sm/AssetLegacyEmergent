@@ -256,6 +256,18 @@ backend:
 
 
 frontend:
+  - task: "Tax & Wealth Blueprint Feature"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/TaxBlueprint.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "NEW FEATURE TESTING REQUEST - User wants comprehensive testing of Tax & Wealth Blueprint feature (Phase 1 MVP) for Indian taxpayers. Feature includes: 1) Welcome screen with 'Welcome to Sankalp Planner' 2) Multi-step profile form (3 steps: Employment & Income, Goals & Risk, Current Investments) 3) Blueprint generation with AI (GPT-4o-mini) showing tax savings, 80C gap visualization, recommendations, hidden SIP opportunities, priority actions, AI summary 4) Tab navigation (Dashboard, 80C Planner, Hidden SIP, Tax Regime) 5) Edit Profile and Refresh Blueprint functionality. Backend endpoints exist: /tax-blueprint/profile (GET/POST), /tax-blueprint/generate (POST), /tax-blueprint/regime-comparison (GET). Frontend component is fully implemented with comprehensive UI."
+
   - task: "Income & Expense Feature"
     implemented: true
     working: true
