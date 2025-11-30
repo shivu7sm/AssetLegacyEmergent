@@ -13,6 +13,7 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 export default function NomineeAccess() {
+  const { theme } = useTheme();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [token, setToken] = useState(searchParams.get('token') || '');
