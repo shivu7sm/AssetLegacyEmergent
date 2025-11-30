@@ -4344,6 +4344,411 @@ async def get_expense_categories():
         "payment_methods": payment_methods
     }
 
+# Tax & Wealth Blueprint Routes
+@api_router.post("/tax-blueprint/profile")
+async def create_tax_profile(profile_data: TaxProfileCreate, user: User = Depends(require_auth)):
+    """Create or update user's tax profile"""
+    # Check if profile already exists
+    existing_profile = await db.tax_profiles.find_one({"user_id": user.id}, {"_id": 0})
+    
+    if existing_profile:
+        # Update existing profile
+        update_dict = profile_data.model_dump()
+        update_dict["updated_at"] = datetime.now(timezone.utc).isoformat()
+        
+        await db.tax_profiles.update_one(
+            {"user_id": user.id},
+            {"$set": update_dict}
+        )
+        profile_id = existing_profile["id"]
+    else:
+        # Create new profile
+        profile = TaxProfile(
+            user_id=user.id,
+            **profile_data.model_dump()
+        )
+        
+        profile_dict = profile.model_dump()
+        profile_dict['created_at'] = profile_dict['created_at'].isoformat()
+        profile_dict['updated_at'] = profile_dict['updated_at'].isoformat()
+        
+        await db.tax_profiles.insert_one(profile_dict)
+        profile_id = profile.id
+    
+    # Calculate completion percentage
+    required_fields = [
+        "employment_status", "annual_gross_income", "tax_regime",
+        "marital_status", "risk_appetite"
+    ]
+    completed_fields = sum(1 for field in required_fields if getattr(profile_data, field, None))
+    completion_percentage = int((completed_fields / len(required_fields)) * 100)
+    
+    missing_fields = []
+    if profile_data.health_insurance_self == 0:
+        missing_fields.append("health_insurance_self")
+    
+    return {
+        "profile_id": profile_id,
+        "completion_percentage": completion_percentage,
+        "missing_fields": missing_fields,
+        "next_steps": ["Review your expense patterns" if completion_percentage >= 80 else "Complete remaining profile fields"]
+    }
+
+@api_router.get("/tax-blueprint/profile")
+async def get_tax_profile(user: User = Depends(require_auth)):
+    """Retrieve user's tax profile"""
+    profile = await db.tax_profiles.find_one({"user_id": user.id}, {"_id": 0})
+    
+    if not profile:
+        raise HTTPException(status_code=404, detail="Tax profile not found")
+    
+    return profile
+
+@api_router.get("/tax-blueprint/regime-comparison")
+async def get_regime_comparison(user: User = Depends(require_auth)):
+    """Compare Old vs New tax regime for user"""
+    profile = await db.tax_profiles.find_one({"user_id": user.id}, {"_id": 0})
+    
+    if not profile:
+        raise HTTPException(status_code=404, detail="Tax profile not found. Please complete your profile first.")
+    
+    annual_income = profile.get("annual_gross_income", 0)
+    
+    # Old Regime Tax Calculation (FY 2024-25)
+    old_regime_tax = 0
+    if annual_income > 1000000:
+        old_regime_tax = (250000 * 0) + (250000 * 0.05) + (500000 * 0.20) + ((annual_income - 1000000) * 0.30)
+    elif annual_income > 500000:
+        old_regime_tax = (250000 * 0) + (250000 * 0.05) + ((annual_income - 500000) * 0.20)
+    elif annual_income > 250000:
+        old_regime_tax = (250000 * 0) + ((annual_income - 250000) * 0.05)
+    
+    # Deductions in old regime
+    deductions_80c = min(profile.get("current_80c_investment", 0), 150000)
+    deductions_80d = profile.get("health_insurance_self", 0) + profile.get("health_insurance_parents", 0)
+    deductions_80d = min(deductions_80d, 50000)
+    total_deductions = deductions_80c + deductions_80d
+    
+    taxable_income_old = max(annual_income - total_deductions, 0)
+    old_regime_final_tax = old_regime_tax - (total_deductions * 0.30 if annual_income > 1000000 else total_deductions * 0.20)
+    old_regime_final_tax = max(old_regime_final_tax, 0)
+    
+    # New Regime Tax Calculation (FY 2024-25)
+    new_regime_tax = 0
+    if annual_income > 1500000:
+        new_regime_tax = (300000 * 0) + (300000 * 0.05) + (300000 * 0.10) + (300000 * 0.15) + (300000 * 0.20) + ((annual_income - 1500000) * 0.30)
+    elif annual_income > 1200000:
+        new_regime_tax = (300000 * 0) + (300000 * 0.05) + (300000 * 0.10) + (300000 * 0.15) + ((annual_income - 1200000) * 0.20)
+    elif annual_income > 900000:
+        new_regime_tax = (300000 * 0) + (300000 * 0.05) + (300000 * 0.10) + ((annual_income - 900000) * 0.15)
+    elif annual_income > 600000:
+        new_regime_tax = (300000 * 0) + (300000 * 0.05) + ((annual_income - 600000) * 0.10)
+    elif annual_income > 300000:
+        new_regime_tax = (300000 * 0) + ((annual_income - 300000) * 0.05)
+    
+    # Determine recommendation
+    tax_difference = old_regime_final_tax - new_regime_tax
+    
+    if tax_difference < 0:
+        recommended_regime = "old"
+        rationale = f"Old regime saves you ₹{abs(int(tax_difference))} in taxes. Plus, it encourages disciplined investments toward your goals."
+    elif tax_difference > 0:
+        recommended_regime = "new"
+        rationale = f"New regime saves you ₹{int(tax_difference)} in taxes and offers simpler calculations."
+    else:
+        recommended_regime = "old"
+        rationale = "Both regimes result in similar tax. Old regime is recommended for building investment discipline."
+    
+    return RegimeComparison(
+        old_regime_tax=round(old_regime_tax, 2),
+        old_regime_deductions=round(total_deductions, 2),
+        old_regime_final_tax=round(old_regime_final_tax, 2),
+        new_regime_tax=round(new_regime_tax, 2),
+        new_regime_final_tax=round(new_regime_tax, 2),
+        recommended_regime=recommended_regime,
+        tax_saving_difference=round(abs(tax_difference), 2),
+        rationale=rationale
+    )
+
+@api_router.post("/tax-blueprint/generate")
+async def generate_blueprint(force_refresh: bool = False, user: User = Depends(require_auth)):
+    """Generate AI-powered Tax & Wealth Blueprint"""
+    
+    # Check if recent blueprint exists (within 30 days)
+    if not force_refresh:
+        recent_blueprint = await db.tax_blueprints.find_one(
+            {
+                "user_id": user.id,
+                "expires_at": {"$gt": datetime.now(timezone.utc).isoformat()}
+            },
+            {"_id": 0}
+        )
+        if recent_blueprint:
+            return recent_blueprint
+    
+    # Get tax profile
+    profile = await db.tax_profiles.find_one({"user_id": user.id}, {"_id": 0})
+    if not profile:
+        raise HTTPException(status_code=404, detail="Tax profile not found. Please complete your profile first.")
+    
+    # Get expense data from last 3 months
+    current_date = datetime.now(timezone.utc)
+    months = []
+    for i in range(3):
+        month_date = current_date - timedelta(days=30*i)
+        months.append(month_date.strftime("%Y-%m"))
+    
+    expenses_data = []
+    incomes_data = []
+    for month in months:
+        expenses = await db.monthly_expenses.find({"user_id": user.id, "month": month}, {"_id": 0}).to_list(100)
+        incomes = await db.monthly_incomes.find({"user_id": user.id, "month": month}, {"_id": 0}).to_list(100)
+        expenses_data.extend(expenses)
+        incomes_data.extend(incomes)
+    
+    # Calculate average monthly expenses by category
+    expense_by_category = {}
+    for expense in expenses_data:
+        category = expense.get("category", "Other")
+        amount = expense.get("amount", 0)
+        expense_by_category[category] = expense_by_category.get(category, 0) + amount
+    
+    # Average over 3 months
+    avg_expense_by_category = {k: v / max(len(months), 1) for k, v in expense_by_category.items()}
+    
+    # Calculate average monthly income
+    total_income = sum(inc.get("amount_after_tax", 0) for inc in incomes_data)
+    avg_monthly_income = total_income / max(len(months), 1) if months else profile.get("monthly_net_income", profile.get("annual_gross_income", 0) / 12)
+    
+    # Call AI for blueprint generation
+    ai_prompt = f"""Generate Tax & Wealth Blueprint for an Indian taxpayer:
+
+INCOME:
+- Annual Gross: ₹{profile.get('annual_gross_income', 0):,.0f}
+- Monthly Net: ₹{avg_monthly_income:,.0f}
+- Tax Regime: {profile.get('tax_regime', 'old')}
+
+FAMILY:
+- Status: {profile.get('marital_status', 'single')}
+- Children: {profile.get('children_count', 0)}
+- Parents: {profile.get('dependent_parents', 'none')}
+
+CURRENT TAX PLANNING:
+- 80C Utilized: ₹{profile.get('current_80c_investment', 0):,.0f} / ₹1,50,000
+- Health Insurance: ₹{profile.get('health_insurance_self', 0) + profile.get('health_insurance_parents', 0):,.0f}
+
+MONTHLY EXPENSES (Last 3 months avg):
+{chr(10).join([f'- {cat}: ₹{amt:,.0f}' for cat, amt in sorted(avg_expense_by_category.items(), key=lambda x: x[1], reverse=True)[:10]])}
+
+GOALS:
+- Primary: {', '.join(profile.get('primary_goals', ['Wealth Building']))}
+- Timeline: {profile.get('goal_time_horizon', 'long')} term
+- Risk Appetite: {profile.get('risk_appetite', 'moderate')}
+
+Please provide:
+1. 80C gap analysis with specific instrument recommendations (ELSS, NPS, PPF)
+2. Top 3 expense categories where user can reduce spending by 25-40% (Hidden SIP opportunities)
+3. Calculate wealth projection for reduced expenses invested at 12% CAGR for 1yr, 5yr, 10yr
+4. Provide 5 priority actions ranked by impact and ease
+5. Write a motivational summary in simple language
+
+Return response in JSON format matching this structure:
+{{
+    "section_80c_gap": <amount>,
+    "recommendations_80c": [
+        {{
+            "instrument": "ELSS Mutual Fund",
+            "amount": <annual_amount>,
+            "monthly_sip": <monthly_amount>,
+            "rationale": "<why this suits the user>",
+            "expected_return": <amount_after_3_years>,
+            "tax_saved": <tax_benefit>,
+            "risk_level": "moderate",
+            "action": "<specific action>"
+        }}
+    ],
+    "hidden_sip_opportunities": [
+        {{
+            "category": "<expense_category>",
+            "current_monthly": <amount>,
+            "reduction_amount": <amount>,
+            "reduction_percent": <percentage>,
+            "tips": ["<tip1>", "<tip2>", "<tip3>"],
+            "wealth_1yr": <projected_amount>,
+            "wealth_5yr": <projected_amount>,
+            "wealth_10yr": <projected_amount>
+        }}
+    ],
+    "priority_actions": [
+        {{
+            "rank": 1,
+            "action": "<action_description>",
+            "impact": "High/Medium/Low",
+            "effort": "Easy/Moderate/Hard",
+            "expected_saving": <amount>,
+            "time": "<time_to_complete>"
+        }}
+    ],
+    "ai_summary": "<personalized motivational message>",
+    "confidence_score": <0-100>
+}}"""
+    
+    try:
+        # Call AI using Emergent LLM
+        llm_key = os.environ.get('EMERGENT_LLM_KEY')
+        if not llm_key:
+            raise HTTPException(status_code=500, detail="AI service not configured")
+        
+        import json
+        response = requests.post(
+            "https://api.openai.com/v1/chat/completions",
+            headers={
+                "Authorization": f"Bearer {llm_key}",
+                "Content-Type": "application/json"
+            },
+            json={
+                "model": "gpt-4o-mini",
+                "messages": [
+                    {"role": "system", "content": "You are a Senior Financial Planner specializing in Indian tax laws and wealth building for middle-class professionals. Provide practical, actionable advice in simple language. Always return valid JSON."},
+                    {"role": "user", "content": ai_prompt}
+                ],
+                "temperature": 0.7,
+                "response_format": {"type": "json_object"}
+            },
+            timeout=30
+        )
+        
+        if response.status_code != 200:
+            raise HTTPException(status_code=500, detail="AI service error")
+        
+        ai_response = response.json()
+        ai_content = json.loads(ai_response["choices"][0]["message"]["content"])
+        
+    except Exception as e:
+        logger.error(f"AI blueprint generation failed: {str(e)}")
+        # Fallback to rule-based blueprint
+        ai_content = {
+            "section_80c_gap": max(150000 - profile.get('current_80c_investment', 0), 0),
+            "recommendations_80c": [
+                {
+                    "instrument": "ELSS Mutual Fund",
+                    "amount": 40000,
+                    "monthly_sip": 3334,
+                    "rationale": "High growth potential with 3-year lock-in. Suits moderate risk appetite.",
+                    "expected_return": 52000,
+                    "tax_saved": 12000,
+                    "risk_level": "moderate",
+                    "action": "Start SIP of ₹3,334/month"
+                }
+            ],
+            "hidden_sip_opportunities": [],
+            "priority_actions": [
+                {
+                    "rank": 1,
+                    "action": "Max out 80C investments",
+                    "impact": "High",
+                    "effort": "Easy",
+                    "expected_saving": 45000,
+                    "time": "5 minutes"
+                }
+            ],
+            "ai_summary": "Complete your tax profile and expense tracking for personalized recommendations.",
+            "confidence_score": 60
+        }
+    
+    # Build blueprint from AI response
+    section_80c_gap = ai_content.get("section_80c_gap", 0)
+    
+    recommendations_80c = []
+    for rec in ai_content.get("recommendations_80c", []):
+        recommendations_80c.append(InstrumentRecommendation(
+            instrument=rec.get("instrument", ""),
+            suggested_amount=rec.get("amount", 0),
+            rationale=rec.get("rationale", ""),
+            expected_return=rec.get("expected_return", 0),
+            risk_level=rec.get("risk_level", "moderate"),
+            monthly_sip=rec.get("monthly_sip", 0),
+            tax_saved=rec.get("tax_saved", 0),
+            action=rec.get("action", "")
+        ))
+    
+    hidden_opportunities = []
+    total_hidden_sip = 0
+    for opp in ai_content.get("hidden_sip_opportunities", []):
+        reduction = opp.get("reduction_amount", 0)
+        total_hidden_sip += reduction
+        hidden_opportunities.append(HiddenSIPOpportunity(
+            expense_category=opp.get("category", ""),
+            current_monthly_spend=opp.get("current_monthly", 0),
+            recommended_reduction=reduction,
+            reduction_percentage=opp.get("reduction_percent", 0),
+            hidden_sip_amount=reduction,
+            wealth_projection_1yr=opp.get("wealth_1yr", reduction * 12 * 1.04),
+            wealth_projection_5yr=opp.get("wealth_5yr", reduction * 12 * 5 * 1.61),
+            wealth_projection_10yr=opp.get("wealth_10yr", reduction * 12 * 10 * 3.11),
+            behavioral_tips=opp.get("tips", []),
+            action=f"Create SIP of ₹{reduction:,.0f}/month"
+        ))
+    
+    priority_actions = []
+    for action in ai_content.get("priority_actions", []):
+        priority_actions.append(PriorityAction(
+            rank=action.get("rank", 0),
+            action=action.get("action", ""),
+            impact=action.get("impact", "Medium"),
+            effort=action.get("effort", "Moderate"),
+            expected_saving=action.get("expected_saving", 0),
+            time_to_complete=action.get("time", "")
+        ))
+    
+    # Calculate total savings opportunity
+    tax_saved_80c = section_80c_gap * 0.30  # Assuming 30% tax bracket
+    total_opportunity = tax_saved_80c + (total_hidden_sip * 12)
+    
+    # Current and optimized savings
+    current_savings = avg_monthly_income - sum(avg_expense_by_category.values())
+    optimized_savings = current_savings + total_hidden_sip
+    
+    # Wealth projections (12% CAGR)
+    def calculate_sip_value(monthly_amount, years, rate=0.12):
+        months = years * 12
+        monthly_rate = rate / 12
+        if monthly_rate == 0:
+            return monthly_amount * months
+        return monthly_amount * ((pow(1 + monthly_rate, months) - 1) / monthly_rate) * (1 + monthly_rate)
+    
+    # Create blueprint
+    blueprint = TaxBlueprint(
+        user_id=user.id,
+        financial_year="FY2024-25",
+        estimated_tax_liability=0,
+        current_tax_saved=profile.get('current_80c_investment', 0) * 0.30,
+        section_80c_utilized=profile.get('current_80c_investment', 0),
+        section_80c_gap=section_80c_gap,
+        section_80c_recommendations=recommendations_80c,
+        total_tax_saving_opportunity=total_opportunity,
+        hidden_sip_opportunities=hidden_opportunities,
+        total_hidden_sip_potential=total_hidden_sip,
+        current_monthly_savings=current_savings,
+        optimized_monthly_savings=optimized_savings,
+        projected_wealth_1yr=calculate_sip_value(optimized_savings, 1),
+        projected_wealth_3yr=calculate_sip_value(optimized_savings, 3),
+        projected_wealth_5yr=calculate_sip_value(optimized_savings, 5),
+        projected_wealth_10yr=calculate_sip_value(optimized_savings, 10),
+        priority_actions=priority_actions,
+        ai_summary=ai_content.get("ai_summary", "Complete your profile for detailed recommendations."),
+        confidence_score=ai_content.get("confidence_score", 75)
+    )
+    
+    # Save to database
+    blueprint_dict = blueprint.model_dump()
+    blueprint_dict['generated_at'] = blueprint_dict['generated_at'].isoformat()
+    blueprint_dict['expires_at'] = blueprint_dict['expires_at'].isoformat()
+    
+    await db.tax_blueprints.insert_one(blueprint_dict)
+    
+    return blueprint
+
 # Currency Conversion Routes
 @api_router.get("/prices/currency/{from_currency}/{to_currency}")
 async def get_currency_rate(from_currency: str, to_currency: str):
