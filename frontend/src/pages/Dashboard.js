@@ -724,7 +724,7 @@ export default function Dashboard() {
                   <div className="space-y-4">
                     <table className="w-full">
                       <thead>
-                        <tr style={{borderBottom: '2px solid #2d1f3d'}}>
+                        <tr style={{borderBottom: `2px solid ${theme.border}`}}>
                           <th className="text-left py-3 px-2" style={{color: theme.textTertiary, fontSize: '12px', fontWeight: 600}}>CATEGORY</th>
                           <th className="text-right py-3 px-2" style={{color: theme.textTertiary, fontSize: '12px', fontWeight: 600}}>VALUE</th>
                           <th className="text-right py-3 px-2" style={{color: theme.textTertiary, fontSize: '12px', fontWeight: 600}}>%</th>
@@ -732,14 +732,14 @@ export default function Dashboard() {
                       </thead>
                       <tbody>
                         {comparisonData.map((item, index) => (
-                          <tr key={index} style={{borderBottom: '1px solid #1a1229'}}>
+                          <tr key={index} style={{borderBottom: `1px solid ${theme.border}`}}>
                             <td className="py-3 px-2">
                               <div className="flex items-center gap-2">
                                 <div 
                                   className="w-3 h-3 rounded-full" 
                                   style={{background: item.color}}
                                 />
-                                <span style={{color: '#f8fafc', fontWeight: 500}}>{item.name}</span>
+                                <span style={{color: theme.text, fontWeight: 500}}>{item.name}</span>
                               </div>
                             </td>
                             <td className="text-right py-3 px-2" style={{color: theme.textSecondary, fontWeight: 600}}>
@@ -754,8 +754,8 @@ export default function Dashboard() {
                     </table>
                     <div className="pt-4 border-t-2" style={{borderColor: theme.border}}>
                       <div className="flex justify-between items-center">
-                        <span style={{color: '#f8fafc', fontWeight: 600, fontSize: '16px'}}>Net Worth</span>
-                        <span style={{color: '#ec4899', fontWeight: 700, fontSize: '18px'}}>
+                        <span style={{color: theme.text, fontWeight: 600, fontSize: '16px'}}>Net Worth</span>
+                        <span style={{color: theme.primary, fontWeight: 700, fontSize: '18px'}}>
                           {formatCurrency(summary?.net_worth || 0, selectedCurrency, currencyFormat)}
                         </span>
                       </div>
