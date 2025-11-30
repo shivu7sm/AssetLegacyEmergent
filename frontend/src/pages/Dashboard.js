@@ -667,11 +667,11 @@ export default function Dashboard() {
         <div className="space-y-6">
           {/* Assets vs Liabilities Row */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card data-testid="comparison-card" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+            <Card data-testid="comparison-card" style={{background: theme.backgroundSecondary, borderColor: theme.border, boxShadow: theme.cardShadow}}>
               <CardHeader>
                 <div className="flex justify-between items-center">
                   <div>
-                    <CardTitle style={{color: '#f8fafc'}}>Assets vs Liabilities</CardTitle>
+                    <CardTitle style={{color: theme.text}}>Assets vs Liabilities</CardTitle>
                     <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Financial position overview</p>
                   </div>
                   {comparisonData.length > 0 && (
