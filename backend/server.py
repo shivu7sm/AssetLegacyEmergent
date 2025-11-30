@@ -3464,8 +3464,12 @@ Format your response clearly with these section headers."""
             "actions": []
         }
         
-        current_section = None
-        lines = response.strip().split('\n')
+        if ai_response:
+            current_section = None
+            lines = ai_response.strip().split('\n')
+        else:
+            # Use fallback template when AI fails
+            lines = []
         
         for line in lines:
             line = line.strip()
