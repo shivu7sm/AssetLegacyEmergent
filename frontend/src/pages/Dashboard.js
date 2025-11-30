@@ -712,9 +712,9 @@ export default function Dashboard() {
             </Card>
 
             {/* Comparison Data Table */}
-            <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+            <Card style={{background: theme.backgroundSecondary, borderColor: theme.border, boxShadow: theme.cardShadow}}>
               <CardHeader>
-                <CardTitle style={{color: '#f8fafc'}}>Financial Breakdown</CardTitle>
+                <CardTitle style={{color: theme.text}}>Financial Breakdown</CardTitle>
                 <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Detailed values and percentages</p>
               </CardHeader>
               <CardContent>
