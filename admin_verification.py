@@ -8,7 +8,7 @@ import json
 import time
 
 def test_admin_endpoints():
-    base_url = "https://legacyvault-4.preview.emergentagent.com"
+    base_url = "https://white-theme-ui.preview.emergentagent.com"
     api_url = f"{base_url}/api"
     
     # Create admin user

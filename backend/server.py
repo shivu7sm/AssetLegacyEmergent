@@ -3631,7 +3631,7 @@ async def create_checkout_session(data: dict, user: User = Depends(require_auth)
                 frontend_url = cors_origins.split(',')[0]
             else:
                 # Last resort: use the backend URL domain (they're usually the same in preview)
-                frontend_url = os.environ.get('FRONTEND_URL', os.environ.get('APP_URL', 'https://legacyvault-4.preview.emergentagent.com'))
+                frontend_url = os.environ.get('FRONTEND_URL', os.environ.get('APP_URL', 'https://white-theme-ui.preview.emergentagent.com'))
         
         # Ensure URL has scheme
         if not frontend_url.startswith('http'):
