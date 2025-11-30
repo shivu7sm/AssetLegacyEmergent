@@ -78,11 +78,11 @@ function AssetTableRow({ asset, typeInfo, purchaseValueOriginal, currentValueOri
           <span className="text-2xl">{typeInfo.icon}</span>
           <div>
             <div className="flex items-center gap-2">
-              <span style={{color: isLiability ? '#ef4444' : '#f8fafc', fontWeight: 500}}>{asset.name}</span>
+              <span style={{color: isLiability ? theme.error : theme.text, fontWeight: 500}}>{asset.name}</span>
               {isLiability && (
                 <span 
                   className="text-xs px-2 py-0.5 rounded-full font-semibold"
-                  style={{background: '#dc2626', color: '#fff'}}
+                  style={{background: theme.error, color: '#fff'}}
                 >
                   DEBT
                 </span>
