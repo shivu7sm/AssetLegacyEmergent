@@ -4519,32 +4519,28 @@ Keep tips concise and numbered. Avoid generic advice."""
 app.include_router(api_router)
 
 # CORS configuration for production
-cors_origins_str = os.environ.get('CORS_ORIGINS', '*')
-if cors_origins_str == '*':
-    # For wildcard, must disable credentials per CORS spec
-    # But this means cookies won't work - so we actually want to allow all origins WITH credentials
-    # This is less secure but needed for auth to work
-    cors_origins = ["*"]
-    allow_credentials = False  # Cannot use credentials with wildcard
-    logger.warning("CORS set to wildcard (*) - credentials disabled. Set CORS_ORIGINS env var for production.")
+cors_origins_str = os.environ.get('CORS_ORIGINS', '')
+
+# Determine CORS settings based on environment
+if not cors_origins_str or cors_origins_str == '*':
+    # Development or unspecified: Use regex to match any origin with credentials
+    # This allows auth to work without knowing the exact domain
+    cors_origins = ["*"]  # We'll override this with allow_origin_regex below
+    allow_credentials = True
+    allow_origin_regex = ".*"  # Match any origin - needed for dev/testing
+    logger.info("CORS: Using permissive configuration (any origin with credentials)")
 else:
-    # In production, use specific origins with credentials
+    # Production with specific origins
     cors_origins = [origin.strip() for origin in cors_origins_str.split(',')]
     allow_credentials = True
-    logger.info(f"CORS configured for specific origins: {cors_origins}")
-
-# For Emergent deployments: If no CORS_ORIGINS set but we detect we're in production, allow all
-# This is a workaround for Kubernetes deployments where same domain is used
-if cors_origins_str == '*' and os.environ.get('ENVIRONMENT') == 'production':
-    # Allow credentials by using a permissive origin pattern
-    # In practice, the ingress should inject proper origin
-    allow_credentials = True
-    logger.info("Production environment detected - enabling credentials for authentication")
+    allow_origin_regex = None
+    logger.info(f"CORS: Configured for specific origins: {cors_origins}")
 
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=allow_credentials,
-    allow_origins=cors_origins,
+    allow_origins=cors_origins if cors_origins != ["*"] else [],
+    allow_origin_regex=allow_origin_regex,
     allow_methods=["*"],
     allow_headers=["*"],
     expose_headers=["*"],
