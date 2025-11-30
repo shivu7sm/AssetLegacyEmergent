@@ -69,6 +69,10 @@ function AuthProvider({ children }) {
           // If user data is in response, use it directly
           if (sessionResponse.data.user) {
             setUser(sessionResponse.data.user);
+            // Check onboarding for new user
+            if (!sessionResponse.data.user.onboarding_completed) {
+              setShowOnboarding(true);
+            }
           } else {
             // Otherwise fetch user data
             const response = await axios.get(`${API}/auth/me`, { 
@@ -78,6 +82,10 @@ function AuthProvider({ children }) {
               } : {}
             });
             setUser(response.data);
+            // Check onboarding
+            if (response.data && !response.data.onboarding_completed) {
+              setShowOnboarding(true);
+            }
           }
           
           // Clear the hash and navigate
