@@ -208,12 +208,12 @@ export default function Layout({ children }) {
                   {demoMode ? (
                     <>
                       <FlaskConical className="w-4 h-4" />
-                      <span>DEMO MODE</span>
+                      <span>DEMO</span>
                     </>
                   ) : (
                     <>
                       <Database className="w-4 h-4" />
-                      <span>LIVE MODE</span>
+                      <span>LIVE</span>
                     </>
                   )}
                 </button>
