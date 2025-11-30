@@ -1203,9 +1203,10 @@ export default function Assets() {
                   data-testid={`asset-card-${asset.id}`}
                   className="transition-all"
                   style={{
-                    background: isLiability ? 'linear-gradient(135deg, #450a0a 0%, #1a1229 100%)' : '#1a1229',
-                    borderColor: isLiability ? '#dc2626' : '#2d1f3d',
-                    borderWidth: isLiability ? '2px' : '1px'
+                    background: theme.cardBg,
+                    borderColor: isLiability ? theme.error : theme.cardBorder,
+                    borderWidth: isLiability ? '2px' : '1px',
+                    boxShadow: theme.cardShadow
                   }}
                 >
                   <CardHeader>
