@@ -522,7 +522,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Onboarding Flow and Demo Data Auto-Loading"
+    - "Light/White Theme System"
   stuck_tasks:
     - "Loan Calculator with Timeout"
   test_all: false
