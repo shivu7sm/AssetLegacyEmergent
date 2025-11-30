@@ -1363,7 +1363,7 @@ export default function Assets() {
                         );
                       })}
                     </tbody>
-                    <tfoot style={{background: '#16001e', borderTop: '2px solid #2d1f3d'}}>
+                    <tfoot style={{background: theme.backgroundTertiary, borderTop: `2px solid ${theme.border}`}}>
                       <tr>
                         <td colSpan="3" className="p-4" style={{color: theme.text, fontWeight: 600, fontSize: '1.1rem'}}>
                           TOTAL
@@ -1374,7 +1374,7 @@ export default function Assets() {
                         <td className="p-4 text-right" style={{color: theme.textSecondary, fontWeight: 600, fontSize: '1rem'}}>
                           {purchaseTotal !== null ? formatCurrency(purchaseTotal, selectedCurrency, currencyFormat) : 'Calculating...'}
                         </td>
-                        <td className="p-4 text-right" style={{color: '#ec4899', fontWeight: 700, fontSize: '1.2rem'}}>
+                        <td className="p-4 text-right" style={{color: theme.primary, fontWeight: 700, fontSize: '1.2rem'}}>
                           {currentTotal !== null ? formatCurrency(currentTotal, selectedCurrency, currencyFormat) : 'Calculating...'}
                         </td>
                         <td className="p-4 text-right" style={{fontWeight: 600, fontSize: '1rem'}}>
