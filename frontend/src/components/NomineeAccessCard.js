@@ -5,11 +5,13 @@ import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
 import { Shield, Link as LinkIcon, Copy, Eye, Clock, Zap, ArrowRight, Check, ChevronUp, ChevronDown, Edit, Trash2 } from 'lucide-react';
+import { useTheme } from '@/context/ThemeContext';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 export default function NomineeAccessCard({ nominee, onUpdate, onEdit, onDelete, onMovePriority, isFirst, isLast, index }) {
+  const { theme } = useTheme();
   const [generating, setGenerating] = useState(false);
   const [accessLink, setAccessLink] = useState(null);
   const [showLink, setShowLink] = useState(false);
