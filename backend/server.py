@@ -4529,6 +4529,8 @@ else:
     cors_origins = [origin.strip() for origin in cors_origins_str.split(',')]
     allow_credentials = True
 
+logger.info(f"CORS Configuration - Origins: {cors_origins}, Credentials: {allow_credentials}")
+
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=allow_credentials,
