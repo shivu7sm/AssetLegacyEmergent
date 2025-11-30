@@ -2061,6 +2061,19 @@ async def toggle_demo_mode(user: User = Depends(require_auth)):
         "message": f"Switched to {'Demo' if new_mode else 'Live'} mode"
     }
 
+@api_router.post("/user/complete-onboarding")
+async def complete_onboarding(user: User = Depends(require_auth)):
+    """Mark onboarding as completed for user"""
+    await db.users.update_one(
+        {"id": user.id},
+        {"$set": {"onboarding_completed": True}}
+    )
+    
+    return {
+        "success": True,
+        "message": "Onboarding completed"
+    }
+
 @api_router.post("/demo/reseed")
 async def reseed_demo_data(user: User = Depends(require_auth)):
     """Force reseed demo data - useful after updates"""
