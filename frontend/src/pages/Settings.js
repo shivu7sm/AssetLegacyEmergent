@@ -20,7 +20,7 @@ const API = `${BACKEND_URL}/api`;
 
 // Appearance Section Component
 function AppearanceSection() {
-  const { dashboardTheme, setTheme } = useTheme();
+  const { dashboardTheme, setTheme, theme } = useTheme();
 
   return (
     <div className="space-y-6">
