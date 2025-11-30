@@ -196,9 +196,9 @@ export default function TaxBlueprint() {
 
   const renderProfileDialog = () => (
     <Dialog open={showProfileDialog} onOpenChange={setShowProfileDialog}>
-      <DialogContent style={{background: '#1a1229', borderColor: '#2d1f3d', maxWidth: '700px', maxHeight: '90vh', overflowY: 'auto'}}>
+      <DialogContent style={{background: theme.backgroundSecondary, borderColor: theme.border, maxWidth: '700px', maxHeight: '90vh', overflowY: 'auto'}}>
         <DialogHeader>
-          <DialogTitle style={{color: '#f8fafc'}}>
+          <DialogTitle style={{color: theme.text}}>
             Tax & Wealth Profile - Step {currentStep}/3
           </DialogTitle>
         </DialogHeader>
@@ -216,57 +216,57 @@ export default function TaxBlueprint() {
           {currentStep === 1 && (
             <div className="space-y-4">
               <div>
-                <Label style={{color: '#94a3b8'}}>Employment Status</Label>
+                <Label style={{color: theme.textTertiary}}>Employment Status</Label>
                 <Select value={profileForm.employment_status} onValueChange={(value) => setProfileForm({...profileForm, employment_status: value})}>
-                  <SelectTrigger style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}>
+                  <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
-                    <SelectItem value="salaried_private" style={{color: '#f8fafc'}}>Salaried (Private)</SelectItem>
-                    <SelectItem value="salaried_govt" style={{color: '#f8fafc'}}>Salaried (Government)</SelectItem>
-                    <SelectItem value="self_employed" style={{color: '#f8fafc'}}>Self-Employed</SelectItem>
-                    <SelectItem value="freelancer" style={{color: '#f8fafc'}}>Freelancer</SelectItem>
-                    <SelectItem value="retired" style={{color: '#f8fafc'}}>Retired</SelectItem>
+                  <SelectContent style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
+                    <SelectItem value="salaried_private" style={{color: theme.text}}>Salaried (Private)</SelectItem>
+                    <SelectItem value="salaried_govt" style={{color: theme.text}}>Salaried (Government)</SelectItem>
+                    <SelectItem value="self_employed" style={{color: theme.text}}>Self-Employed</SelectItem>
+                    <SelectItem value="freelancer" style={{color: theme.text}}>Freelancer</SelectItem>
+                    <SelectItem value="retired" style={{color: theme.text}}>Retired</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div>
-                <Label style={{color: '#94a3b8'}}>Annual Gross Income (₹)</Label>
+                <Label style={{color: theme.textTertiary}}>Annual Gross Income (₹)</Label>
                 <Input
                   type="number"
                   value={profileForm.annual_gross_income}
                   onChange={(e) => setProfileForm({...profileForm, annual_gross_income: parseFloat(e.target.value) || 0})}
                   placeholder="e.g., 1200000"
-                  style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}
+                  style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
                 />
               </div>
 
               <div>
-                <Label style={{color: '#94a3b8'}}>Tax Regime</Label>
+                <Label style={{color: theme.textTertiary}}>Tax Regime</Label>
                 <Select value={profileForm.tax_regime} onValueChange={(value) => setProfileForm({...profileForm, tax_regime: value})}>
-                  <SelectTrigger style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}>
+                  <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
-                    <SelectItem value="old" style={{color: '#f8fafc'}}>Old Regime (with deductions)</SelectItem>
-                    <SelectItem value="new" style={{color: '#f8fafc'}}>New Regime (lower rates)</SelectItem>
-                    <SelectItem value="undecided" style={{color: '#f8fafc'}}>Not sure - Help me decide</SelectItem>
+                  <SelectContent style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
+                    <SelectItem value="old" style={{color: theme.text}}>Old Regime (with deductions)</SelectItem>
+                    <SelectItem value="new" style={{color: theme.text}}>New Regime (lower rates)</SelectItem>
+                    <SelectItem value="undecided" style={{color: theme.text}}>Not sure - Help me decide</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div>
-                <Label style={{color: '#94a3b8'}}>Marital Status</Label>
+                <Label style={{color: theme.textTertiary}}>Marital Status</Label>
                 <Select value={profileForm.marital_status} onValueChange={(value) => setProfileForm({...profileForm, marital_status: value})}>
-                  <SelectTrigger style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}>
+                  <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
-                    <SelectItem value="single" style={{color: '#f8fafc'}}>Single</SelectItem>
-                    <SelectItem value="married_earning" style={{color: '#f8fafc'}}>Married (Spouse earning)</SelectItem>
-                    <SelectItem value="married_non_earning" style={{color: '#f8fafc'}}>Married (Spouse non-earning)</SelectItem>
-                    <SelectItem value="divorced" style={{color: '#f8fafc'}}>Divorced/Separated</SelectItem>
+                  <SelectContent style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
+                    <SelectItem value="single" style={{color: theme.text}}>Single</SelectItem>
+                    <SelectItem value="married_earning" style={{color: theme.text}}>Married (Spouse earning)</SelectItem>
+                    <SelectItem value="married_non_earning" style={{color: theme.text}}>Married (Spouse non-earning)</SelectItem>
+                    <SelectItem value="divorced" style={{color: theme.text}}>Divorced/Separated</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -277,55 +277,55 @@ export default function TaxBlueprint() {
           {currentStep === 2 && (
             <div className="space-y-4">
               <div>
-                <Label style={{color: '#94a3b8'}}>Number of Children</Label>
+                <Label style={{color: theme.textTertiary}}>Number of Children</Label>
                 <Input
                   type="number"
                   value={profileForm.children_count}
                   onChange={(e) => setProfileForm({...profileForm, children_count: parseInt(e.target.value) || 0})}
-                  style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}
+                  style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
                 />
               </div>
 
               <div>
-                <Label style={{color: '#94a3b8'}}>Dependent Parents</Label>
+                <Label style={{color: theme.textTertiary}}>Dependent Parents</Label>
                 <Select value={profileForm.dependent_parents} onValueChange={(value) => setProfileForm({...profileForm, dependent_parents: value})}>
-                  <SelectTrigger style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}>
+                  <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
-                    <SelectItem value="none" style={{color: '#f8fafc'}}>No dependent parents</SelectItem>
-                    <SelectItem value="one_senior" style={{color: '#f8fafc'}}>One parent (above 60)</SelectItem>
-                    <SelectItem value="two_senior" style={{color: '#f8fafc'}}>Two parents (above 60)</SelectItem>
-                    <SelectItem value="disabled" style={{color: '#f8fafc'}}>Parents with disabilities</SelectItem>
+                  <SelectContent style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
+                    <SelectItem value="none" style={{color: theme.text}}>No dependent parents</SelectItem>
+                    <SelectItem value="one_senior" style={{color: theme.text}}>One parent (above 60)</SelectItem>
+                    <SelectItem value="two_senior" style={{color: theme.text}}>Two parents (above 60)</SelectItem>
+                    <SelectItem value="disabled" style={{color: theme.text}}>Parents with disabilities</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div>
-                <Label style={{color: '#94a3b8'}}>Goal Timeline</Label>
+                <Label style={{color: theme.textTertiary}}>Goal Timeline</Label>
                 <Select value={profileForm.goal_time_horizon} onValueChange={(value) => setProfileForm({...profileForm, goal_time_horizon: value})}>
-                  <SelectTrigger style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}>
+                  <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
-                    <SelectItem value="short" style={{color: '#f8fafc'}}>0-3 years (Short-term)</SelectItem>
-                    <SelectItem value="medium" style={{color: '#f8fafc'}}>3-7 years (Medium-term)</SelectItem>
-                    <SelectItem value="long" style={{color: '#f8fafc'}}>7-15 years (Long-term)</SelectItem>
-                    <SelectItem value="retirement" style={{color: '#f8fafc'}}>15+ years (Retirement)</SelectItem>
+                  <SelectContent style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
+                    <SelectItem value="short" style={{color: theme.text}}>0-3 years (Short-term)</SelectItem>
+                    <SelectItem value="medium" style={{color: theme.text}}>3-7 years (Medium-term)</SelectItem>
+                    <SelectItem value="long" style={{color: theme.text}}>7-15 years (Long-term)</SelectItem>
+                    <SelectItem value="retirement" style={{color: theme.text}}>15+ years (Retirement)</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div>
-                <Label style={{color: '#94a3b8'}}>Risk Appetite</Label>
+                <Label style={{color: theme.textTertiary}}>Risk Appetite</Label>
                 <Select value={profileForm.risk_appetite} onValueChange={(value) => setProfileForm({...profileForm, risk_appetite: value})}>
-                  <SelectTrigger style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}>
+                  <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
-                    <SelectItem value="conservative" style={{color: '#f8fafc'}}>Conservative (FD, PPF only)</SelectItem>
-                    <SelectItem value="moderate" style={{color: '#f8fafc'}}>Moderate (Mix of equity & debt)</SelectItem>
-                    <SelectItem value="aggressive" style={{color: '#f8fafc'}}>Aggressive (High equity)</SelectItem>
+                  <SelectContent style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
+                    <SelectItem value="conservative" style={{color: theme.text}}>Conservative (FD, PPF only)</SelectItem>
+                    <SelectItem value="moderate" style={{color: theme.text}}>Moderate (Mix of equity & debt)</SelectItem>
+                    <SelectItem value="aggressive" style={{color: theme.text}}>Aggressive (High equity)</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -336,58 +336,58 @@ export default function TaxBlueprint() {
           {currentStep === 3 && (
             <div className="space-y-4">
               <div>
-                <Label style={{color: '#94a3b8'}}>Current 80C Investments (₹/year)</Label>
+                <Label style={{color: theme.textTertiary}}>Current 80C Investments (₹/year)</Label>
                 <Input
                   type="number"
                   value={profileForm.current_80c_investment}
                   onChange={(e) => setProfileForm({...profileForm, current_80c_investment: parseFloat(e.target.value) || 0})}
                   placeholder="e.g., 80000"
-                  style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}
+                  style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
                 />
-                <p className="text-xs mt-1" style={{color: '#64748b'}}>Maximum limit: ₹1,50,000</p>
+                <p className="text-xs mt-1" style={{color: theme.textMuted}}>Maximum limit: ₹1,50,000</p>
               </div>
 
               <div>
-                <Label style={{color: '#94a3b8'}}>Health Insurance - Self (₹/year)</Label>
+                <Label style={{color: theme.textTertiary}}>Health Insurance - Self (₹/year)</Label>
                 <Input
                   type="number"
                   value={profileForm.health_insurance_self}
                   onChange={(e) => setProfileForm({...profileForm, health_insurance_self: parseFloat(e.target.value) || 0})}
                   placeholder="e.g., 25000"
-                  style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}
+                  style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
                 />
               </div>
 
               <div>
-                <Label style={{color: '#94a3b8'}}>Health Insurance - Parents (₹/year)</Label>
+                <Label style={{color: theme.textTertiary}}>Health Insurance - Parents (₹/year)</Label>
                 <Input
                   type="number"
                   value={profileForm.health_insurance_parents}
                   onChange={(e) => setProfileForm({...profileForm, health_insurance_parents: parseFloat(e.target.value) || 0})}
                   placeholder="e.g., 25000"
-                  style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}
+                  style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
                 />
               </div>
 
               <div>
-                <Label style={{color: '#94a3b8'}}>Home Loan Interest (₹/year)</Label>
+                <Label style={{color: theme.textTertiary}}>Home Loan Interest (₹/year)</Label>
                 <Input
                   type="number"
                   value={profileForm.home_loan_interest}
                   onChange={(e) => setProfileForm({...profileForm, home_loan_interest: parseFloat(e.target.value) || 0})}
                   placeholder="Section 24B - up to ₹2,00,000"
-                  style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}
+                  style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
                 />
               </div>
 
               <div>
-                <Label style={{color: '#94a3b8'}}>NPS Additional Contribution (₹/year)</Label>
+                <Label style={{color: theme.textTertiary}}>NPS Additional Contribution (₹/year)</Label>
                 <Input
                   type="number"
                   value={profileForm.nps_additional}
                   onChange={(e) => setProfileForm({...profileForm, nps_additional: parseFloat(e.target.value) || 0})}
                   placeholder="Section 80CCD(1B) - up to ₹50,000"
-                  style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}
+                  style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
                 />
               </div>
             </div>
@@ -399,7 +399,7 @@ export default function TaxBlueprint() {
               <Button 
                 onClick={() => setCurrentStep(currentStep - 1)}
                 variant="outline"
-                style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+                style={{borderColor: theme.border, color: theme.textTertiary}}
               >
                 Previous
               </Button>
@@ -433,10 +433,10 @@ export default function TaxBlueprint() {
         {/* Header */}
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold" style={{color: '#f8fafc'}}>
+            <h1 className="text-3xl font-bold" style={{color: theme.text}}>
               ⚡ Tax & Wealth Blueprint
             </h1>
-            <p className="text-sm mt-1" style={{color: '#94a3b8'}}>
+            <p className="text-sm mt-1" style={{color: theme.textTertiary}}>
               &quot;अपने सपनों को सच करें&quot; - Save Smart, Grow Wealth
             </p>
           </div>
@@ -456,7 +456,7 @@ export default function TaxBlueprint() {
                 <Button 
                   onClick={() => setShowProfileDialog(true)}
                   variant="outline"
-                  style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+                  style={{borderColor: theme.border, color: theme.textTertiary}}
                 >
                   Edit Profile
                 </Button>
@@ -474,13 +474,13 @@ export default function TaxBlueprint() {
         </div>
 
         {!profile ? (
-          <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+          <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
             <CardContent className="p-12 text-center">
               <Sparkles className="w-16 h-16 mx-auto mb-4" style={{color: '#a855f7'}} />
-              <h2 className="text-2xl font-bold mb-2" style={{color: '#f8fafc'}}>
+              <h2 className="text-2xl font-bold mb-2" style={{color: theme.text}}>
                 Welcome to Sankalp Planner
               </h2>
-              <p className="text-base mb-6" style={{color: '#94a3b8'}}>
+              <p className="text-base mb-6" style={{color: theme.textTertiary}}>
                 Most Indians leave ₹50,000+ on the table every year. Let&apos;s find your hidden tax savings and wealth opportunities.
               </p>
               <Button 
@@ -493,13 +493,13 @@ export default function TaxBlueprint() {
             </CardContent>
           </Card>
         ) : !blueprint ? (
-          <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+          <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
             <CardContent className="p-12 text-center">
               <Clock className="w-16 h-16 mx-auto mb-4" style={{color: '#f59e0b'}} />
-              <h2 className="text-2xl font-bold mb-2" style={{color: '#f8fafc'}}>
+              <h2 className="text-2xl font-bold mb-2" style={{color: theme.text}}>
                 Generating Your Blueprint...
               </h2>
-              <p className="text-base mb-6" style={{color: '#94a3b8'}}>
+              <p className="text-base mb-6" style={{color: theme.textTertiary}}>
                 Our AI is analyzing your profile and finding tax savings opportunities.
               </p>
               <Button 
@@ -513,14 +513,14 @@ export default function TaxBlueprint() {
           </Card>
         ) : (
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
-              <TabsTrigger value="dashboard" style={{color: '#94a3b8'}}>Dashboard</TabsTrigger>
-              <TabsTrigger value="80c-planner" style={{color: '#94a3b8'}}>80C Planner</TabsTrigger>
-              <TabsTrigger value="hidden-sip" style={{color: '#94a3b8'}}>Hidden SIP</TabsTrigger>
-              <TabsTrigger value="tax-benefits" style={{color: '#94a3b8'}}>📚 Tax Guide</TabsTrigger>
-              <TabsTrigger value="wealth-structures" style={{color: '#94a3b8'}}>🏛️ HUF & Trust</TabsTrigger>
+            <TabsList style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
+              <TabsTrigger value="dashboard" style={{color: theme.textTertiary}}>Dashboard</TabsTrigger>
+              <TabsTrigger value="80c-planner" style={{color: theme.textTertiary}}>80C Planner</TabsTrigger>
+              <TabsTrigger value="hidden-sip" style={{color: theme.textTertiary}}>Hidden SIP</TabsTrigger>
+              <TabsTrigger value="tax-benefits" style={{color: theme.textTertiary}}>📚 Tax Guide</TabsTrigger>
+              <TabsTrigger value="wealth-structures" style={{color: theme.textTertiary}}>🏛️ HUF & Trust</TabsTrigger>
               {regimeComparison && (
-                <TabsTrigger value="regime" style={{color: '#94a3b8'}}>Tax Regime</TabsTrigger>
+                <TabsTrigger value="regime" style={{color: theme.textTertiary}}>Tax Regime</TabsTrigger>
               )}
             </TabsList>
 
@@ -531,11 +531,11 @@ export default function TaxBlueprint() {
                 <CardContent className="p-8">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm mb-2" style={{color: '#94a3b8'}}>💰 TAX SAVINGS UNLOCKED</p>
+                      <p className="text-sm mb-2" style={{color: theme.textTertiary}}>💰 TAX SAVINGS UNLOCKED</p>
                       <h2 className="text-4xl font-bold mb-2" style={{color: '#10b981'}}>
                         {formatCurrency(blueprint.total_tax_saving_opportunity)}
                       </h2>
-                      <p className="text-base" style={{color: '#cbd5e1'}}>Hidden Money You Can Save This Year</p>
+                      <p className="text-base" style={{color: theme.textSecondary}}>Hidden Money You Can Save This Year</p>
                     </div>
                     <Zap className="w-20 h-20" style={{color: '#a855f7', opacity: 0.3}} />
                   </div>
@@ -543,14 +543,14 @@ export default function TaxBlueprint() {
               </Card>
 
               {/* 80C Gap Card */}
-              <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+              <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                 <CardHeader>
-                  <CardTitle style={{color: '#f8fafc'}}>📊 80C Tax Saver Gap</CardTitle>
+                  <CardTitle style={{color: theme.text}}>📊 80C Tax Saver Gap</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     <div>
-                      <div className="flex justify-between text-sm mb-2" style={{color: '#94a3b8'}}>
+                      <div className="flex justify-between text-sm mb-2" style={{color: theme.textTertiary}}>
                         <span>{formatCurrency(blueprint.section_80c_utilized)} / {formatCurrency(150000)}</span>
                         <span>{((blueprint.section_80c_utilized / 150000) * 100).toFixed(0)}%</span>
                       </div>
@@ -570,30 +570,30 @@ export default function TaxBlueprint() {
                         <p className="font-semibold mb-2" style={{color: '#ef4444'}}>
                           ⚠️ You're missing {formatCurrency(blueprint.section_80c_gap)} in tax deductions!
                         </p>
-                        <p className="text-sm" style={{color: '#cbd5e1'}}>
+                        <p className="text-sm" style={{color: theme.textSecondary}}>
                           → Save {formatCurrency(blueprint.section_80c_gap * 0.30)} in taxes by filling this gap
                         </p>
                       </div>
                     )}
 
                     <div className="space-y-3">
-                      <p className="font-semibold" style={{color: '#f8fafc'}}>Top Recommendations:</p>
+                      <p className="font-semibold" style={{color: theme.text}}>Top Recommendations:</p>
                       {blueprint.section_80c_recommendations.slice(0, 2).map((rec, idx) => (
-                        <div key={idx} className="p-4 rounded-lg" style={{background: '#0f0a1a', border: '1px solid #2d1f3d'}}>
+                        <div key={idx} className="p-4 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
                           <div className="flex justify-between items-start mb-2">
                             <p className="font-semibold" style={{color: '#10b981'}}>{rec.instrument}</p>
                             <span className="text-xs px-2 py-1 rounded" style={{background: 'rgba(168, 85, 247, 0.1)', color: '#a855f7'}}>
                               {rec.risk_level}
                             </span>
                           </div>
-                          <p className="text-sm mb-3" style={{color: '#94a3b8'}}>{rec.rationale}</p>
+                          <p className="text-sm mb-3" style={{color: theme.textTertiary}}>{rec.rationale}</p>
                           <div className="grid grid-cols-2 gap-2 text-sm">
                             <div>
-                              <p style={{color: '#64748b'}}>Monthly SIP</p>
-                              <p className="font-semibold" style={{color: '#f8fafc'}}>{formatCurrency(rec.monthly_sip)}</p>
+                              <p style={{color: theme.textMuted}}>Monthly SIP</p>
+                              <p className="font-semibold" style={{color: theme.text}}>{formatCurrency(rec.monthly_sip)}</p>
                             </div>
                             <div>
-                              <p style={{color: '#64748b'}}>Tax Saved</p>
+                              <p style={{color: theme.textMuted}}>Tax Saved</p>
                               <p className="font-semibold" style={{color: '#10b981'}}>{formatCurrency(rec.tax_saved)}</p>
                             </div>
                           </div>
@@ -606,26 +606,26 @@ export default function TaxBlueprint() {
 
               {/* Hidden SIP Opportunities */}
               {blueprint.hidden_sip_opportunities.length > 0 && (
-                <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                   <CardHeader>
-                    <CardTitle style={{color: '#f8fafc'}}>💸 Hidden SIP Finder</CardTitle>
-                    <p className="text-sm" style={{color: '#94a3b8'}}>Convert Expenses → Wealth</p>
+                    <CardTitle style={{color: theme.text}}>💸 Hidden SIP Finder</CardTitle>
+                    <p className="text-sm" style={{color: theme.textTertiary}}>Convert Expenses → Wealth</p>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
                       {blueprint.hidden_sip_opportunities.slice(0, 1).map((opp, idx) => (
                         <div key={idx} className="p-6 rounded-lg" style={{background: 'linear-gradient(135deg, #0f0a1a 0%, #1a1229 100%)', border: '1px solid #2d1f3d'}}>
-                          <p className="text-sm mb-2" style={{color: '#64748b'}}>TOP OPPORTUNITY:</p>
-                          <p className="text-xl font-bold mb-4" style={{color: '#f8fafc'}}>
+                          <p className="text-sm mb-2" style={{color: theme.textMuted}}>TOP OPPORTUNITY:</p>
+                          <p className="text-xl font-bold mb-4" style={{color: theme.text}}>
                             {opp.expense_category}: {formatCurrency(opp.current_monthly_spend)}/month
                           </p>
                           
-                          <p className="text-sm mb-3" style={{color: '#94a3b8'}}>
+                          <p className="text-sm mb-3" style={{color: theme.textTertiary}}>
                             If you reduce by {opp.reduction_percentage.toFixed(0)}%...
                           </p>
                           
                           <div className="mb-4 p-4 rounded" style={{background: 'rgba(16, 185, 129, 0.1)'}}>
-                            <p className="text-sm mb-1" style={{color: '#64748b'}}>Hidden SIP Amount</p>
+                            <p className="text-sm mb-1" style={{color: theme.textMuted}}>Hidden SIP Amount</p>
                             <p className="text-2xl font-bold" style={{color: '#10b981'}}>
                               {formatCurrency(opp.hidden_sip_amount)}/month
                             </p>
@@ -633,19 +633,19 @@ export default function TaxBlueprint() {
 
                           <div className="grid grid-cols-3 gap-4 mb-4">
                             <div className="text-center">
-                              <p className="text-xs mb-1" style={{color: '#64748b'}}>In 1 year</p>
-                              <p className="font-semibold" style={{color: '#f8fafc'}}>
+                              <p className="text-xs mb-1" style={{color: theme.textMuted}}>In 1 year</p>
+                              <p className="font-semibold" style={{color: theme.text}}>
                                 {formatCurrency(opp.wealth_projection_1yr)}
                               </p>
                             </div>
                             <div className="text-center">
-                              <p className="text-xs mb-1" style={{color: '#64748b'}}>In 5 years</p>
+                              <p className="text-xs mb-1" style={{color: theme.textMuted}}>In 5 years</p>
                               <p className="font-semibold" style={{color: '#3b82f6'}}>
                                 {formatCurrency(opp.wealth_projection_5yr)} 💎
                               </p>
                             </div>
                             <div className="text-center">
-                              <p className="text-xs mb-1" style={{color: '#64748b'}}>In 10 years</p>
+                              <p className="text-xs mb-1" style={{color: theme.textMuted}}>In 10 years</p>
                               <p className="font-semibold" style={{color: '#a855f7'}}>
                                 {formatCurrency(opp.wealth_projection_10yr)} 🚀
                               </p>
@@ -663,9 +663,9 @@ export default function TaxBlueprint() {
               )}
 
               {/* Priority Actions */}
-              <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+              <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                 <CardHeader>
-                  <CardTitle style={{color: '#f8fafc'}}>⚡ Quick Wins (Do These First)</CardTitle>
+                  <CardTitle style={{color: theme.text}}>⚡ Quick Wins (Do These First)</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
@@ -673,7 +673,7 @@ export default function TaxBlueprint() {
                       <div 
                         key={idx} 
                         className="flex items-center justify-between p-4 rounded-lg"
-                        style={{background: '#0f0a1a', border: '1px solid #2d1f3d'}}
+                        style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}
                       >
                         <div className="flex items-center gap-4 flex-1">
                           <div 
@@ -683,13 +683,13 @@ export default function TaxBlueprint() {
                             {action.rank}
                           </div>
                           <div className="flex-1">
-                            <p className="font-semibold mb-1" style={{color: '#f8fafc'}}>{action.action}</p>
+                            <p className="font-semibold mb-1" style={{color: theme.text}}>{action.action}</p>
                             <div className="flex gap-3 text-xs">
                               <span style={{color: getImpactColor(action.impact)}}>
                                 <Target className="w-3 h-3 inline mr-1" />
                                 {action.impact}
                               </span>
-                              <span style={{color: '#64748b'}}>
+                              <span style={{color: theme.textMuted}}>
                                 <Clock className="w-3 h-3 inline mr-1" />
                                 {action.effort}
                               </span>
@@ -700,7 +700,7 @@ export default function TaxBlueprint() {
                           <p className="font-bold text-lg" style={{color: '#10b981'}}>
                             {formatCurrency(action.expected_saving)}↑
                           </p>
-                          <p className="text-xs" style={{color: '#64748b'}}>{action.time_to_complete}</p>
+                          <p className="text-xs" style={{color: theme.textMuted}}>{action.time_to_complete}</p>
                         </div>
                       </div>
                     ))}
@@ -714,11 +714,11 @@ export default function TaxBlueprint() {
                   <div className="flex items-start gap-4">
                     <Sparkles className="w-8 h-8 flex-shrink-0" style={{color: '#a855f7'}} />
                     <div>
-                      <p className="text-sm mb-2" style={{color: '#94a3b8'}}>AI Summary</p>
-                      <p className="text-base leading-relaxed" style={{color: '#f8fafc'}}>
+                      <p className="text-sm mb-2" style={{color: theme.textTertiary}}>AI Summary</p>
+                      <p className="text-base leading-relaxed" style={{color: theme.text}}>
                         {blueprint.ai_summary}
                       </p>
-                      <p className="text-xs mt-4" style={{color: '#64748b'}}>
+                      <p className="text-xs mt-4" style={{color: theme.textMuted}}>
                         Confidence Score: {blueprint.confidence_score}%
                       </p>
                     </div>
@@ -729,14 +729,14 @@ export default function TaxBlueprint() {
 
             {/* 80C Planner Tab */}
             <TabsContent value="80c-planner">
-              <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+              <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                 <CardHeader>
-                  <CardTitle style={{color: '#f8fafc'}}>80C Tax Saver Recommendations</CardTitle>
+                  <CardTitle style={{color: theme.text}}>80C Tax Saver Recommendations</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     {blueprint.section_80c_recommendations.map((rec, idx) => (
-                      <div key={idx} className="p-6 rounded-lg" style={{background: '#0f0a1a', border: '1px solid #2d1f3d'}}>
+                      <div key={idx} className="p-6 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
                         <div className="flex justify-between items-start mb-4">
                           <div>
                             <h3 className="text-xl font-bold mb-1" style={{color: '#10b981'}}>
@@ -747,26 +747,26 @@ export default function TaxBlueprint() {
                             </span>
                           </div>
                           <div className="text-right">
-                            <p className="text-sm" style={{color: '#64748b'}}>Annual Amount</p>
-                            <p className="text-2xl font-bold" style={{color: '#f8fafc'}}>
+                            <p className="text-sm" style={{color: theme.textMuted}}>Annual Amount</p>
+                            <p className="text-2xl font-bold" style={{color: theme.text}}>
                               {formatCurrency(rec.suggested_amount)}
                             </p>
                           </div>
                         </div>
 
-                        <p className="text-base mb-4" style={{color: '#cbd5e1'}}>{rec.rationale}</p>
+                        <p className="text-base mb-4" style={{color: theme.textSecondary}}>{rec.rationale}</p>
 
                         <div className="grid grid-cols-3 gap-4 mb-4">
                           <div>
-                            <p className="text-sm" style={{color: '#64748b'}}>Monthly SIP</p>
-                            <p className="font-semibold" style={{color: '#f8fafc'}}>{formatCurrency(rec.monthly_sip)}</p>
+                            <p className="text-sm" style={{color: theme.textMuted}}>Monthly SIP</p>
+                            <p className="font-semibold" style={{color: theme.text}}>{formatCurrency(rec.monthly_sip)}</p>
                           </div>
                           <div>
-                            <p className="text-sm" style={{color: '#64748b'}}>Expected Return</p>
+                            <p className="text-sm" style={{color: theme.textMuted}}>Expected Return</p>
                             <p className="font-semibold" style={{color: '#10b981'}}>{formatCurrency(rec.expected_return)}</p>
                           </div>
                           <div>
-                            <p className="text-sm" style={{color: '#64748b'}}>Tax Saved</p>
+                            <p className="text-sm" style={{color: theme.textMuted}}>Tax Saved</p>
                             <p className="font-semibold" style={{color: '#10b981'}}>{formatCurrency(rec.tax_saved)}</p>
                           </div>
                         </div>
@@ -787,13 +787,13 @@ export default function TaxBlueprint() {
             <TabsContent value="hidden-sip">
               <div className="space-y-4">
                 {blueprint.hidden_sip_opportunities.length === 0 ? (
-                  <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                  <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                     <CardContent className="p-8 text-center">
                       <AlertCircle className="w-16 h-16 mx-auto mb-4" style={{color: '#f59e0b'}} />
-                      <h3 className="text-xl font-bold mb-2" style={{color: '#f8fafc'}}>
+                      <h3 className="text-xl font-bold mb-2" style={{color: theme.text}}>
                         Track Your Expenses to Unlock Hidden SIPs
                       </h3>
-                      <p className="text-base mb-4" style={{color: '#94a3b8'}}>
+                      <p className="text-base mb-4" style={{color: theme.textTertiary}}>
                         We need your expense data to find savings opportunities. Start tracking your monthly expenses in the Income & Expense section.
                       </p>
                       <Button 
@@ -802,11 +802,11 @@ export default function TaxBlueprint() {
                       >
                         Start Tracking Expenses
                       </Button>
-                      <div className="mt-6 p-4 rounded-lg text-left" style={{background: '#0f0a1a'}}>
-                        <p className="text-sm mb-2 font-semibold" style={{color: '#f8fafc'}}>
+                      <div className="mt-6 p-4 rounded-lg text-left" style={{background: theme.backgroundTertiary}}>
+                        <p className="text-sm mb-2 font-semibold" style={{color: theme.text}}>
                           💡 What are Hidden SIPs?
                         </p>
-                        <p className="text-sm" style={{color: '#cbd5e1'}}>
+                        <p className="text-sm" style={{color: theme.textSecondary}}>
                           Hidden SIPs are savings opportunities found by analyzing your spending patterns. 
                           For example: Reducing dining out by 30% could give you ₹5,000/month to invest, 
                           which becomes ₹10 lakhs in 10 years at 12% returns!
@@ -816,46 +816,46 @@ export default function TaxBlueprint() {
                   </Card>
                 ) : (
                   blueprint.hidden_sip_opportunities.map((opp, idx) => (
-                  <Card key={idx} style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                  <Card key={idx} style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                     <CardHeader>
-                      <CardTitle style={{color: '#f8fafc'}}>{opp.expense_category}</CardTitle>
+                      <CardTitle style={{color: theme.text}}>{opp.expense_category}</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <div className="grid grid-cols-2 gap-6 mb-6">
                         <div>
-                          <p className="text-sm mb-2" style={{color: '#64748b'}}>Current Monthly Spend</p>
+                          <p className="text-sm mb-2" style={{color: theme.textMuted}}>Current Monthly Spend</p>
                           <p className="text-2xl font-bold" style={{color: '#ef4444'}}>
                             {formatCurrency(opp.current_monthly_spend)}
                           </p>
                         </div>
                         <div>
-                          <p className="text-sm mb-2" style={{color: '#64748b'}}>Hidden SIP Amount</p>
+                          <p className="text-sm mb-2" style={{color: theme.textMuted}}>Hidden SIP Amount</p>
                           <p className="text-2xl font-bold" style={{color: '#10b981'}}>
                             {formatCurrency(opp.hidden_sip_amount)}
                           </p>
-                          <p className="text-xs mt-1" style={{color: '#64748b'}}>
+                          <p className="text-xs mt-1" style={{color: theme.textMuted}}>
                             ({opp.reduction_percentage.toFixed(0)}% reduction)
                           </p>
                         </div>
                       </div>
 
                       <div className="mb-6">
-                        <p className="text-sm mb-3 font-semibold" style={{color: '#f8fafc'}}>💰 Wealth Projection:</p>
+                        <p className="text-sm mb-3 font-semibold" style={{color: theme.text}}>💰 Wealth Projection:</p>
                         <div className="grid grid-cols-3 gap-4">
-                          <div className="p-4 rounded text-center" style={{background: '#0f0a1a'}}>
-                            <p className="text-xs mb-1" style={{color: '#64748b'}}>Year 1</p>
-                            <p className="text-lg font-bold" style={{color: '#f8fafc'}}>
+                          <div className="p-4 rounded text-center" style={{background: theme.backgroundTertiary}}>
+                            <p className="text-xs mb-1" style={{color: theme.textMuted}}>Year 1</p>
+                            <p className="text-lg font-bold" style={{color: theme.text}}>
                               {formatCurrency(opp.wealth_projection_1yr)}
                             </p>
                           </div>
-                          <div className="p-4 rounded text-center" style={{background: '#0f0a1a'}}>
-                            <p className="text-xs mb-1" style={{color: '#64748b'}}>Year 5</p>
+                          <div className="p-4 rounded text-center" style={{background: theme.backgroundTertiary}}>
+                            <p className="text-xs mb-1" style={{color: theme.textMuted}}>Year 5</p>
                             <p className="text-lg font-bold" style={{color: '#3b82f6'}}>
                               {formatCurrency(opp.wealth_projection_5yr)}
                             </p>
                           </div>
-                          <div className="p-4 rounded text-center" style={{background: '#0f0a1a'}}>
-                            <p className="text-xs mb-1" style={{color: '#64748b'}}>Year 10</p>
+                          <div className="p-4 rounded text-center" style={{background: theme.backgroundTertiary}}>
+                            <p className="text-xs mb-1" style={{color: theme.textMuted}}>Year 10</p>
                             <p className="text-lg font-bold" style={{color: '#a855f7'}}>
                               {formatCurrency(opp.wealth_projection_10yr)}
                             </p>
@@ -864,12 +864,12 @@ export default function TaxBlueprint() {
                       </div>
 
                       <div className="mb-6">
-                        <p className="text-sm mb-3 font-semibold" style={{color: '#f8fafc'}}>💡 How to Save:</p>
+                        <p className="text-sm mb-3 font-semibold" style={{color: theme.text}}>💡 How to Save:</p>
                         <ul className="space-y-2">
                           {opp.behavioral_tips.map((tip, tipIdx) => (
                             <li key={tipIdx} className="flex items-start gap-2">
                               <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5" style={{color: '#10b981'}} />
-                              <span style={{color: '#cbd5e1'}}>{tip}</span>
+                              <span style={{color: theme.textSecondary}}>{tip}</span>
                             </li>
                           ))}
                         </ul>
@@ -888,16 +888,16 @@ export default function TaxBlueprint() {
             {/* Tax Regime Comparison Tab */}
             {regimeComparison && (
               <TabsContent value="regime">
-                <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                   <CardHeader>
-                    <CardTitle style={{color: '#f8fafc'}}>Old vs New Tax Regime Comparison</CardTitle>
+                    <CardTitle style={{color: theme.text}}>Old vs New Tax Regime Comparison</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="grid grid-cols-2 gap-6 mb-6">
                       {/* Old Regime */}
-                      <div className="p-6 rounded-lg" style={{background: '#0f0a1a', border: '2px solid ' + (regimeComparison.recommended_regime === 'old' ? '#10b981' : '#2d1f3d')}}>
+                      <div className="p-6 rounded-lg" style={{background: theme.backgroundTertiary, border: '2px solid ' + (regimeComparison.recommended_regime === 'old' ? '#10b981' : '#2d1f3d')}}>
                         <div className="flex items-center justify-between mb-4">
-                          <h3 className="text-xl font-bold" style={{color: '#f8fafc'}}>Old Regime</h3>
+                          <h3 className="text-xl font-bold" style={{color: theme.text}}>Old Regime</h3>
                           {regimeComparison.recommended_regime === 'old' && (
                             <span className="px-3 py-1 rounded text-xs font-semibold" style={{background: '#10b981', color: 'white'}}>
                               RECOMMENDED
@@ -906,20 +906,20 @@ export default function TaxBlueprint() {
                         </div>
                         <div className="space-y-3">
                           <div>
-                            <p className="text-sm" style={{color: '#64748b'}}>Tax Before Deductions</p>
-                            <p className="text-2xl font-bold" style={{color: '#f8fafc'}}>
+                            <p className="text-sm" style={{color: theme.textMuted}}>Tax Before Deductions</p>
+                            <p className="text-2xl font-bold" style={{color: theme.text}}>
                               {formatCurrency(regimeComparison.old_regime_tax)}
                             </p>
                           </div>
                           <div>
-                            <p className="text-sm" style={{color: '#64748b'}}>Total Deductions</p>
+                            <p className="text-sm" style={{color: theme.textMuted}}>Total Deductions</p>
                             <p className="text-lg font-semibold" style={{color: '#10b981'}}>
                               - {formatCurrency(regimeComparison.old_regime_deductions)}
                             </p>
                           </div>
-                          <div className="pt-3 border-t" style={{borderColor: '#2d1f3d'}}>
-                            <p className="text-sm" style={{color: '#64748b'}}>Final Tax</p>
-                            <p className="text-2xl font-bold" style={{color: '#f8fafc'}}>
+                          <div className="pt-3 border-t" style={{borderColor: theme.border}}>
+                            <p className="text-sm" style={{color: theme.textMuted}}>Final Tax</p>
+                            <p className="text-2xl font-bold" style={{color: theme.text}}>
                               {formatCurrency(regimeComparison.old_regime_final_tax)}
                             </p>
                           </div>
@@ -927,9 +927,9 @@ export default function TaxBlueprint() {
                       </div>
 
                       {/* New Regime */}
-                      <div className="p-6 rounded-lg" style={{background: '#0f0a1a', border: '2px solid ' + (regimeComparison.recommended_regime === 'new' ? '#10b981' : '#2d1f3d')}}>
+                      <div className="p-6 rounded-lg" style={{background: theme.backgroundTertiary, border: '2px solid ' + (regimeComparison.recommended_regime === 'new' ? '#10b981' : '#2d1f3d')}}>
                         <div className="flex items-center justify-between mb-4">
-                          <h3 className="text-xl font-bold" style={{color: '#f8fafc'}}>New Regime</h3>
+                          <h3 className="text-xl font-bold" style={{color: theme.text}}>New Regime</h3>
                           {regimeComparison.recommended_regime === 'new' && (
                             <span className="px-3 py-1 rounded text-xs font-semibold" style={{background: '#10b981', color: 'white'}}>
                               RECOMMENDED
@@ -938,20 +938,20 @@ export default function TaxBlueprint() {
                         </div>
                         <div className="space-y-3">
                           <div>
-                            <p className="text-sm" style={{color: '#64748b'}}>Tax (Lower Rates)</p>
-                            <p className="text-2xl font-bold" style={{color: '#f8fafc'}}>
+                            <p className="text-sm" style={{color: theme.textMuted}}>Tax (Lower Rates)</p>
+                            <p className="text-2xl font-bold" style={{color: theme.text}}>
                               {formatCurrency(regimeComparison.new_regime_tax)}
                             </p>
                           </div>
                           <div>
-                            <p className="text-sm" style={{color: '#64748b'}}>Deductions</p>
+                            <p className="text-sm" style={{color: theme.textMuted}}>Deductions</p>
                             <p className="text-lg font-semibold" style={{color: '#ef4444'}}>
                               Not Available
                             </p>
                           </div>
-                          <div className="pt-3 border-t" style={{borderColor: '#2d1f3d'}}>
-                            <p className="text-sm" style={{color: '#64748b'}}>Final Tax</p>
-                            <p className="text-2xl font-bold" style={{color: '#f8fafc'}}>
+                          <div className="pt-3 border-t" style={{borderColor: theme.border}}>
+                            <p className="text-sm" style={{color: theme.textMuted}}>Final Tax</p>
+                            <p className="text-2xl font-bold" style={{color: theme.text}}>
                               {formatCurrency(regimeComparison.new_regime_final_tax)}
                             </p>
                           </div>
@@ -964,10 +964,10 @@ export default function TaxBlueprint() {
                         <AlertCircle className="w-6 h-6 flex-shrink-0" style={{color: '#10b981'}} />
                         <div>
                           <p className="font-semibold mb-2" style={{color: '#10b981'}}>Recommendation</p>
-                          <p className="text-base" style={{color: '#f8fafc'}}>
+                          <p className="text-base" style={{color: theme.text}}>
                             {regimeComparison.rationale}
                           </p>
-                          <p className="text-sm mt-2" style={{color: '#94a3b8'}}>
+                          <p className="text-sm mt-2" style={{color: theme.textTertiary}}>
                             Tax Difference: {formatCurrency(regimeComparison.tax_saving_difference)}
                           </p>
                         </div>
@@ -985,10 +985,10 @@ export default function TaxBlueprint() {
                   {/* Header */}
                   <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#a855f7'}}>
                     <CardContent className="p-6">
-                      <h2 className="text-2xl font-bold mb-2" style={{color: '#f8fafc'}}>
+                      <h2 className="text-2xl font-bold mb-2" style={{color: theme.text}}>
                         📚 Complete Tax Deductions Guide
                       </h2>
-                      <p className="text-base" style={{color: '#cbd5e1'}}>
+                      <p className="text-base" style={{color: theme.textSecondary}}>
                         Don&apos;t leave money on the table! Here are all deductions you can claim.
                       </p>
                       <div className="mt-4 p-4 rounded-lg" style={{background: 'rgba(16, 185, 129, 0.1)'}}>
@@ -1000,14 +1000,14 @@ export default function TaxBlueprint() {
                   </Card>
 
                   {/* Common Deductions */}
-                  <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                  <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                     <CardHeader>
-                      <CardTitle style={{color: '#f8fafc'}}>💰 Common Tax Deductions (What You Can Claim)</CardTitle>
+                      <CardTitle style={{color: theme.text}}>💰 Common Tax Deductions (What You Can Claim)</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-4">
                         {taxBenefits.common_deductions.filter(d => d.applicable).map((deduction, idx) => (
-                          <div key={idx} className="p-4 rounded-lg" style={{background: '#0f0a1a', border: '1px solid #2d1f3d'}}>
+                          <div key={idx} className="p-4 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
                             <div className="flex justify-between items-start mb-2">
                               <div>
                                 <h3 className="font-bold text-lg" style={{color: '#10b981'}}>
@@ -1018,13 +1018,13 @@ export default function TaxBlueprint() {
                                 </span>
                               </div>
                               <div className="text-right">
-                                <p className="text-sm" style={{color: '#64748b'}}>Max Limit</p>
-                                <p className="font-bold" style={{color: '#f8fafc'}}>
+                                <p className="text-sm" style={{color: theme.textMuted}}>Max Limit</p>
+                                <p className="font-bold" style={{color: theme.text}}>
                                   {typeof deduction.limit === 'number' ? formatCurrency(deduction.limit) : deduction.limit}
                                 </p>
                               </div>
                             </div>
-                            <p className="text-sm" style={{color: '#cbd5e1'}}>{deduction.description}</p>
+                            <p className="text-sm" style={{color: theme.textSecondary}}>{deduction.description}</p>
                           </div>
                         ))}
                       </div>
@@ -1032,9 +1032,9 @@ export default function TaxBlueprint() {
                   </Card>
 
                   {/* Lesser-Known Benefits */}
-                  <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                  <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                     <CardHeader>
-                      <CardTitle style={{color: '#f8fafc'}}>💎 Lesser-Known Tax Benefits (Most People Miss These!)</CardTitle>
+                      <CardTitle style={{color: theme.text}}>💎 Lesser-Known Tax Benefits (Most People Miss These!)</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-4">
@@ -1046,12 +1046,12 @@ export default function TaxBlueprint() {
                                 <h3 className="font-bold text-lg mb-2" style={{color: '#10b981'}}>
                                   {benefit.name}
                                 </h3>
-                                <p className="text-base mb-3" style={{color: '#f8fafc'}}>
+                                <p className="text-base mb-3" style={{color: theme.text}}>
                                   {benefit.description}
                                 </p>
                               </div>
                               <div className="text-right">
-                                <p className="text-xs" style={{color: '#64748b'}}>Potential Saving</p>
+                                <p className="text-xs" style={{color: theme.textMuted}}>Potential Saving</p>
                                 <p className="font-bold text-lg" style={{color: '#10b981'}}>
                                   {benefit.potential_saving}
                                 </p>
@@ -1061,7 +1061,7 @@ export default function TaxBlueprint() {
                               <p className="text-sm font-semibold mb-1" style={{color: '#3b82f6'}}>
                                 How to Claim:
                               </p>
-                              <p className="text-sm" style={{color: '#cbd5e1'}}>
+                              <p className="text-sm" style={{color: theme.textSecondary}}>
                                 {benefit.how_to_claim}
                               </p>
                             </div>
@@ -1072,34 +1072,34 @@ export default function TaxBlueprint() {
                   </Card>
 
                   {/* Capital Gains Account */}
-                  <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                  <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                     <CardHeader>
-                      <CardTitle style={{color: '#f8fafc'}}>🏦 {taxBenefits.capital_gains_account.name}</CardTitle>
-                      <p className="text-sm mt-2" style={{color: '#94a3b8'}}>
+                      <CardTitle style={{color: theme.text}}>🏦 {taxBenefits.capital_gains_account.name}</CardTitle>
+                      <p className="text-sm mt-2" style={{color: theme.textTertiary}}>
                         {taxBenefits.capital_gains_account.description}
                       </p>
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-4">
                         <div>
-                          <h4 className="font-semibold mb-2" style={{color: '#f8fafc'}}>✅ Benefits:</h4>
+                          <h4 className="font-semibold mb-2" style={{color: theme.text}}>✅ Benefits:</h4>
                           <ul className="space-y-2">
                             {taxBenefits.capital_gains_account.benefits.map((benefit, idx) => (
                               <li key={idx} className="flex items-start gap-2">
                                 <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5" style={{color: '#10b981'}} />
-                                <span style={{color: '#cbd5e1'}}>{benefit}</span>
+                                <span style={{color: theme.textSecondary}}>{benefit}</span>
                               </li>
                             ))}
                           </ul>
                         </div>
                         
-                        <div className="p-4 rounded-lg" style={{background: '#0f0a1a'}}>
-                          <h4 className="font-semibold mb-2" style={{color: '#f8fafc'}}>📝 How to Open:</h4>
+                        <div className="p-4 rounded-lg" style={{background: theme.backgroundTertiary}}>
+                          <h4 className="font-semibold mb-2" style={{color: theme.text}}>📝 How to Open:</h4>
                           <ol className="space-y-2">
                             {taxBenefits.capital_gains_account.how_to_open.map((step, idx) => (
                               <li key={idx} className="flex gap-2">
                                 <span className="font-bold" style={{color: '#a855f7'}}>{idx + 1}.</span>
-                                <span style={{color: '#cbd5e1'}}>{step}</span>
+                                <span style={{color: theme.textSecondary}}>{step}</span>
                               </li>
                             ))}
                           </ol>
@@ -1115,9 +1115,9 @@ export default function TaxBlueprint() {
                   </Card>
                 </div>
               ) : (
-                <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                   <CardContent className="p-12 text-center">
-                    <p style={{color: '#94a3b8'}}>Loading tax benefits guide...</p>
+                    <p style={{color: theme.textTertiary}}>Loading tax benefits guide...</p>
                   </CardContent>
                 </Card>
               )}
@@ -1130,20 +1130,20 @@ export default function TaxBlueprint() {
                   {/* Header */}
                   <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#a855f7'}}>
                     <CardContent className="p-6">
-                      <h2 className="text-2xl font-bold mb-2" style={{color: '#f8fafc'}}>
+                      <h2 className="text-2xl font-bold mb-2" style={{color: theme.text}}>
                         🏛️ Wealth Structuring: HUF & Trust
                       </h2>
-                      <p className="text-base" style={{color: '#cbd5e1'}}>
+                      <p className="text-base" style={{color: theme.textSecondary}}>
                         Advanced strategies for tax optimization and asset protection
                       </p>
                     </CardContent>
                   </Card>
 
                   {/* HUF Section */}
-                  <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                  <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                     <CardHeader>
-                      <CardTitle style={{color: '#f8fafc'}}>{wealthStructures.huf.name}</CardTitle>
-                      <p className="text-sm mt-2" style={{color: '#94a3b8'}}>
+                      <CardTitle style={{color: theme.text}}>{wealthStructures.huf.name}</CardTitle>
+                      <p className="text-sm mt-2" style={{color: theme.textTertiary}}>
                         {wealthStructures.huf.what_is_it}
                       </p>
                     </CardHeader>
@@ -1154,18 +1154,18 @@ export default function TaxBlueprint() {
                           <h4 className="font-semibold mb-2" style={{color: '#10b981'}}>💰 Tax Benefits:</h4>
                           <ul className="space-y-1">
                             {wealthStructures.huf.tax_benefits.map((benefit, idx) => (
-                              <li key={idx} className="text-sm" style={{color: '#f8fafc'}}>• {benefit}</li>
+                              <li key={idx} className="text-sm" style={{color: theme.text}}>• {benefit}</li>
                             ))}
                           </ul>
                         </div>
 
                         {/* How It Works */}
                         <div>
-                          <h4 className="font-semibold mb-2" style={{color: '#f8fafc'}}>🔄 How It Works:</h4>
+                          <h4 className="font-semibold mb-2" style={{color: theme.text}}>🔄 How It Works:</h4>
                           <div className="grid grid-cols-1 gap-2">
                             {wealthStructures.huf.how_it_works.map((point, idx) => (
-                              <div key={idx} className="p-3 rounded" style={{background: '#0f0a1a'}}>
-                                <p className="text-sm" style={{color: '#cbd5e1'}}>{point}</p>
+                              <div key={idx} className="p-3 rounded" style={{background: theme.backgroundTertiary}}>
+                                <p className="text-sm" style={{color: theme.textSecondary}}>{point}</p>
                               </div>
                             ))}
                           </div>
@@ -1173,32 +1173,32 @@ export default function TaxBlueprint() {
 
                         {/* Pros & Cons */}
                         <div className="grid grid-cols-2 gap-4">
-                          <div className="p-4 rounded-lg" style={{background: '#0f0a1a', border: '1px solid #10b981'}}>
+                          <div className="p-4 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #10b981'}}>
                             <h4 className="font-semibold mb-2" style={{color: '#10b981'}}>✅ Pros:</h4>
                             <ul className="space-y-1">
                               {wealthStructures.huf.pros.map((pro, idx) => (
-                                <li key={idx} className="text-xs" style={{color: '#cbd5e1'}}>• {pro}</li>
+                                <li key={idx} className="text-xs" style={{color: theme.textSecondary}}>• {pro}</li>
                               ))}
                             </ul>
                           </div>
-                          <div className="p-4 rounded-lg" style={{background: '#0f0a1a', border: '1px solid #ef4444'}}>
+                          <div className="p-4 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #ef4444'}}>
                             <h4 className="font-semibold mb-2" style={{color: '#ef4444'}}>⚠️ Cons:</h4>
                             <ul className="space-y-1">
                               {wealthStructures.huf.cons.map((con, idx) => (
-                                <li key={idx} className="text-xs" style={{color: '#cbd5e1'}}>• {con}</li>
+                                <li key={idx} className="text-xs" style={{color: theme.textSecondary}}>• {con}</li>
                               ))}
                             </ul>
                           </div>
                         </div>
 
                         {/* Setup Steps */}
-                        <div className="p-4 rounded-lg" style={{background: '#0f0a1a'}}>
-                          <h4 className="font-semibold mb-3" style={{color: '#f8fafc'}}>📝 How to Setup:</h4>
+                        <div className="p-4 rounded-lg" style={{background: theme.backgroundTertiary}}>
+                          <h4 className="font-semibold mb-3" style={{color: theme.text}}>📝 How to Setup:</h4>
                           <ol className="space-y-2">
                             {wealthStructures.huf.how_to_setup.map((step, idx) => (
                               <li key={idx} className="flex gap-2">
                                 <span className="font-bold" style={{color: '#a855f7'}}>{idx + 1}.</span>
-                                <span className="text-sm" style={{color: '#cbd5e1'}}>{step}</span>
+                                <span className="text-sm" style={{color: theme.textSecondary}}>{step}</span>
                               </li>
                             ))}
                           </ol>
@@ -1207,13 +1207,13 @@ export default function TaxBlueprint() {
                         {/* Bottom Info */}
                         <div className="grid grid-cols-2 gap-4">
                           <div className="p-3 rounded" style={{background: 'rgba(168, 85, 247, 0.1)'}}>
-                            <p className="text-xs mb-1" style={{color: '#64748b'}}>Ideal For:</p>
+                            <p className="text-xs mb-1" style={{color: theme.textMuted}}>Ideal For:</p>
                             <p className="text-sm font-semibold" style={{color: '#a855f7'}}>
                               {wealthStructures.huf.ideal_for}
                             </p>
                           </div>
                           <div className="p-3 rounded" style={{background: 'rgba(59, 130, 246, 0.1)'}}>
-                            <p className="text-xs mb-1" style={{color: '#64748b'}}>Setup Cost:</p>
+                            <p className="text-xs mb-1" style={{color: theme.textMuted}}>Setup Cost:</p>
                             <p className="text-sm font-semibold" style={{color: '#3b82f6'}}>
                               {wealthStructures.huf.cost}
                             </p>
@@ -1224,10 +1224,10 @@ export default function TaxBlueprint() {
                   </Card>
 
                   {/* Trust Section */}
-                  <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                  <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                     <CardHeader>
-                      <CardTitle style={{color: '#f8fafc'}}>{wealthStructures.trust.name}</CardTitle>
-                      <p className="text-sm mt-2" style={{color: '#94a3b8'}}>
+                      <CardTitle style={{color: theme.text}}>{wealthStructures.trust.name}</CardTitle>
+                      <p className="text-sm mt-2" style={{color: theme.textTertiary}}>
                         {wealthStructures.trust.what_is_it}
                       </p>
                     </CardHeader>
@@ -1235,13 +1235,13 @@ export default function TaxBlueprint() {
                       <div className="space-y-4">
                         {/* Types */}
                         <div>
-                          <h4 className="font-semibold mb-2" style={{color: '#f8fafc'}}>Types of Trusts:</h4>
+                          <h4 className="font-semibold mb-2" style={{color: theme.text}}>Types of Trusts:</h4>
                           <div className="grid grid-cols-1 gap-3">
                             {wealthStructures.trust.types.map((type, idx) => (
-                              <div key={idx} className="p-3 rounded-lg" style={{background: '#0f0a1a', border: '1px solid #2d1f3d'}}>
+                              <div key={idx} className="p-3 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
                                 <h5 className="font-semibold mb-1" style={{color: '#10b981'}}>{type.name}</h5>
-                                <p className="text-xs mb-1" style={{color: '#94a3b8'}}>{type.description}</p>
-                                <p className="text-xs" style={{color: '#64748b'}}>Use: {type.use_case}</p>
+                                <p className="text-xs mb-1" style={{color: theme.textTertiary}}>{type.description}</p>
+                                <p className="text-xs" style={{color: theme.textMuted}}>Use: {type.use_case}</p>
                               </div>
                             ))}
                           </div>
@@ -1252,39 +1252,39 @@ export default function TaxBlueprint() {
                           <h4 className="font-semibold mb-2" style={{color: '#3b82f6'}}>📊 Benefits for Asset Tracking:</h4>
                           <ul className="space-y-1">
                             {wealthStructures.trust.benefits_for_asset_tracking.map((benefit, idx) => (
-                              <li key={idx} className="text-sm" style={{color: '#f8fafc'}}>✓ {benefit}</li>
+                              <li key={idx} className="text-sm" style={{color: theme.text}}>✓ {benefit}</li>
                             ))}
                           </ul>
                         </div>
 
                         {/* Pros & Cons */}
                         <div className="grid grid-cols-2 gap-4">
-                          <div className="p-4 rounded-lg" style={{background: '#0f0a1a', border: '1px solid #10b981'}}>
+                          <div className="p-4 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #10b981'}}>
                             <h4 className="font-semibold mb-2" style={{color: '#10b981'}}>✅ Pros:</h4>
                             <ul className="space-y-1">
                               {wealthStructures.trust.pros.slice(0, 6).map((pro, idx) => (
-                                <li key={idx} className="text-xs" style={{color: '#cbd5e1'}}>• {pro}</li>
+                                <li key={idx} className="text-xs" style={{color: theme.textSecondary}}>• {pro}</li>
                               ))}
                             </ul>
                           </div>
-                          <div className="p-4 rounded-lg" style={{background: '#0f0a1a', border: '1px solid #ef4444'}}>
+                          <div className="p-4 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #ef4444'}}>
                             <h4 className="font-semibold mb-2" style={{color: '#ef4444'}}>⚠️ Cons:</h4>
                             <ul className="space-y-1">
                               {wealthStructures.trust.cons.slice(0, 6).map((con, idx) => (
-                                <li key={idx} className="text-xs" style={{color: '#cbd5e1'}}>• {con}</li>
+                                <li key={idx} className="text-xs" style={{color: theme.textSecondary}}>• {con}</li>
                               ))}
                             </ul>
                           </div>
                         </div>
 
                         {/* Setup Steps */}
-                        <div className="p-4 rounded-lg" style={{background: '#0f0a1a'}}>
-                          <h4 className="font-semibold mb-3" style={{color: '#f8fafc'}}>📝 How to Setup:</h4>
+                        <div className="p-4 rounded-lg" style={{background: theme.backgroundTertiary}}>
+                          <h4 className="font-semibold mb-3" style={{color: theme.text}}>📝 How to Setup:</h4>
                           <ol className="space-y-2">
                             {wealthStructures.trust.how_to_setup.map((step, idx) => (
                               <li key={idx} className="flex gap-2">
                                 <span className="font-bold" style={{color: '#a855f7'}}>{idx + 1}.</span>
-                                <span className="text-sm" style={{color: '#cbd5e1'}}>{step}</span>
+                                <span className="text-sm" style={{color: theme.textSecondary}}>{step}</span>
                               </li>
                             ))}
                           </ol>
@@ -1295,21 +1295,21 @@ export default function TaxBlueprint() {
                           <h4 className="font-semibold mb-2" style={{color: '#a855f7'}}>🤔 When to Consider Trust:</h4>
                           <ul className="grid grid-cols-2 gap-2">
                             {wealthStructures.trust.when_to_consider.map((point, idx) => (
-                              <li key={idx} className="text-sm" style={{color: '#f8fafc'}}>• {point}</li>
+                              <li key={idx} className="text-sm" style={{color: theme.text}}>• {point}</li>
                             ))}
                           </ul>
                         </div>
 
                         {/* Cost Breakdown */}
-                        <div className="p-4 rounded-lg" style={{background: '#0f0a1a'}}>
-                          <h4 className="font-semibold mb-2" style={{color: '#f8fafc'}}>💰 Cost Breakdown:</h4>
+                        <div className="p-4 rounded-lg" style={{background: theme.backgroundTertiary}}>
+                          <h4 className="font-semibold mb-2" style={{color: theme.text}}>💰 Cost Breakdown:</h4>
                           <div className="grid grid-cols-2 gap-3">
                             {Object.entries(wealthStructures.trust.cost_breakdown).map(([key, value], idx) => (
-                              <div key={idx} className="p-2 rounded" style={{background: '#1a1229'}}>
-                                <p className="text-xs" style={{color: '#64748b'}}>
+                              <div key={idx} className="p-2 rounded" style={{background: theme.backgroundSecondary}}>
+                                <p className="text-xs" style={{color: theme.textMuted}}>
                                   {key.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
                                 </p>
-                                <p className="text-sm font-semibold" style={{color: '#f8fafc'}}>{value}</p>
+                                <p className="text-sm font-semibold" style={{color: theme.text}}>{value}</p>
                               </div>
                             ))}
                           </div>
@@ -1321,29 +1321,29 @@ export default function TaxBlueprint() {
                   {/* Comparison Card */}
                   <Card style={{background: 'linear-gradient(135deg, #0f0a1a 0%, #1a1229 100%)', borderColor: '#a855f7'}}>
                     <CardHeader>
-                      <CardTitle style={{color: '#f8fafc'}}>⚖️ Quick Comparison</CardTitle>
+                      <CardTitle style={{color: theme.text}}>⚖️ Quick Comparison</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <div className="grid grid-cols-2 gap-6">
                         <div>
                           <h4 className="font-bold mb-3" style={{color: '#10b981'}}>HUF</h4>
                           {Object.entries(wealthStructures.comparison.huf).map(([key, value], idx) => (
-                            <div key={idx} className="flex justify-between py-2 border-b" style={{borderColor: '#2d1f3d'}}>
-                              <span className="text-sm" style={{color: '#94a3b8'}}>
+                            <div key={idx} className="flex justify-between py-2 border-b" style={{borderColor: theme.border}}>
+                              <span className="text-sm" style={{color: theme.textTertiary}}>
                                 {key.charAt(0).toUpperCase() + key.slice(1).replace('_', ' ')}:
                               </span>
-                              <span className="text-sm font-semibold" style={{color: '#f8fafc'}}>{value}</span>
+                              <span className="text-sm font-semibold" style={{color: theme.text}}>{value}</span>
                             </div>
                           ))}
                         </div>
                         <div>
                           <h4 className="font-bold mb-3" style={{color: '#3b82f6'}}>Trust</h4>
                           {Object.entries(wealthStructures.comparison.trust).map(([key, value], idx) => (
-                            <div key={idx} className="flex justify-between py-2 border-b" style={{borderColor: '#2d1f3d'}}>
-                              <span className="text-sm" style={{color: '#94a3b8'}}>
+                            <div key={idx} className="flex justify-between py-2 border-b" style={{borderColor: theme.border}}>
+                              <span className="text-sm" style={{color: theme.textTertiary}}>
                                 {key.charAt(0).toUpperCase() + key.slice(1).replace('_', ' ')}:
                               </span>
-                              <span className="text-sm font-semibold" style={{color: '#f8fafc'}}>{value}</span>
+                              <span className="text-sm font-semibold" style={{color: theme.text}}>{value}</span>
                             </div>
                           ))}
                         </div>
@@ -1357,9 +1357,9 @@ export default function TaxBlueprint() {
                   </Card>
                 </div>
               ) : (
-                <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                   <CardContent className="p-12 text-center">
-                    <p style={{color: '#94a3b8'}}>Loading wealth structures guide...</p>
+                    <p style={{color: theme.textTertiary}}>Loading wealth structures guide...</p>
                   </CardContent>
                 </Card>
               )}
