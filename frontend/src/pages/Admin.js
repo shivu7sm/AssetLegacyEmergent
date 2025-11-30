@@ -257,14 +257,14 @@ export default function Admin() {
             </div>
 
             {/* Asset Distribution */}
-            <Card style={{background: '#1a1229', borderColor: theme.border}}>
+            <Card style={{background: 'theme.cardBg', borderColor: theme.border}}>
               <CardHeader>
                 <CardTitle style={{color: theme.text}}>Asset Distribution by Type</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   {Object.entries(stats.assets.by_type || {}).map(([type, count]) => (
-                    <div key={type} className="p-4 rounded-lg" style={{background: '#16001e'}}>
+                    <div key={type} className="p-4 rounded-lg" style={{background: 'theme.backgroundTertiary'}}>
                       <div className="text-2xl font-bold mb-1" style={{color: '#10b981'}}>{count}</div>
                       <div className="text-sm capitalize" style={{color: theme.textSecondary}}>{type.replace('_', ' ')}</div>
                     </div>
@@ -275,21 +275,21 @@ export default function Admin() {
 
             {/* Scheduled Messages Overview */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card style={{background: '#1a1229', borderColor: theme.border}}>
+              <Card style={{background: 'theme.cardBg', borderColor: theme.border}}>
                 <CardHeader>
                   <CardTitle style={{color: theme.text}}>Scheduled Messages Status</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    <div className="flex justify-between items-center p-3 rounded-lg" style={{background: '#16001e'}}>
+                    <div className="flex justify-between items-center p-3 rounded-lg" style={{background: 'theme.backgroundTertiary'}}>
                       <span style={{color: theme.textSecondary}}>Pending</span>
                       <span className="font-bold" style={{color: '#f59e0b'}}>{stats.scheduled_messages.pending}</span>
                     </div>
-                    <div className="flex justify-between items-center p-3 rounded-lg" style={{background: '#16001e'}}>
+                    <div className="flex justify-between items-center p-3 rounded-lg" style={{background: 'theme.backgroundTertiary'}}>
                       <span style={{color: theme.textSecondary}}>Sent</span>
                       <span className="font-bold" style={{color: '#10b981'}}>{stats.scheduled_messages.sent}</span>
                     </div>
-                    <div className="flex justify-between items-center p-3 rounded-lg" style={{background: '#16001e'}}>
+                    <div className="flex justify-between items-center p-3 rounded-lg" style={{background: 'theme.backgroundTertiary'}}>
                       <span style={{color: theme.textSecondary}}>Failed</span>
                       <span className="font-bold" style={{color: '#ef4444'}}>{stats.scheduled_messages.failed}</span>
                     </div>
@@ -297,17 +297,17 @@ export default function Admin() {
                 </CardContent>
               </Card>
 
-              <Card style={{background: '#1a1229', borderColor: theme.border}}>
+              <Card style={{background: 'theme.cardBg', borderColor: theme.border}}>
                 <CardHeader>
                   <CardTitle style={{color: theme.text}}>Dead Man Switch Status</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    <div className="flex justify-between items-center p-3 rounded-lg" style={{background: '#16001e'}}>
+                    <div className="flex justify-between items-center p-3 rounded-lg" style={{background: 'theme.backgroundTertiary'}}>
                       <span style={{color: theme.textSecondary}}>Total Configured</span>
                       <span className="font-bold" style={{color: '#3b82f6'}}>{stats.dead_man_switches.total}</span>
                     </div>
-                    <div className="flex justify-between items-center p-3 rounded-lg" style={{background: '#16001e'}}>
+                    <div className="flex justify-between items-center p-3 rounded-lg" style={{background: 'theme.backgroundTertiary'}}>
                       <span style={{color: theme.textSecondary}}>Active</span>
                       <span className="font-bold" style={{color: '#10b981'}}>{stats.dead_man_switches.active}</span>
                     </div>
@@ -320,7 +320,7 @@ export default function Admin() {
 
         {/* Users Tab */}
         {activeTab === 'users' && (
-          <Card style={{background: '#1a1229', borderColor: theme.border}}>
+          <Card style={{background: 'theme.cardBg', borderColor: theme.border}}>
             <CardHeader>
               <CardTitle style={{color: theme.text}}>User Management</CardTitle>
             </CardHeader>
@@ -340,7 +340,7 @@ export default function Admin() {
                   </thead>
                   <tbody>
                     {users.map((user) => (
-                      <tr key={user.id} style={{borderBottom: '1px solid #1a1229'}}>
+                      <tr key={user.id} style={{borderBottom: '1px solid theme.cardBg'}}>
                         <td className="py-3 px-2">
                           <div className="flex items-center gap-2">
                             {user.picture && (
@@ -369,7 +369,7 @@ export default function Admin() {
                           <span 
                             className="px-3 py-1 rounded-full text-xs font-semibold"
                             style={{
-                              background: user.subscription_plan === 'Free' ? '#16001e' : 
+                              background: user.subscription_plan === 'Free' ? 'theme.backgroundTertiary' : 
                                          user.subscription_plan === 'Pro' ? 'rgba(236, 72, 153, 0.2)' : 
                                          'rgba(168, 85, 247, 0.2)',
                               color: user.subscription_plan === 'Free' ? '#94a3b8' : 
@@ -410,7 +410,7 @@ export default function Admin() {
         {activeTab === 'jobs' && (
           <div className="space-y-6">
             {/* Scheduled Messages */}
-            <Card style={{background: '#1a1229', borderColor: theme.border}}>
+            <Card style={{background: 'theme.cardBg', borderColor: theme.border}}>
               <CardHeader>
                 <div className="flex items-center gap-3">
                   <Clock className="w-5 h-5" style={{color: '#f59e0b'}} />
@@ -431,7 +431,7 @@ export default function Admin() {
                       </thead>
                       <tbody>
                         {scheduledMessages.map((msg) => (
-                          <tr key={msg.id} style={{borderBottom: '1px solid #1a1229'}}>
+                          <tr key={msg.id} style={{borderBottom: '1px solid theme.cardBg'}}>
                             <td className="py-3 px-2">
                               <div>
                                 <div style={{color: theme.text, fontWeight: 500}}>{msg.recipient_name}</div>
@@ -457,7 +457,7 @@ export default function Admin() {
             </Card>
 
             {/* DMS Reminders */}
-            <Card style={{background: '#1a1229', borderColor: theme.border}}>
+            <Card style={{background: 'theme.cardBg', borderColor: theme.border}}>
               <CardHeader>
                 <div className="flex items-center gap-3">
                   <Shield className="w-5 h-5" style={{color: '#a855f7'}} />
@@ -479,7 +479,7 @@ export default function Admin() {
                       </thead>
                       <tbody>
                         {dmsReminders.map((dms) => (
-                          <tr key={dms.id} style={{borderBottom: '1px solid #1a1229'}}>
+                          <tr key={dms.id} style={{borderBottom: '1px solid theme.cardBg'}}>
                             <td className="py-3 px-2">
                               <div>
                                 <div style={{color: theme.text, fontWeight: 500}}>{dms.user_name}</div>
@@ -566,14 +566,14 @@ export default function Admin() {
             </div>
 
             {/* Current Subscriptions Breakdown */}
-            <Card style={{background: '#1a1229', borderColor: theme.border}}>
+            <Card style={{background: 'theme.cardBg', borderColor: theme.border}}>
               <CardHeader>
                 <CardTitle style={{color: theme.text}}>Current Subscription Distribution</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-3 gap-4">
                   {Object.entries(analytics.current_subscriptions).map(([plan, count]) => (
-                    <div key={plan} className="p-4 rounded-lg text-center" style={{background: '#16001e'}}>
+                    <div key={plan} className="p-4 rounded-lg text-center" style={{background: 'theme.backgroundTertiary'}}>
                       <div className="text-3xl font-bold mb-2" style={{
                         color: plan === 'Free' ? '#64748b' : plan === 'Pro' ? '#ec4899' : '#a855f7'
                       }}>
@@ -587,7 +587,7 @@ export default function Admin() {
             </Card>
 
             {/* Revenue Trend */}
-            <Card style={{background: '#1a1229', borderColor: theme.border}}>
+            <Card style={{background: 'theme.cardBg', borderColor: theme.border}}>
               <CardHeader>
                 <CardTitle style={{color: theme.text}}>12-Month Revenue Trend</CardTitle>
               </CardHeader>
@@ -618,7 +618,7 @@ export default function Admin() {
 
         {/* Audit Logs Tab */}
         {activeTab === 'audit' && (
-          <Card style={{background: '#1a1229', borderColor: theme.border}}>
+          <Card style={{background: 'theme.cardBg', borderColor: theme.border}}>
             <CardHeader>
               <div className="flex items-center gap-3">
                 <Shield className="w-5 h-5" style={{color: '#a855f7'}} />
@@ -645,7 +645,7 @@ export default function Admin() {
                         <tr 
                           key={log.id} 
                           style={{
-                            borderBottom: '1px solid #1a1229',
+                            borderBottom: '1px solid theme.cardBg',
                             background: log.is_admin_action ? 'rgba(168, 85, 247, 0.1)' : 'transparent'
                           }}
                         >

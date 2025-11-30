@@ -527,7 +527,7 @@ export default function TaxBlueprint() {
             {/* Dashboard Tab */}
             <TabsContent value="dashboard" className="space-y-6">
               {/* Hero Card */}
-              <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#a855f7'}}>
+              <Card style={{background: 'linear-gradient(135deg, theme.cardBg 0%, #2d1f3d 100%)', borderColor: '#a855f7'}}>
                 <CardContent className="p-8">
                   <div className="flex items-center justify-between">
                     <div>
@@ -614,7 +614,7 @@ export default function TaxBlueprint() {
                   <CardContent>
                     <div className="space-y-4">
                       {blueprint.hidden_sip_opportunities.slice(0, 1).map((opp, idx) => (
-                        <div key={idx} className="p-6 rounded-lg" style={{background: 'linear-gradient(135deg, #0f0a1a 0%, #1a1229 100%)', border: '1px solid #2d1f3d'}}>
+                        <div key={idx} className="p-6 rounded-lg" style={{background: 'linear-gradient(135deg, #0f0a1a 0%, theme.cardBg 100%)', border: '1px solid #2d1f3d'}}>
                           <p className="text-sm mb-2" style={{color: theme.textMuted}}>TOP OPPORTUNITY:</p>
                           <p className="text-xl font-bold mb-4" style={{color: theme.text}}>
                             {opp.expense_category}: {formatCurrency(opp.current_monthly_spend)}/month
@@ -709,7 +709,7 @@ export default function TaxBlueprint() {
               </Card>
 
               {/* AI Summary */}
-              <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#a855f7'}}>
+              <Card style={{background: 'linear-gradient(135deg, theme.cardBg 0%, #2d1f3d 100%)', borderColor: '#a855f7'}}>
                 <CardContent className="p-6">
                   <div className="flex items-start gap-4">
                     <Sparkles className="w-8 h-8 flex-shrink-0" style={{color: '#a855f7'}} />
@@ -983,7 +983,7 @@ export default function TaxBlueprint() {
               {taxBenefits ? (
                 <div className="space-y-6">
                   {/* Header */}
-                  <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#a855f7'}}>
+                  <Card style={{background: 'linear-gradient(135deg, theme.cardBg 0%, #2d1f3d 100%)', borderColor: '#a855f7'}}>
                     <CardContent className="p-6">
                       <h2 className="text-2xl font-bold mb-2" style={{color: theme.text}}>
                         📚 Complete Tax Deductions Guide
@@ -1039,7 +1039,7 @@ export default function TaxBlueprint() {
                     <CardContent>
                       <div className="space-y-4">
                         {taxBenefits.lesser_known_benefits.map((benefit, idx) => (
-                          <div key={idx} className="p-5 rounded-lg" style={{background: 'linear-gradient(135deg, #0f0a1a 0%, #1a1229 100%)', border: '2px solid #10b981'}}>
+                          <div key={idx} className="p-5 rounded-lg" style={{background: 'linear-gradient(135deg, #0f0a1a 0%, theme.cardBg 100%)', border: '2px solid #10b981'}}>
                             <div className="flex items-start gap-3 mb-3">
                               <Sparkles className="w-6 h-6 flex-shrink-0" style={{color: '#10b981'}} />
                               <div className="flex-1">
@@ -1128,7 +1128,7 @@ export default function TaxBlueprint() {
               {wealthStructures ? (
                 <div className="space-y-6">
                   {/* Header */}
-                  <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#a855f7'}}>
+                  <Card style={{background: 'linear-gradient(135deg, theme.cardBg 0%, #2d1f3d 100%)', borderColor: '#a855f7'}}>
                     <CardContent className="p-6">
                       <h2 className="text-2xl font-bold mb-2" style={{color: theme.text}}>
                         🏛️ Wealth Structuring: HUF & Trust
@@ -1319,7 +1319,7 @@ export default function TaxBlueprint() {
                   </Card>
 
                   {/* Comparison Card */}
-                  <Card style={{background: 'linear-gradient(135deg, #0f0a1a 0%, #1a1229 100%)', borderColor: '#a855f7'}}>
+                  <Card style={{background: 'linear-gradient(135deg, #0f0a1a 0%, theme.cardBg 100%)', borderColor: '#a855f7'}}>
                     <CardHeader>
                       <CardTitle style={{color: theme.text}}>⚖️ Quick Comparison</CardTitle>
                     </CardHeader>

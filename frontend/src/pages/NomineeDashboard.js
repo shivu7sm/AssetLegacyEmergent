@@ -60,14 +60,14 @@ export default function NomineeDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{background: 'linear-gradient(135deg, #1a0b2e 0%, #16001e 50%, #2d0e3e 100%)'}}>
+      <div className="min-h-screen flex items-center justify-center" style={{background: 'linear-gradient(135deg, #1a0b2e 0%, theme.backgroundTertiary 50%, #2d0e3e 100%)'}}>
         <p style={{color: theme.text}}>Loading portfolio...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen" style={{background: 'linear-gradient(135deg, #1a0b2e 0%, #16001e 50%, #2d0e3e 100%)'}}>
+    <div className="min-h-screen" style={{background: 'linear-gradient(135deg, #1a0b2e 0%, theme.backgroundTertiary 50%, #2d0e3e 100%)'}}>
       {/* Header */}
       <header className="backdrop-blur-xl sticky top-0 z-50" style={{borderBottom: '1px solid #2d1f3d', background: 'rgba(15, 10, 30, 0.9)', padding: '1rem 2rem'}}>
         <div className="flex justify-between items-center">

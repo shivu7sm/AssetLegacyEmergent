@@ -58,7 +58,7 @@ export default function PortfolioGuide() {
             <Card 
               key={step.number}
               style={{
-                background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)',
+                background: 'linear-gradient(135deg, theme.cardBg 0%, #2d1f3d 100%)',
                 borderColor: '#a855f7'
               }}
             >
@@ -78,7 +78,7 @@ export default function PortfolioGuide() {
                     <p className="text-sm mb-3" style={{color: '#94a3b8'}}>{step.description}</p>
                     <div 
                       className="p-3 rounded-lg text-sm font-mono whitespace-pre-line"
-                      style={{background: '#16001e', color: '#cbd5e1'}}
+                      style={{background: 'theme.backgroundTertiary', color: '#cbd5e1'}}
                     >
                       {step.action}
                     </div>
@@ -106,7 +106,7 @@ export default function PortfolioGuide() {
         </CardContent>
       </Card>
 
-      <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+      <Card style={{background: 'theme.cardBg', borderColor: '#2d1f3d'}}>
         <CardHeader>
           <CardTitle style={{color: '#f8fafc'}}>Example Portfolio</CardTitle>
         </CardHeader>

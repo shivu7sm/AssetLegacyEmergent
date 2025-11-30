@@ -93,7 +93,7 @@ export default function LoanCalculator() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Calculator Form */}
-          <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+          <Card style={{background: 'theme.cardBg', borderColor: '#2d1f3d'}}>
             <CardHeader>
               <CardTitle className="flex items-center gap-3" style={{color: '#f8fafc'}}>
                 <Calculator className="w-6 h-6" style={{color: '#a855f7'}} />
@@ -203,7 +203,7 @@ export default function LoanCalculator() {
 
           {/* Results Summary */}
           {result && (
-            <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+            <Card style={{background: 'theme.cardBg', borderColor: '#2d1f3d'}}>
               <CardHeader>
                 <CardTitle className="flex items-center gap-3" style={{color: '#f8fafc'}}>
                   <TrendingDown className="w-6 h-6" style={{color: '#10b981'}} />
@@ -261,7 +261,7 @@ export default function LoanCalculator() {
 
         {/* AI Tips */}
         {result?.ai_tips && (
-          <Card style={{background: 'linear-gradient(135deg, #2d1f3d 0%, #1a1229 100%)', borderColor: '#a855f7', borderWidth: '2px'}}>
+          <Card style={{background: 'linear-gradient(135deg, #2d1f3d 0%, theme.cardBg 100%)', borderColor: '#a855f7', borderWidth: '2px'}}>
             <CardHeader>
               <CardTitle className="flex items-center gap-3" style={{color: '#f8fafc'}}>
                 <Sparkles className="w-6 h-6" style={{color: '#fbbf24'}} />
@@ -278,7 +278,7 @@ export default function LoanCalculator() {
 
         {/* Amortization Schedule */}
         {result?.amortization_schedule && (
-          <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+          <Card style={{background: 'theme.cardBg', borderColor: '#2d1f3d'}}>
             <CardHeader>
               <CardTitle className="flex items-center gap-3" style={{color: '#f8fafc'}}>
                 <Calendar className="w-6 h-6" style={{color: '#06b6d4'}} />
@@ -288,7 +288,7 @@ export default function LoanCalculator() {
             <CardContent>
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead style={{background: '#16001e', borderBottom: '1px solid #2d1f3d'}}>
+                  <thead style={{background: 'theme.backgroundTertiary', borderBottom: '1px solid #2d1f3d'}}>
                     <tr>
                       <th className="text-left p-3" style={{color: '#94a3b8', fontWeight: 600}}>Month</th>
                       <th className="text-right p-3" style={{color: '#94a3b8', fontWeight: 600}}>Payment</th>

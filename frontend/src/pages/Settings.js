@@ -46,7 +46,7 @@ function AppearanceSection() {
               onClick={() => setTheme('standard')}
               className="cursor-pointer relative p-6 rounded-lg border-2 transition-all"
               style={{
-                background: dashboardTheme === 'standard' ? 'rgba(168, 85, 247, 0.1)' : '#16001e',
+                background: dashboardTheme === 'standard' ? 'rgba(168, 85, 247, 0.1)' : 'theme.backgroundTertiary',
                 borderColor: dashboardTheme === 'standard' ? '#a855f7' : '#2d1f3d',
                 transform: dashboardTheme === 'standard' ? 'scale(1.02)' : 'scale(1)'
               }}
@@ -72,7 +72,7 @@ function AppearanceSection() {
               onClick={() => setTheme('modern')}
               className="cursor-pointer relative p-6 rounded-lg border-2 transition-all"
               style={{
-                background: dashboardTheme === 'modern' ? 'rgba(232, 194, 124, 0.1)' : '#16001e',
+                background: dashboardTheme === 'modern' ? 'rgba(232, 194, 124, 0.1)' : 'theme.backgroundTertiary',
                 borderColor: dashboardTheme === 'modern' ? '#E8C27C' : '#2d1f3d',
                 transform: dashboardTheme === 'modern' ? 'scale(1.02)' : 'scale(1)'
               }}

@@ -48,7 +48,7 @@ export default function NomineeAccess() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center" style={{background: 'linear-gradient(135deg, #1a0b2e 0%, #16001e 50%, #2d0e3e 100%)'}}>
+    <div className="min-h-screen flex items-center justify-center" style={{background: 'linear-gradient(135deg, #1a0b2e 0%, theme.backgroundTertiary 50%, #2d0e3e 100%)'}}>
       <div className="w-full max-w-md p-6">
         <Card style={{background: theme.cardBg, borderColor: theme.border}}>
           <CardHeader className="text-center">

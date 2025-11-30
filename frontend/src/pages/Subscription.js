@@ -221,7 +221,7 @@ export default function Subscription() {
         </div>
 
         {/* Current Plan Banner with Detailed Info */}
-        <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#a855f7'}}>
+        <Card style={{background: 'linear-gradient(135deg, theme.cardBg 0%, #2d1f3d 100%)', borderColor: '#a855f7'}}>
           <CardContent className="py-6">
             <div className="flex items-start justify-between flex-wrap gap-6">
               <div className="flex-1">
@@ -340,7 +340,7 @@ export default function Subscription() {
               <Card 
                 key={plan.name}
                 style={{
-                  background: plan.popular ? 'linear-gradient(135deg, #2d1f3d 0%, #1a1229 100%)' : '#1a1229',
+                  background: plan.popular ? 'linear-gradient(135deg, #2d1f3d 0%, theme.cardBg 100%)' : 'theme.cardBg',
                   borderColor: plan.popular ? '#a855f7' : '#2d1f3d',
                   borderWidth: plan.popular ? '2px' : '1px',
                   position: 'relative'
@@ -441,7 +441,7 @@ export default function Subscription() {
                       {subscriptionInfo.usage.assets} / {subscriptionInfo.features.max_assets > 0 ? subscriptionInfo.features.max_assets : '∞'}
                     </span>
                   </div>
-                  <div className="w-full h-2 rounded-full" style={{background: '#16001e'}}>
+                  <div className="w-full h-2 rounded-full" style={{background: 'theme.backgroundTertiary'}}>
                     <div 
                       className="h-full rounded-full transition-all"
                       style={{
@@ -462,7 +462,7 @@ export default function Subscription() {
                       {subscriptionInfo.usage.documents} / {subscriptionInfo.features.max_documents > 0 ? subscriptionInfo.features.max_documents : '∞'}
                     </span>
                   </div>
-                  <div className="w-full h-2 rounded-full" style={{background: '#16001e'}}>
+                  <div className="w-full h-2 rounded-full" style={{background: 'theme.backgroundTertiary'}}>
                     <div 
                       className="h-full rounded-full transition-all"
                       style={{
@@ -486,7 +486,7 @@ export default function Subscription() {
                       }
                     </span>
                   </div>
-                  <div className="w-full h-2 rounded-full" style={{background: '#16001e'}}>
+                  <div className="w-full h-2 rounded-full" style={{background: 'theme.backgroundTertiary'}}>
                     <div 
                       className="h-full rounded-full transition-all"
                       style={{

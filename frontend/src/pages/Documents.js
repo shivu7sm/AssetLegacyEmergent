@@ -321,7 +321,7 @@ export default function Documents() {
                         }
                       </span>
                     </div>
-                    <div className="w-full h-2 rounded-full" style={{background: '#16001e'}}>
+                    <div className="w-full h-2 rounded-full" style={{background: 'theme.backgroundTertiary'}}>
                       <div 
                         className="h-full rounded-full transition-all"
                         style={{
@@ -358,7 +358,7 @@ export default function Documents() {
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       placeholder="Passport, Will, Insurance Policy..."
-                      style={{background: '#0f0a1e', borderColor: theme.border, color: theme.text}}
+                      style={{background: 'theme.backgroundTertiary', borderColor: theme.border, color: theme.text}}
                     />
                   </div>
                   <div>
@@ -367,7 +367,7 @@ export default function Documents() {
                       value={formData.description}
                       onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                       placeholder="Additional details"
-                      style={{background: '#0f0a1e', borderColor: theme.border, color: theme.text}}
+                      style={{background: 'theme.backgroundTertiary', borderColor: theme.border, color: theme.text}}
                     />
                   </div>
                   <div>
@@ -376,7 +376,7 @@ export default function Documents() {
                       value={formData.linked_asset_id || ''}
                       onChange={(e) => setFormData({ ...formData, linked_asset_id: e.target.value || null })}
                       className="w-full p-2 rounded-md"
-                      style={{background: '#0f0a1e', borderColor: theme.border, color: theme.text, border: '1px solid'}}
+                      style={{background: 'theme.backgroundTertiary', borderColor: theme.border, color: theme.text, border: '1px solid'}}
                     >
                       <option value="">-- No Asset --</option>
                       {assets.map(asset => (
@@ -392,7 +392,7 @@ export default function Documents() {
                     <Input
                       type="file"
                       onChange={handleFileChange}
-                      style={{background: '#0f0a1e', borderColor: theme.border, color: theme.text}}
+                      style={{background: 'theme.backgroundTertiary', borderColor: theme.border, color: theme.text}}
                     />
                   </div>
                   <div className="flex items-center gap-2">
