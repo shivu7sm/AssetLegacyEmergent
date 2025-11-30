@@ -69,6 +69,8 @@ export default function TaxBlueprint() {
       // Auto-fetch blueprint if profile exists
       fetchBlueprint();
       fetchRegimeComparison();
+      fetchTaxBenefits();
+      fetchWealthStructures();
     } catch (error) {
       if (error.response?.status !== 404) {
         console.error('Failed to fetch profile:', error);
