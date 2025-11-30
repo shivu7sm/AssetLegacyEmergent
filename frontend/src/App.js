@@ -230,6 +230,14 @@ function AppRoutes() {
           </ProtectedRoute>
         } 
       />
+      <Route 
+        path="/tax-blueprint" 
+        element={
+          <ProtectedRoute>
+            <TaxBlueprint />
+          </ProtectedRoute>
+        } 
+      />
       <Route path="/nominee-access" element={<NomineeAccess />} />
       <Route path="/nominee-dashboard" element={<NomineeDashboard />} />
     </Routes>
