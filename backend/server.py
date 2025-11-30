@@ -18,7 +18,8 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import stripe
 
 ROOT_DIR = Path(__file__).parent
-load_dotenv(ROOT_DIR / '.env')
+# Load .env file but don't override existing environment variables (from Kubernetes)
+load_dotenv(ROOT_DIR / '.env', override=False)
 
 # Import scheduler functions
 from scheduler import start_scheduler, stop_scheduler
