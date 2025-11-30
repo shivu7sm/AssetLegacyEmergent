@@ -89,7 +89,7 @@ export default function NomineeAccessCard({ nominee, onUpdate, onEdit, onDelete,
   };
 
   return (
-    <div className="p-5 rounded-lg space-y-4 relative" style={{background: 'linear-gradient(135deg, #1a1229 0%, #16001e 100%)', border: '2px solid #2d1f3d', boxShadow: '0 4px 12px rgba(0,0,0,0.3)'}}>
+    <div className="p-5 rounded-lg space-y-4 relative" style={{background: theme.cardBg, border: `2px solid ${theme.border}`, boxShadow: '0 4px 12px rgba(0,0,0,0.3)'}}>
       {/* Priority Controls - Enhanced */}
       <div className="absolute top-4 left-4 flex items-center gap-2">
         <div 
