@@ -500,15 +500,21 @@ async def create_session(request: Request, response: Response):
     session_dict['created_at'] = session_dict['created_at'].isoformat()
     await db.user_sessions.insert_one(session_dict)
     
+    # Determine if we're in production (HTTPS) or development
+    is_production = os.environ.get('ENVIRONMENT', 'development') == 'production'
+    
+    # Set cookie with appropriate security settings
     response.set_cookie(
         key="session_token",
         value=session_token,
         httponly=True,
-        secure=True,
-        samesite="none",
+        secure=is_production,  # Only require HTTPS in production
+        samesite="none" if is_production else "lax",  # Use 'none' only in production for cross-origin
         max_age=7 * 24 * 60 * 60,
         path="/"
     )
+    
+    logger.info(f"Session created for user {user_id}, cookie set with secure={is_production}")
     
     return {"success": True}
 
