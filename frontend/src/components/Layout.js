@@ -82,12 +82,16 @@ export default function Layout({ children }) {
   const handleLogout = async () => {
     try {
       await axios.post(`${API}/auth/logout`, {}, { withCredentials: true });
-      // Clear session storage
+      // Clear session storage and localStorage token
       sessionStorage.clear();
+      localStorage.removeItem('session_token');
       toast.success('Logged out successfully');
       navigate('/');
     } catch (error) {
       console.error('Logout failed:', error);
+      // Even if API call fails, clear local data
+      localStorage.removeItem('session_token');
+      sessionStorage.clear();
       toast.error('Logout failed');
     }
   };
