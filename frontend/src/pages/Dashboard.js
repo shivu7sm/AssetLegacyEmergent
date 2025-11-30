@@ -230,12 +230,12 @@ export default function Dashboard() {
                         }));
                         navigate('/nominee-dashboard');
                       }}
-                      style={{background: 'rgba(168, 85, 247, 0.2)', border: '1px solid rgba(168, 85, 247, 0.4)', color: '#a855f7'}}
+                      style={{background: `rgba(168, 85, 247, ${theme.name === 'dark' ? '0.2' : '0.1'})`, border: `1px solid ${theme.primary}`, color: theme.primary}}
                     >
                       <Eye className="w-3 h-3 mr-2" />
                       Preview Nominee View
                     </Button>
-                    <div className="flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold" style={{background: '#f59e0b', color: '#fff'}}>
+                    <div className="flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold" style={{background: theme.warning, color: '#fff'}}>
                       <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
                       DEMO
                     </div>
