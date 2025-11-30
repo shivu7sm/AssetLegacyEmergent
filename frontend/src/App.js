@@ -15,6 +15,7 @@ import PortfolioGuide from "./pages/PortfolioGuide";
 import Admin from "./pages/Admin";
 import LoanCalculator from "./pages/LoanCalculator";
 import IncomeExpense from "./pages/IncomeExpense";
+import TaxBlueprint from "./pages/TaxBlueprint";
 import NomineeAccess from "./pages/NomineeAccess";
 import NomineeDashboard from "./pages/NomineeDashboard";
 import { Toaster } from "@/components/ui/sonner";
