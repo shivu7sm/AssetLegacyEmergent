@@ -230,14 +230,43 @@ export default function Layout({ children }) {
                 />
               </div>
 
+              {/* Theme Toggle */}
+              <button
+                onClick={toggleColorTheme}
+                className="p-2 rounded-lg transition-all hover:scale-110"
+                style={{
+                  background: theme.backgroundSecondary,
+                  border: `1px solid ${theme.border}`,
+                  color: theme.text
+                }}
+                title={colorTheme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+              >
+                {colorTheme === 'dark' ? (
+                  <Sun className="w-4 h-4" />
+                ) : (
+                  <Moon className="w-4 h-4" />
+                )}
+              </button>
+
               {/* Currency Selector */}
               <Select value={selectedCurrency} onValueChange={handleCurrencyChange}>
-                <SelectTrigger className="w-24 h-9 text-sm" style={{background: '#1a1229', borderColor: '#2d1f3d', color: '#f8fafc'}}>
+                <SelectTrigger 
+                  className="w-24 h-9 text-sm" 
+                  style={{
+                    background: theme.backgroundSecondary, 
+                    borderColor: theme.border, 
+                    color: theme.text,
+                    transition: 'all 0.3s ease'
+                  }}
+                >
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                <SelectContent style={{
+                  background: theme.backgroundSecondary, 
+                  borderColor: theme.border
+                }}>
                   {CURRENCIES.map(curr => (
-                    <SelectItem key={curr.value} value={curr.value} style={{color: '#f8fafc'}}>
+                    <SelectItem key={curr.value} value={curr.value} style={{color: theme.text}}>
                       {curr.label}
                     </SelectItem>
                   ))}
@@ -250,7 +279,11 @@ export default function Layout({ children }) {
                 size="sm"
                 variant="outline" 
                 className="h-9"
-                style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+                style={{
+                  borderColor: theme.border, 
+                  color: theme.textTertiary,
+                  transition: 'all 0.3s ease'
+                }}
               >
                 <LogOut className="w-4 h-4 lg:mr-2" />
                 <span className="hidden lg:inline">Logout</span>
