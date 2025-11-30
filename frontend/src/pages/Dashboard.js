@@ -606,8 +606,9 @@ export default function Dashboard() {
                     key={ratio.key}
                     className="overflow-hidden transition-all hover:shadow-lg"
                     style={{
-                      background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', 
-                      borderColor: borderColor
+                      background: theme.cardBg, 
+                      borderColor: borderColor,
+                      boxShadow: theme.cardShadow
                     }}
                   >
                     <CardContent className="p-4">
