@@ -1358,6 +1358,7 @@ export default function Assets() {
                             handleEdit={handleEdit}
                             handleDelete={handleDelete}
                             handleCalculateLoan={handleCalculateLoan}
+                            theme={theme}
                           />
                         );
                       })}
