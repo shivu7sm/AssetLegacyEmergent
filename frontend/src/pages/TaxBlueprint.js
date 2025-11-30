@@ -420,7 +420,7 @@ export default function TaxBlueprint() {
             <CardContent className="p-12 text-center">
               <Sparkles className="w-16 h-16 mx-auto mb-4" style={{color: '#a855f7'}} />
               <h2 className="text-2xl font-bold mb-2" style={{color: '#f8fafc'}}>
-                Welcome to Sankalp Planner!
+                Welcome to Sankalp Planner
               </h2>
               <p className="text-base mb-6" style={{color: '#94a3b8'}}>
                 Most Indians leave ₹50,000+ on the table every year. Let's find your hidden tax savings and wealth opportunities.
