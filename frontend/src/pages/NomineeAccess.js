@@ -50,13 +50,13 @@ export default function NomineeAccess() {
   return (
     <div className="min-h-screen flex items-center justify-center" style={{background: 'linear-gradient(135deg, #1a0b2e 0%, #16001e 50%, #2d0e3e 100%)'}}>
       <div className="w-full max-w-md p-6">
-        <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+        <Card style={{background: theme.cardBg, borderColor: theme.border}}>
           <CardHeader className="text-center">
             <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{background: 'rgba(168, 85, 247, 0.2)'}}>
               <Shield className="w-8 h-8" style={{color: '#a855f7'}} />
             </div>
-            <CardTitle style={{color: '#f8fafc', fontSize: '1.75rem'}}>Nominee Access Portal</CardTitle>
-            <p className="text-sm mt-2" style={{color: '#94a3b8'}}>
+            <CardTitle style={{color: theme.text, fontSize: '1.75rem'}}>Nominee Access Portal</CardTitle>
+            <p className="text-sm mt-2" style={{color: theme.textSecondary}}>
               Enter your secure access token to view the portfolio you've been granted access to
             </p>
           </CardHeader>
@@ -95,7 +95,7 @@ export default function NomineeAccess() {
                 <Eye className="w-5 h-5 flex-shrink-0" style={{color: '#60a5fa'}} />
                 <div>
                   <p className="text-sm font-semibold mb-1" style={{color: '#60a5fa'}}>Read-Only Access</p>
-                  <p className="text-xs" style={{color: '#cbd5e1'}}>
+                  <p className="text-xs" style={{color: theme.textSecondary}}>
                     You'll be able to view assets, documents, and the digital will. You cannot make any changes or modifications.
                   </p>
                 </div>
@@ -106,7 +106,7 @@ export default function NomineeAccess() {
               <button 
                 onClick={() => navigate('/')}
                 className="text-sm"
-                style={{color: '#94a3b8'}}
+                style={{color: theme.textSecondary}}
               >
                 ← Back to Login
               </button>

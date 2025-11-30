@@ -61,7 +61,7 @@ export default function NomineeDashboard() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{background: 'linear-gradient(135deg, #1a0b2e 0%, #16001e 50%, #2d0e3e 100%)'}}>
-        <p style={{color: '#f8fafc'}}>Loading portfolio...</p>
+        <p style={{color: theme.text}}>Loading portfolio...</p>
       </div>
     );
   }
@@ -74,11 +74,11 @@ export default function NomineeDashboard() {
           <div className="flex items-center gap-3">
             <Shield className="w-7 h-7" style={{color: '#ec4899'}} />
             <div>
-              <h1 className="text-xl font-bold" style={{color: '#f8fafc'}}>AssetVault - Nominee View</h1>
-              <p className="text-xs" style={{color: '#94a3b8'}}>Portfolio of {nomineeInfo.owner?.name}</p>
+              <h1 className="text-xl font-bold" style={{color: theme.text}}>AssetVault - Nominee View</h1>
+              <p className="text-xs" style={{color: theme.textSecondary}}>Portfolio of {nomineeInfo.owner?.name}</p>
             </div>
           </div>
-          <Button onClick={handleLogout} variant="outline" style={{borderColor: '#2d1f3d', color: '#94a3b8'}}>
+          <Button onClick={handleLogout} variant="outline" style={{borderColor: theme.border, color: theme.textSecondary}}>
             <LogOut className="w-4 h-4 mr-2" />
             Logout
           </Button>
@@ -92,7 +92,7 @@ export default function NomineeDashboard() {
             <Eye className="w-6 h-6" style={{color: '#60a5fa'}} />
             <div>
               <p className="font-semibold" style={{color: '#60a5fa'}}>Read-Only Access</p>
-              <p className="text-sm" style={{color: '#cbd5e1'}}>
+              <p className="text-sm" style={{color: theme.textSecondary}}>
                 You're viewing as: {data?.nominee_info?.name} ({data?.nominee_info?.relationship || 'Nominee'})
                 {data?.nominee_info?.priority && ` - Priority ${data.nominee_info.priority}`}
               </p>
@@ -102,15 +102,15 @@ export default function NomineeDashboard() {
 
         {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+          <Card style={{background: theme.cardBg, borderColor: theme.border}}>
             <CardContent className="py-6">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{background: 'rgba(236, 72, 153, 0.2)'}}>
                   <DollarSign className="w-6 h-6" style={{color: '#ec4899'}} />
                 </div>
                 <div>
-                  <p className="text-sm" style={{color: '#94a3b8'}}>Total Value</p>
-                  <p className="text-2xl font-bold" style={{color: '#f8fafc'}}>
+                  <p className="text-sm" style={{color: theme.textSecondary}}>Total Value</p>
+                  <p className="text-2xl font-bold" style={{color: theme.text}}>
                     ${data?.summary?.total_value?.toLocaleString() || 0}
                   </p>
                 </div>
@@ -118,15 +118,15 @@ export default function NomineeDashboard() {
             </CardContent>
           </Card>
 
-          <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+          <Card style={{background: theme.cardBg, borderColor: theme.border}}>
             <CardContent className="py-6">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{background: 'rgba(168, 85, 247, 0.2)'}}>
                   <Wallet className="w-6 h-6" style={{color: '#a855f7'}} />
                 </div>
                 <div>
-                  <p className="text-sm" style={{color: '#94a3b8'}}>Assets</p>
-                  <p className="text-2xl font-bold" style={{color: '#f8fafc'}}>
+                  <p className="text-sm" style={{color: theme.textSecondary}}>Assets</p>
+                  <p className="text-2xl font-bold" style={{color: theme.text}}>
                     {data?.summary?.total_assets || 0}
                   </p>
                 </div>
@@ -134,15 +134,15 @@ export default function NomineeDashboard() {
             </CardContent>
           </Card>
 
-          <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+          <Card style={{background: theme.cardBg, borderColor: theme.border}}>
             <CardContent className="py-6">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{background: 'rgba(59, 130, 246, 0.2)'}}>
                   <FileText className="w-6 h-6" style={{color: '#3b82f6'}} />
                 </div>
                 <div>
-                  <p className="text-sm" style={{color: '#94a3b8'}}>Documents</p>
-                  <p className="text-2xl font-bold" style={{color: '#f8fafc'}}>
+                  <p className="text-sm" style={{color: theme.textSecondary}}>Documents</p>
+                  <p className="text-2xl font-bold" style={{color: theme.text}}>
                     {data?.summary?.document_count || 0}
                   </p>
                 </div>
@@ -150,15 +150,15 @@ export default function NomineeDashboard() {
             </CardContent>
           </Card>
 
-          <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+          <Card style={{background: theme.cardBg, borderColor: theme.border}}>
             <CardContent className="py-6">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{background: 'rgba(16, 185, 129, 0.2)'}}>
                   <Users className="w-6 h-6" style={{color: '#10b981'}} />
                 </div>
                 <div>
-                  <p className="text-sm" style={{color: '#94a3b8'}}>Nominees</p>
-                  <p className="text-2xl font-bold" style={{color: '#f8fafc'}}>
+                  <p className="text-sm" style={{color: theme.textSecondary}}>Nominees</p>
+                  <p className="text-2xl font-bold" style={{color: theme.text}}>
                     {data?.nominees?.length || 0}
                   </p>
                 </div>
@@ -168,18 +168,18 @@ export default function NomineeDashboard() {
         </div>
 
         {/* Assets List */}
-        <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}} className="mb-6">
+        <Card style={{background: theme.cardBg, borderColor: theme.border}} className="mb-6">
           <CardHeader>
-            <CardTitle style={{color: '#f8fafc'}}>Assets ({data?.assets?.length || 0})</CardTitle>
+            <CardTitle style={{color: theme.text}}>Assets ({data?.assets?.length || 0})</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               {data?.assets?.map((asset) => (
-                <div key={asset.id} className="p-4 rounded-lg" style={{background: '#16001e', border: '1px solid #2d1f3d'}}>
+                <div key={asset.id} className="p-4 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
                   <div className="flex justify-between items-center">
                     <div>
-                      <p className="font-semibold" style={{color: '#f8fafc'}}>{asset.name}</p>
-                      <p className="text-sm" style={{color: '#94a3b8'}}>{asset.type}</p>
+                      <p className="font-semibold" style={{color: theme.text}}>{asset.name}</p>
+                      <p className="text-sm" style={{color: theme.textSecondary}}>{asset.type}</p>
                     </div>
                     <div className="text-right">
                       <p className="font-bold" style={{color: '#ec4899'}}>
@@ -200,16 +200,16 @@ export default function NomineeDashboard() {
 
         {/* Documents */}
         {data?.documents?.length > 0 && (
-          <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}} className="mb-6">
+          <Card style={{background: theme.cardBg, borderColor: theme.border}} className="mb-6">
             <CardHeader>
-              <CardTitle style={{color: '#f8fafc'}}>Documents ({data.documents.length})</CardTitle>
+              <CardTitle style={{color: theme.text}}>Documents ({data.documents.length})</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
                 {data.documents.map((doc) => (
-                  <div key={doc.id} className="p-3 rounded" style={{background: '#16001e'}}>
-                    <p className="font-medium" style={{color: '#f8fafc'}}>{doc.name}</p>
-                    <p className="text-xs" style={{color: '#94a3b8'}}>{doc.description}</p>
+                  <div key={doc.id} className="p-3 rounded" style={{background: theme.backgroundTertiary}}>
+                    <p className="font-medium" style={{color: theme.text}}>{doc.name}</p>
+                    <p className="text-xs" style={{color: theme.textSecondary}}>{doc.description}</p>
                   </div>
                 ))}
               </div>
@@ -219,13 +219,13 @@ export default function NomineeDashboard() {
 
         {/* Digital Will */}
         {data?.will && (
-          <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+          <Card style={{background: theme.cardBg, borderColor: theme.border}}>
             <CardHeader>
-              <CardTitle style={{color: '#f8fafc'}}>Digital Will</CardTitle>
+              <CardTitle style={{color: theme.text}}>Digital Will</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="prose prose-invert max-w-none">
-                <pre className="whitespace-pre-wrap text-sm" style={{color: '#cbd5e1'}}>
+                <pre className="whitespace-pre-wrap text-sm" style={{color: theme.textSecondary}}>
                   {data.will.will_text}
                 </pre>
               </div>
