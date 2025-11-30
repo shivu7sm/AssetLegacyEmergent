@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { LayoutDashboard, Wallet, Settings, LogOut, ShieldCheck, FileText, FolderLock, Sparkles, Calendar, Crown, ShieldAlert, FlaskConical, Database, Receipt, Zap } from 'lucide-react';
+import { LayoutDashboard, Wallet, Settings, LogOut, ShieldCheck, FileText, FolderLock, Sparkles, Calendar, Crown, ShieldAlert, FlaskConical, Database, Receipt, Zap, Sun, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
