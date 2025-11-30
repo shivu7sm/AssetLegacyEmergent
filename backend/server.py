@@ -60,6 +60,7 @@ class User(BaseModel):
     marketing_consent: bool = False
     communication_consent: bool = True
     demo_mode: bool = True  # Toggle between live and demo data - DEFAULT TO DEMO
+    onboarding_completed: bool = False  # Track if user has completed onboarding
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class UserSession(BaseModel):
