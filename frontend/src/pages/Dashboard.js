@@ -770,11 +770,11 @@ export default function Dashboard() {
 
           {/* Asset Distribution Row */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card data-testid="asset-distribution-card" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+            <Card data-testid="asset-distribution-card" style={{background: theme.backgroundSecondary, borderColor: theme.border, boxShadow: theme.cardShadow}}>
               <CardHeader>
                 <div className="flex justify-between items-center">
                   <div>
-                    <CardTitle style={{color: '#f8fafc'}}>Asset Distribution</CardTitle>
+                    <CardTitle style={{color: theme.text}}>Asset Distribution</CardTitle>
                     <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Breakdown by asset type</p>
                   </div>
                   {assetDistributionData.length > 0 && (
