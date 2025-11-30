@@ -267,6 +267,19 @@ function AppRoutes() {
   );
 }
 
+function OnboardingWrapper() {
+  const { user, showOnboarding, handleOnboardingComplete } = useAuth();
+  
+  return (
+    <>
+      <AppRoutes />
+      {user && showOnboarding && (
+        <Onboarding open={showOnboarding} onComplete={handleOnboardingComplete} />
+      )}
+    </>
+  );
+}
+
 function App() {
   return (
     <div className="App">
@@ -274,7 +287,7 @@ function App() {
         <AuthProvider>
           <AppProvider>
             <ThemeProvider>
-              <AppRoutes />
+              <OnboardingWrapper />
             </ThemeProvider>
           </AppProvider>
         </AuthProvider>
