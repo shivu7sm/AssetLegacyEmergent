@@ -225,16 +225,16 @@ export default function NomineeAccessCard({ nominee, onUpdate, onEdit, onDelete,
               onClick={() => updateAccessType('temporary')}
               className="p-4 rounded-lg text-center transition-all hover:scale-105"
               style={{
-                background: nominee.access_type === 'temporary' ? 'linear-gradient(135deg, rgba(245, 158, 11, 0.25) 0%, rgba(245, 158, 11, 0.15) 100%)' : 'rgba(255,255,255,0.03)',
-                border: `2px solid ${nominee.access_type === 'temporary' ? '#f59e0b' : 'rgba(255,255,255,0.08)'}`,
+                background: nominee.access_type === 'temporary' ? 'linear-gradient(135deg, rgba(245, 158, 11, 0.25) 0%, rgba(245, 158, 11, 0.15) 100%)' : theme.backgroundTertiary,
+                border: `2px solid ${nominee.access_type === 'temporary' ? '#f59e0b' : theme.border}`,
                 boxShadow: nominee.access_type === 'temporary' ? '0 4px 12px rgba(245, 158, 11, 0.3)' : 'none'
               }}
             >
-              <Clock className="w-7 h-7 mx-auto mb-2" style={{color: nominee.access_type === 'temporary' ? '#f59e0b' : '#64748b'}} />
-              <p className="text-sm font-bold mb-1" style={{color: nominee.access_type === 'temporary' ? '#f8fafc' : '#94a3b8'}}>
+              <Clock className="w-7 h-7 mx-auto mb-2" style={{color: nominee.access_type === 'temporary' ? '#f59e0b' : theme.textMuted}} />
+              <p className="text-sm font-bold mb-1" style={{color: nominee.access_type === 'temporary' ? theme.text : theme.textTertiary}}>
                 Temporary
               </p>
-              <p className="text-xs leading-tight" style={{color: '#64748b'}}>
+              <p className="text-xs leading-tight" style={{color: theme.textMuted}}>
                 7-day access<br/>
                 {nominee.access_type === 'temporary' && <span style={{color: '#f59e0b'}}>⏰ Limited time</span>}
               </p>
