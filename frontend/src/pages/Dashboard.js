@@ -1005,7 +1005,7 @@ export default function Dashboard() {
                 data-testid="add-asset-btn"
                 onClick={() => navigate('/assets')} 
                 className="text-white justify-start rounded-xl h-14"
-                style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
+                style={{background: theme.primaryGradient}}
               >
                 <Plus className="w-5 h-5 mr-3" />
                 Add New Asset
