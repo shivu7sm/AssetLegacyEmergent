@@ -4994,33 +4994,85 @@ Return response in JSON format matching this structure:
     except Exception as e:
         logger.error(f"AI blueprint generation failed: {str(e)}")
         # Fallback to rule-based blueprint
+        section_80c_gap_val = max(150000 - profile.get('current_80c_investment', 0), 0)
+        
+        # Generate hidden SIP opportunities from expense data
+        fallback_hidden_sips = []
+        if avg_expense_by_category:
+            # Find top 3 expense categories
+            sorted_expenses = sorted(avg_expense_by_category.items(), key=lambda x: x[1], reverse=True)[:3]
+            for category, amount in sorted_expenses:
+                if amount > 1000:  # Only if spending > ₹1000
+                    reduction_pct = 25  # Suggest 25% reduction
+                    reduction_amt = amount * 0.25
+                    fallback_hidden_sips.append({
+                        "category": category,
+                        "current_monthly": amount,
+                        "reduction_amount": reduction_amt,
+                        "reduction_percent": reduction_pct,
+                        "tips": [
+                            f"Track your {category.lower()} spending daily",
+                            f"Set a monthly budget of ₹{amount * 0.75:.0f}",
+                            "Look for more cost-effective alternatives"
+                        ],
+                        "wealth_1yr": reduction_amt * 12 * 1.04,
+                        "wealth_5yr": reduction_amt * 12 * 5 * 1.61,
+                        "wealth_10yr": reduction_amt * 12 * 10 * 3.11
+                    })
+        
         ai_content = {
-            "section_80c_gap": max(150000 - profile.get('current_80c_investment', 0), 0),
+            "section_80c_gap": section_80c_gap_val,
             "recommendations_80c": [
                 {
                     "instrument": "ELSS Mutual Fund",
-                    "amount": 40000,
-                    "monthly_sip": 3334,
+                    "amount": min(section_80c_gap_val, 60000) if section_80c_gap_val > 0 else 40000,
+                    "monthly_sip": min(section_80c_gap_val, 60000) / 12 if section_80c_gap_val > 0 else 3334,
                     "rationale": "High growth potential with 3-year lock-in. Suits moderate risk appetite.",
                     "expected_return": 52000,
                     "tax_saved": 12000,
                     "risk_level": "moderate",
-                    "action": "Start SIP of ₹3,334/month"
+                    "action": f"Start SIP of ₹{min(section_80c_gap_val, 60000) / 12:.0f}/month" if section_80c_gap_val > 0 else "Start SIP of ₹3,334/month"
+                },
+                {
+                    "instrument": "Public Provident Fund (PPF)",
+                    "amount": min(section_80c_gap_val - 60000, 50000) if section_80c_gap_val > 60000 else 30000,
+                    "monthly_sip": (min(section_80c_gap_val - 60000, 50000) if section_80c_gap_val > 60000 else 30000) / 12,
+                    "rationale": "Safe, tax-free returns at 7.1%. Good for risk-averse investors.",
+                    "expected_return": 35000,
+                    "tax_saved": 9000,
+                    "risk_level": "low",
+                    "action": "Open PPF account at nearest post office or bank"
                 }
             ],
-            "hidden_sip_opportunities": [],
+            "hidden_sip_opportunities": fallback_hidden_sips,
             "priority_actions": [
                 {
                     "rank": 1,
-                    "action": "Max out 80C investments",
+                    "action": "Complete 80C limit to save ₹45,000 in taxes",
                     "impact": "High",
                     "effort": "Easy",
-                    "expected_saving": 45000,
-                    "time": "5 minutes"
+                    "expected_saving": section_80c_gap_val * 0.30,
+                    "time": "10 minutes"
+                },
+                {
+                    "rank": 2,
+                    "action": "Start tracking expenses in Income & Expense section",
+                    "impact": "High",
+                    "effort": "Easy",
+                    "expected_saving": 0,
+                    "time": "5 minutes daily"
+                },
+                {
+                    "rank": 3,
+                    "action": "Review and claim lesser-known tax benefits (TCS, LTA, HRA)",
+                    "impact": "Medium",
+                    "effort": "Moderate",
+                    "expected_saving": 30000,
+                    "time": "30 minutes"
                 }
             ],
-            "ai_summary": "Complete your tax profile and expense tracking for personalized recommendations.",
-            "confidence_score": 60
+            "ai_summary": "You have ₹" + f"{section_80c_gap_val:,.0f}" + " gap in Section 80C. Start with ELSS for growth and PPF for safety. Track your expenses to unlock more savings opportunities.",
+            "confidence_score": 65
         }
     
     # Build blueprint from AI response
