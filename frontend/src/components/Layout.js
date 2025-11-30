@@ -99,6 +99,7 @@ export default function Layout({ children }) {
   const baseNavItems = [
     { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, testId: 'nav-dashboard' },
     { path: '/assets', label: 'Assets', icon: Wallet, testId: 'nav-assets' },
+    { path: '/income-expense', label: 'Income & Expenses', icon: Receipt, testId: 'nav-income-expense' },
     { path: '/insights', label: 'AI Insights', icon: Sparkles, testId: 'nav-insights' },
     { path: '/schedule-messages', label: 'Messages', icon: Calendar, testId: 'nav-messages' },
     // Only show Plans if user is on Free plan or no subscription
