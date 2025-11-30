@@ -4861,12 +4861,12 @@ async def generate_blueprint(force_refresh: bool = False, user: User = Depends(r
         if recent_blueprint:
             return recent_blueprint
     
-    # Get tax profile
-    profile = await db.tax_profiles.find_one({"user_id": user.id}, {"_id": 0})
+    # Get tax profile - filter by demo/live mode
+    profile = await db.tax_profiles.find_one({"user_id": user.id, "demo_mode": user.demo_mode}, {"_id": 0})
     if not profile:
         raise HTTPException(status_code=404, detail="Tax profile not found. Please complete your profile first.")
     
-    # Get expense data from last 3 months
+    # Get expense data from last 3 months - filter by demo/live mode
     current_date = datetime.now(timezone.utc)
     months = []
     for i in range(3):
@@ -4876,8 +4876,8 @@ async def generate_blueprint(force_refresh: bool = False, user: User = Depends(r
     expenses_data = []
     incomes_data = []
     for month in months:
-        expenses = await db.monthly_expenses.find({"user_id": user.id, "month": month}, {"_id": 0}).to_list(100)
-        incomes = await db.monthly_incomes.find({"user_id": user.id, "month": month}, {"_id": 0}).to_list(100)
+        expenses = await db.monthly_expenses.find({"user_id": user.id, "month": month, "demo_mode": user.demo_mode}, {"_id": 0}).to_list(100)
+        incomes = await db.monthly_incomes.find({"user_id": user.id, "month": month, "demo_mode": user.demo_mode}, {"_id": 0}).to_list(100)
         expenses_data.extend(expenses)
         incomes_data.extend(incomes)
     
