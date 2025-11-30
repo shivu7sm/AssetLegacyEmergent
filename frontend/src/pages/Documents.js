@@ -429,7 +429,7 @@ export default function Documents() {
                     onChange={(e) => setSearchTerm(e.target.value)}
                     placeholder="Search documents..."
                     className="pl-10"
-                    style={{background: '#0f0a1e', borderColor: theme.border, color: theme.text}}
+                    style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
                   />
                   {searchTerm && (
                     <button
