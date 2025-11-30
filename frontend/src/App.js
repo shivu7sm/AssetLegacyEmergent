@@ -41,14 +41,29 @@ function AuthProvider({ children }) {
       if (sessionId) {
         try {
           // Exchange session_id for session_token
-          await axios.post(`${API}/auth/session`, {}, {
+          const sessionResponse = await axios.post(`${API}/auth/session`, {}, {
             headers: { 'X-Session-ID': sessionId },
             withCredentials: true
           });
           
-          // Fetch user data
-          const response = await axios.get(`${API}/auth/me`, { withCredentials: true });
-          setUser(response.data);
+          // Store session token in localStorage as fallback for cross-domain cookies
+          if (sessionResponse.data.session_token) {
+            localStorage.setItem('session_token', sessionResponse.data.session_token);
+          }
+          
+          // If user data is in response, use it directly
+          if (sessionResponse.data.user) {
+            setUser(sessionResponse.data.user);
+          } else {
+            // Otherwise fetch user data
+            const response = await axios.get(`${API}/auth/me`, { 
+              withCredentials: true,
+              headers: sessionResponse.data.session_token ? {
+                'Authorization': `Bearer ${sessionResponse.data.session_token}`
+              } : {}
+            });
+            setUser(response.data);
+          }
           
           // Clear the hash and navigate
           window.history.replaceState(null, '', window.location.pathname);
