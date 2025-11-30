@@ -431,7 +431,7 @@ export default function Dashboard() {
                     <div className="text-4xl font-bold mb-1" style={{color: '#f8fafc', fontFamily: 'Inter, sans-serif'}} data-testid="total-assets-count">
                       {summary?.total_assets || 0}
                     </div>
-                    <p className="text-xs" style={{color: '#64748b'}}>items tracked</p>
+                    <p className="text-xs" style={{color: theme.textMuted}}>items tracked</p>
                   </div>
                   <div className="p-3 rounded-xl" style={{background: 'rgba(59, 130, 246, 0.1)'}}>
                     <DollarSign className="w-8 h-8" style={{color: '#3b82f6'}} />
@@ -460,7 +460,7 @@ export default function Dashboard() {
                     >
                       {formatCurrency(netWorthValue, selectedCurrency, currencyFormat)}
                     </div>
-                    <p className="text-xs" style={{color: '#64748b'}}>
+                    <p className="text-xs" style={{color: theme.textMuted}}>
                       {selectedCurrency} equivalent
                     </p>
                   </div>
@@ -487,7 +487,7 @@ export default function Dashboard() {
                     <div className="text-2xl font-bold mb-1" style={{color: summary?.has_nominee ? '#10b981' : '#f59e0b', fontFamily: 'Inter, sans-serif'}} data-testid="nominee-status">
                       {summary?.has_nominee ? '✓ Configured' : 'Not Set'}
                     </div>
-                    <p className="text-xs" style={{color: '#64748b'}}>
+                    <p className="text-xs" style={{color: theme.textMuted}}>
                       {summary?.has_nominee ? 'Protection active' : 'Setup required'}
                     </p>
                   </div>
@@ -510,7 +510,7 @@ export default function Dashboard() {
                     <div className="text-2xl font-bold mb-1" style={{color: summary?.has_dms ? '#10b981' : '#f59e0b', fontFamily: 'Inter, sans-serif'}} data-testid="dms-status">
                       {summary?.has_dms ? '✓ Active' : 'Not Set'}
                     </div>
-                    <p className="text-xs" style={{color: '#64748b'}}>
+                    <p className="text-xs" style={{color: theme.textMuted}}>
                       {summary?.has_dms ? 'Monitoring enabled' : 'Setup required'}
                     </p>
                   </div>
@@ -623,7 +623,7 @@ export default function Dashboard() {
                       >
                         {ratio.data?.display}
                       </div>
-                      <p className="text-xs leading-tight mb-1" style={{color: '#64748b'}}>
+                      <p className="text-xs leading-tight mb-1" style={{color: theme.textMuted}}>
                         {ratio.data?.description}
                       </p>
                       <p className="text-xs" style={{color: theme.textTertiary, fontStyle: 'italic'}}>
