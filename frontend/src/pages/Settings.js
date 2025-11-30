@@ -177,6 +177,7 @@ function DemoDataSection() {
 
 // Connected Accounts Section Component
 function ConnectedAccountsSection({ demoMode }) {
+  const { theme } = useTheme();
   const navigate = useNavigate();
   const [connectedAccounts, setConnectedAccounts] = useState([]);
   const [loadingAccounts, setLoadingAccounts] = useState(true);
