@@ -177,10 +177,10 @@ export default function Dashboard() {
       <div className={`${dashboardTheme}-theme space-y-8`} data-testid="dashboard-container" style={dashboardTheme === 'modern' ? {padding: '2rem', background: '#0b0b11'} : {padding: '2rem 0'}}>
         {/* Header */}
         <div>
-          <h1 className={`${dashboardTheme === 'modern' ? 'text-3xl' : 'text-4xl'} font-bold mb-2`} style={dashboardTheme === 'modern' ? {fontFamily: 'Inter, sans-serif', color: '#FFFFFF'} : {fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}} data-testid="dashboard-title">
+          <h1 className={`${dashboardTheme === 'modern' ? 'text-3xl' : 'text-4xl'} font-bold mb-2`} style={dashboardTheme === 'modern' ? {fontFamily: 'Inter, sans-serif', color: theme.text} : {fontFamily: 'Space Grotesk, sans-serif', color: theme.text}} data-testid="dashboard-title">
             {dashboardTheme === 'modern' ? 'Dashboard' : 'Financial Dashboard'}
           </h1>
-          <p style={dashboardTheme === 'modern' ? {color: 'rgba(255,255,255,0.65)', fontSize: '0.9375rem'} : {color: theme.textTertiary}}>
+          <p style={dashboardTheme === 'modern' ? {color: theme.textSecondary, fontSize: '0.9375rem'} : {color: theme.textTertiary}}>
             {dashboardTheme === 'modern' ? 'Your complete financial overview' : 'Overview of your assets and financial health'}
           </p>
         </div>
