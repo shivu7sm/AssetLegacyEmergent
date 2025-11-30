@@ -410,7 +410,7 @@ export default function AssetsNew() {
             <CardContent className="p-0">
               <div style={{maxHeight: 'calc(100vh - 280px)', overflowY: 'auto'}}>
                 <table className="w-full" style={{fontSize: '0.813rem'}}>
-                    <thead style={{background: '#0E0F16', borderBottom: `2px solid ${theme.border}`, position: 'sticky', top: 0, zIndex: 10}}>
+                    <thead style={{background: theme.backgroundTertiary, borderBottom: `2px solid ${theme.border}`, position: 'sticky', top: 0, zIndex: 10}}>
                       <tr>
                         <th className="text-left p-3" style={{color: theme.textSecondary, fontWeight: 600, width: '30%'}}>Asset</th>
                         <th className="text-right p-3" style={{color: theme.textSecondary, fontWeight: 600}}>Purchase (Original)</th>
