@@ -294,7 +294,14 @@ export default function Layout({ children }) {
       </header>
 
       {/* Mobile Navigation */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50" style={{background: '#1a1229', borderTop: '1px solid #2d1f3d'}}>
+      <div 
+        className="md:hidden fixed bottom-0 left-0 right-0 z-50" 
+        style={{
+          background: theme.backgroundSecondary, 
+          borderTop: `1px solid ${theme.border}`,
+          transition: 'all 0.3s ease'
+        }}
+      >
         <div className="flex justify-around items-center py-3">
           {navItems.slice(0, 5).map((item) => {
             const Icon = item.icon;
@@ -305,7 +312,7 @@ export default function Layout({ children }) {
                 data-testid={`${item.testId}-mobile`}
                 onClick={() => navigate(item.path)}
                 className="flex flex-col items-center gap-1 px-4 py-2 rounded-lg"
-                style={{color: isActive ? '#ec4899' : '#94a3b8'}}
+                style={{color: isActive ? theme.primary : theme.textTertiary}}
               >
                 <Icon className="w-6 h-6" />
                 <span className="text-xs">{item.label}</span>
