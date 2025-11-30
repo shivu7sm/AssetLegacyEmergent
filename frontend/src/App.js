@@ -141,11 +141,8 @@ function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, setUser, showOnboarding, setShowOnboarding, handleOnboardingComplete }}>
       {children}
-      {user && showOnboarding && (
-        <Onboarding open={showOnboarding} onComplete={handleOnboardingComplete} />
-      )}
     </AuthContext.Provider>
   );
 }
