@@ -82,8 +82,8 @@ export default function TaxBlueprint() {
     setLoading(true);
     try {
       const response = await axios.post(
-        `${API}/tax-blueprint/generate`,
-        { force_refresh: forceRefresh },
+        `${API}/tax-blueprint/generate?force_refresh=${forceRefresh}`,
+        {},
         { 
           withCredentials: true,
           headers: {
