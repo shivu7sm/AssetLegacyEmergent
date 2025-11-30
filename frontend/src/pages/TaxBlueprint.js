@@ -868,7 +868,8 @@ export default function TaxBlueprint() {
                       </Button>
                     </CardContent>
                   </Card>
-                ))}
+                  ))
+                )}
               </div>
             </TabsContent>
 
