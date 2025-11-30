@@ -166,6 +166,7 @@ function AssetTableRow({ asset, typeInfo, purchaseValueOriginal, currentValueOri
 
 export default function Assets() {
   const { selectedCurrency, currencyFormat, preferences } = useApp();
+  const { theme } = useTheme();
   const [assets, setAssets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
