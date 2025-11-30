@@ -774,7 +774,36 @@ export default function TaxBlueprint() {
             {/* Hidden SIP Tab */}
             <TabsContent value="hidden-sip">
               <div className="space-y-4">
-                {blueprint.hidden_sip_opportunities.map((opp, idx) => (
+                {blueprint.hidden_sip_opportunities.length === 0 ? (
+                  <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                    <CardContent className="p-8 text-center">
+                      <AlertCircle className="w-16 h-16 mx-auto mb-4" style={{color: '#f59e0b'}} />
+                      <h3 className="text-xl font-bold mb-2" style={{color: '#f8fafc'}}>
+                        Track Your Expenses to Unlock Hidden SIPs
+                      </h3>
+                      <p className="text-base mb-4" style={{color: '#94a3b8'}}>
+                        We need your expense data to find savings opportunities. Start tracking your monthly expenses in the Income & Expense section.
+                      </p>
+                      <Button 
+                        onClick={() => window.location.href = '/income-expense'}
+                        style={{background: '#10b981', color: 'white'}}
+                      >
+                        Start Tracking Expenses
+                      </Button>
+                      <div className="mt-6 p-4 rounded-lg text-left" style={{background: '#0f0a1a'}}>
+                        <p className="text-sm mb-2 font-semibold" style={{color: '#f8fafc'}}>
+                          💡 What are Hidden SIPs?
+                        </p>
+                        <p className="text-sm" style={{color: '#cbd5e1'}}>
+                          Hidden SIPs are savings opportunities found by analyzing your spending patterns. 
+                          For example: Reducing dining out by 30% could give you ₹5,000/month to invest, 
+                          which becomes ₹10 lakhs in 10 years at 12% returns!
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  blueprint.hidden_sip_opportunities.map((opp, idx) => (
                   <Card key={idx} style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
                     <CardHeader>
                       <CardTitle style={{color: '#f8fafc'}}>{opp.expense_category}</CardTitle>
