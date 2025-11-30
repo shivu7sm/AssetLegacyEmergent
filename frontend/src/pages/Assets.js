@@ -1327,7 +1327,7 @@ export default function Assets() {
               <CardContent className="p-0">
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead style={{background: '#16001e', borderBottom: '1px solid #2d1f3d'}}>
+                    <thead style={{background: theme.backgroundTertiary, borderBottom: `1px solid ${theme.border}`}}>
                       <tr>
                         <th className="text-left p-4" style={{color: theme.textTertiary, fontWeight: 600}}>Asset</th>
                         <th className="text-left p-4" style={{color: theme.textTertiary, fontWeight: 600}}>Type</th>
