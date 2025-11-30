@@ -588,7 +588,7 @@ export default function Documents() {
                         onClick={() => handleDelete(doc.id)}
                         variant="outline"
                         size="sm"
-                        style={{borderColor: '#ef4444', color: '#ef4444'}}
+                        style={{borderColor: theme.error, color: theme.error}}
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
