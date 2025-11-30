@@ -1323,11 +1323,11 @@ export default function Assets() {
           </>
         ) : (
           <div>
-            <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
+            <Card style={{background: theme.cardBg, borderColor: theme.cardBorder, boxShadow: theme.cardShadow}}>
               <CardContent className="p-0">
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead style={{background: theme.backgroundTertiary, borderBottom: `1px solid ${theme.border}`}}>
+                    <thead style={{background: theme.backgroundSecondary, borderBottom: `1px solid ${theme.border}`}}>
                       <tr>
                         <th className="text-left p-4" style={{color: theme.textTertiary, fontWeight: 600}}>Asset</th>
                         <th className="text-left p-4" style={{color: theme.textTertiary, fontWeight: 600}}>Type</th>
