@@ -2953,6 +2953,245 @@ Dad""",
     if force:
         await db.ai_insights.delete_many({"user_id": user_id, "id": {"$regex": f"^{demo_prefix}"}})
     await db.ai_insights.insert_one(demo_insight)
+    
+    # Demo Income & Expense Data
+    current_month = datetime.now(timezone.utc).strftime("%Y-%m")
+    last_month = (datetime.now(timezone.utc) - timedelta(days=30)).strftime("%Y-%m")
+    
+    # Demo Incomes for current month
+    demo_incomes_current = [
+        {
+            "id": f"{demo_prefix}income1",
+            "user_id": user_id,
+            "month": current_month,
+            "source": "Salary",
+            "description": "Monthly salary from TechCorp Inc.",
+            "amount_before_tax": 8500.00,
+            "tax_deducted": 1700.00,
+            "amount_after_tax": 6800.00,
+            "currency": "USD",
+            "payment_date": datetime.now(timezone.utc).replace(day=1).isoformat().split('T')[0],
+            "notes": "Regular monthly salary",
+            "recurring": True,
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}income2",
+            "user_id": user_id,
+            "month": current_month,
+            "source": "Freelance/Consulting",
+            "description": "Web development project for Client XYZ",
+            "amount_before_tax": 2000.00,
+            "tax_deducted": 300.00,
+            "amount_after_tax": 1700.00,
+            "currency": "USD",
+            "payment_date": datetime.now(timezone.utc).replace(day=15).isoformat().split('T')[0],
+            "notes": "One-time project payment",
+            "recurring": False,
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}income3",
+            "user_id": user_id,
+            "month": current_month,
+            "source": "Investment Returns",
+            "description": "Dividend from stock portfolio",
+            "amount_before_tax": 450.00,
+            "tax_deducted": 67.50,
+            "amount_after_tax": 382.50,
+            "currency": "USD",
+            "payment_date": datetime.now(timezone.utc).replace(day=20).isoformat().split('T')[0],
+            "notes": "Quarterly dividend payment",
+            "recurring": True,
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }
+    ]
+    
+    # Demo Expenses for current month
+    demo_expenses_current = [
+        {
+            "id": f"{demo_prefix}expense1",
+            "user_id": user_id,
+            "month": current_month,
+            "category": "Housing",
+            "subcategory": "Rent",
+            "description": "Monthly apartment rent",
+            "amount": 1800.00,
+            "currency": "USD",
+            "payment_method": "Bank Transfer",
+            "payment_date": datetime.now(timezone.utc).replace(day=1).isoformat().split('T')[0],
+            "is_recurring": True,
+            "is_essential": True,
+            "notes": "2-bedroom apartment downtown",
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}expense2",
+            "user_id": user_id,
+            "month": current_month,
+            "category": "Food & Dining",
+            "subcategory": "Groceries",
+            "description": "Weekly grocery shopping",
+            "amount": 450.00,
+            "currency": "USD",
+            "payment_method": "Credit Card",
+            "payment_date": datetime.now(timezone.utc).replace(day=5).isoformat().split('T')[0],
+            "is_recurring": True,
+            "is_essential": True,
+            "notes": "Monthly groceries",
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}expense3",
+            "user_id": user_id,
+            "month": current_month,
+            "category": "Transportation",
+            "subcategory": "Fuel",
+            "description": "Gas for car",
+            "amount": 180.00,
+            "currency": "USD",
+            "payment_method": "Debit Card",
+            "payment_date": datetime.now(timezone.utc).replace(day=10).isoformat().split('T')[0],
+            "is_recurring": True,
+            "is_essential": True,
+            "notes": "Monthly fuel expenses",
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}expense4",
+            "user_id": user_id,
+            "month": current_month,
+            "category": "Utilities",
+            "subcategory": "Electricity",
+            "description": "Monthly electricity bill",
+            "amount": 120.00,
+            "currency": "USD",
+            "payment_method": "Bank Transfer",
+            "payment_date": datetime.now(timezone.utc).replace(day=5).isoformat().split('T')[0],
+            "is_recurring": True,
+            "is_essential": True,
+            "notes": "Utility bill",
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}expense5",
+            "user_id": user_id,
+            "month": current_month,
+            "category": "Technology",
+            "subcategory": "Internet",
+            "description": "Internet and streaming bundle",
+            "amount": 85.00,
+            "currency": "USD",
+            "payment_method": "Credit Card",
+            "payment_date": datetime.now(timezone.utc).replace(day=1).isoformat().split('T')[0],
+            "is_recurring": True,
+            "is_essential": True,
+            "notes": "High-speed internet + Netflix",
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}expense6",
+            "user_id": user_id,
+            "month": current_month,
+            "category": "Food & Dining",
+            "subcategory": "Restaurants",
+            "description": "Dining out and restaurants",
+            "amount": 320.00,
+            "currency": "USD",
+            "payment_method": "Credit Card",
+            "payment_date": datetime.now(timezone.utc).replace(day=15).isoformat().split('T')[0],
+            "is_recurring": False,
+            "is_essential": False,
+            "notes": "Weekend dining",
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}expense7",
+            "user_id": user_id,
+            "month": current_month,
+            "category": "Entertainment",
+            "subcategory": "Movies",
+            "description": "Movie tickets and entertainment",
+            "amount": 65.00,
+            "currency": "USD",
+            "payment_method": "Credit Card",
+            "payment_date": datetime.now(timezone.utc).replace(day=12).isoformat().split('T')[0],
+            "is_recurring": False,
+            "is_essential": False,
+            "notes": "Weekend entertainment",
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}expense8",
+            "user_id": user_id,
+            "month": current_month,
+            "category": "Healthcare",
+            "subcategory": "Health Insurance",
+            "description": "Monthly health insurance premium",
+            "amount": 350.00,
+            "currency": "USD",
+            "payment_method": "Bank Transfer",
+            "payment_date": datetime.now(timezone.utc).replace(day=1).isoformat().split('T')[0],
+            "is_recurring": True,
+            "is_essential": True,
+            "notes": "Family health insurance",
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}expense9",
+            "user_id": user_id,
+            "month": current_month,
+            "category": "Personal Care",
+            "subcategory": "Gym",
+            "description": "Gym membership",
+            "amount": 45.00,
+            "currency": "USD",
+            "payment_method": "Credit Card",
+            "payment_date": datetime.now(timezone.utc).replace(day=1).isoformat().split('T')[0],
+            "is_recurring": True,
+            "is_essential": False,
+            "notes": "Monthly gym membership",
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}expense10",
+            "user_id": user_id,
+            "month": current_month,
+            "category": "Shopping",
+            "subcategory": "Clothing",
+            "description": "Clothing and accessories",
+            "amount": 150.00,
+            "currency": "USD",
+            "payment_method": "Credit Card",
+            "payment_date": datetime.now(timezone.utc).replace(day=18).isoformat().split('T')[0],
+            "is_recurring": False,
+            "is_essential": False,
+            "notes": "New work clothes",
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }
+    ]
+    
+    # Remove existing demo income/expenses if force reseeding
+    if force:
+        await db.monthly_incomes.delete_many({"user_id": user_id, "id": {"$regex": f"^{demo_prefix}"}})
+        await db.monthly_expenses.delete_many({"user_id": user_id, "id": {"$regex": f"^{demo_prefix}"}})
+    
+    # Insert demo income and expenses
+    await db.monthly_incomes.insert_many(demo_incomes_current)
+    await db.monthly_expenses.insert_many(demo_expenses_current)
 
 
 # Subscription Routes
