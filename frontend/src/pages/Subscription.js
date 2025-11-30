@@ -61,6 +61,7 @@ const PLANS = [
 ];
 
 export default function Subscription() {
+  const { theme } = useTheme();
   const [currentPlan, setCurrentPlan] = useState('Free');
   const [loading, setLoading] = useState(false);
   const [subscriptionInfo, setSubscriptionInfo] = useState(null);

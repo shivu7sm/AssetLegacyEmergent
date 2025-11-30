@@ -13,6 +13,7 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 export default function DigitalWill() {
+  const { theme } = useTheme();
   const [loading, setLoading] = useState(true);
   const [will, setWill] = useState(null);
   const [willText, setWillText] = useState('');

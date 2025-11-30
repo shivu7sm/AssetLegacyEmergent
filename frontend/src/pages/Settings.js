@@ -526,6 +526,7 @@ const SECTIONS = [
 ];
 
 export default function Settings() {
+  const { theme } = useTheme();
   const { selectedCurrency, currencyFormat, preferences, loadPreferences } = useApp();
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeSection, setActiveSection] = useState(searchParams.get('tab') || 'profile');
