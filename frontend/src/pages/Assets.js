@@ -92,7 +92,7 @@ function AssetTableRow({ asset, typeInfo, purchaseValueOriginal, currentValueOri
           </div>
         </div>
       </td>
-      <td className="p-4" style={{color: isLiability ? '#f87171' : '#94a3b8'}}>{typeInfo.label}</td>
+      <td className="p-4" style={{color: isLiability ? theme.error : theme.textSecondary}}>{typeInfo.label}</td>
       <td className="p-4 text-right" style={{color: theme.textTertiary}}>
         {asset.quantity && `${asset.quantity} units`}
         {asset.weight && `${asset.weight} ${asset.weight_unit}`}
