@@ -436,11 +436,15 @@ async def require_admin(request: Request) -> User:
 @api_router.post("/auth/session")
 async def create_session(request: Request, response: Response):
     session_id = request.headers.get("X-Session-ID")
+    logger.info(f"Auth session request received, session_id present: {bool(session_id)}")
+    
     if not session_id:
+        logger.error("No session ID provided in request")
         raise HTTPException(status_code=400, detail="Session ID required")
     
     try:
         auth_backend_url = os.environ.get('AUTH_BACKEND_URL', 'https://demobackend.emergentagent.com')
+        logger.info(f"Validating session with auth backend: {auth_backend_url}")
         auth_response = requests.get(
             f"{auth_backend_url}/auth/v1/env/oauth/session-data",
             headers={"X-Session-ID": session_id},
@@ -448,7 +452,9 @@ async def create_session(request: Request, response: Response):
         )
         auth_response.raise_for_status()
         session_data = auth_response.json()
+        logger.info(f"Session validated for email: {session_data.get('email')}")
     except Exception as e:
+        logger.error(f"Failed to validate session: {str(e)}")
         raise HTTPException(status_code=400, detail=f"Failed to validate session: {str(e)}")
     
     existing_user = await db.users.find_one({"email": session_data["email"]})
