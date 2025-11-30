@@ -180,7 +180,7 @@ export default function Dashboard() {
           <h1 className={`${dashboardTheme === 'modern' ? 'text-3xl' : 'text-4xl'} font-bold mb-2`} style={dashboardTheme === 'modern' ? {fontFamily: 'Inter, sans-serif', color: '#FFFFFF'} : {fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}} data-testid="dashboard-title">
             {dashboardTheme === 'modern' ? 'Dashboard' : 'Financial Dashboard'}
           </h1>
-          <p style={dashboardTheme === 'modern' ? {color: 'rgba(255,255,255,0.65)', fontSize: '0.9375rem'} : {color: '#94a3b8'}}>
+          <p style={dashboardTheme === 'modern' ? {color: 'rgba(255,255,255,0.65)', fontSize: '0.9375rem'} : {color: theme.textTertiary}}>
             {dashboardTheme === 'modern' ? 'Your complete financial overview' : 'Overview of your assets and financial health'}
           </p>
         </div>
@@ -427,7 +427,7 @@ export default function Dashboard() {
               <CardContent className="p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <p className="text-sm font-medium mb-2" style={{color: '#94a3b8', letterSpacing: '0.5px'}}>TOTAL ASSETS</p>
+                    <p className="text-sm font-medium mb-2" style={{color: theme.textTertiary, letterSpacing: '0.5px'}}>TOTAL ASSETS</p>
                     <div className="text-4xl font-bold mb-1" style={{color: '#f8fafc', fontFamily: 'Inter, sans-serif'}} data-testid="total-assets-count">
                       {summary?.total_assets || 0}
                     </div>
@@ -452,7 +452,7 @@ export default function Dashboard() {
               <CardContent className="p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <p className="text-sm font-medium mb-2" style={{color: '#94a3b8', letterSpacing: '0.5px'}}>NET WORTH</p>
+                    <p className="text-sm font-medium mb-2" style={{color: theme.textTertiary, letterSpacing: '0.5px'}}>NET WORTH</p>
                     <div 
                       className="text-3xl font-bold mb-1"
                       style={{color: isPositive ? '#10b981' : '#ef4444', fontFamily: 'Inter, sans-serif'}} 
@@ -483,7 +483,7 @@ export default function Dashboard() {
               <CardContent className="p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <p className="text-sm font-medium mb-2" style={{color: '#94a3b8', letterSpacing: '0.5px'}}>NOMINEE</p>
+                    <p className="text-sm font-medium mb-2" style={{color: theme.textTertiary, letterSpacing: '0.5px'}}>NOMINEE</p>
                     <div className="text-2xl font-bold mb-1" style={{color: summary?.has_nominee ? '#10b981' : '#f59e0b', fontFamily: 'Inter, sans-serif'}} data-testid="nominee-status">
                       {summary?.has_nominee ? '✓ Configured' : 'Not Set'}
                     </div>
@@ -506,7 +506,7 @@ export default function Dashboard() {
               <CardContent className="p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <p className="text-sm font-medium mb-2" style={{color: '#94a3b8', letterSpacing: '0.5px'}}>DEAD MAN'S SWITCH</p>
+                    <p className="text-sm font-medium mb-2" style={{color: theme.textTertiary, letterSpacing: '0.5px'}}>DEAD MAN'S SWITCH</p>
                     <div className="text-2xl font-bold mb-1" style={{color: summary?.has_dms ? '#10b981' : '#f59e0b', fontFamily: 'Inter, sans-serif'}} data-testid="dms-status">
                       {summary?.has_dms ? '✓ Active' : 'Not Set'}
                     </div>
@@ -553,15 +553,15 @@ export default function Dashboard() {
                 <div className="flex gap-4 text-sm">
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 rounded-full" style={{background: '#10b981'}}></div>
-                    <span style={{color: '#94a3b8'}}>Healthy</span>
+                    <span style={{color: theme.textTertiary}}>Healthy</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 rounded-full" style={{background: '#f59e0b'}}></div>
-                    <span style={{color: '#94a3b8'}}>Caution</span>
+                    <span style={{color: theme.textTertiary}}>Caution</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 rounded-full" style={{background: '#ef4444'}}></div>
-                    <span style={{color: '#94a3b8'}}>Alert</span>
+                    <span style={{color: theme.textTertiary}}>Alert</span>
                   </div>
                 </div>
               </div>
@@ -611,7 +611,7 @@ export default function Dashboard() {
                   >
                     <CardContent className="p-4">
                       <div className="flex items-center justify-between mb-2">
-                        <h3 className="text-xs font-semibold" style={{color: '#94a3b8'}}>{ratio.label}</h3>
+                        <h3 className="text-xs font-semibold" style={{color: theme.textTertiary}}>{ratio.label}</h3>
                         <div 
                           className="w-2 h-2 rounded-full"
                           style={{background: borderColor}}
@@ -626,7 +626,7 @@ export default function Dashboard() {
                       <p className="text-xs leading-tight mb-1" style={{color: '#64748b'}}>
                         {ratio.data?.description}
                       </p>
-                      <p className="text-xs" style={{color: '#94a3b8', fontStyle: 'italic'}}>
+                      <p className="text-xs" style={{color: theme.textTertiary, fontStyle: 'italic'}}>
                         {getInterpretation()}
                       </p>
                     </CardContent>
@@ -672,7 +672,7 @@ export default function Dashboard() {
                 <div className="flex justify-between items-center">
                   <div>
                     <CardTitle style={{color: theme.text}}>Assets vs Liabilities</CardTitle>
-                    <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Financial position overview</p>
+                    <p className="text-sm mt-1" style={{color: theme.textTertiary}}>Financial position overview</p>
                   </div>
                   {comparisonData.length > 0 && (
                     <ChartTypeSwitcher 
@@ -693,7 +693,7 @@ export default function Dashboard() {
                     labelFormatter={({ name, percentage }) => `${name} ${percentage}%`}
                   />
                 ) : (
-                  <div className="h-[300px] flex items-center justify-center" style={{color: '#94a3b8'}}>
+                  <div className="h-[300px] flex items-center justify-center" style={{color: theme.textTertiary}}>
                     <div className="text-center">
                       <p className="mb-4">No data available</p>
                       <Button 
@@ -715,7 +715,7 @@ export default function Dashboard() {
             <Card style={{background: theme.backgroundSecondary, borderColor: theme.border, boxShadow: theme.cardShadow}}>
               <CardHeader>
                 <CardTitle style={{color: theme.text}}>Financial Breakdown</CardTitle>
-                <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Detailed values and percentages</p>
+                <p className="text-sm mt-1" style={{color: theme.textTertiary}}>Detailed values and percentages</p>
               </CardHeader>
               <CardContent>
                 {comparisonData.length > 0 ? (
@@ -723,9 +723,9 @@ export default function Dashboard() {
                     <table className="w-full">
                       <thead>
                         <tr style={{borderBottom: '2px solid #2d1f3d'}}>
-                          <th className="text-left py-3 px-2" style={{color: '#94a3b8', fontSize: '12px', fontWeight: 600}}>CATEGORY</th>
-                          <th className="text-right py-3 px-2" style={{color: '#94a3b8', fontSize: '12px', fontWeight: 600}}>VALUE</th>
-                          <th className="text-right py-3 px-2" style={{color: '#94a3b8', fontSize: '12px', fontWeight: 600}}>%</th>
+                          <th className="text-left py-3 px-2" style={{color: theme.textTertiary, fontSize: '12px', fontWeight: 600}}>CATEGORY</th>
+                          <th className="text-right py-3 px-2" style={{color: theme.textTertiary, fontSize: '12px', fontWeight: 600}}>VALUE</th>
+                          <th className="text-right py-3 px-2" style={{color: theme.textTertiary, fontSize: '12px', fontWeight: 600}}>%</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -760,7 +760,7 @@ export default function Dashboard() {
                     </div>
                   </div>
                 ) : (
-                  <div className="h-[300px] flex items-center justify-center" style={{color: '#94a3b8'}}>
+                  <div className="h-[300px] flex items-center justify-center" style={{color: theme.textTertiary}}>
                     <p>No data available</p>
                   </div>
                 )}
@@ -775,7 +775,7 @@ export default function Dashboard() {
                 <div className="flex justify-between items-center">
                   <div>
                     <CardTitle style={{color: theme.text}}>Asset Distribution</CardTitle>
-                    <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Breakdown by asset type</p>
+                    <p className="text-sm mt-1" style={{color: theme.textTertiary}}>Breakdown by asset type</p>
                   </div>
                   {assetDistributionData.length > 0 && (
                     <ChartTypeSwitcher 
@@ -796,7 +796,7 @@ export default function Dashboard() {
                     labelFormatter={({ name, percentage }) => `${name} ${percentage}%`}
                   />
                 ) : (
-                  <div className="h-[300px] flex items-center justify-center" style={{color: '#94a3b8'}}>
+                  <div className="h-[300px] flex items-center justify-center" style={{color: theme.textTertiary}}>
                     <p>No assets tracked yet</p>
                   </div>
                 )}
@@ -807,7 +807,7 @@ export default function Dashboard() {
             <Card style={{background: theme.backgroundSecondary, borderColor: theme.border, boxShadow: theme.cardShadow}}>
               <CardHeader>
                 <CardTitle style={{color: theme.text}}>Asset Details</CardTitle>
-                <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Asset type breakdown</p>
+                <p className="text-sm mt-1" style={{color: theme.textTertiary}}>Asset type breakdown</p>
               </CardHeader>
               <CardContent>
                 {assetDistributionData.length > 0 ? (
@@ -815,9 +815,9 @@ export default function Dashboard() {
                     <table className="w-full">
                       <thead>
                         <tr style={{borderBottom: '2px solid #2d1f3d'}}>
-                          <th className="text-left py-3 px-2" style={{color: '#94a3b8', fontSize: '12px', fontWeight: 600}}>ASSET TYPE</th>
-                          <th className="text-right py-3 px-2" style={{color: '#94a3b8', fontSize: '12px', fontWeight: 600}}>VALUE</th>
-                          <th className="text-right py-3 px-2" style={{color: '#94a3b8', fontSize: '12px', fontWeight: 600}}>%</th>
+                          <th className="text-left py-3 px-2" style={{color: theme.textTertiary, fontSize: '12px', fontWeight: 600}}>ASSET TYPE</th>
+                          <th className="text-right py-3 px-2" style={{color: theme.textTertiary, fontSize: '12px', fontWeight: 600}}>VALUE</th>
+                          <th className="text-right py-3 px-2" style={{color: theme.textTertiary, fontSize: '12px', fontWeight: 600}}>%</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -852,7 +852,7 @@ export default function Dashboard() {
                     </div>
                   </div>
                 ) : (
-                  <div className="h-[300px] flex items-center justify-center" style={{color: '#94a3b8'}}>
+                  <div className="h-[300px] flex items-center justify-center" style={{color: theme.textTertiary}}>
                     <p>No assets tracked yet</p>
                   </div>
                 )}
@@ -868,7 +868,7 @@ export default function Dashboard() {
                   <div className="flex justify-between items-center">
                     <div>
                       <CardTitle style={{color: theme.text}}>Liability Distribution</CardTitle>
-                      <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Breakdown by debt type</p>
+                      <p className="text-sm mt-1" style={{color: theme.textTertiary}}>Breakdown by debt type</p>
                     </div>
                     <ChartTypeSwitcher 
                       currentType={liabilityDistChartType} 
@@ -892,16 +892,16 @@ export default function Dashboard() {
               <Card style={{background: theme.backgroundSecondary, borderColor: theme.border, boxShadow: theme.cardShadow}}>
                 <CardHeader>
                   <CardTitle style={{color: theme.text}}>Liability Details</CardTitle>
-                  <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Debt breakdown</p>
+                  <p className="text-sm mt-1" style={{color: theme.textTertiary}}>Debt breakdown</p>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     <table className="w-full">
                       <thead>
                         <tr style={{borderBottom: '2px solid #2d1f3d'}}>
-                          <th className="text-left py-3 px-2" style={{color: '#94a3b8', fontSize: '12px', fontWeight: 600}}>DEBT TYPE</th>
-                          <th className="text-right py-3 px-2" style={{color: '#94a3b8', fontSize: '12px', fontWeight: 600}}>VALUE</th>
-                          <th className="text-right py-3 px-2" style={{color: '#94a3b8', fontSize: '12px', fontWeight: 600}}>%</th>
+                          <th className="text-left py-3 px-2" style={{color: theme.textTertiary, fontSize: '12px', fontWeight: 600}}>DEBT TYPE</th>
+                          <th className="text-right py-3 px-2" style={{color: theme.textTertiary, fontSize: '12px', fontWeight: 600}}>VALUE</th>
+                          <th className="text-right py-3 px-2" style={{color: theme.textTertiary, fontSize: '12px', fontWeight: 600}}>%</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -952,7 +952,7 @@ export default function Dashboard() {
                 <Sparkles className="w-6 h-6" style={{color: '#a855f7'}} />
                 <CardTitle style={{color: '#f8fafc'}}>AI Financial Insights</CardTitle>
               </div>
-              <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Powered by AI analysis of your portfolio</p>
+              <p className="text-sm mt-1" style={{color: theme.textTertiary}}>Powered by AI analysis of your portfolio</p>
             </CardHeader>
             <CardContent>
               <Button
@@ -976,7 +976,7 @@ export default function Dashboard() {
               </div>
               <div className="flex-1">
                 <h3 className="text-xl font-bold mb-2" style={{color: '#f8fafc'}}>Track Exchange Portfolios</h3>
-                <p className="mb-4" style={{color: '#94a3b8'}}>
+                <p className="mb-4" style={{color: theme.textTertiary}}>
                   Create portfolio assets to track multiple holdings from exchanges like Binance, Zerodha, or Robinhood in one place
                 </p>
                 <Button
@@ -1014,7 +1014,7 @@ export default function Dashboard() {
                 onClick={() => navigate('/assets')} 
                 variant="outline"
                 className="justify-start rounded-xl h-14"
-                style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+                style={{borderColor: '#2d1f3d', color: theme.textTertiary}}
               >
                 <DollarSign className="w-5 h-5 mr-3" />
                 View All Assets
@@ -1025,7 +1025,7 @@ export default function Dashboard() {
                 onClick={() => navigate('/settings')} 
                 variant="outline"
                 className="justify-start rounded-xl h-14"
-                style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+                style={{borderColor: '#2d1f3d', color: theme.textTertiary}}
               >
                 <Shield className="w-5 h-5 mr-3" />
                 Security Settings
