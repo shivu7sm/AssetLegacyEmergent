@@ -3947,7 +3947,7 @@ async def get_incomes(month: Optional[str] = None, user: User = Depends(require_
     if month:
         query["month"] = month
     
-    incomes = await db.monthly_incomes.find(query).sort("month", -1).to_list(1000)
+    incomes = await db.monthly_incomes.find(query, {"_id": 0}).sort("month", -1).to_list(1000)
     return {"incomes": incomes}
 
 @api_router.get("/income/{income_id}")
