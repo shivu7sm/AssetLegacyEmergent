@@ -84,7 +84,13 @@ export default function TaxBlueprint() {
       const response = await axios.post(
         `${API}/tax-blueprint/generate`,
         { force_refresh: forceRefresh },
-        { withCredentials: true }
+        { 
+          withCredentials: true,
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache'
+          }
+        }
       );
       setBlueprint(response.data);
       toast.success('Blueprint generated successfully!');
@@ -93,8 +99,12 @@ export default function TaxBlueprint() {
       if (error.response?.status === 404) {
         toast.error('Please complete your tax profile first');
         setShowProfileDialog(true);
+      } else if (error.response?.status === 401) {
+        toast.error('Please login again');
+      } else if (error.code === 'ERR_NETWORK') {
+        toast.error('Network error. Please check your connection and try again.');
       } else {
-        toast.error('Failed to generate blueprint');
+        toast.error(error.response?.data?.detail || 'Failed to generate blueprint. Please try again.');
       }
     } finally {
       setLoading(false);
