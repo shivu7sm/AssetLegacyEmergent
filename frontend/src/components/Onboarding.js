@@ -22,29 +22,29 @@ export default function Onboarding({ open, onComplete }) {
       icon: Sparkles,
       content: (
         <div className="space-y-4">
-          <p className="text-base" style={{color: '#cbd5e1'}}>
+          <p className="text-base" style={{color: theme.textSecondary}}>
             AssetVault helps you manage your entire financial life in one place:
           </p>
           <div className="grid grid-cols-2 gap-3">
-            <div className="p-3 rounded-lg" style={{background: '#0f0a1a', border: '1px solid #2d1f3d'}}>
+            <div className="p-3 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
               <Wallet className="w-6 h-6 mb-2" style={{color: '#10b981'}} />
-              <p className="text-sm font-semibold" style={{color: '#f8fafc'}}>Asset Tracking</p>
-              <p className="text-xs" style={{color: '#94a3b8'}}>Stocks, crypto, real estate, gold & more</p>
+              <p className="text-sm font-semibold" style={{color: theme.text}}>Asset Tracking</p>
+              <p className="text-xs" style={{color: theme.textTertiary}}>Stocks, crypto, real estate, gold & more</p>
             </div>
-            <div className="p-3 rounded-lg" style={{background: '#0f0a1a', border: '1px solid #2d1f3d'}}>
+            <div className="p-3 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
               <Receipt className="w-6 h-6 mb-2" style={{color: '#3b82f6'}} />
-              <p className="text-sm font-semibold" style={{color: '#f8fafc'}}>Income & Expenses</p>
-              <p className="text-xs" style={{color: '#94a3b8'}}>Track monthly cash flow</p>
+              <p className="text-sm font-semibold" style={{color: theme.text}}>Income & Expenses</p>
+              <p className="text-xs" style={{color: theme.textTertiary}}>Track monthly cash flow</p>
             </div>
-            <div className="p-3 rounded-lg" style={{background: '#0f0a1a', border: '1px solid #2d1f3d'}}>
+            <div className="p-3 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
               <Zap className="w-6 h-6 mb-2" style={{color: '#a855f7'}} />
-              <p className="text-sm font-semibold" style={{color: '#f8fafc'}}>Tax & Wealth</p>
-              <p className="text-xs" style={{color: '#94a3b8'}}>AI-powered tax optimization</p>
+              <p className="text-sm font-semibold" style={{color: theme.text}}>Tax & Wealth</p>
+              <p className="text-xs" style={{color: theme.textTertiary}}>AI-powered tax optimization</p>
             </div>
-            <div className="p-3 rounded-lg" style={{background: '#0f0a1a', border: '1px solid #2d1f3d'}}>
+            <div className="p-3 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
               <FileText className="w-6 h-6 mb-2" style={{color: '#f59e0b'}} />
-              <p className="text-sm font-semibold" style={{color: '#f8fafc'}}>Digital Will</p>
-              <p className="text-xs" style={{color: '#94a3b8'}}>Legacy planning</p>
+              <p className="text-sm font-semibold" style={{color: theme.text}}>Digital Will</p>
+              <p className="text-xs" style={{color: theme.textTertiary}}>Legacy planning</p>
             </div>
           </div>
         </div>
@@ -60,15 +60,15 @@ export default function Onboarding({ open, onComplete }) {
             <p className="text-sm font-semibold mb-2" style={{color: '#10b981'}}>
               ✅ Demo Data Loaded!
             </p>
-            <p className="text-sm" style={{color: '#cbd5e1'}}>
+            <p className="text-sm" style={{color: theme.textSecondary}}>
               Your account is pre-populated with sample assets, income, expenses, and documents. 
               This lets you test all features without entering real data.
             </p>
           </div>
 
           <div className="space-y-2">
-            <p className="text-sm font-semibold" style={{color: '#f8fafc'}}>What&apos;s included:</p>
-            <ul className="space-y-1 text-sm" style={{color: '#94a3b8'}}>
+            <p className="text-sm font-semibold" style={{color: theme.text}}>What&apos;s included:</p>
+            <ul className="space-y-1 text-sm" style={{color: theme.textTertiary}}>
               <li>• 18+ sample assets (stocks, crypto, real estate, vehicles, gold)</li>
               <li>• Income & expense tracking with 3 months of data</li>
               <li>• 5 linked documents</li>
@@ -77,7 +77,7 @@ export default function Onboarding({ open, onComplete }) {
             </ul>
           </div>
 
-          <div className="p-3 rounded-lg" style={{background: '#0f0a1a', border: '1px solid #3b82f6'}}>
+          <div className="p-3 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #3b82f6'}}>
             <p className="text-xs" style={{color: '#3b82f6'}}>
               💡 Tip: Demo mode is perfect for learning the platform before adding your real financial data.
             </p>
@@ -91,31 +91,31 @@ export default function Onboarding({ open, onComplete }) {
       icon: Power,
       content: (
         <div className="space-y-4">
-          <p className="text-sm" style={{color: '#cbd5e1'}}>
+          <p className="text-sm" style={{color: theme.textSecondary}}>
             You can switch between Demo and Live modes anytime from the top-right corner:
           </p>
 
-          <div className="p-4 rounded-lg" style={{background: '#0f0a1a', border: '1px solid #2d1f3d'}}>
+          <div className="p-4 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <Database className="w-5 h-5" style={{color: '#10b981'}} />
-                <span className="font-semibold" style={{color: '#f8fafc'}}>Demo Mode</span>
+                <span className="font-semibold" style={{color: theme.text}}>Demo Mode</span>
               </div>
               <div className="px-3 py-1 rounded-full text-xs font-bold" style={{background: '#10b981', color: 'white'}}>
                 ON
               </div>
             </div>
-            <p className="text-xs" style={{color: '#94a3b8'}}>
+            <p className="text-xs" style={{color: theme.textTertiary}}>
               Click the toggle in the header to switch between Demo and Live mode
             </p>
           </div>
 
           <div className="space-y-2">
-            <p className="text-sm font-semibold" style={{color: '#f8fafc'}}>When to use each mode:</p>
+            <p className="text-sm font-semibold" style={{color: theme.text}}>When to use each mode:</p>
             
             <div className="p-3 rounded-lg" style={{background: 'rgba(16, 185, 129, 0.1)', border: '1px solid #10b981'}}>
               <p className="text-sm font-semibold mb-1" style={{color: '#10b981'}}>Demo Mode</p>
-              <p className="text-xs" style={{color: '#cbd5e1'}}>
+              <p className="text-xs" style={{color: theme.textSecondary}}>
                 • Learning the platform<br/>
                 • Testing features<br/>
                 • Showing to family/advisor
@@ -124,7 +124,7 @@ export default function Onboarding({ open, onComplete }) {
 
             <div className="p-3 rounded-lg" style={{background: 'rgba(59, 130, 246, 0.1)', border: '1px solid #3b82f6'}}>
               <p className="text-sm font-semibold mb-1" style={{color: '#3b82f6'}}>Live Mode</p>
-              <p className="text-xs" style={{color: '#cbd5e1'}}>
+              <p className="text-xs" style={{color: theme.textSecondary}}>
                 • Tracking real assets<br/>
                 • Managing actual finances<br/>
                 • Creating your digital will
@@ -140,15 +140,15 @@ export default function Onboarding({ open, onComplete }) {
       icon: RefreshCw,
       content: (
         <div className="space-y-4">
-          <p className="text-sm" style={{color: '#cbd5e1'}}>
+          <p className="text-sm" style={{color: theme.textSecondary}}>
             Want to experiment without consequences? You can reset demo data anytime!
           </p>
 
-          <div className="p-4 rounded-lg" style={{background: '#0f0a1a', border: '1px solid #2d1f3d'}}>
-            <p className="text-sm font-semibold mb-2" style={{color: '#f8fafc'}}>
+          <div className="p-4 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
+            <p className="text-sm font-semibold mb-2" style={{color: theme.text}}>
               How to Reset Demo Data:
             </p>
-            <ol className="space-y-2 text-sm" style={{color: '#cbd5e1'}}>
+            <ol className="space-y-2 text-sm" style={{color: theme.textSecondary}}>
               <li className="flex gap-2">
                 <span className="font-bold" style={{color: '#a855f7'}}>1.</span>
                 <span>Go to Settings page (sidebar)</span>
@@ -172,7 +172,7 @@ export default function Onboarding({ open, onComplete }) {
             <p className="text-xs font-semibold mb-1" style={{color: '#ef4444'}}>
               ⚠️ Important:
             </p>
-            <p className="text-xs" style={{color: '#cbd5e1'}}>
+            <p className="text-xs" style={{color: theme.textSecondary}}>
               Resetting only affects Demo data. Your Live data is always safe and separate.
             </p>
           </div>
@@ -191,48 +191,48 @@ export default function Onboarding({ open, onComplete }) {
       icon: Sparkles,
       content: (
         <div className="space-y-3">
-          <div className="p-3 rounded-lg" style={{background: '#0f0a1a', border: '1px solid #2d1f3d'}}>
+          <div className="p-3 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
             <div className="flex items-start gap-3">
               <Wallet className="w-5 h-5 flex-shrink-0" style={{color: '#10b981'}} />
               <div>
-                <p className="text-sm font-semibold mb-1" style={{color: '#f8fafc'}}>Assets Dashboard</p>
-                <p className="text-xs" style={{color: '#94a3b8'}}>
+                <p className="text-sm font-semibold mb-1" style={{color: theme.text}}>Assets Dashboard</p>
+                <p className="text-xs" style={{color: theme.textTertiary}}>
                   Track all your assets in one place. Grouped by type with real-time values and net worth calculation.
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="p-3 rounded-lg" style={{background: '#0f0a1a', border: '1px solid #2d1f3d'}}>
+          <div className="p-3 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
             <div className="flex items-start gap-3">
               <Receipt className="w-5 h-5 flex-shrink-0" style={{color: '#3b82f6'}} />
               <div>
-                <p className="text-sm font-semibold mb-1" style={{color: '#f8fafc'}}>Income & Expenses</p>
-                <p className="text-xs" style={{color: '#94a3b8'}}>
+                <p className="text-sm font-semibold mb-1" style={{color: theme.text}}>Income & Expenses</p>
+                <p className="text-xs" style={{color: theme.textTertiary}}>
                   Track monthly cash flow with multi-currency support. See savings rate and spending patterns.
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="p-3 rounded-lg" style={{background: '#0f0a1a', border: '1px solid #2d1f3d'}}>
+          <div className="p-3 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
             <div className="flex items-start gap-3">
               <Zap className="w-5 h-5 flex-shrink-0" style={{color: '#a855f7'}} />
               <div>
-                <p className="text-sm font-semibold mb-1" style={{color: '#f8fafc'}}>Tax & Wealth Blueprint</p>
-                <p className="text-xs" style={{color: '#94a3b8'}}>
+                <p className="text-sm font-semibold mb-1" style={{color: theme.text}}>Tax & Wealth Blueprint</p>
+                <p className="text-xs" style={{color: theme.textTertiary}}>
                   AI-powered tax optimization. Discover hidden savings opportunities and get personalized recommendations.
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="p-3 rounded-lg" style={{background: '#0f0a1a', border: '1px solid #2d1f3d'}}>
+          <div className="p-3 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
             <div className="flex items-start gap-3">
               <FileText className="w-5 h-5 flex-shrink-0" style={{color: '#f59e0b'}} />
               <div>
-                <p className="text-sm font-semibold mb-1" style={{color: '#f8fafc'}}>Digital Will & Legacy</p>
-                <p className="text-xs" style={{color: '#94a3b8'}}>
+                <p className="text-sm font-semibold mb-1" style={{color: theme.text}}>Digital Will & Legacy</p>
+                <p className="text-xs" style={{color: theme.textTertiary}}>
                   Create your digital will, add beneficiaries, and set up Dead Man&apos;s Switch for automatic messages.
                 </p>
               </div>
@@ -252,32 +252,32 @@ export default function Onboarding({ open, onComplete }) {
           </div>
 
           <div>
-            <p className="text-base font-semibold mb-2" style={{color: '#f8fafc'}}>
+            <p className="text-base font-semibold mb-2" style={{color: theme.text}}>
               Your account is ready!
             </p>
-            <p className="text-sm" style={{color: '#94a3b8'}}>
+            <p className="text-sm" style={{color: theme.textTertiary}}>
               Start by exploring the demo data, then switch to Live mode when you&apos;re ready to add your real assets.
             </p>
           </div>
 
           <div className="space-y-2 text-left">
-            <p className="text-sm font-semibold" style={{color: '#f8fafc'}}>Quick Start:</p>
+            <p className="text-sm font-semibold" style={{color: theme.text}}>Quick Start:</p>
             <div className="space-y-2">
-              <div className="p-3 rounded-lg flex items-center gap-3" style={{background: '#0f0a1a', border: '1px solid #2d1f3d'}}>
+              <div className="p-3 rounded-lg flex items-center gap-3" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
                 <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style={{background: '#a855f7', color: 'white'}}>1</span>
-                <span className="text-sm" style={{color: '#cbd5e1'}}>Check out the Dashboard overview</span>
+                <span className="text-sm" style={{color: theme.textSecondary}}>Check out the Dashboard overview</span>
               </div>
-              <div className="p-3 rounded-lg flex items-center gap-3" style={{background: '#0f0a1a', border: '1px solid #2d1f3d'}}>
+              <div className="p-3 rounded-lg flex items-center gap-3" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
                 <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style={{background: '#a855f7', color: 'white'}}>2</span>
-                <span className="text-sm" style={{color: '#cbd5e1'}}>Browse the Assets page to see sample data</span>
+                <span className="text-sm" style={{color: theme.textSecondary}}>Browse the Assets page to see sample data</span>
               </div>
-              <div className="p-3 rounded-lg flex items-center gap-3" style={{background: '#0f0a1a', border: '1px solid #2d1f3d'}}>
+              <div className="p-3 rounded-lg flex items-center gap-3" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
                 <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style={{background: '#a855f7', color: 'white'}}>3</span>
-                <span className="text-sm" style={{color: '#cbd5e1'}}>Try the Tax & Wealth Blueprint</span>
+                <span className="text-sm" style={{color: theme.textSecondary}}>Try the Tax & Wealth Blueprint</span>
               </div>
-              <div className="p-3 rounded-lg flex items-center gap-3" style={{background: '#0f0a1a', border: '1px solid #2d1f3d'}}>
+              <div className="p-3 rounded-lg flex items-center gap-3" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
                 <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style={{background: '#a855f7', color: 'white'}}>4</span>
-                <span className="text-sm" style={{color: '#cbd5e1'}}>Switch to Live mode when ready</span>
+                <span className="text-sm" style={{color: theme.textSecondary}}>Switch to Live mode when ready</span>
               </div>
             </div>
           </div>
@@ -323,8 +323,8 @@ export default function Onboarding({ open, onComplete }) {
     <Dialog open={open} onOpenChange={() => {}}>
       <DialogContent 
         style={{
-          background: '#1a1229', 
-          borderColor: '#2d1f3d', 
+          background: theme.backgroundSecondary, 
+          borderColor: theme.border, 
           maxWidth: '600px',
           maxHeight: '90vh',
           overflowY: 'auto'
@@ -335,7 +335,7 @@ export default function Onboarding({ open, onComplete }) {
         <div className="space-y-6">
           {/* Progress Bar */}
           <div className="space-y-2">
-            <div className="flex justify-between text-xs" style={{color: '#64748b'}}>
+            <div className="flex justify-between text-xs" style={{color: theme.textMuted}}>
               <span>Step {currentStep + 1} of {steps.length}</span>
               <span>{Math.round(((currentStep + 1) / steps.length) * 100)}%</span>
             </div>
@@ -357,10 +357,10 @@ export default function Onboarding({ open, onComplete }) {
             </div>
 
             <div>
-              <h2 className="text-2xl font-bold mb-2" style={{color: '#f8fafc'}}>
+              <h2 className="text-2xl font-bold mb-2" style={{color: theme.text}}>
                 {currentStepData.title}
               </h2>
-              <p className="text-sm" style={{color: '#94a3b8'}}>
+              <p className="text-sm" style={{color: theme.textTertiary}}>
                 {currentStepData.description}
               </p>
             </div>
@@ -378,7 +378,7 @@ export default function Onboarding({ open, onComplete }) {
                 onClick={handlePrevious}
                 variant="outline"
                 className="flex-1"
-                style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+                style={{borderColor: theme.border, color: theme.textTertiary}}
               >
                 <ChevronLeft className="w-4 h-4 mr-2" />
                 Previous
@@ -411,7 +411,7 @@ export default function Onboarding({ open, onComplete }) {
             <button
               onClick={handleComplete}
               className="w-full text-xs text-center py-2 transition-opacity hover:opacity-70"
-              style={{color: '#64748b'}}
+              style={{color: theme.textMuted}}
             >
               Skip onboarding
             </button>
