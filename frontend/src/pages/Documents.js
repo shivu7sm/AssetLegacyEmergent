@@ -565,9 +565,9 @@ export default function Documents() {
                       <p className="text-sm mb-3" style={{color: theme.textTertiary}}>{doc.description}</p>
                     )}
                     {doc.linked_asset_id && (
-                      <div className="flex items-center gap-2 mb-3 p-2 rounded" style={{background: '#0f0a1e'}}>
-                        <LinkIcon className="w-3 h-3" style={{color: '#a855f7'}} />
-                        <span className="text-xs truncate" style={{color: '#a855f7'}}>{getAssetName(doc.linked_asset_id)}</span>
+                      <div className="flex items-center gap-2 mb-3 p-2 rounded" style={{background: theme.backgroundTertiary}}>
+                        <LinkIcon className="w-3 h-3" style={{color: theme.primary}} />
+                        <span className="text-xs truncate" style={{color: theme.primary}}>{getAssetName(doc.linked_asset_id)}</span>
                       </div>
                     )}
                     <div className="text-xs mb-4" style={{color: theme.textMuted}}>
