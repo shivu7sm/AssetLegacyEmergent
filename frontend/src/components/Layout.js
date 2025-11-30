@@ -256,6 +256,52 @@ export default function Layout({ children }) {
       <main className="container mx-auto px-6 py-8 pb-24 md:pb-8">
         {children}
       </main>
+
+      {/* Floating Subscription Button - Only show if not subscribed or on Free plan */}
+      {(!userSubscription || userSubscription.plan === 'Free') && (
+        <div 
+          className="fixed bottom-24 md:bottom-8 right-6 z-40"
+          style={{
+            animation: 'bounce 2s infinite'
+          }}
+        >
+          <button
+            onClick={() => navigate('/subscription')}
+            className="flex items-center gap-3 px-6 py-3 rounded-full shadow-2xl transition-all hover:scale-105"
+            style={{
+              background: 'linear-gradient(135deg, #ec4899 0%, #a855f7 100%)',
+              color: '#fff',
+              border: '2px solid rgba(255,255,255,0.3)',
+              boxShadow: '0 8px 24px rgba(236, 72, 153, 0.5)',
+              fontWeight: 'bold'
+            }}
+            title="Upgrade to Premium"
+          >
+            <Crown className="w-5 h-5" />
+            <span className="hidden sm:inline">Upgrade</span>
+            <span className="inline sm:hidden">Pro</span>
+          </button>
+          
+          {/* Pulsing ring */}
+          <span 
+            className="absolute inset-0 rounded-full animate-ping opacity-30"
+            style={{
+              background: 'linear-gradient(135deg, #ec4899 0%, #a855f7 100%)'
+            }}
+          />
+        </div>
+      )}
+
+      <style jsx>{`
+        @keyframes bounce {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-10px);
+          }
+        }
+      `}</style>
     </div>
   );
 }
