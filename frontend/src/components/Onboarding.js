@@ -5,12 +5,14 @@ import {
   Sparkles, ArrowRight, CheckCircle, Wallet, Receipt, Zap, 
   FileText, Settings, Database, RefreshCw, Power, ChevronLeft
 } from 'lucide-react';
+import { useTheme } from '@/context/ThemeContext';
 import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 export default function Onboarding({ open, onComplete }) {
+  const { theme } = useTheme();
   const [currentStep, setCurrentStep] = useState(0);
 
   const steps = [
