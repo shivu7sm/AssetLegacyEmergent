@@ -889,9 +889,9 @@ export default function Dashboard() {
               </Card>
 
               {/* Liability Distribution Data Table */}
-              <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+              <Card style={{background: theme.backgroundSecondary, borderColor: theme.border, boxShadow: theme.cardShadow}}>
                 <CardHeader>
-                  <CardTitle style={{color: '#f8fafc'}}>Liability Details</CardTitle>
+                  <CardTitle style={{color: theme.text}}>Liability Details</CardTitle>
                   <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Debt breakdown</p>
                 </CardHeader>
                 <CardContent>
