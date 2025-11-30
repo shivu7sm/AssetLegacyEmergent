@@ -118,7 +118,7 @@ function AssetTableRow({ asset, typeInfo, purchaseValueOriginal, currentValueOri
             <div style={{color: gain > 0 ? theme.success : theme.error, fontWeight: 600}}>
               {gain > 0 ? '+' : ''}{gain.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
             </div>
-            <div className="text-xs" style={{color: gain > 0 ? '#22c55e' : '#ef4444'}}>
+            <div className="text-xs" style={{color: gain > 0 ? theme.success : theme.error}}>
               ({gainPercent}%)
             </div>
           </div>
