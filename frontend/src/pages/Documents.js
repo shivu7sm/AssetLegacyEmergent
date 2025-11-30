@@ -215,7 +215,7 @@ export default function Documents() {
     return (
       <Layout>
         <div className="flex items-center justify-center h-96">
-          <div className="text-xl" style={{color: '#94a3b8'}}>Loading...</div>
+          <div className="text-xl" style={{color: theme.textTertiary}}>Loading...</div>
         </div>
       </Layout>
     );
@@ -226,9 +226,9 @@ export default function Documents() {
       <div className="flex gap-6" style={{padding: '2rem 1.5rem', margin: '0 auto', maxWidth: '1600px'}}>
         {/* Left Sidebar - Asset Navigation */}
         <div className="w-64 flex-shrink-0">
-          <Card style={{background: '#1a1229', borderColor: '#2d1f3d', position: 'sticky', top: '1rem'}}>
+          <Card style={{background: theme.backgroundSecondary, borderColor: theme.border, position: 'sticky', top: '1rem'}}>
             <CardHeader className="pb-3">
-              <CardTitle style={{color: '#f8fafc', fontSize: '1rem'}}>Filter by Asset</CardTitle>
+              <CardTitle style={{color: theme.text, fontSize: '1rem'}}>Filter by Asset</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-1">
@@ -242,7 +242,7 @@ export default function Documents() {
                 >
                   <div className="flex items-center justify-between">
                     <span>All Documents</span>
-                    <span className="text-xs" style={{color: '#64748b'}}>({documents.length})</span>
+                    <span className="text-xs" style={{color: theme.textMuted}}>({documents.length})</span>
                   </div>
                 </button>
 
@@ -256,12 +256,12 @@ export default function Documents() {
                 >
                   <div className="flex items-center justify-between">
                     <span>Unlinked</span>
-                    <span className="text-xs" style={{color: '#64748b'}}>({unlinkedCount})</span>
+                    <span className="text-xs" style={{color: theme.textMuted}}>({unlinkedCount})</span>
                   </div>
                 </button>
 
                 {/* Divider */}
-                <div className="border-t my-2" style={{borderColor: '#2d1f3d'}}></div>
+                <div className="border-t my-2" style={{borderColor: theme.border}}></div>
 
                 {/* Assets */}
                 {assets.length > 0 ? (
@@ -282,16 +282,16 @@ export default function Documents() {
                           <div className="flex items-center justify-between">
                             <div className="flex-1 min-w-0">
                               <div className="truncate">{asset.name}</div>
-                              <div className="text-xs truncate" style={{color: '#64748b'}}>{asset.type}</div>
+                              <div className="text-xs truncate" style={{color: theme.textMuted}}>{asset.type}</div>
                             </div>
-                            <span className="text-xs ml-2" style={{color: '#64748b'}}>({count})</span>
+                            <span className="text-xs ml-2" style={{color: theme.textMuted}}>({count})</span>
                           </div>
                         </button>
                       );
                     })}
                   </div>
                 ) : (
-                  <p className="text-xs px-3 py-2" style={{color: '#64748b'}}>No assets yet</p>
+                  <p className="text-xs px-3 py-2" style={{color: theme.textMuted}}>No assets yet</p>
                 )}
               </div>
             </CardContent>
@@ -303,16 +303,16 @@ export default function Documents() {
           {/* Header Section */}
           <div className="flex justify-between items-start flex-wrap gap-4">
             <div>
-              <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
+              <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{fontFamily: 'Space Grotesk, sans-serif', color: theme.text}}>
                 Document Vault
               </h1>
-              <p style={{color: '#94a3b8'}}>Store important documents securely for your family</p>
+              <p style={{color: theme.textTertiary}}>Store important documents securely for your family</p>
               {storageInfo && (
                 <div className="mt-3 flex items-center gap-4">
                   <div className="flex-1 max-w-md">
                     <div className="flex justify-between text-sm mb-1">
-                      <span style={{color: '#94a3b8'}}>Storage Used</span>
-                      <span style={{color: '#f8fafc', fontWeight: 600}}>
+                      <span style={{color: theme.textTertiary}}>Storage Used</span>
+                      <span style={{color: theme.text, fontWeight: 600}}>
                         {storageInfo.features.storage_mb >= 1024 
                           ? `${(storageInfo.usage.storage_mb / 1024).toFixed(2)} GB / ${(storageInfo.features.storage_mb / 1024).toFixed(0)} GB`
                           : `${storageInfo.usage.storage_mb.toFixed(1)} MB / ${storageInfo.features.storage_mb} MB`
@@ -331,7 +331,7 @@ export default function Documents() {
                       />
                     </div>
                   </div>
-                  <div className="text-xs" style={{color: '#64748b'}}>
+                  <div className="text-xs" style={{color: theme.textMuted}}>
                     {storageInfo.usage.documents} / {storageInfo.features.max_documents > 0 ? storageInfo.features.max_documents : '∞'} docs
                   </div>
                 </div>
@@ -345,36 +345,36 @@ export default function Documents() {
                   Upload Document
                 </Button>
               </DialogTrigger>
-              <DialogContent style={{background: '#1a1229', borderColor: '#2d1f3d', color: '#f8fafc'}}>
+              <DialogContent style={{background: theme.backgroundSecondary, borderColor: theme.border, color: theme.text}}>
                 <DialogHeader>
-                  <DialogTitle style={{color: '#f8fafc'}}>Upload Document</DialogTitle>
+                  <DialogTitle style={{color: theme.text}}>Upload Document</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4">
                   <div>
-                    <Label style={{color: '#94a3b8'}}>Document Name</Label>
+                    <Label style={{color: theme.textTertiary}}>Document Name</Label>
                     <Input
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       placeholder="Passport, Will, Insurance Policy..."
-                      style={{background: '#0f0a1e', borderColor: '#2d1f3d', color: '#f8fafc'}}
+                      style={{background: '#0f0a1e', borderColor: theme.border, color: theme.text}}
                     />
                   </div>
                   <div>
-                    <Label style={{color: '#94a3b8'}}>Description (optional)</Label>
+                    <Label style={{color: theme.textTertiary}}>Description (optional)</Label>
                     <Input
                       value={formData.description}
                       onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                       placeholder="Additional details"
-                      style={{background: '#0f0a1e', borderColor: '#2d1f3d', color: '#f8fafc'}}
+                      style={{background: '#0f0a1e', borderColor: theme.border, color: theme.text}}
                     />
                   </div>
                   <div>
-                    <Label style={{color: '#94a3b8'}}>Link to Asset (optional)</Label>
+                    <Label style={{color: theme.textTertiary}}>Link to Asset (optional)</Label>
                     <select
                       value={formData.linked_asset_id || ''}
                       onChange={(e) => setFormData({ ...formData, linked_asset_id: e.target.value || null })}
                       className="w-full p-2 rounded-md"
-                      style={{background: '#0f0a1e', borderColor: '#2d1f3d', color: '#f8fafc', border: '1px solid'}}
+                      style={{background: '#0f0a1e', borderColor: theme.border, color: theme.text, border: '1px solid'}}
                     >
                       <option value="">-- No Asset --</option>
                       {assets.map(asset => (
@@ -383,14 +383,14 @@ export default function Documents() {
                         </option>
                       ))}
                     </select>
-                    <p className="text-xs mt-1" style={{color: '#64748b'}}>Link this document to a specific asset for better organization</p>
+                    <p className="text-xs mt-1" style={{color: theme.textMuted}}>Link this document to a specific asset for better organization</p>
                   </div>
                   <div>
-                    <Label style={{color: '#94a3b8'}}>File (Max 10MB)</Label>
+                    <Label style={{color: theme.textTertiary}}>File (Max 10MB)</Label>
                     <Input
                       type="file"
                       onChange={handleFileChange}
-                      style={{background: '#0f0a1e', borderColor: '#2d1f3d', color: '#f8fafc'}}
+                      style={{background: '#0f0a1e', borderColor: theme.border, color: theme.text}}
                     />
                   </div>
                   <div className="flex items-center gap-2">
@@ -400,7 +400,7 @@ export default function Documents() {
                       onChange={(e) => setFormData({ ...formData, share_with_nominee: e.target.checked })}
                       className="w-4 h-4"
                     />
-                    <Label style={{color: '#94a3b8'}}>Share with nominee when dead man switch activates</Label>
+                    <Label style={{color: theme.textTertiary}}>Share with nominee when dead man switch activates</Label>
                   </div>
                   <Button
                     onClick={handleUpload}
@@ -416,25 +416,25 @@ export default function Documents() {
           </div>
 
           {/* Toolbar - Search, Sort, View Toggle */}
-          <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+          <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
             <CardContent className="py-4">
               <div className="flex items-center gap-4 flex-wrap">
                 {/* Search */}
                 <div className="flex-1 min-w-[200px] relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" style={{color: '#64748b'}} />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" style={{color: theme.textMuted}} />
                   <Input
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     placeholder="Search documents..."
                     className="pl-10"
-                    style={{background: '#0f0a1e', borderColor: '#2d1f3d', color: '#f8fafc'}}
+                    style={{background: '#0f0a1e', borderColor: theme.border, color: theme.text}}
                   />
                   {searchTerm && (
                     <button
                       onClick={() => setSearchTerm('')}
                       className="absolute right-3 top-1/2 transform -translate-y-1/2"
                     >
-                      <X className="w-4 h-4" style={{color: '#64748b'}} />
+                      <X className="w-4 h-4" style={{color: theme.textMuted}} />
                     </button>
                   )}
                 </div>
@@ -444,7 +444,7 @@ export default function Documents() {
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
                   className="px-3 py-2 rounded-md"
-                  style={{background: '#0f0a1e', borderColor: '#2d1f3d', color: '#f8fafc', border: '1px solid'}}
+                  style={{background: '#0f0a1e', borderColor: theme.border, color: theme.text, border: '1px solid'}}
                 >
                   <option value="date-desc">Newest First</option>
                   <option value="date-asc">Oldest First</option>
@@ -486,14 +486,14 @@ export default function Documents() {
               {/* Active filters display */}
               {(selectedAssetFilter !== 'all' || searchTerm) && (
                 <div className="flex items-center gap-2 mt-3 flex-wrap">
-                  <span className="text-sm" style={{color: '#94a3b8'}}>Active filters:</span>
+                  <span className="text-sm" style={{color: theme.textTertiary}}>Active filters:</span>
                   {selectedAssetFilter !== 'all' && (
-                    <span className="px-2 py-1 rounded text-xs" style={{background: '#2d1f3d', color: '#f8fafc'}}>
+                    <span className="px-2 py-1 rounded text-xs" style={{background: '#2d1f3d', color: theme.text}}>
                       {selectedAssetFilter === 'unlinked' ? 'Unlinked Documents' : getAssetName(selectedAssetFilter)}
                     </span>
                   )}
                   {searchTerm && (
-                    <span className="px-2 py-1 rounded text-xs" style={{background: '#2d1f3d', color: '#f8fafc'}}>
+                    <span className="px-2 py-1 rounded text-xs" style={{background: '#2d1f3d', color: theme.text}}>
                       Search: "{searchTerm}"
                     </span>
                   )}
@@ -513,19 +513,19 @@ export default function Documents() {
           </Card>
 
           {/* Results count */}
-          <div className="text-sm" style={{color: '#94a3b8'}}>
+          <div className="text-sm" style={{color: theme.textTertiary}}>
             Showing {filteredDocuments.length} of {documents.length} documents
           </div>
 
           {/* Documents Display */}
           {filteredDocuments.length === 0 ? (
-            <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+            <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
               <CardContent className="py-16 text-center">
                 <FileText className="w-16 h-16 mx-auto mb-4" style={{color: '#2d1f3d'}} />
-                <h3 className="text-xl font-semibold mb-2" style={{color: '#f8fafc'}}>
+                <h3 className="text-xl font-semibold mb-2" style={{color: theme.text}}>
                   {documents.length === 0 ? 'No documents yet' : 'No documents found'}
                 </h3>
-                <p className="mb-6" style={{color: '#94a3b8'}}>
+                <p className="mb-6" style={{color: theme.textTertiary}}>
                   {documents.length === 0 
                     ? 'Upload important documents to keep them safe and accessible'
                     : 'Try adjusting your filters or search term'
@@ -543,14 +543,14 @@ export default function Documents() {
             // Grid View
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredDocuments.map((doc) => (
-                <Card key={doc.id} style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                <Card key={doc.id} style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                   <CardHeader>
                     <div className="flex items-start justify-between">
                       <div className="flex items-center gap-3 flex-1 min-w-0">
                         <FileText className="w-8 h-8 flex-shrink-0" style={{color: '#ec4899'}} />
                         <div className="min-w-0 flex-1">
-                          <CardTitle style={{color: '#f8fafc', fontSize: '1rem'}} className="truncate">{doc.name}</CardTitle>
-                          <p className="text-xs mt-1" style={{color: '#94a3b8'}}>{formatFileSize(doc.file_size)}</p>
+                          <CardTitle style={{color: theme.text, fontSize: '1rem'}} className="truncate">{doc.name}</CardTitle>
+                          <p className="text-xs mt-1" style={{color: theme.textTertiary}}>{formatFileSize(doc.file_size)}</p>
                         </div>
                       </div>
                       {doc.share_with_nominee && (
@@ -560,7 +560,7 @@ export default function Documents() {
                   </CardHeader>
                   <CardContent>
                     {doc.description && (
-                      <p className="text-sm mb-3" style={{color: '#94a3b8'}}>{doc.description}</p>
+                      <p className="text-sm mb-3" style={{color: theme.textTertiary}}>{doc.description}</p>
                     )}
                     {doc.linked_asset_id && (
                       <div className="flex items-center gap-2 mb-3 p-2 rounded" style={{background: '#0f0a1e'}}>
@@ -568,7 +568,7 @@ export default function Documents() {
                         <span className="text-xs truncate" style={{color: '#a855f7'}}>{getAssetName(doc.linked_asset_id)}</span>
                       </div>
                     )}
-                    <div className="text-xs mb-4" style={{color: '#64748b'}}>
+                    <div className="text-xs mb-4" style={{color: theme.textMuted}}>
                       Uploaded {new Date(doc.created_at).toLocaleDateString()}
                     </div>
                     <div className="flex gap-2">
@@ -577,7 +577,7 @@ export default function Documents() {
                         variant="outline"
                         size="sm"
                         className="flex-1"
-                        style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+                        style={{borderColor: theme.border, color: theme.textTertiary}}
                       >
                         <Download className="w-4 h-4 mr-2" />
                         Download
@@ -597,9 +597,9 @@ export default function Documents() {
             </div>
           ) : (
             // List View
-            <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+            <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
               <CardContent className="p-0">
-                <div className="divide-y" style={{borderColor: '#2d1f3d'}}>
+                <div className="divide-y" style={{borderColor: theme.border}}>
                   {filteredDocuments.map((doc) => (
                     <div key={doc.id} className="p-4 hover:bg-gray-800/20 transition-colors">
                       <div className="flex items-center gap-4">
@@ -607,15 +607,15 @@ export default function Documents() {
                         
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
-                            <h3 className="font-semibold truncate" style={{color: '#f8fafc'}}>{doc.name}</h3>
+                            <h3 className="font-semibold truncate" style={{color: theme.text}}>{doc.name}</h3>
                             {doc.share_with_nominee && (
                               <Shield className="w-4 h-4 flex-shrink-0" style={{color: '#22c55e'}} title="Shared with nominee" />
                             )}
                           </div>
                           {doc.description && (
-                            <p className="text-sm mb-2" style={{color: '#94a3b8'}}>{doc.description}</p>
+                            <p className="text-sm mb-2" style={{color: theme.textTertiary}}>{doc.description}</p>
                           )}
-                          <div className="flex items-center gap-4 text-xs" style={{color: '#64748b'}}>
+                          <div className="flex items-center gap-4 text-xs" style={{color: theme.textMuted}}>
                             <span>{formatFileSize(doc.file_size)}</span>
                             <span>•</span>
                             <span>Uploaded {new Date(doc.created_at).toLocaleDateString()}</span>
@@ -636,7 +636,7 @@ export default function Documents() {
                             onClick={() => handleDownload(doc.id, doc.name)}
                             variant="outline"
                             size="sm"
-                            style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+                            style={{borderColor: theme.border, color: theme.textTertiary}}
                           >
                             <Download className="w-4 h-4 mr-2" />
                             Download

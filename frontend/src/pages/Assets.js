@@ -87,18 +87,18 @@ function AssetTableRow({ asset, typeInfo, purchaseValueOriginal, currentValueOri
                 </span>
               )}
             </div>
-            {asset.symbol && <div className="text-xs" style={{color: '#94a3b8'}}>{asset.symbol}</div>}
+            {asset.symbol && <div className="text-xs" style={{color: theme.textTertiary}}>{asset.symbol}</div>}
           </div>
         </div>
       </td>
       <td className="p-4" style={{color: isLiability ? '#f87171' : '#94a3b8'}}>{typeInfo.label}</td>
-      <td className="p-4 text-right" style={{color: '#94a3b8'}}>
+      <td className="p-4 text-right" style={{color: theme.textTertiary}}>
         {asset.quantity && `${asset.quantity} units`}
         {asset.weight && `${asset.weight} ${asset.weight_unit}`}
         {asset.area && `${asset.area} ${asset.area_unit}`}
         {!asset.quantity && !asset.weight && !asset.area && '-'}
       </td>
-      <td className="p-4 text-right" style={{color: '#cbd5e1'}}>
+      <td className="p-4 text-right" style={{color: theme.textSecondary}}>
         <div className="font-semibold">
           {isLiability ? '-' : ''}{asset.purchase_currency} {purchaseValueOriginal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
         </div>
@@ -123,7 +123,7 @@ function AssetTableRow({ asset, typeInfo, purchaseValueOriginal, currentValueOri
           </div>
         )}
         {isLiability && !loading && (
-          <div style={{color: '#94a3b8', fontSize: '0.875rem'}}>
+          <div style={{color: theme.textTertiary, fontSize: '0.875rem'}}>
             Liability
           </div>
         )}
@@ -145,7 +145,7 @@ function AssetTableRow({ asset, typeInfo, purchaseValueOriginal, currentValueOri
             onClick={() => handleEdit(asset)}
             variant="outline"
             size="sm"
-            style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+            style={{borderColor: theme.border, color: theme.textTertiary}}
           >
             <Edit className="w-4 h-4" />
           </Button>
@@ -704,10 +704,10 @@ export default function Assets() {
       <div className="space-y-8" data-testid="assets-container">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
           <div>
-            <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
+            <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{fontFamily: 'Space Grotesk, sans-serif', color: theme.text}}>
               {pageMode === 'assets' ? 'Assets' : 'Portfolios'}
             </h1>
-            <p style={{color: '#94a3b8'}}>
+            <p style={{color: theme.textTertiary}}>
               {pageMode === 'assets' 
                 ? 'Track and manage all your financial assets' 
                 : 'Manage your exchange and broker accounts'}
@@ -716,7 +716,7 @@ export default function Assets() {
           
           <div className="flex items-center gap-3">
             {/* Page Mode Toggle */}
-            <div className="flex rounded-lg overflow-hidden border" style={{borderColor: '#2d1f3d'}}>
+            <div className="flex rounded-lg overflow-hidden border" style={{borderColor: theme.border}}>
               <Button
                 onClick={() => setPageMode('assets')}
                 variant={pageMode === 'assets' ? 'default' : 'ghost'}
@@ -747,7 +747,7 @@ export default function Assets() {
               <Button
                 onClick={() => setViewMode(viewMode === 'grid' ? 'table' : 'grid')}
                 variant="outline"
-                style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+                style={{borderColor: theme.border, color: theme.textTertiary}}
               >
                 {viewMode === 'grid' ? <List className="w-4 h-4 mr-2" /> : <Grid className="w-4 h-4 mr-2" />}
                 {viewMode === 'grid' ? 'Table View' : 'Grid View'}
@@ -767,7 +767,7 @@ export default function Assets() {
                   Add Asset
                 </Button>
               </DialogTrigger>
-            <DialogContent className="text-white max-w-2xl max-h-[90vh] overflow-y-auto" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+            <DialogContent className="text-white max-w-2xl max-h-[90vh] overflow-y-auto" style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
               <DialogHeader>
                 <DialogTitle className="text-2xl">
                   {editingAsset ? 'Edit Asset' : 'Add New Asset'}
@@ -828,7 +828,7 @@ export default function Assets() {
                       <div>
                         <Label className="text-slate-300">Current Price Per Unit (optional)</Label>
                         <Input type="number" step="any" value={formData.current_unit_price} onChange={(e) => handleCurrentUnitPriceChange(e.target.value)} placeholder="Defaults to purchase price" className="bg-slate-800 border-slate-700 text-white" />
-                        <p className="text-xs mt-1" style={{color: '#64748b'}}>For crypto, we'll try to fetch from API</p>
+                        <p className="text-xs mt-1" style={{color: theme.textMuted}}>For crypto, we'll try to fetch from API</p>
                       </div>
                       <div>
                         <Label className="text-slate-300">Current Total Value (optional)</Label>
@@ -1049,7 +1049,7 @@ export default function Assets() {
                     placeholder="Manual current value or API will fetch" 
                     className="bg-slate-800 border-slate-700 text-white" 
                   />
-                  <p className="text-xs mt-1" style={{color: '#94a3b8'}}>For assets with live prices (crypto, stocks), we'll fetch automatically. For others, enter manually.</p>
+                  <p className="text-xs mt-1" style={{color: theme.textTertiary}}>For assets with live prices (crypto, stocks), we'll fetch automatically. For others, enter manually.</p>
                 </div>
 
                 <div className="flex gap-3 pt-4">
@@ -1066,7 +1066,7 @@ export default function Assets() {
                     type="button" 
                     variant="outline" 
                     onClick={handleDialogClose}
-                    style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+                    style={{borderColor: theme.border, color: theme.textTertiary}}
                   >
                     Cancel
                   </Button>
@@ -1093,14 +1093,14 @@ export default function Assets() {
         {assets.length > 0 && (
           <div className="flex flex-wrap gap-4 mb-6">
             <Select value={filterType} onValueChange={setFilterType}>
-              <SelectTrigger className="w-48" style={{background: '#1a1229', borderColor: '#2d1f3d', color: '#f8fafc'}}>
+              <SelectTrigger className="w-48" style={{background: theme.backgroundSecondary, borderColor: theme.border, color: theme.text}}>
                 <Filter className="w-4 h-4 mr-2" />
                 <SelectValue placeholder="Filter by type" />
               </SelectTrigger>
-              <SelectContent style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
-                <SelectItem value="all" style={{color: '#f8fafc'}}>All Assets</SelectItem>
+              <SelectContent style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
+                <SelectItem value="all" style={{color: theme.text}}>All Assets</SelectItem>
                 {ASSET_TYPES.map(type => (
-                  <SelectItem key={type.value} value={type.value} style={{color: '#f8fafc'}}>
+                  <SelectItem key={type.value} value={type.value} style={{color: theme.text}}>
                     {type.icon} {type.label}
                   </SelectItem>
                 ))}
@@ -1108,25 +1108,25 @@ export default function Assets() {
             </Select>
 
             <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger className="w-48" style={{background: '#1a1229', borderColor: '#2d1f3d', color: '#f8fafc'}}>
+              <SelectTrigger className="w-48" style={{background: theme.backgroundSecondary, borderColor: theme.border, color: theme.text}}>
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
-              <SelectContent style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
-                <SelectItem value="date" style={{color: '#f8fafc'}}>Date Added</SelectItem>
-                <SelectItem value="value" style={{color: '#f8fafc'}}>Value (High to Low)</SelectItem>
-                <SelectItem value="name" style={{color: '#f8fafc'}}>Name (A-Z)</SelectItem>
+              <SelectContent style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
+                <SelectItem value="date" style={{color: theme.text}}>Date Added</SelectItem>
+                <SelectItem value="value" style={{color: theme.text}}>Value (High to Low)</SelectItem>
+                <SelectItem value="name" style={{color: theme.text}}>Name (A-Z)</SelectItem>
               </SelectContent>
             </Select>
           </div>
         )}
 
         {assets.length === 0 ? (
-          <Card data-testid="no-assets-card" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+          <Card data-testid="no-assets-card" style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
             <CardContent className="py-16">
               <div className="text-center">
                 <DollarSign className="w-16 h-16 mx-auto mb-4" style={{color: '#2d1f3d'}} />
-                <h3 className="text-xl font-semibold mb-2" style={{color: '#f8fafc'}}>No assets yet</h3>
-                <p className="mb-6" style={{color: '#94a3b8'}}>Start tracking your wealth by adding your first asset</p>
+                <h3 className="text-xl font-semibold mb-2" style={{color: theme.text}}>No assets yet</h3>
+                <p className="mb-6" style={{color: theme.textTertiary}}>Start tracking your wealth by adding your first asset</p>
                 <Button 
                   data-testid="add-first-asset-empty-btn"
                   onClick={() => setDialogOpen(true)}
@@ -1145,7 +1145,7 @@ export default function Assets() {
             <Card 
               data-testid="assets-summary-card"
               className="mb-6"
-              style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', borderColor: '#2d1f3d'}}
+              style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', borderColor: theme.border}}
             >
               <CardContent className="py-6">
                 <div className="flex items-center justify-between">
@@ -1212,7 +1212,7 @@ export default function Assets() {
                         <div className="text-3xl">{typeInfo.icon}</div>
                         <div>
                           <div className="flex items-center gap-2">
-                            <CardTitle className="text-lg" data-testid={`asset-name-${asset.id}`} style={{color: '#f8fafc'}}>
+                            <CardTitle className="text-lg" data-testid={`asset-name-${asset.id}`} style={{color: theme.text}}>
                               {asset.name}
                             </CardTitle>
                             {isLiability && (
@@ -1224,7 +1224,7 @@ export default function Assets() {
                               </span>
                             )}
                           </div>
-                          <p className="text-sm" style={{color: '#94a3b8'}}>{typeInfo.label}</p>
+                          <p className="text-sm" style={{color: theme.textTertiary}}>{typeInfo.label}</p>
                         </div>
                       </div>
                     </div>
@@ -1238,7 +1238,7 @@ export default function Assets() {
                       
                       return purchaseValue ? (
                         <div className="mb-4">
-                          <div className="text-sm mb-1" style={{color: '#94a3b8'}}>
+                          <div className="text-sm mb-1" style={{color: theme.textTertiary}}>
                             {isLiability ? 'Outstanding Balance' : 'Current Value'}
                           </div>
                           <div className="text-2xl font-bold" data-testid={`asset-value-${asset.id}`} style={{color: isLiability ? '#ef4444' : '#ec4899'}}>
@@ -1254,37 +1254,37 @@ export default function Assets() {
                     })()}
                     
                     {asset.quantity && (
-                      <div className="text-sm mb-2" style={{color: '#94a3b8'}}>
-                        Quantity: <span style={{color: '#f8fafc'}}>{asset.quantity}</span>
+                      <div className="text-sm mb-2" style={{color: theme.textTertiary}}>
+                        Quantity: <span style={{color: theme.text}}>{asset.quantity}</span>
                       </div>
                     )}
                     
                     {asset.weight && (
-                      <div className="text-sm mb-2" style={{color: '#94a3b8'}}>
-                        Weight: <span style={{color: '#f8fafc'}}>{asset.weight} {asset.weight_unit}</span>
+                      <div className="text-sm mb-2" style={{color: theme.textTertiary}}>
+                        Weight: <span style={{color: theme.text}}>{asset.weight} {asset.weight_unit}</span>
                       </div>
                     )}
                     
                     {asset.area && (
-                      <div className="text-sm mb-2" style={{color: '#94a3b8'}}>
-                        Area: <span style={{color: '#f8fafc'}}>{asset.area} {asset.area_unit}</span>
+                      <div className="text-sm mb-2" style={{color: theme.textTertiary}}>
+                        Area: <span style={{color: theme.text}}>{asset.area} {asset.area_unit}</span>
                       </div>
                     )}
                     
                     {asset.location?.address && (
-                      <div className="text-sm mb-2" style={{color: '#94a3b8'}}>
+                      <div className="text-sm mb-2" style={{color: theme.textTertiary}}>
                         📍 {asset.location.address}
                       </div>
                     )}
                     
                     {asset.maturity_date && (
-                      <div className="text-sm mb-2" style={{color: '#94a3b8'}}>
-                        Maturity: <span style={{color: '#f8fafc'}}>{new Date(asset.maturity_date).toLocaleDateString()}</span>
+                      <div className="text-sm mb-2" style={{color: theme.textTertiary}}>
+                        Maturity: <span style={{color: theme.text}}>{new Date(asset.maturity_date).toLocaleDateString()}</span>
                       </div>
                     )}
                     
                     {asset.purchase_date && (
-                      <div className="text-sm mb-4" style={{color: '#94a3b8'}}>
+                      <div className="text-sm mb-4" style={{color: theme.textTertiary}}>
                         Date: {new Date(asset.purchase_date).toLocaleDateString()}
                       </div>
                     )}
@@ -1296,7 +1296,7 @@ export default function Assets() {
                         variant="outline"
                         size="sm"
                         className="flex-1"
-                        style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+                        style={{borderColor: theme.border, color: theme.textTertiary}}
                       >
                         <Edit className="w-4 h-4 mr-2" />
                         Edit
@@ -1321,20 +1321,20 @@ export default function Assets() {
           </>
         ) : (
           <div>
-            <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+            <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
               <CardContent className="p-0">
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead style={{background: '#16001e', borderBottom: '1px solid #2d1f3d'}}>
                       <tr>
-                        <th className="text-left p-4" style={{color: '#94a3b8', fontWeight: 600}}>Asset</th>
-                        <th className="text-left p-4" style={{color: '#94a3b8', fontWeight: 600}}>Type</th>
-                        <th className="text-right p-4" style={{color: '#94a3b8', fontWeight: 600}}>Quantity</th>
-                        <th className="text-right p-4" style={{color: '#94a3b8', fontWeight: 600}}>Original Value</th>
-                        <th className="text-right p-4" style={{color: '#94a3b8', fontWeight: 600}}>Purchase ({selectedCurrency})</th>
-                        <th className="text-right p-4" style={{color: '#94a3b8', fontWeight: 600}}>Current ({selectedCurrency})</th>
-                        <th className="text-right p-4" style={{color: '#94a3b8', fontWeight: 600}}>Gain/Loss</th>
-                        <th className="text-right p-4" style={{color: '#94a3b8', fontWeight: 600}}>Actions</th>
+                        <th className="text-left p-4" style={{color: theme.textTertiary, fontWeight: 600}}>Asset</th>
+                        <th className="text-left p-4" style={{color: theme.textTertiary, fontWeight: 600}}>Type</th>
+                        <th className="text-right p-4" style={{color: theme.textTertiary, fontWeight: 600}}>Quantity</th>
+                        <th className="text-right p-4" style={{color: theme.textTertiary, fontWeight: 600}}>Original Value</th>
+                        <th className="text-right p-4" style={{color: theme.textTertiary, fontWeight: 600}}>Purchase ({selectedCurrency})</th>
+                        <th className="text-right p-4" style={{color: theme.textTertiary, fontWeight: 600}}>Current ({selectedCurrency})</th>
+                        <th className="text-right p-4" style={{color: theme.textTertiary, fontWeight: 600}}>Gain/Loss</th>
+                        <th className="text-right p-4" style={{color: theme.textTertiary, fontWeight: 600}}>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -1362,13 +1362,13 @@ export default function Assets() {
                     </tbody>
                     <tfoot style={{background: '#16001e', borderTop: '2px solid #2d1f3d'}}>
                       <tr>
-                        <td colSpan="3" className="p-4" style={{color: '#f8fafc', fontWeight: 600, fontSize: '1.1rem'}}>
+                        <td colSpan="3" className="p-4" style={{color: theme.text, fontWeight: 600, fontSize: '1.1rem'}}>
                           TOTAL
                         </td>
-                        <td className="p-4 text-right" style={{color: '#94a3b8', fontWeight: 600}}>
+                        <td className="p-4 text-right" style={{color: theme.textTertiary, fontWeight: 600}}>
                           {/* Original Value column - skip */}
                         </td>
-                        <td className="p-4 text-right" style={{color: '#cbd5e1', fontWeight: 600, fontSize: '1rem'}}>
+                        <td className="p-4 text-right" style={{color: theme.textSecondary, fontWeight: 600, fontSize: '1rem'}}>
                           {purchaseTotal !== null ? formatCurrency(purchaseTotal, selectedCurrency, currencyFormat) : 'Calculating...'}
                         </td>
                         <td className="p-4 text-right" style={{color: '#ec4899', fontWeight: 700, fontSize: '1.2rem'}}>
@@ -1396,12 +1396,12 @@ export default function Assets() {
           /* PORTFOLIOS VIEW */
           <div>
             {portfolios.length === 0 ? (
-              <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+              <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                 <CardContent className="py-16">
                   <div className="text-center">
                     <div className="text-6xl mb-4">📊</div>
-                    <h3 className="text-xl font-semibold mb-2" style={{color: '#f8fafc'}}>No Portfolios Yet</h3>
-                    <p className="mb-6" style={{color: '#94a3b8'}}>
+                    <h3 className="text-xl font-semibold mb-2" style={{color: theme.text}}>No Portfolios Yet</h3>
+                    <p className="mb-6" style={{color: theme.textTertiary}}>
                       Create a portfolio to track holdings across exchanges and brokers
                     </p>
                     <Button 
@@ -1421,11 +1421,11 @@ export default function Assets() {
                   <Card 
                     key={portfolio.id}
                     className="cursor-pointer hover:border-purple-500 transition-all"
-                    style={{background: '#1a1229', borderColor: '#2d1f3d'}}
+                    style={{background: theme.backgroundSecondary, borderColor: theme.border}}
                     onClick={() => fetchPortfolioDetails(portfolio.id)}
                   >
                     <CardHeader>
-                      <CardTitle className="flex items-center justify-between" style={{color: '#f8fafc'}}>
+                      <CardTitle className="flex items-center justify-between" style={{color: theme.text}}>
                         <div className="flex items-center gap-2">
                           <span className="text-2xl">📊</span>
                           <span>{portfolio.name}</span>
@@ -1441,20 +1441,20 @@ export default function Assets() {
                     <CardContent>
                       <div className="space-y-2">
                         <div className="flex justify-between items-center">
-                          <span style={{color: '#94a3b8', fontSize: '0.875rem'}}>Holdings</span>
-                          <span style={{color: '#f8fafc', fontWeight: 600}}>
+                          <span style={{color: theme.textTertiary, fontSize: '0.875rem'}}>Holdings</span>
+                          <span style={{color: theme.text, fontWeight: 600}}>
                             {portfolio.holdings?.length || 0}
                           </span>
                         </div>
                         <div className="flex justify-between items-center">
-                          <span style={{color: '#94a3b8', fontSize: '0.875rem'}}>Total Value</span>
+                          <span style={{color: theme.textTertiary, fontSize: '0.875rem'}}>Total Value</span>
                           <span style={{color: '#ec4899', fontWeight: 700, fontSize: '1.125rem'}}>
                             {formatCurrency(portfolio.total_value || 0, portfolio.purchase_currency, currencyFormat)}
                           </span>
                         </div>
                         <div className="flex justify-between items-center text-xs">
-                          <span style={{color: '#64748b'}}>Type</span>
-                          <span style={{color: '#94a3b8'}}>
+                          <span style={{color: theme.textMuted}}>Type</span>
+                          <span style={{color: theme.textTertiary}}>
                             {portfolio.provider_type.replace('_', ' ')}
                           </span>
                         </div>
@@ -1480,7 +1480,7 @@ export default function Assets() {
 
             {/* Portfolio Details Dialog */}
             <Dialog open={selectedPortfolio !== null} onOpenChange={(open) => !open && setSelectedPortfolio(null)}>
-              <DialogContent className="text-white max-w-4xl max-h-[90vh] overflow-y-auto" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+              <DialogContent className="text-white max-w-4xl max-h-[90vh] overflow-y-auto" style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                 <DialogHeader>
                   <DialogTitle className="text-2xl flex items-center gap-2">
                     <span>📊</span>
@@ -1544,7 +1544,7 @@ export default function Assets() {
 
                   {/* Holdings List */}
                   <div className="space-y-3">
-                    <h3 className="text-lg font-semibold" style={{color: '#f8fafc'}}>Holdings</h3>
+                    <h3 className="text-lg font-semibold" style={{color: theme.text}}>Holdings</h3>
                     {selectedPortfolio?.holdings && selectedPortfolio.holdings.length > 0 ? (
                       selectedPortfolio.holdings.map((holding, index) => {
                         const purchaseValue = holding.quantity * holding.purchase_price;
@@ -1563,12 +1563,12 @@ export default function Assets() {
                               <div className="flex justify-between items-start">
                                 <div className="flex-1">
                                   <div className="flex items-center gap-2 mb-2">
-                                    <span style={{color: '#f8fafc', fontWeight: 600, fontSize: '1.125rem'}}>
+                                    <span style={{color: theme.text, fontWeight: 600, fontSize: '1.125rem'}}>
                                       {holding.name}
                                     </span>
                                     <span 
                                       className="text-xs px-2 py-0.5 rounded"
-                                      style={{background: '#2d1f3d', color: '#94a3b8'}}
+                                      style={{background: '#2d1f3d', color: theme.textTertiary}}
                                     >
                                       {holding.symbol}
                                     </span>
@@ -1582,31 +1582,31 @@ export default function Assets() {
                                   
                                   <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
                                     <div>
-                                      <span style={{color: '#64748b'}}>Quantity: </span>
-                                      <span style={{color: '#cbd5e1'}}>{holding.quantity}</span>
+                                      <span style={{color: theme.textMuted}}>Quantity: </span>
+                                      <span style={{color: theme.textSecondary}}>{holding.quantity}</span>
                                     </div>
                                     <div>
-                                      <span style={{color: '#64748b'}}>Purchase Price: </span>
-                                      <span style={{color: '#cbd5e1'}}>
+                                      <span style={{color: theme.textMuted}}>Purchase Price: </span>
+                                      <span style={{color: theme.textSecondary}}>
                                         {formatCurrency(holding.purchase_price, holding.purchase_currency, currencyFormat)}
                                       </span>
                                     </div>
                                     <div>
-                                      <span style={{color: '#64748b'}}>Current Price: </span>
-                                      <span style={{color: '#cbd5e1'}}>
+                                      <span style={{color: theme.textMuted}}>Current Price: </span>
+                                      <span style={{color: theme.textSecondary}}>
                                         {holding.current_price 
                                           ? formatCurrency(holding.current_price, holding.purchase_currency, currencyFormat)
                                           : 'N/A'}
                                       </span>
                                     </div>
                                     <div>
-                                      <span style={{color: '#64748b'}}>Current Value: </span>
+                                      <span style={{color: theme.textMuted}}>Current Value: </span>
                                       <span style={{color: '#ec4899', fontWeight: 600}}>
                                         {formatCurrency(currentValue, holding.purchase_currency, currencyFormat)}
                                       </span>
                                     </div>
                                     <div>
-                                      <span style={{color: '#64748b'}}>Gain/Loss: </span>
+                                      <span style={{color: theme.textMuted}}>Gain/Loss: </span>
                                       <span style={{color: gain >= 0 ? '#10b981' : '#ef4444', fontWeight: 600}}>
                                         {gain >= 0 ? '+' : ''}{formatCurrency(gain, holding.purchase_currency, currencyFormat)}
                                         {' '}({gain >= 0 ? '+' : ''}{gainPercent}%)
@@ -1633,7 +1633,7 @@ export default function Assets() {
                                     }}
                                     size="sm"
                                     variant="outline"
-                                    style={{borderColor: '#2d1f3d', color: '#a855f7'}}
+                                    style={{borderColor: theme.border, color: '#a855f7'}}
                                   >
                                     <Edit className="w-4 h-4" />
                                   </Button>
@@ -1654,7 +1654,7 @@ export default function Assets() {
                     ) : (
                       <Card style={{background: '#131835', borderColor: '#1e293b'}}>
                         <CardContent className="py-8 text-center">
-                          <p style={{color: '#64748b'}}>No holdings yet. Add your first holding above.</p>
+                          <p style={{color: theme.textMuted}}>No holdings yet. Add your first holding above.</p>
                         </CardContent>
                       </Card>
                     )}
@@ -1665,7 +1665,7 @@ export default function Assets() {
 
             {/* Create/Edit Portfolio Dialog */}
             <Dialog open={portfolioDialogOpen} onOpenChange={setPortfolioDialogOpen}>
-              <DialogContent className="text-white" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+              <DialogContent className="text-white" style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                 <DialogHeader>
                   <DialogTitle className="text-2xl">Create New Portfolio</DialogTitle>
                 </DialogHeader>
@@ -1733,7 +1733,7 @@ export default function Assets() {
                       type="button" 
                       variant="outline" 
                       onClick={() => setPortfolioDialogOpen(false)}
-                      style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+                      style={{borderColor: theme.border, color: theme.textTertiary}}
                     >
                       Cancel
                     </Button>
@@ -1744,7 +1744,7 @@ export default function Assets() {
 
             {/* Add/Edit Holding Dialog */}
             <Dialog open={holdingDialogOpen} onOpenChange={setHoldingDialogOpen}>
-              <DialogContent className="text-white" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+              <DialogContent className="text-white" style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                 <DialogHeader>
                   <DialogTitle className="text-2xl">
                     {editingHolding ? 'Edit Holding' : 'Add New Holding'}
@@ -1869,7 +1869,7 @@ export default function Assets() {
                         setHoldingDialogOpen(false);
                         setEditingHolding(null);
                       }}
-                      style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+                      style={{borderColor: theme.border, color: theme.textTertiary}}
                     >
                       Cancel
                     </Button>

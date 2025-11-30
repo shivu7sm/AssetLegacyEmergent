@@ -25,17 +25,17 @@ function AppearanceSection() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold mb-2 flex items-center gap-2" style={{color: '#f8fafc'}}>
+        <h2 className="text-2xl font-bold mb-2 flex items-center gap-2" style={{color: theme.text}}>
           <Palette className="w-7 h-7" />
           Appearance
         </h2>
-        <p style={{color: '#94a3b8'}}>Customize the look and feel of your dashboard</p>
+        <p style={{color: theme.textTertiary}}>Customize the look and feel of your dashboard</p>
       </div>
 
-      <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+      <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
         <CardHeader>
-          <CardTitle style={{color: '#f8fafc'}}>Theme Selection</CardTitle>
-          <CardDescription style={{color: '#94a3b8'}}>
+          <CardTitle style={{color: theme.text}}>Theme Selection</CardTitle>
+          <CardDescription style={{color: theme.textTertiary}}>
             Choose your preferred dashboard theme. Your selection will be remembered across sessions.
           </CardDescription>
         </CardHeader>
@@ -56,13 +56,13 @@ function AppearanceSection() {
                   <span style={{color: '#fff', fontSize: '14px'}}>✓</span>
                 </div>
               )}
-              <h3 className="text-lg font-bold mb-2" style={{color: '#f8fafc'}}>Standard Theme</h3>
-              <p className="text-sm mb-4" style={{color: '#94a3b8'}}>
+              <h3 className="text-lg font-bold mb-2" style={{color: theme.text}}>Standard Theme</h3>
+              <p className="text-sm mb-4" style={{color: theme.textTertiary}}>
                 Classic dark theme with purple and pink gradient accents. Perfect for those who prefer vibrant colors.
               </p>
               <div className="flex gap-2">
                 <div className="w-8 h-8 rounded" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}></div>
-                <div className="w-8 h-8 rounded" style={{background: '#1a1229'}}></div>
+                <div className="w-8 h-8 rounded" style={{background: theme.backgroundSecondary}}></div>
                 <div className="w-8 h-8 rounded" style={{background: '#ec4899'}}></div>
               </div>
             </div>
@@ -82,8 +82,8 @@ function AppearanceSection() {
                   <span style={{color: '#0B0B11', fontSize: '14px'}}>✓</span>
                 </div>
               )}
-              <h3 className="text-lg font-bold mb-2" style={{color: '#f8fafc'}}>Modern Theme</h3>
-              <p className="text-sm mb-4" style={{color: '#94a3b8'}}>
+              <h3 className="text-lg font-bold mb-2" style={{color: theme.text}}>Modern Theme</h3>
+              <p className="text-sm mb-4" style={{color: theme.textTertiary}}>
                 Premium dark theme with gold accents and refined spacing. Ideal for a sophisticated, professional look.
               </p>
               <div className="flex gap-2">
@@ -95,7 +95,7 @@ function AppearanceSection() {
           </div>
 
           <div className="mt-4 p-4 rounded-lg" style={{background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.3)'}}>
-            <p className="text-sm" style={{color: '#cbd5e1'}}>
+            <p className="text-sm" style={{color: theme.textSecondary}}>
               <strong style={{color: '#60a5fa'}}>Current theme:</strong> {dashboardTheme === 'modern' ? 'Modern' : 'Standard'}
             </p>
           </div>
@@ -129,24 +129,24 @@ function DemoDataSection() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold mb-2 flex items-center gap-2" style={{color: '#f8fafc'}}>
+        <h2 className="text-2xl font-bold mb-2 flex items-center gap-2" style={{color: theme.text}}>
           <RefreshCw className="w-7 h-7" />
           Demo Data Management
         </h2>
-        <p style={{color: '#94a3b8'}}>Reset and manage your demo data for testing</p>
+        <p style={{color: theme.textTertiary}}>Reset and manage your demo data for testing</p>
       </div>
 
       <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#f59e0b', borderWidth: '2px'}}>
         <CardHeader>
-          <CardTitle style={{color: '#f8fafc'}}>Reset Demo Data</CardTitle>
-          <CardDescription style={{color: '#94a3b8'}}>
+          <CardTitle style={{color: theme.text}}>Reset Demo Data</CardTitle>
+          <CardDescription style={{color: theme.textTertiary}}>
             Use this to restore the original sample data if you've made changes in demo mode
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="p-4 rounded-lg" style={{background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.3)'}}>
             <h4 className="font-semibold mb-2" style={{color: '#fbbf24'}}>⚠️ What happens when you reset:</h4>
-            <ul className="text-sm space-y-1" style={{color: '#cbd5e1'}}>
+            <ul className="text-sm space-y-1" style={{color: theme.textSecondary}}>
               <li>• All demo assets will be deleted and recreated</li>
               <li>• Demo documents will be restored to defaults</li>
               <li>• Demo scheduled messages will be reset</li>
@@ -165,7 +165,7 @@ function DemoDataSection() {
             {resetting ? 'Resetting Demo Data...' : 'Reset Demo Data'}
           </Button>
 
-          <p className="text-xs text-center" style={{color: '#94a3b8'}}>
+          <p className="text-xs text-center" style={{color: theme.textTertiary}}>
             After reset, switch between Demo and Live mode to see the fresh data
           </p>
         </CardContent>
@@ -198,8 +198,8 @@ function ConnectedAccountsSection({ demoMode }) {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold mb-2" style={{color: '#f8fafc'}}>Connected Accounts</h2>
-        <p style={{color: '#94a3b8'}}>Portfolios you have access to as a nominee</p>
+        <h2 className="text-2xl font-bold mb-2" style={{color: theme.text}}>Connected Accounts</h2>
+        <p style={{color: theme.textTertiary}}>Portfolios you have access to as a nominee</p>
       </div>
       
       {/* Test Account - Demo Mode Only */}
@@ -212,15 +212,15 @@ function ConnectedAccountsSection({ demoMode }) {
               </svg>
               AssetVault Demo Portfolio (Test Account)
             </CardTitle>
-            <CardDescription style={{color: '#cbd5e1'}}>
+            <CardDescription style={{color: theme.textSecondary}}>
               Universal test account - Available only in Demo Mode
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex items-center justify-between p-4 rounded-lg" style={{background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.3)'}}>
               <div>
-                <p className="font-semibold mb-1" style={{color: '#f8fafc'}}>Demo Account Holder</p>
-                <p className="text-sm" style={{color: '#94a3b8'}}>demo.portfolio@assetvault.com</p>
+                <p className="font-semibold mb-1" style={{color: theme.text}}>Demo Account Holder</p>
+                <p className="text-sm" style={{color: theme.textTertiary}}>demo.portfolio@assetvault.com</p>
                 <div className="flex gap-2 mt-2">
                   <span className="text-xs px-2 py-1 rounded-full" style={{background: 'rgba(16, 185, 129, 0.2)', color: '#10b981'}}>
                     Read-Only Access
@@ -243,18 +243,18 @@ function ConnectedAccountsSection({ demoMode }) {
       
       {/* Accounts Where User is Nominee */}
       {loadingAccounts ? (
-        <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+        <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
           <CardContent className="py-16">
-            <p className="text-center" style={{color: '#94a3b8'}}>Loading connected accounts...</p>
+            <p className="text-center" style={{color: theme.textTertiary}}>Loading connected accounts...</p>
           </CardContent>
         </Card>
       ) : connectedAccounts.length > 0 ? (
         <div className="space-y-3">
-          <h3 className="text-lg font-semibold" style={{color: '#f8fafc'}}>
+          <h3 className="text-lg font-semibold" style={{color: theme.text}}>
             Accounts You Can Access ({connectedAccounts.length})
           </h3>
           {connectedAccounts.map((account) => (
-            <Card key={account.account_id} style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+            <Card key={account.account_id} style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
               <CardContent className="py-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
@@ -262,8 +262,8 @@ function ConnectedAccountsSection({ demoMode }) {
                       <Shield className="w-6 h-6" style={{color: '#a855f7'}} />
                     </div>
                     <div>
-                      <p className="font-semibold text-lg" style={{color: '#f8fafc'}}>{account.account_name}</p>
-                      <p className="text-sm" style={{color: '#94a3b8'}}>{account.account_email}</p>
+                      <p className="font-semibold text-lg" style={{color: theme.text}}>{account.account_name}</p>
+                      <p className="text-sm" style={{color: theme.textTertiary}}>{account.account_email}</p>
                       <div className="flex gap-2 mt-1">
                         {account.relationship && (
                           <span className="text-xs px-2 py-1 rounded-full" style={{background: 'rgba(168, 85, 247, 0.2)', color: '#a855f7'}}>
@@ -302,12 +302,12 @@ function ConnectedAccountsSection({ demoMode }) {
           ))}
         </div>
       ) : (
-        <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+        <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
           <CardContent className="py-16">
             <div className="text-center">
               <Link className="w-16 h-16 mx-auto mb-4" style={{color: '#2d1f3d'}} />
-              <h3 className="text-xl font-semibold mb-2" style={{color: '#f8fafc'}}>No Connected Accounts</h3>
-              <p className="mb-6" style={{color: '#94a3b8'}}>
+              <h3 className="text-xl font-semibold mb-2" style={{color: theme.text}}>No Connected Accounts</h3>
+              <p className="mb-6" style={{color: theme.textTertiary}}>
                 You don't have access to any other portfolios yet. When someone grants you nominee access, it will appear here.
               </p>
             </div>
@@ -370,17 +370,17 @@ function SecurityAuditSection({ user }) {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold mb-2 flex items-center gap-2" style={{color: '#f8fafc'}}>
+        <h2 className="text-2xl font-bold mb-2 flex items-center gap-2" style={{color: theme.text}}>
           <Shield className="w-7 h-7" />
           Security & Audit Logs
         </h2>
-        <p style={{color: '#94a3b8'}}>Monitor account activity and security events from the last 30 days</p>
+        <p style={{color: theme.textTertiary}}>Monitor account activity and security events from the last 30 days</p>
       </div>
 
       {/* Security Overview Card */}
       <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#3b82f6', borderWidth: '2px'}}>
         <CardHeader>
-          <CardTitle style={{color: '#f8fafc'}}>Account Security Status</CardTitle>
+          <CardTitle style={{color: theme.text}}>Account Security Status</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -389,7 +389,7 @@ function SecurityAuditSection({ user }) {
                 <Shield className="w-10 h-10" style={{color: '#10b981'}} />
                 <div>
                   <div className="text-2xl font-bold" style={{color: '#10b981'}}>Active</div>
-                  <div className="text-sm" style={{color: '#cbd5e1'}}>Account Status</div>
+                  <div className="text-sm" style={{color: theme.textSecondary}}>Account Status</div>
                 </div>
               </div>
             </div>
@@ -399,7 +399,7 @@ function SecurityAuditSection({ user }) {
                 <Users className="w-10 h-10" style={{color: '#3b82f6'}} />
                 <div>
                   <div className="text-2xl font-bold" style={{color: '#3b82f6'}}>{auditLogs.length}</div>
-                  <div className="text-sm" style={{color: '#cbd5e1'}}>Recent Activities</div>
+                  <div className="text-sm" style={{color: theme.textSecondary}}>Recent Activities</div>
                 </div>
               </div>
             </div>
@@ -409,7 +409,7 @@ function SecurityAuditSection({ user }) {
                 <Clock className="w-10 h-10" style={{color: '#a855f7'}} />
                 <div>
                   <div className="text-2xl font-bold" style={{color: '#a855f7'}}>30 Days</div>
-                  <div className="text-sm" style={{color: '#cbd5e1'}}>Log Retention</div>
+                  <div className="text-sm" style={{color: theme.textSecondary}}>Log Retention</div>
                 </div>
               </div>
             </div>
@@ -418,12 +418,12 @@ function SecurityAuditSection({ user }) {
       </Card>
 
       {/* Audit Logs */}
-      <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+      <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle style={{color: '#f8fafc'}}>Recent Activity (Last 30 Days)</CardTitle>
-              <CardDescription style={{color: '#94a3b8'}}>
+              <CardTitle style={{color: theme.text}}>Recent Activity (Last 30 Days)</CardTitle>
+              <CardDescription style={{color: theme.textTertiary}}>
                 Track all security-related events on your account
               </CardDescription>
             </div>
@@ -440,9 +440,9 @@ function SecurityAuditSection({ user }) {
         </CardHeader>
         <CardContent>
           {loading ? (
-            <div className="text-center py-8" style={{color: '#94a3b8'}}>Loading audit logs...</div>
+            <div className="text-center py-8" style={{color: theme.textTertiary}}>Loading audit logs...</div>
           ) : auditLogs.length === 0 ? (
-            <div className="text-center py-8" style={{color: '#94a3b8'}}>No recent activity</div>
+            <div className="text-center py-8" style={{color: theme.textTertiary}}>No recent activity</div>
           ) : (
             <div className="space-y-2 max-h-96 overflow-y-auto">
               {auditLogs.map((log, index) => (
@@ -463,13 +463,13 @@ function SecurityAuditSection({ user }) {
                       {log.resource_type && (
                         <span 
                           className="text-xs px-2 py-0.5 rounded-full"
-                          style={{background: '#2d1f3d', color: '#94a3b8'}}
+                          style={{background: '#2d1f3d', color: theme.textTertiary}}
                         >
                           {log.resource_type}
                         </span>
                       )}
                     </div>
-                    <div className="text-sm" style={{color: '#cbd5e1'}}>
+                    <div className="text-sm" style={{color: theme.textSecondary}}>
                       {log.changes && typeof log.changes === 'object' && (
                         <span className="mr-2">
                           {Object.keys(log.changes).length} changes
@@ -479,7 +479,7 @@ function SecurityAuditSection({ user }) {
                         <span className="mr-2">IP: {log.ip_address}</span>
                       )}
                     </div>
-                    <div className="text-xs mt-1" style={{color: '#64748b'}}>
+                    <div className="text-xs mt-1" style={{color: theme.textMuted}}>
                       {new Date(log.timestamp).toLocaleString()}
                     </div>
                   </div>
@@ -497,7 +497,7 @@ function SecurityAuditSection({ user }) {
             <Shield className="w-6 h-6 flex-shrink-0" style={{color: '#60a5fa'}} />
             <div>
               <h3 className="font-semibold mb-2" style={{color: '#60a5fa'}}>Why Audit Logs Matter</h3>
-              <ul className="text-sm space-y-2" style={{color: '#cbd5e1'}}>
+              <ul className="text-sm space-y-2" style={{color: theme.textSecondary}}>
                 <li>• <strong>Detect suspicious activity:</strong> Monitor for unauthorized access attempts</li>
                 <li>• <strong>Track changes:</strong> See what was modified and when</li>
                 <li>• <strong>Compliance:</strong> Maintain a record of all account activities</li>
@@ -756,14 +756,14 @@ export default function Settings() {
         return (
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold mb-2" style={{color: '#f8fafc'}}>Profile</h2>
-              <p style={{color: '#94a3b8'}}>Manage your account information and personal details</p>
+              <h2 className="text-2xl font-bold mb-2" style={{color: theme.text}}>Profile</h2>
+              <p style={{color: theme.textTertiary}}>Manage your account information and personal details</p>
             </div>
             
             {/* Profile Card */}
-            <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+            <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
               <CardHeader>
-                <CardTitle style={{color: '#f8fafc'}}>Personal Information</CardTitle>
+                <CardTitle style={{color: theme.text}}>Personal Information</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="flex items-center gap-6">
@@ -771,13 +771,13 @@ export default function Settings() {
                     <img src={user.picture} alt={user.name} className="w-24 h-24 rounded-full border-2" style={{borderColor: '#a855f7'}} />
                   )}
                   <div className="flex-1">
-                    <p className="text-2xl font-semibold mb-1" style={{color: '#f8fafc'}}>{user?.name}</p>
-                    <p className="text-lg" style={{color: '#94a3b8'}}>{user?.email}</p>
+                    <p className="text-2xl font-semibold mb-1" style={{color: theme.text}}>{user?.name}</p>
+                    <p className="text-lg" style={{color: theme.textTertiary}}>{user?.email}</p>
                     <div className="flex gap-4 mt-3">
                       <div className="px-3 py-1 rounded-full text-xs font-semibold" style={{background: 'rgba(168, 85, 247, 0.2)', color: '#a855f7'}}>
                         {user?.subscription_plan || 'Free'} Plan
                       </div>
-                      <div className="px-3 py-1 rounded-full text-xs" style={{background: 'rgba(148, 163, 184, 0.2)', color: '#cbd5e1'}}>
+                      <div className="px-3 py-1 rounded-full text-xs" style={{background: 'rgba(148, 163, 184, 0.2)', color: theme.textSecondary}}>
                         Member since {new Date(user?.created_at).toLocaleDateString()}
                       </div>
                     </div>
@@ -838,7 +838,7 @@ export default function Settings() {
 
                 {/* Emergency Contact */}
                 <div className="pt-6" style={{borderTop: '1px solid #2d1f3d'}}>
-                  <h3 className="text-lg font-semibold mb-4" style={{color: '#f8fafc'}}>Emergency Contact</h3>
+                  <h3 className="text-lg font-semibold mb-4" style={{color: theme.text}}>Emergency Contact</h3>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <Label className="text-slate-300">Contact Name</Label>
@@ -870,7 +870,7 @@ export default function Settings() {
             {/* Account Stats */}
             <Card style={{background: 'linear-gradient(135deg, #1a0b2e 0%, #2d0e3e 100%)', borderColor: '#a855f7', borderWidth: '1px'}}>
               <CardHeader>
-                <CardTitle style={{color: '#f8fafc'}}>Account Activity</CardTitle>
+                <CardTitle style={{color: theme.text}}>Account Activity</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-3 gap-4">
@@ -878,19 +878,19 @@ export default function Settings() {
                     <p className="text-3xl font-bold mb-1" style={{color: '#a855f7'}}>
                       {user?.last_activity ? Math.floor((Date.now() - new Date(user.last_activity)) / (1000 * 60 * 60 * 24)) : 0}
                     </p>
-                    <p className="text-xs" style={{color: '#94a3b8'}}>Days Since Last Active</p>
+                    <p className="text-xs" style={{color: theme.textTertiary}}>Days Since Last Active</p>
                   </div>
                   <div className="text-center p-4 rounded-lg" style={{background: 'rgba(16, 185, 129, 0.1)'}}>
                     <p className="text-3xl font-bold mb-1" style={{color: '#10b981'}}>
                       {Math.floor((Date.now() - new Date(user?.created_at)) / (1000 * 60 * 60 * 24))}
                     </p>
-                    <p className="text-xs" style={{color: '#94a3b8'}}>Days as Member</p>
+                    <p className="text-xs" style={{color: theme.textTertiary}}>Days as Member</p>
                   </div>
                   <div className="text-center p-4 rounded-lg" style={{background: 'rgba(245, 158, 11, 0.1)'}}>
                     <p className="text-3xl font-bold mb-1" style={{color: '#f59e0b'}}>
                       {user?.role === 'admin' ? 'Admin' : 'User'}
                     </p>
-                    <p className="text-xs" style={{color: '#94a3b8'}}>Account Type</p>
+                    <p className="text-xs" style={{color: theme.textTertiary}}>Account Type</p>
                   </div>
                 </div>
               </CardContent>
@@ -902,15 +902,15 @@ export default function Settings() {
         return (
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold mb-2" style={{color: '#f8fafc'}}>Display Preferences</h2>
-              <p style={{color: '#94a3b8'}}>Customize how you view your data</p>
+              <h2 className="text-2xl font-bold mb-2" style={{color: theme.text}}>Display Preferences</h2>
+              <p style={{color: theme.textTertiary}}>Customize how you view your data</p>
             </div>
             
             <form onSubmit={handlePreferencesSubmit} className="space-y-6">
-              <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+              <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                 <CardHeader>
-                  <CardTitle style={{color: '#f8fafc'}}>Currency & Format</CardTitle>
-                  <CardDescription style={{color: '#94a3b8'}}>Set your default currency and format preferences</CardDescription>
+                  <CardTitle style={{color: theme.text}}>Currency & Format</CardTitle>
+                  <CardDescription style={{color: theme.textTertiary}}>Set your default currency and format preferences</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
@@ -935,7 +935,7 @@ export default function Settings() {
                         <SelectItem value="AED" className="text-white">🇦🇪 AED - UAE Dirham</SelectItem>
                       </SelectContent>
                     </Select>
-                    <p className="text-xs mt-1" style={{color: '#64748b'}}>This will be your default currency when you log in</p>
+                    <p className="text-xs mt-1" style={{color: theme.textMuted}}>This will be your default currency when you log in</p>
                   </div>
                   
                   <div>
@@ -952,14 +952,14 @@ export default function Settings() {
                         <SelectItem value="indian" className="text-white">Indian (10,00,000 / Lakhs & Crores)</SelectItem>
                       </SelectContent>
                     </Select>
-                    <p className="text-xs mt-1" style={{color: '#64748b'}}>Change how currency amounts are displayed</p>
+                    <p className="text-xs mt-1" style={{color: theme.textMuted}}>Change how currency amounts are displayed</p>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+              <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                 <CardHeader>
-                  <CardTitle style={{color: '#f8fafc'}}>Assets View</CardTitle>
+                  <CardTitle style={{color: theme.text}}>Assets View</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
@@ -976,14 +976,14 @@ export default function Settings() {
                         <SelectItem value="table" className="text-white">Table View</SelectItem>
                       </SelectContent>
                     </Select>
-                    <p className="text-xs mt-1" style={{color: '#64748b'}}>Choose your default assets view layout</p>
+                    <p className="text-xs mt-1" style={{color: theme.textMuted}}>Choose your default assets view layout</p>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+              <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                 <CardHeader>
-                  <CardTitle style={{color: '#f8fafc'}}>Measurement Units</CardTitle>
+                  <CardTitle style={{color: theme.text}}>Measurement Units</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1067,8 +1067,8 @@ export default function Settings() {
         return (
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold mb-2" style={{color: '#f8fafc'}}>Subscription & Billing</h2>
-              <p style={{color: '#94a3b8'}}>Manage your subscription plan and billing information</p>
+              <h2 className="text-2xl font-bold mb-2" style={{color: theme.text}}>Subscription & Billing</h2>
+              <p style={{color: theme.textTertiary}}>Manage your subscription plan and billing information</p>
             </div>
             
             {/* Detailed Subscription Card */}
@@ -1077,11 +1077,11 @@ export default function Settings() {
                 <div className="flex items-start justify-between flex-wrap gap-6">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-4">
-                      <p className="text-sm" style={{color: '#94a3b8'}}>Current Plan</p>
+                      <p className="text-sm" style={{color: theme.textTertiary}}>Current Plan</p>
                       {hasActiveSubscription && getStatusIcon(subDetails.status)}
                     </div>
                     <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-2xl font-bold" style={{color: '#f8fafc'}}>{currentPlan}</h3>
+                      <h3 className="text-2xl font-bold" style={{color: theme.text}}>{currentPlan}</h3>
                       {currentPlan !== 'Free' && (
                         <span className="px-3 py-1 rounded-full text-xs font-semibold" style={{
                           background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)',
@@ -1096,7 +1096,7 @@ export default function Settings() {
                       <div className="space-y-3 mt-4">
                         {/* Subscription Status */}
                         <div className="flex items-center gap-2 text-sm">
-                          <span style={{color: '#94a3b8'}}>Status:</span>
+                          <span style={{color: theme.textTertiary}}>Status:</span>
                           <span className="px-2 py-1 rounded text-xs font-semibold" style={{
                             background: subDetails.status === 'active' ? '#10b98120' : '#ef444420',
                             color: subDetails.status === 'active' ? '#10b981' : '#ef4444'
@@ -1107,16 +1107,16 @@ export default function Settings() {
 
                         {/* Subscription Start Date */}
                         <div className="flex items-center gap-2 text-sm">
-                          <Clock className="w-4 h-4" style={{color: '#94a3b8'}} />
-                          <span style={{color: '#94a3b8'}}>Started:</span>
-                          <span style={{color: '#f8fafc'}}>{formatDate(subDetails.created)}</span>
+                          <Clock className="w-4 h-4" style={{color: theme.textTertiary}} />
+                          <span style={{color: theme.textTertiary}}>Started:</span>
+                          <span style={{color: theme.text}}>{formatDate(subDetails.created)}</span>
                         </div>
 
                         {/* Current Billing Period */}
                         <div className="flex items-center gap-2 text-sm">
-                          <Clock className="w-4 h-4" style={{color: '#94a3b8'}} />
-                          <span style={{color: '#94a3b8'}}>Current Period:</span>
-                          <span style={{color: '#f8fafc'}}>
+                          <Clock className="w-4 h-4" style={{color: theme.textTertiary}} />
+                          <span style={{color: theme.textTertiary}}>Current Period:</span>
+                          <span style={{color: theme.text}}>
                             {formatDate(subDetails.current_period_start)} - {formatDate(subDetails.current_period_end)}
                           </span>
                         </div>
@@ -1129,15 +1129,15 @@ export default function Settings() {
                             </svg>
                             <div className="flex-1">
                               <p className="text-sm font-semibold" style={{color: '#ef4444'}}>Subscription Canceling</p>
-                              <p className="text-xs" style={{color: '#94a3b8'}}>
+                              <p className="text-xs" style={{color: theme.textTertiary}}>
                                 Access until {formatDate(subDetails.cancel_at)}
                               </p>
                             </div>
                           </div>
                         ) : (
                           <div className="flex items-center gap-2 text-sm">
-                            <RefreshCw className="w-4 h-4" style={{color: '#94a3b8'}} />
-                            <span style={{color: '#94a3b8'}}>Next Renewal:</span>
+                            <RefreshCw className="w-4 h-4" style={{color: theme.textTertiary}} />
+                            <span style={{color: theme.textTertiary}}>Next Renewal:</span>
                             <span style={{color: '#10b981', fontWeight: 600}}>
                               {formatDate(subDetails.current_period_end)}
                             </span>
@@ -1146,8 +1146,8 @@ export default function Settings() {
 
                         {/* Auto Renewal Status */}
                         <div className="flex items-center gap-2 text-sm">
-                          <RefreshCw className="w-4 h-4" style={{color: '#94a3b8'}} />
-                          <span style={{color: '#94a3b8'}}>Auto-Renewal:</span>
+                          <RefreshCw className="w-4 h-4" style={{color: theme.textTertiary}} />
+                          <span style={{color: theme.textTertiary}}>Auto-Renewal:</span>
                           <span style={{color: subDetails.cancel_at ? '#ef4444' : '#10b981', fontWeight: 600}}>
                             {subDetails.cancel_at ? 'Disabled' : 'Enabled'}
                           </span>
@@ -1156,12 +1156,12 @@ export default function Settings() {
                         {/* Payment Method */}
                         {subDetails.payment_method && (
                           <div className="flex items-center gap-2 text-sm">
-                            <CreditCard className="w-4 h-4" style={{color: '#94a3b8'}} />
-                            <span style={{color: '#94a3b8'}}>Payment Method:</span>
-                            <span style={{color: '#f8fafc'}}>
+                            <CreditCard className="w-4 h-4" style={{color: theme.textTertiary}} />
+                            <span style={{color: theme.textTertiary}}>Payment Method:</span>
+                            <span style={{color: theme.text}}>
                               {subDetails.payment_method.brand.toUpperCase()} ••••{subDetails.payment_method.last4}
                             </span>
-                            <span className="text-xs" style={{color: '#64748b'}}>
+                            <span className="text-xs" style={{color: theme.textMuted}}>
                               (Expires {subDetails.payment_method.exp_month}/{subDetails.payment_method.exp_year})
                             </span>
                           </div>
@@ -1169,7 +1169,7 @@ export default function Settings() {
 
                         {/* Billing Amount */}
                         <div className="flex items-center gap-2 text-sm">
-                          <span style={{color: '#94a3b8'}}>Amount:</span>
+                          <span style={{color: theme.textTertiary}}>Amount:</span>
                           <span className="text-lg font-bold" style={{color: '#a855f7'}}>
                             {subDetails.currency} ${subDetails.amount}/{subDetails.interval}
                           </span>
@@ -1233,17 +1233,17 @@ export default function Settings() {
 
             {/* Usage Stats */}
             {subscription && (
-              <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+              <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                 <CardHeader>
-                  <CardTitle style={{color: '#f8fafc'}}>Current Usage</CardTitle>
+                  <CardTitle style={{color: theme.text}}>Current Usage</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {/* Assets Usage */}
                     <div>
                       <div className="flex justify-between text-sm mb-2">
-                        <span style={{color: '#94a3b8'}}>Assets</span>
-                        <span style={{color: '#f8fafc', fontWeight: 600}}>
+                        <span style={{color: theme.textTertiary}}>Assets</span>
+                        <span style={{color: theme.text, fontWeight: 600}}>
                           {subscription.usage.assets} / {subscription.features.max_assets > 0 ? subscription.features.max_assets : '∞'}
                         </span>
                       </div>
@@ -1263,8 +1263,8 @@ export default function Settings() {
                     {/* Documents Usage */}
                     <div>
                       <div className="flex justify-between text-sm mb-2">
-                        <span style={{color: '#94a3b8'}}>Documents</span>
-                        <span style={{color: '#f8fafc', fontWeight: 600}}>
+                        <span style={{color: theme.textTertiary}}>Documents</span>
+                        <span style={{color: theme.text, fontWeight: 600}}>
                           {subscription.usage.documents} / {subscription.features.max_documents > 0 ? subscription.features.max_documents : '∞'}
                         </span>
                       </div>
@@ -1284,8 +1284,8 @@ export default function Settings() {
                     {/* Storage Usage */}
                     <div>
                       <div className="flex justify-between text-sm mb-2">
-                        <span style={{color: '#94a3b8'}}>Storage</span>
-                        <span style={{color: '#f8fafc', fontWeight: 600}}>
+                        <span style={{color: theme.textTertiary}}>Storage</span>
+                        <span style={{color: theme.text, fontWeight: 600}}>
                           {subscription.features.storage_mb >= 1024 
                             ? `${(subscription.usage.storage_mb / 1024).toFixed(2)} GB / ${(subscription.features.storage_mb / 1024).toFixed(0)} GB`
                             : `${subscription.usage.storage_mb.toFixed(1)} MB / ${subscription.features.storage_mb} MB`
@@ -1317,11 +1317,11 @@ export default function Settings() {
           <div className="space-y-6">
             <div className="flex justify-between items-center">
               <div>
-                <h2 className="text-2xl font-bold mb-2 flex items-center gap-2" style={{color: '#f8fafc'}}>
+                <h2 className="text-2xl font-bold mb-2 flex items-center gap-2" style={{color: theme.text}}>
                   <Users className="w-7 h-7" />
                   Nominees
                 </h2>
-                <p style={{color: '#94a3b8'}}>Designate trusted individuals to inherit your assets and receive notifications</p>
+                <p style={{color: theme.textTertiary}}>Designate trusted individuals to inherit your assets and receive notifications</p>
               </div>
               
               {/* Add Nominee Button */}
@@ -1339,9 +1339,9 @@ export default function Settings() {
                 </Button>
                 
                 {/* Add/Edit Nominee Modal */}
-                <DialogContent className="max-w-lg" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                <DialogContent className="max-w-lg" style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                   <DialogHeader>
-                    <DialogTitle style={{color: '#f8fafc', fontSize: '1.5rem'}}>
+                    <DialogTitle style={{color: theme.text, fontSize: '1.5rem'}}>
                       {editingNomineeId ? 'Edit Nominee' : 'Add New Nominee'}
                     </DialogTitle>
                   </DialogHeader>
@@ -1410,7 +1410,7 @@ export default function Settings() {
                         type="button" 
                         variant="outline"
                         onClick={() => setDialogOpen(false)}
-                        style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+                        style={{borderColor: theme.border, color: theme.textTertiary}}
                       >
                         Cancel
                       </Button>
@@ -1423,11 +1423,11 @@ export default function Settings() {
             {/* Nominees List with Access Controls */}
             {nominees.length > 0 && (
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold flex items-center gap-2" style={{color: '#f8fafc'}}>
+                <h3 className="text-lg font-semibold flex items-center gap-2" style={{color: theme.text}}>
                   <Shield className="w-5 h-5" style={{color: '#a855f7'}} />
                   Your Nominees ({nominees.length})
                 </h3>
-                <p className="text-sm mb-4" style={{color: '#94a3b8'}}>
+                <p className="text-sm mb-4" style={{color: theme.textTertiary}}>
                   Configure access permissions for each nominee below
                 </p>
                 
@@ -1450,7 +1450,7 @@ export default function Settings() {
             {/* How Nominee Access Works - Visual Guide */}
             <Card style={{background: 'linear-gradient(135deg, #1a0b2e 0%, #2d0e3e 100%)', borderColor: '#a855f7', borderWidth: '2px'}}>
               <CardHeader>
-                <CardTitle style={{color: '#f8fafc'}}>How Nominee Access Works</CardTitle>
+                <CardTitle style={{color: theme.text}}>How Nominee Access Works</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
@@ -1460,8 +1460,8 @@ export default function Settings() {
                       <div className="w-16 h-16 rounded-full mx-auto mb-2 flex items-center justify-center" style={{background: 'rgba(168, 85, 247, 0.2)'}}>
                         <User className="w-8 h-8" style={{color: '#a855f7'}} />
                       </div>
-                      <p className="text-xs font-semibold" style={{color: '#f8fafc'}}>You Grant Access</p>
-                      <p className="text-xs" style={{color: '#64748b'}}>Generate secure link</p>
+                      <p className="text-xs font-semibold" style={{color: theme.text}}>You Grant Access</p>
+                      <p className="text-xs" style={{color: theme.textMuted}}>Generate secure link</p>
                     </div>
                     
                     <div style={{color: '#a855f7', fontSize: '1.5rem'}}>→</div>
@@ -1470,8 +1470,8 @@ export default function Settings() {
                       <div className="w-16 h-16 rounded-full mx-auto mb-2 flex items-center justify-center" style={{background: 'rgba(245, 158, 11, 0.2)'}}>
                         <Clock className="w-8 h-8" style={{color: '#f59e0b'}} />
                       </div>
-                      <p className="text-xs font-semibold" style={{color: '#f8fafc'}}>Access Type</p>
-                      <p className="text-xs" style={{color: '#64748b'}}>Immediate or After DMS</p>
+                      <p className="text-xs font-semibold" style={{color: theme.text}}>Access Type</p>
+                      <p className="text-xs" style={{color: theme.textMuted}}>Immediate or After DMS</p>
                     </div>
                     
                     <div style={{color: '#a855f7', fontSize: '1.5rem'}}>→</div>
@@ -1480,8 +1480,8 @@ export default function Settings() {
                       <div className="w-16 h-16 rounded-full mx-auto mb-2 flex items-center justify-center" style={{background: 'rgba(16, 185, 129, 0.2)'}}>
                         <Eye className="w-8 h-8" style={{color: '#10b981'}} />
                       </div>
-                      <p className="text-xs font-semibold" style={{color: '#f8fafc'}}>Nominee Views</p>
-                      <p className="text-xs" style={{color: '#64748b'}}>Read-only portfolio</p>
+                      <p className="text-xs font-semibold" style={{color: theme.text}}>Nominee Views</p>
+                      <p className="text-xs" style={{color: theme.textMuted}}>Read-only portfolio</p>
                     </div>
                   </div>
 
@@ -1490,20 +1490,20 @@ export default function Settings() {
                     <h4 className="font-semibold mb-3" style={{color: '#fca5a5'}}>Frequently Asked Questions</h4>
                     <div className="space-y-3">
                       <div>
-                        <p className="text-sm font-semibold" style={{color: '#cbd5e1'}}>Q: What can nominees see?</p>
-                        <p className="text-xs" style={{color: '#94a3b8'}}>A: Nominees get read-only access to all your assets, documents, digital will, and other nominees. They cannot edit or delete anything.</p>
+                        <p className="text-sm font-semibold" style={{color: theme.textSecondary}}>Q: What can nominees see?</p>
+                        <p className="text-xs" style={{color: theme.textTertiary}}>A: Nominees get read-only access to all your assets, documents, digital will, and other nominees. They cannot edit or delete anything.</p>
                       </div>
                       <div>
-                        <p className="text-sm font-semibold" style={{color: '#cbd5e1'}}>Q: What's the difference between Immediate and After DMS?</p>
-                        <p className="text-xs" style={{color: '#94a3b8'}}>A: <strong>Immediate</strong> grants access right away (useful for trusted family). <strong>After DMS</strong> only grants access if you're inactive beyond your Dead Man's Switch threshold.</p>
+                        <p className="text-sm font-semibold" style={{color: theme.textSecondary}}>Q: What's the difference between Immediate and After DMS?</p>
+                        <p className="text-xs" style={{color: theme.textTertiary}}>A: <strong>Immediate</strong> grants access right away (useful for trusted family). <strong>After DMS</strong> only grants access if you're inactive beyond your Dead Man's Switch threshold.</p>
                       </div>
                       <div>
-                        <p className="text-sm font-semibold" style={{color: '#cbd5e1'}}>Q: Can I revoke access?</p>
-                        <p className="text-xs" style={{color: '#94a3b8'}}>A: Yes! Click "Revoke Access" anytime to immediately disable their access token.</p>
+                        <p className="text-sm font-semibold" style={{color: theme.textSecondary}}>Q: Can I revoke access?</p>
+                        <p className="text-xs" style={{color: theme.textTertiary}}>A: Yes! Click "Revoke Access" anytime to immediately disable their access token.</p>
                       </div>
                       <div>
-                        <p className="text-sm font-semibold" style={{color: '#cbd5e1'}}>Q: Is the access link secure?</p>
-                        <p className="text-xs" style={{color: '#94a3b8'}}>A: Yes! Each link contains a unique 32-character cryptographically secure token. Only share via secure channels.</p>
+                        <p className="text-sm font-semibold" style={{color: theme.textSecondary}}>Q: Is the access link secure?</p>
+                        <p className="text-xs" style={{color: theme.textTertiary}}>A: Yes! Each link contains a unique 32-character cryptographically secure token. Only share via secure channels.</p>
                       </div>
                     </div>
                   </div>
@@ -1520,7 +1520,7 @@ export default function Settings() {
                   <Heart className="w-6 h-6 flex-shrink-0" style={{color: '#fca5a5'}} />
                   <div>
                     <h3 className="font-semibold mb-2" style={{color: '#fca5a5'}}>Why Multiple Nominees?</h3>
-                    <p className="text-sm leading-relaxed" style={{color: '#cbd5e1'}}>
+                    <p className="text-sm leading-relaxed" style={{color: theme.textSecondary}}>
                       Having multiple nominees with priority order ensures that if your primary nominee is unavailable, 
                       the system will automatically reach out to your backup nominees. This redundancy protects your 
                       family's access to your financial information.
@@ -1536,16 +1536,16 @@ export default function Settings() {
         return (
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold mb-2 flex items-center gap-2" style={{color: '#f8fafc'}}>
+              <h2 className="text-2xl font-bold mb-2 flex items-center gap-2" style={{color: theme.text}}>
                 <FileText className="w-7 h-7" />
                 Will & Testament
               </h2>
-              <p style={{color: '#94a3b8'}}>Manage your digital will and asset distribution</p>
+              <p style={{color: theme.textTertiary}}>Manage your digital will and asset distribution</p>
             </div>
 
-            <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+            <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
               <CardContent className="py-6">
-                <p className="text-center mb-4" style={{color: '#cbd5e1'}}>
+                <p className="text-center mb-4" style={{color: theme.textSecondary}}>
                   Access your complete Will & Testament management
                 </p>
                 <div className="flex justify-center">
@@ -1567,8 +1567,8 @@ export default function Settings() {
                     <FileText className="w-5 h-5" style={{color: '#a855f7'}} />
                   </div>
                   <div>
-                    <h4 className="font-semibold mb-1" style={{color: '#f8fafc'}}>What You Can Do</h4>
-                    <ul className="space-y-1 text-sm" style={{color: '#cbd5e1'}}>
+                    <h4 className="font-semibold mb-1" style={{color: theme.text}}>What You Can Do</h4>
+                    <ul className="space-y-1 text-sm" style={{color: theme.textSecondary}}>
                       <li>• Create and edit your will document</li>
                       <li>• Add beneficiaries with contact information</li>
                       <li>• Specify asset distribution instructions</li>
@@ -1585,11 +1585,11 @@ export default function Settings() {
         return (
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold mb-2 flex items-center gap-2" style={{color: '#f8fafc'}}>
+              <h2 className="text-2xl font-bold mb-2 flex items-center gap-2" style={{color: theme.text}}>
                 <Clock className="w-7 h-7" />
                 Dead Man's Switch
               </h2>
-              <p style={{color: '#94a3b8'}}>Automatic notifications if you become inactive</p>
+              <p style={{color: theme.textTertiary}}>Automatic notifications if you become inactive</p>
             </div>
 
             {/* Visual Explanation */}
@@ -1599,8 +1599,8 @@ export default function Settings() {
                   <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4" style={{background: 'rgba(168, 85, 247, 0.2)'}}>
                     <AlertTriangle className="w-10 h-10" style={{color: '#a855f7'}} />
                   </div>
-                  <h3 className="text-xl font-bold mb-3" style={{color: '#f8fafc'}}>How Dead Man's Switch Works</h3>
-                  <p className="text-sm max-w-2xl mb-6" style={{color: '#cbd5e1'}}>
+                  <h3 className="text-xl font-bold mb-3" style={{color: theme.text}}>How Dead Man's Switch Works</h3>
+                  <p className="text-sm max-w-2xl mb-6" style={{color: theme.textSecondary}}>
                     A safeguard that protects your family by automatically alerting them if you're inactive for an extended period.
                   </p>
                   
@@ -1608,7 +1608,7 @@ export default function Settings() {
                   <div className="w-full max-w-3xl">
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                       {[
-                        { day: dmsForm.inactivity_days, label: 'Inactive Days', icon: Clock, color: '#64748b' },
+                        { day: dmsForm.inactivity_days, label: 'Inactive Days', icon: Clock, color: theme.textMuted },
                         { day: dmsForm.reminder_1_days, label: 'First Reminder', icon: Bell, color: '#f59e0b' },
                         { day: dmsForm.reminder_2_days, label: 'Second Reminder', icon: Bell, color: '#ef4444' },
                         { day: dmsForm.reminder_3_days, label: 'Final Alert & Notify Nominees', icon: AlertTriangle, color: '#dc2626' }
@@ -1625,7 +1625,7 @@ export default function Settings() {
                             <div className="text-2xl font-bold mb-1" style={{color: step.color}}>
                               Day {step.day}
                             </div>
-                            <div className="text-xs" style={{color: '#94a3b8'}}>
+                            <div className="text-xs" style={{color: theme.textTertiary}}>
                               {step.label}
                             </div>
                           </div>
@@ -1724,10 +1724,10 @@ export default function Settings() {
 
             {/* DMS Configuration */}
             <form onSubmit={handleDmsSubmit}>
-              <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+              <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                 <CardHeader>
-                  <CardTitle style={{color: '#f8fafc'}}>Configure Timing</CardTitle>
-                  <CardDescription style={{color: '#94a3b8'}}>
+                  <CardTitle style={{color: theme.text}}>Configure Timing</CardTitle>
+                  <CardDescription style={{color: theme.textTertiary}}>
                     Set when you should receive reminders and when nominees should be notified
                   </CardDescription>
                 </CardHeader>
@@ -1747,7 +1747,7 @@ export default function Settings() {
                         required
                         className="bg-slate-800 border-slate-700 text-white"
                       />
-                      <p className="text-xs mt-1" style={{color: '#64748b'}}>
+                      <p className="text-xs mt-1" style={{color: theme.textMuted}}>
                         Number of days of inactivity before triggering alerts
                       </p>
                     </div>
@@ -1766,7 +1766,7 @@ export default function Settings() {
                         required
                         className="bg-slate-800 border-slate-700 text-white"
                       />
-                      <p className="text-xs mt-1" style={{color: '#64748b'}}>
+                      <p className="text-xs mt-1" style={{color: theme.textMuted}}>
                         Email reminder to check in
                       </p>
                     </div>
@@ -1785,7 +1785,7 @@ export default function Settings() {
                         required
                         className="bg-slate-800 border-slate-700 text-white"
                       />
-                      <p className="text-xs mt-1" style={{color: '#64748b'}}>
+                      <p className="text-xs mt-1" style={{color: theme.textMuted}}>
                         Urgent reminder to check in
                       </p>
                     </div>
@@ -1804,7 +1804,7 @@ export default function Settings() {
                         required
                         className="bg-slate-800 border-slate-700 text-white"
                       />
-                      <p className="text-xs mt-1" style={{color: '#64748b'}}>
+                      <p className="text-xs mt-1" style={{color: theme.textMuted}}>
                         Last chance before notifying nominees
                       </p>
                     </div>
@@ -1814,8 +1814,8 @@ export default function Settings() {
                     <div className="p-4 rounded-lg" style={{background: '#131835', border: '1px solid #1e293b'}}>
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="text-sm font-semibold mb-1" style={{color: '#f8fafc'}}>Last Activity</p>
-                          <p className="text-sm" style={{color: '#94a3b8'}}>
+                          <p className="text-sm font-semibold mb-1" style={{color: theme.text}}>Last Activity</p>
+                          <p className="text-sm" style={{color: theme.textTertiary}}>
                             {dms.last_reset ? new Date(dms.last_reset).toLocaleString() : 'Never'}
                           </p>
                         </div>
@@ -1846,7 +1846,7 @@ export default function Settings() {
                   <Shield className="w-6 h-6 flex-shrink-0" style={{color: '#fca5a5'}} />
                   <div>
                     <h3 className="font-semibold mb-2" style={{color: '#fca5a5'}}>Why This Matters</h3>
-                    <ul className="text-sm space-y-2" style={{color: '#cbd5e1'}}>
+                    <ul className="text-sm space-y-2" style={{color: theme.textSecondary}}>
                       <li>• <strong>Life is unpredictable:</strong> Accidents, health emergencies, or sudden events can happen anytime</li>
                       <li>• <strong>Protect your legacy:</strong> Without this, your assets could be lost forever to your family</li>
                       <li>• <strong>Peace of mind:</strong> Know that your loved ones will be notified and can access important information</li>
@@ -1872,20 +1872,20 @@ export default function Settings() {
         return (
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold mb-2" style={{color: '#f8fafc'}}>Privacy & Consent</h2>
-              <p style={{color: '#94a3b8'}}>Manage your data preferences</p>
+              <h2 className="text-2xl font-bold mb-2" style={{color: theme.text}}>Privacy & Consent</h2>
+              <p style={{color: theme.textTertiary}}>Manage your data preferences</p>
             </div>
             
             <form onSubmit={handlePreferencesSubmit}>
-              <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+              <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                 <CardHeader>
-                  <CardTitle style={{color: '#f8fafc'}}>Communication Preferences</CardTitle>
+                  <CardTitle style={{color: theme.text}}>Communication Preferences</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between p-4 rounded-lg" style={{background: '#16001e'}}>
                     <div className="flex-1">
-                      <p className="font-semibold" style={{color: '#f8fafc'}}>Marketing Communications</p>
-                      <p className="text-sm" style={{color: '#94a3b8'}}>Receive updates about new features and offers</p>
+                      <p className="font-semibold" style={{color: theme.text}}>Marketing Communications</p>
+                      <p className="text-sm" style={{color: theme.textTertiary}}>Receive updates about new features and offers</p>
                     </div>
                     <Switch 
                       checked={preferencesForm.marketing_consent}
@@ -1895,8 +1895,8 @@ export default function Settings() {
 
                   <div className="flex items-center justify-between p-4 rounded-lg" style={{background: '#16001e'}}>
                     <div className="flex-1">
-                      <p className="font-semibold" style={{color: '#f8fafc'}}>Important Communications</p>
-                      <p className="text-sm" style={{color: '#94a3b8'}}>Security alerts and account notifications (recommended)</p>
+                      <p className="font-semibold" style={{color: theme.text}}>Important Communications</p>
+                      <p className="text-sm" style={{color: theme.textTertiary}}>Security alerts and account notifications (recommended)</p>
                     </div>
                     <Switch 
                       checked={preferencesForm.communication_consent}
@@ -1928,7 +1928,7 @@ export default function Settings() {
         {/* Left Sidebar */}
         <div className="w-64 flex-shrink-0">
           <div className="sticky top-24">
-            <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+            <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
               <CardContent className="p-4">
                 <nav className="space-y-1">
                   {SECTIONS.map(section => {

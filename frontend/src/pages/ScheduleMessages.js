@@ -96,10 +96,10 @@ export default function ScheduleMessages() {
       <div className="space-y-8" style={{padding: '2rem 1.5rem', margin: '0 auto', maxWidth: '1600px'}}>
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
+            <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{fontFamily: 'Space Grotesk, sans-serif', color: theme.text}}>
               Scheduled Messages
             </h1>
-            <p style={{color: '#94a3b8'}}>Schedule messages to be sent to your loved ones in the future</p>
+            <p style={{color: theme.textTertiary}}>Schedule messages to be sent to your loved ones in the future</p>
           </div>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
@@ -111,9 +111,9 @@ export default function ScheduleMessages() {
                 Schedule Message
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-2xl" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+            <DialogContent className="max-w-2xl" style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
               <DialogHeader>
-                <DialogTitle style={{color: '#f8fafc'}}>Schedule a New Message</DialogTitle>
+                <DialogTitle style={{color: theme.text}}>Schedule a New Message</DialogTitle>
               </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
@@ -187,7 +187,7 @@ export default function ScheduleMessages() {
                     type="button"
                     variant="outline"
                     onClick={() => setDialogOpen(false)}
-                    style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+                    style={{borderColor: theme.border, color: theme.textTertiary}}
                   >
                     Cancel
                   </Button>
@@ -205,18 +205,18 @@ export default function ScheduleMessages() {
         </div>
 
         {loading ? (
-          <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+          <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
             <CardContent className="py-16">
-              <div className="text-center" style={{color: '#94a3b8'}}>Loading...</div>
+              <div className="text-center" style={{color: theme.textTertiary}}>Loading...</div>
             </CardContent>
           </Card>
         ) : messages.length === 0 ? (
-          <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+          <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
             <CardContent className="py-16">
               <div className="text-center">
                 <Calendar className="w-16 h-16 mx-auto mb-4" style={{color: '#2d1f3d'}} />
-                <h3 className="text-xl font-semibold mb-2" style={{color: '#f8fafc'}}>No Scheduled Messages</h3>
-                <p className="mb-6" style={{color: '#94a3b8'}}>Schedule messages for future occasions and special moments</p>
+                <h3 className="text-xl font-semibold mb-2" style={{color: theme.text}}>No Scheduled Messages</h3>
+                <p className="mb-6" style={{color: theme.textTertiary}}>Schedule messages for future occasions and special moments</p>
                 <Button
                   onClick={() => setDialogOpen(true)}
                   className="text-white rounded-full"
@@ -231,16 +231,16 @@ export default function ScheduleMessages() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {messages.map((message) => (
-              <Card key={message.id} style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+              <Card key={message.id} style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                 <CardHeader>
                   <div className="flex justify-between items-start">
                     <div className="flex items-center gap-3">
                       <Mail className="w-5 h-5" style={{color: '#ec4899'}} />
                       <div>
-                        <CardTitle className="text-lg" style={{color: '#f8fafc'}}>
+                        <CardTitle className="text-lg" style={{color: theme.text}}>
                           {message.recipient_name}
                         </CardTitle>
-                        <p className="text-sm" style={{color: '#94a3b8'}}>{message.recipient_email}</p>
+                        <p className="text-sm" style={{color: theme.textTertiary}}>{message.recipient_email}</p>
                       </div>
                     </div>
                   </div>
@@ -249,20 +249,20 @@ export default function ScheduleMessages() {
                   <div className="space-y-3">
                     {message.occasion && (
                       <div className="flex items-center gap-2 text-sm">
-                        <span style={{color: '#94a3b8'}}>Occasion:</span>
-                        <span style={{color: '#f8fafc'}}>{message.occasion}</span>
+                        <span style={{color: theme.textTertiary}}>Occasion:</span>
+                        <span style={{color: theme.text}}>{message.occasion}</span>
                       </div>
                     )}
                     <div className="flex items-center gap-2 text-sm">
                       <Clock className="w-4 h-4" style={{color: '#a855f7'}} />
-                      <span style={{color: '#94a3b8'}}>Send Date:</span>
-                      <span style={{color: '#f8fafc'}}>
+                      <span style={{color: theme.textTertiary}}>Send Date:</span>
+                      <span style={{color: theme.text}}>
                         {new Date(message.send_date).toLocaleDateString()}
                       </span>
                     </div>
                     <div>
-                      <p className="text-sm font-semibold mb-1" style={{color: '#f8fafc'}}>{message.subject}</p>
-                      <p className="text-sm line-clamp-3" style={{color: '#94a3b8'}}>{message.message}</p>
+                      <p className="text-sm font-semibold mb-1" style={{color: theme.text}}>{message.subject}</p>
+                      <p className="text-sm line-clamp-3" style={{color: theme.textTertiary}}>{message.message}</p>
                     </div>
                     <div className="flex items-center gap-2 pt-3" style={{borderTop: '1px solid #2d1f3d'}}>
                       <span 

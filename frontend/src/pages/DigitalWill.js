@@ -72,7 +72,7 @@ export default function DigitalWill() {
     return (
       <Layout>
         <div className="flex items-center justify-center h-96">
-          <div className="text-xl" style={{color: '#94a3b8'}}>Loading...</div>
+          <div className="text-xl" style={{color: theme.textTertiary}}>Loading...</div>
         </div>
       </Layout>
     );
@@ -82,41 +82,41 @@ export default function DigitalWill() {
     <Layout>
       <div className="space-y-8" style={{padding: '2rem 1.5rem', margin: '0 auto', maxWidth: '1600px'}}>
         <div>
-          <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{fontFamily: 'Space Grotesk, sans-serif', color: theme.text}}>
             Digital Will
           </h1>
-          <p style={{color: '#94a3b8'}}>Create and manage your digital will for asset distribution</p>
+          <p style={{color: theme.textTertiary}}>Create and manage your digital will for asset distribution</p>
         </div>
 
-        <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+        <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
           <CardHeader>
-            <CardTitle style={{color: '#f8fafc'}}>
+            <CardTitle style={{color: theme.text}}>
               <FileText className="w-6 h-6 inline mr-2" />
               Will Document
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <div>
-              <Label style={{color: '#94a3b8'}}>Your Will Text</Label>
+              <Label style={{color: theme.textTertiary}}>Your Will Text</Label>
               <Textarea
                 value={willText}
                 onChange={(e) => setWillText(e.target.value)}
                 placeholder="I, [Your Name], being of sound mind, do hereby declare this to be my Last Will and Testament..."
                 rows={10}
                 className="mt-2"
-                style={{background: '#0f0a1e', borderColor: '#2d1f3d', color: '#f8fafc'}}
+                style={{background: '#0f0a1e', borderColor: theme.border, color: theme.text}}
               />
-              <p className="text-xs mt-2" style={{color: '#64748b'}}>
+              <p className="text-xs mt-2" style={{color: theme.textMuted}}>
                 Write your will in detail. This will be shared with your nominee when the dead man switch activates.
               </p>
             </div>
           </CardContent>
         </Card>
 
-        <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+        <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
           <CardHeader>
             <div className="flex justify-between items-center">
-              <CardTitle style={{color: '#f8fafc'}}>Beneficiaries</CardTitle>
+              <CardTitle style={{color: theme.text}}>Beneficiaries</CardTitle>
               <Button
                 onClick={addBeneficiary}
                 className="text-white"
@@ -129,46 +129,46 @@ export default function DigitalWill() {
           </CardHeader>
           <CardContent className="space-y-4">
             {beneficiaries.length === 0 ? (
-              <p style={{color: '#94a3b8'}}>No beneficiaries added yet. Click "Add Beneficiary" to start.</p>
+              <p style={{color: theme.textTertiary}}>No beneficiaries added yet. Click "Add Beneficiary" to start.</p>
             ) : (
               beneficiaries.map((beneficiary, index) => (
-                <Card key={index} style={{background: '#0f0a1e', borderColor: '#2d1f3d'}}>
+                <Card key={index} style={{background: '#0f0a1e', borderColor: theme.border}}>
                   <CardContent className="pt-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <Label style={{color: '#94a3b8'}}>Name</Label>
+                        <Label style={{color: theme.textTertiary}}>Name</Label>
                         <Input
                           value={beneficiary.name}
                           onChange={(e) => updateBeneficiary(index, 'name', e.target.value)}
                           placeholder="Full Name"
-                          style={{background: '#1a1229', borderColor: '#2d1f3d', color: '#f8fafc'}}
+                          style={{background: theme.backgroundSecondary, borderColor: theme.border, color: theme.text}}
                         />
                       </div>
                       <div>
-                        <Label style={{color: '#94a3b8'}}>Email</Label>
+                        <Label style={{color: theme.textTertiary}}>Email</Label>
                         <Input
                           value={beneficiary.email}
                           onChange={(e) => updateBeneficiary(index, 'email', e.target.value)}
                           placeholder="email@example.com"
-                          style={{background: '#1a1229', borderColor: '#2d1f3d', color: '#f8fafc'}}
+                          style={{background: theme.backgroundSecondary, borderColor: theme.border, color: theme.text}}
                         />
                       </div>
                       <div>
-                        <Label style={{color: '#94a3b8'}}>Phone</Label>
+                        <Label style={{color: theme.textTertiary}}>Phone</Label>
                         <Input
                           value={beneficiary.phone}
                           onChange={(e) => updateBeneficiary(index, 'phone', e.target.value)}
                           placeholder="+1234567890"
-                          style={{background: '#1a1229', borderColor: '#2d1f3d', color: '#f8fafc'}}
+                          style={{background: theme.backgroundSecondary, borderColor: theme.border, color: theme.text}}
                         />
                       </div>
                       <div>
-                        <Label style={{color: '#94a3b8'}}>Relationship</Label>
+                        <Label style={{color: theme.textTertiary}}>Relationship</Label>
                         <Input
                           value={beneficiary.relationship}
                           onChange={(e) => updateBeneficiary(index, 'relationship', e.target.value)}
                           placeholder="Son, Daughter, Spouse"
-                          style={{background: '#1a1229', borderColor: '#2d1f3d', color: '#f8fafc'}}
+                          style={{background: theme.backgroundSecondary, borderColor: theme.border, color: theme.text}}
                         />
                       </div>
                     </div>

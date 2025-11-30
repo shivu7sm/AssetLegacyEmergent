@@ -112,29 +112,29 @@ export default function Insights() {
     <Layout>
       <div className="space-y-8" style={{padding: '2rem 1.5rem', margin: '0 auto', maxWidth: '1600px'}}>
         <div>
-          <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{fontFamily: 'Space Grotesk, sans-serif', color: theme.text}}>
             AI Financial Insights
           </h1>
-          <p style={{color: '#94a3b8'}}>AI-powered analysis of your portfolio with personalized recommendations</p>
+          <p style={{color: theme.textTertiary}}>AI-powered analysis of your portfolio with personalized recommendations</p>
         </div>
 
         {/* Generate/Refresh Insights Button */}
-        <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+        <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
           <CardContent className="py-6">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="flex-1">
-                <h3 className="text-lg font-semibold mb-2" style={{color: '#f8fafc'}}>
+                <h3 className="text-lg font-semibold mb-2" style={{color: theme.text}}>
                   {insights ? 'Refresh Your Insights' : 'Generate Fresh Insights'}
                 </h3>
                 <div className="flex items-center gap-2">
                   {insights && insights.generated_at && (
-                    <div className="flex items-center gap-2 text-sm" style={{color: '#94a3b8'}}>
+                    <div className="flex items-center gap-2 text-sm" style={{color: theme.textTertiary}}>
                       <Clock className="w-4 h-4" />
                       <span>Last updated: {formatTimestamp(insights.generated_at)}</span>
                     </div>
                   )}
                   {!insights && (
-                    <p className="text-sm" style={{color: '#94a3b8'}}>
+                    <p className="text-sm" style={{color: theme.textTertiary}}>
                       AI analyzes your portfolio and provides personalized recommendations
                     </p>
                   )}
@@ -172,16 +172,16 @@ export default function Insights() {
           <div className="space-y-6">
             {/* Portfolio Summary - Concise by Default */}
             {insights.portfolio_summary && (
-              <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+              <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                 <CardHeader>
                   <div className="flex items-center gap-3">
                     <TrendingUp className="w-5 h-5" style={{color: '#10b981'}} />
-                    <CardTitle style={{color: '#f8fafc'}}>Portfolio Summary</CardTitle>
+                    <CardTitle style={{color: theme.text}}>Portfolio Summary</CardTitle>
                   </div>
                 </CardHeader>
                 <CardContent>
                   <p 
-                    style={{color: '#cbd5e1', lineHeight: '1.8', fontSize: '15px'}}
+                    style={{color: theme.textSecondary, lineHeight: '1.8', fontSize: '15px'}}
                     dangerouslySetInnerHTML={{__html: formatText(insights.portfolio_summary)}}
                   />
                   
@@ -198,9 +198,9 @@ export default function Insights() {
                           View Detailed Analysis
                         </Button>
                       </DialogTrigger>
-                      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto" style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto" style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                         <DialogHeader>
-                          <DialogTitle style={{color: '#f8fafc', fontSize: '24px'}}>
+                          <DialogTitle style={{color: theme.text, fontSize: '24px'}}>
                             Comprehensive Portfolio Analysis
                           </DialogTitle>
                         </DialogHeader>
@@ -209,7 +209,7 @@ export default function Insights() {
                           <div className="p-4 rounded-lg" style={{background: '#16001e', borderLeft: '3px solid #10b981'}}>
                             <h4 className="font-semibold mb-2" style={{color: '#10b981', fontSize: '16px'}}>Portfolio Overview</h4>
                             <p 
-                              style={{color: '#cbd5e1', lineHeight: '1.8'}}
+                              style={{color: theme.textSecondary, lineHeight: '1.8'}}
                               dangerouslySetInnerHTML={{__html: formatText(insights.portfolio_summary)}}
                             />
                           </div>
@@ -219,7 +219,7 @@ export default function Insights() {
                             <div className="p-4 rounded-lg" style={{background: '#16001e', borderLeft: '3px solid #3b82f6'}}>
                               <h4 className="font-semibold mb-2" style={{color: '#3b82f6', fontSize: '16px'}}>Asset Distribution Analysis</h4>
                               <p 
-                                style={{color: '#cbd5e1', lineHeight: '1.8'}}
+                                style={{color: theme.textSecondary, lineHeight: '1.8'}}
                                 dangerouslySetInnerHTML={{__html: formatText(insights.asset_distribution_analysis)}}
                               />
                             </div>
@@ -234,7 +234,7 @@ export default function Insights() {
                                   <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: '#16001e'}}>
                                     <span className="text-xl">💡</span>
                                     <p 
-                                      style={{color: '#cbd5e1', lineHeight: '1.6'}}
+                                      style={{color: theme.textSecondary, lineHeight: '1.6'}}
                                       dangerouslySetInnerHTML={{__html: formatText(rec)}}
                                     />
                                   </li>
@@ -252,7 +252,7 @@ export default function Insights() {
                                   <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: '#16001e'}}>
                                     <CheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{color: '#10b981'}} />
                                     <p 
-                                      style={{color: '#cbd5e1', lineHeight: '1.6'}}
+                                      style={{color: theme.textSecondary, lineHeight: '1.6'}}
                                       dangerouslySetInnerHTML={{__html: formatText(adv)}}
                                     />
                                   </li>
@@ -270,7 +270,7 @@ export default function Insights() {
                                   <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: '#16001e'}}>
                                     <XCircle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{color: '#f59e0b'}} />
                                     <p 
-                                      style={{color: '#cbd5e1', lineHeight: '1.6'}}
+                                      style={{color: theme.textSecondary, lineHeight: '1.6'}}
                                       dangerouslySetInnerHTML={{__html: formatText(risk)}}
                                     />
                                   </li>
@@ -288,7 +288,7 @@ export default function Insights() {
                                   <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: '#16001e'}}>
                                     <span className="text-xl">✅</span>
                                     <p 
-                                      style={{color: '#cbd5e1', lineHeight: '1.6'}}
+                                      style={{color: theme.textSecondary, lineHeight: '1.6'}}
                                       dangerouslySetInnerHTML={{__html: formatText(action)}}
                                     />
                                   </li>
@@ -308,19 +308,19 @@ export default function Insights() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Top Recommendations (First 2-3) */}
               {insights.allocation_recommendations && insights.allocation_recommendations.length > 0 && (
-                <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <Target className="w-5 h-5" style={{color: '#a855f7'}} />
-                        <CardTitle style={{color: '#f8fafc'}}>Top Recommendations</CardTitle>
+                        <CardTitle style={{color: theme.text}}>Top Recommendations</CardTitle>
                       </div>
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => toggleSection('recommendations')}
                         className="text-xs"
-                        style={{color: '#94a3b8'}}
+                        style={{color: theme.textTertiary}}
                       >
                         {expandedSections.recommendations ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                       </Button>
@@ -332,7 +332,7 @@ export default function Insights() {
                         <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: '#16001e', borderLeft: '2px solid #a855f7'}}>
                           <span className="text-lg">💡</span>
                           <p 
-                            style={{color: '#cbd5e1', lineHeight: '1.6', fontSize: '14px'}}
+                            style={{color: theme.textSecondary, lineHeight: '1.6', fontSize: '14px'}}
                             dangerouslySetInnerHTML={{__html: formatText(rec)}}
                           />
                         </li>
@@ -353,19 +353,19 @@ export default function Insights() {
 
               {/* Key Risks (First 2) */}
               {insights.risks && insights.risks.length > 0 && (
-                <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <AlertTriangle className="w-5 h-5" style={{color: '#f59e0b'}} />
-                        <CardTitle style={{color: '#f8fafc'}}>Key Risks</CardTitle>
+                        <CardTitle style={{color: theme.text}}>Key Risks</CardTitle>
                       </div>
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => toggleSection('risks')}
                         className="text-xs"
-                        style={{color: '#94a3b8'}}
+                        style={{color: theme.textTertiary}}
                       >
                         {expandedSections.risks ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                       </Button>
@@ -377,7 +377,7 @@ export default function Insights() {
                         <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: '#16001e', borderLeft: '2px solid #f59e0b'}}>
                           <AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{color: '#f59e0b'}} />
                           <p 
-                            style={{color: '#cbd5e1', lineHeight: '1.6', fontSize: '14px'}}
+                            style={{color: theme.textSecondary, lineHeight: '1.6', fontSize: '14px'}}
                             dangerouslySetInnerHTML={{__html: formatText(risk)}}
                           />
                         </li>
@@ -398,19 +398,19 @@ export default function Insights() {
 
               {/* Portfolio Advantages (First 2) */}
               {insights.advantages && insights.advantages.length > 0 && (
-                <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <CheckCircle className="w-5 h-5" style={{color: '#10b981'}} />
-                        <CardTitle style={{color: '#f8fafc'}}>Portfolio Strengths</CardTitle>
+                        <CardTitle style={{color: theme.text}}>Portfolio Strengths</CardTitle>
                       </div>
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => toggleSection('advantages')}
                         className="text-xs"
-                        style={{color: '#94a3b8'}}
+                        style={{color: theme.textTertiary}}
                       >
                         {expandedSections.advantages ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                       </Button>
@@ -422,7 +422,7 @@ export default function Insights() {
                         <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: '#16001e', borderLeft: '2px solid #10b981'}}>
                           <CheckCircle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{color: '#10b981'}} />
                           <p 
-                            style={{color: '#cbd5e1', lineHeight: '1.6', fontSize: '14px'}}
+                            style={{color: theme.textSecondary, lineHeight: '1.6', fontSize: '14px'}}
                             dangerouslySetInnerHTML={{__html: formatText(adv)}}
                           />
                         </li>
@@ -443,19 +443,19 @@ export default function Insights() {
 
               {/* Action Items (First 2-3) */}
               {insights.action_items && insights.action_items.length > 0 && (
-                <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <Sparkles className="w-5 h-5" style={{color: '#ec4899'}} />
-                        <CardTitle style={{color: '#f8fafc'}}>Next Steps</CardTitle>
+                        <CardTitle style={{color: theme.text}}>Next Steps</CardTitle>
                       </div>
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => toggleSection('actions')}
                         className="text-xs"
-                        style={{color: '#94a3b8'}}
+                        style={{color: theme.textTertiary}}
                       >
                         {expandedSections.actions ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                       </Button>
@@ -467,7 +467,7 @@ export default function Insights() {
                         <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: '#16001e', borderLeft: '2px solid #ec4899'}}>
                           <span className="text-lg">✅</span>
                           <p 
-                            style={{color: '#cbd5e1', lineHeight: '1.6', fontSize: '14px'}}
+                            style={{color: theme.textSecondary, lineHeight: '1.6', fontSize: '14px'}}
                             dangerouslySetInnerHTML={{__html: formatText(action)}}
                           />
                         </li>
@@ -491,24 +491,24 @@ export default function Insights() {
 
         {/* Empty State */}
         {!insights && assets.length === 0 && (
-          <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+          <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
             <CardContent className="py-16">
               <div className="text-center">
                 <Sparkles className="w-16 h-16 mx-auto mb-4" style={{color: '#2d1f3d'}} />
-                <h3 className="text-xl font-semibold mb-2" style={{color: '#f8fafc'}}>No Assets Yet</h3>
-                <p className="mb-6" style={{color: '#94a3b8'}}>Add assets to your portfolio to get AI-powered insights</p>
+                <h3 className="text-xl font-semibold mb-2" style={{color: theme.text}}>No Assets Yet</h3>
+                <p className="mb-6" style={{color: theme.textTertiary}}>Add assets to your portfolio to get AI-powered insights</p>
               </div>
             </CardContent>
           </Card>
         )}
 
         {!insights && assets.length > 0 && (
-          <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+          <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
             <CardContent className="py-16">
               <div className="text-center">
                 <Sparkles className="w-16 h-16 mx-auto mb-4" style={{color: '#a855f7'}} />
-                <h3 className="text-xl font-semibold mb-2" style={{color: '#f8fafc'}}>Ready to Analyze</h3>
-                <p className="mb-6" style={{color: '#94a3b8'}}>Click the button above to generate your first AI-powered portfolio analysis</p>
+                <h3 className="text-xl font-semibold mb-2" style={{color: theme.text}}>Ready to Analyze</h3>
+                <p className="mb-6" style={{color: theme.textTertiary}}>Click the button above to generate your first AI-powered portfolio analysis</p>
               </div>
             </CardContent>
           </Card>
