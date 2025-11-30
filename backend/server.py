@@ -4519,28 +4519,30 @@ Keep tips concise and numbered. Avoid generic advice."""
 app.include_router(api_router)
 
 # CORS configuration for production
+# For cross-origin requests with credentials, we need specific origins
 cors_origins_str = os.environ.get('CORS_ORIGINS', '')
 
-# Determine CORS settings based on environment
-if not cors_origins_str or cors_origins_str == '*':
-    # Development or unspecified: Use regex to match any origin with credentials
-    # This allows auth to work without knowing the exact domain
-    cors_origins = ["*"]  # We'll override this with allow_origin_regex below
-    allow_credentials = True
-    allow_origin_regex = ".*"  # Match any origin - needed for dev/testing
-    logger.info("CORS: Using permissive configuration (any origin with credentials)")
-else:
-    # Production with specific origins
+if cors_origins_str and cors_origins_str != '*':
+    # Production with specific origins configured
     cors_origins = [origin.strip() for origin in cors_origins_str.split(',')]
-    allow_credentials = True
-    allow_origin_regex = None
     logger.info(f"CORS: Configured for specific origins: {cors_origins}")
+else:
+    # Development/testing: Accept common origins
+    # Include both localhost and common deployment domains
+    cors_origins = [
+        "http://localhost:3000",
+        "http://localhost:8000", 
+        "https://zivinc.com",
+        "https://legacy-asset-dev.emergent.host",
+        "https://*.emergent.host",
+        "https://*.emergentagent.com"
+    ]
+    logger.info("CORS: Using default development origins (including zivinc.com)")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_credentials=allow_credentials,
-    allow_origins=cors_origins if cors_origins != ["*"] else [],
-    allow_origin_regex=allow_origin_regex,
+    allow_credentials=True,
+    allow_origins=cors_origins,
     allow_methods=["*"],
     allow_headers=["*"],
     expose_headers=["*"],
