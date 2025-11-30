@@ -106,7 +106,7 @@ export default function DigitalWill() {
                 placeholder="I, [Your Name], being of sound mind, do hereby declare this to be my Last Will and Testament..."
                 rows={10}
                 className="mt-2"
-                style={{background: '#0f0a1e', borderColor: theme.border, color: theme.text}}
+                style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
               />
               <p className="text-xs mt-2" style={{color: theme.textMuted}}>
                 Write your will in detail. This will be shared with your nominee when the dead man switch activates.
@@ -134,7 +134,7 @@ export default function DigitalWill() {
               <p style={{color: theme.textTertiary}}>No beneficiaries added yet. Click "Add Beneficiary" to start.</p>
             ) : (
               beneficiaries.map((beneficiary, index) => (
-                <Card key={index} style={{background: '#0f0a1e', borderColor: theme.border}}>
+                <Card key={index} style={{background: theme.backgroundTertiary, borderColor: theme.border}}>
                   <CardContent className="pt-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
