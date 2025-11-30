@@ -4123,7 +4123,7 @@ async def create_income(income_data: MonthlyIncomeCreate, user: User = Depends(r
 @api_router.get("/income")
 async def get_incomes(month: Optional[str] = None, user: User = Depends(require_auth)):
     """Get all income entries, optionally filtered by month"""
-    query = {"user_id": user.id}
+    query = {"user_id": user.id, "demo_mode": user.demo_mode}  # Filter by demo/live mode
     if month:
         query["month"] = month
     
