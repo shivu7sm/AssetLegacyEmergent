@@ -34,14 +34,14 @@ export const themes = {
   },
   light: {
     name: 'light',
-    background: '#ffffff',
-    backgroundSecondary: '#f8fafc',
+    background: '#f8fafc',
+    backgroundSecondary: '#ffffff',
     backgroundTertiary: '#f1f5f9',
     surface: '#e2e8f0',
-    text: '#0f172a',
-    textSecondary: '#334155',
-    textTertiary: '#475569',
-    textMuted: '#64748b',
+    text: '#1e293b',
+    textSecondary: '#475569',
+    textTertiary: '#64748b',
+    textMuted: '#94a3b8',
     border: '#e2e8f0',
     primary: '#8b5cf6',
     primaryGradient: 'linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%)',
@@ -50,6 +50,8 @@ export const themes = {
     error: '#dc2626',
     info: '#2563eb',
     cardBg: '#ffffff',
+    cardBorder: '#e2e8f0',
+    cardShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)',
     headerBg: 'rgba(255, 255, 255, 0.95)'
   }
 };
