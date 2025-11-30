@@ -18,6 +18,7 @@ import IncomeExpense from "./pages/IncomeExpense";
 import TaxBlueprint from "./pages/TaxBlueprint";
 import NomineeAccess from "./pages/NomineeAccess";
 import NomineeDashboard from "./pages/NomineeDashboard";
+import Onboarding from "./components/Onboarding";
 import { Toaster } from "@/components/ui/sonner";
 import { AppProvider } from "./context/AppContext";
 import { ThemeProvider } from "./context/ThemeContext";
