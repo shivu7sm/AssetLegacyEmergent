@@ -11,6 +11,7 @@ from typing import List, Optional, Dict, Any
 import uuid
 from datetime import datetime, timezone, timedelta
 import requests
+import json
 from pycoingecko import CoinGeckoAPI
 import asyncio
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
