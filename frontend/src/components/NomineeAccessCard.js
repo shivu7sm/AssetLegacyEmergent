@@ -205,16 +205,16 @@ export default function NomineeAccessCard({ nominee, onUpdate, onEdit, onDelete,
               onClick={() => updateAccessType('immediate')}
               className="p-4 rounded-lg text-center transition-all hover:scale-105"
               style={{
-                background: nominee.access_type === 'immediate' ? 'linear-gradient(135deg, rgba(168, 85, 247, 0.25) 0%, rgba(168, 85, 247, 0.15) 100%)' : 'rgba(255,255,255,0.03)',
-                border: `2px solid ${nominee.access_type === 'immediate' ? '#a855f7' : 'rgba(255,255,255,0.08)'}`,
+                background: nominee.access_type === 'immediate' ? 'linear-gradient(135deg, rgba(168, 85, 247, 0.25) 0%, rgba(168, 85, 247, 0.15) 100%)' : theme.backgroundTertiary,
+                border: `2px solid ${nominee.access_type === 'immediate' ? '#a855f7' : theme.border}`,
                 boxShadow: nominee.access_type === 'immediate' ? '0 4px 12px rgba(168, 85, 247, 0.3)' : 'none'
               }}
             >
-              <Zap className="w-7 h-7 mx-auto mb-2" style={{color: nominee.access_type === 'immediate' ? '#a855f7' : '#64748b'}} />
-              <p className="text-sm font-bold mb-1" style={{color: nominee.access_type === 'immediate' ? '#f8fafc' : '#94a3b8'}}>
+              <Zap className="w-7 h-7 mx-auto mb-2" style={{color: nominee.access_type === 'immediate' ? '#a855f7' : theme.textMuted}} />
+              <p className="text-sm font-bold mb-1" style={{color: nominee.access_type === 'immediate' ? theme.text : theme.textTertiary}}>
                 Immediate
               </p>
-              <p className="text-xs leading-tight" style={{color: '#64748b'}}>
+              <p className="text-xs leading-tight" style={{color: theme.textMuted}}>
                 Access right now<br/>
                 {nominee.access_type === 'immediate' && <span style={{color: '#10b981'}}>✓ Auto-granted</span>}
               </p>
