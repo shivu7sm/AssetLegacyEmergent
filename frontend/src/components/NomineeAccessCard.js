@@ -245,16 +245,16 @@ export default function NomineeAccessCard({ nominee, onUpdate, onEdit, onDelete,
               onClick={() => updateAccessType('after_dms')}
               className="p-4 rounded-lg text-center transition-all hover:scale-105"
               style={{
-                background: nominee.access_type === 'after_dms' ? 'linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(59, 130, 246, 0.15) 100%)' : 'rgba(255,255,255,0.03)',
-                border: `2px solid ${nominee.access_type === 'after_dms' ? '#3b82f6' : 'rgba(255,255,255,0.08)'}`,
+                background: nominee.access_type === 'after_dms' ? 'linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(59, 130, 246, 0.15) 100%)' : theme.backgroundTertiary,
+                border: `2px solid ${nominee.access_type === 'after_dms' ? '#3b82f6' : theme.border}`,
                 boxShadow: nominee.access_type === 'after_dms' ? '0 4px 12px rgba(59, 130, 246, 0.3)' : 'none'
               }}
             >
-              <Shield className="w-7 h-7 mx-auto mb-2" style={{color: nominee.access_type === 'after_dms' ? '#3b82f6' : '#64748b'}} />
-              <p className="text-sm font-bold mb-1" style={{color: nominee.access_type === 'after_dms' ? '#f8fafc' : '#94a3b8'}}>
+              <Shield className="w-7 h-7 mx-auto mb-2" style={{color: nominee.access_type === 'after_dms' ? '#3b82f6' : theme.textMuted}} />
+              <p className="text-sm font-bold mb-1" style={{color: nominee.access_type === 'after_dms' ? theme.text : theme.textTertiary}}>
                 After DMS
               </p>
-              <p className="text-xs leading-tight" style={{color: '#64748b'}}>
+              <p className="text-xs leading-tight" style={{color: theme.textMuted}}>
                 Only if inactive<br/>
                 {nominee.access_type === 'after_dms' && <span style={{color: '#3b82f6'}}>🛡️ Safeguarded</span>}
               </p>
