@@ -30,6 +30,8 @@ export const themes = {
     error: '#ef4444',
     info: '#3b82f6',
     cardBg: 'rgba(15, 10, 30, 0.9)',
+    cardBorder: '#2d1f3d',
+    cardShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.3)',
     headerBg: 'rgba(15, 10, 30, 0.9)'
   },
   light: {
