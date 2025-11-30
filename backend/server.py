@@ -4429,7 +4429,7 @@ async def create_tax_profile(profile_data: TaxProfileCreate, user: User = Depend
 @api_router.get("/tax-blueprint/profile")
 async def get_tax_profile(user: User = Depends(require_auth)):
     """Retrieve user's tax profile"""
-    profile = await db.tax_profiles.find_one({"user_id": user.id}, {"_id": 0})
+    profile = await db.tax_profiles.find_one({"user_id": user.id, "demo_mode": user.demo_mode}, {"_id": 0})
     
     if not profile:
         raise HTTPException(status_code=404, detail="Tax profile not found")
@@ -4439,7 +4439,7 @@ async def get_tax_profile(user: User = Depends(require_auth)):
 @api_router.get("/tax-blueprint/regime-comparison")
 async def get_regime_comparison(user: User = Depends(require_auth)):
     """Compare Old vs New tax regime for user"""
-    profile = await db.tax_profiles.find_one({"user_id": user.id}, {"_id": 0})
+    profile = await db.tax_profiles.find_one({"user_id": user.id, "demo_mode": user.demo_mode}, {"_id": 0})
     
     if not profile:
         raise HTTPException(status_code=404, detail="Tax profile not found. Please complete your profile first.")
