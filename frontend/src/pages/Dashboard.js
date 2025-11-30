@@ -750,7 +750,7 @@ export default function Dashboard() {
                         ))}
                       </tbody>
                     </table>
-                    <div className="pt-4 border-t-2" style={{borderColor: '#2d1f3d'}}>
+                    <div className="pt-4 border-t-2" style={{borderColor: theme.border}}>
                       <div className="flex justify-between items-center">
                         <span style={{color: '#f8fafc', fontWeight: 600, fontSize: '16px'}}>Net Worth</span>
                         <span style={{color: '#ec4899', fontWeight: 700, fontSize: '18px'}}>
@@ -842,7 +842,7 @@ export default function Dashboard() {
                         ))}
                       </tbody>
                     </table>
-                    <div className="pt-4 border-t-2" style={{borderColor: '#2d1f3d'}}>
+                    <div className="pt-4 border-t-2" style={{borderColor: theme.border}}>
                       <div className="flex justify-between items-center">
                         <span style={{color: '#f8fafc', fontWeight: 600, fontSize: '16px'}}>Total Assets</span>
                         <span style={{color: '#10b981', fontWeight: 700, fontSize: '18px'}}>
@@ -926,7 +926,7 @@ export default function Dashboard() {
                         ))}
                       </tbody>
                     </table>
-                    <div className="pt-4 border-t-2" style={{borderColor: '#2d1f3d'}}>
+                    <div className="pt-4 border-t-2" style={{borderColor: theme.border}}>
                       <div className="flex justify-between items-center">
                         <span style={{color: '#f8fafc', fontWeight: 600, fontSize: '16px'}}>Total Liabilities</span>
                         <span style={{color: '#dc2626', fontWeight: 700, fontSize: '18px'}}>
@@ -1014,7 +1014,7 @@ export default function Dashboard() {
                 onClick={() => navigate('/assets')} 
                 variant="outline"
                 className="justify-start rounded-xl h-14"
-                style={{borderColor: '#2d1f3d', color: theme.textTertiary}}
+                style={{borderColor: theme.border, color: theme.textTertiary}}
               >
                 <DollarSign className="w-5 h-5 mr-3" />
                 View All Assets
@@ -1025,7 +1025,7 @@ export default function Dashboard() {
                 onClick={() => navigate('/settings')} 
                 variant="outline"
                 className="justify-start rounded-xl h-14"
-                style={{borderColor: '#2d1f3d', color: theme.textTertiary}}
+                style={{borderColor: theme.border, color: theme.textTertiary}}
               >
                 <Shield className="w-5 h-5 mr-3" />
                 Security Settings
