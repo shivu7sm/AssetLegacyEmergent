@@ -1,9 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '@/context/ThemeContext';
 import { ArrowRight, Plus, RefreshCw, TrendingUp } from 'lucide-react';
 
 export default function PortfolioGuide() {
+  const { theme } = useTheme();
   const navigate = useNavigate();
 
   const steps = [
