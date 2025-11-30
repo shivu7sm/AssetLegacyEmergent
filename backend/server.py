@@ -4200,7 +4200,7 @@ async def create_expense(expense_data: MonthlyExpenseCreate, user: User = Depend
 @api_router.get("/expenses")
 async def get_expenses(month: Optional[str] = None, category: Optional[str] = None, user: User = Depends(require_auth)):
     """Get all expense entries, optionally filtered by month and/or category"""
-    query = {"user_id": user.id}
+    query = {"user_id": user.id, "demo_mode": user.demo_mode}  # Filter by demo/live mode
     if month:
         query["month"] = month
     if category:
