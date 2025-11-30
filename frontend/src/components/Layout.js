@@ -287,20 +287,29 @@ export default function Layout({ children }) {
       {/* Floating Subscription Button - Only show if not subscribed or on Free plan */}
       {(!userSubscription || userSubscription.plan === 'Free') && (
         <div 
-          className="fixed bottom-24 md:bottom-8 right-6 z-40"
+          className="fixed bottom-24 md:bottom-8 right-6"
           style={{
-            animation: 'bounce 2s infinite'
+            zIndex: 9999,
+            animation: 'bounce 2s infinite',
+            pointerEvents: 'auto'
           }}
         >
           <button
-            onClick={() => navigate('/subscription')}
-            className="flex items-center gap-3 px-6 py-3 rounded-full shadow-2xl transition-all hover:scale-105"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log('Upgrade button clicked, navigating to /subscription');
+              navigate('/subscription');
+            }}
+            className="flex items-center gap-3 px-6 py-3 rounded-full shadow-2xl transition-all hover:scale-105 relative"
             style={{
               background: 'linear-gradient(135deg, #ec4899 0%, #a855f7 100%)',
               color: '#fff',
               border: '2px solid rgba(255,255,255,0.3)',
               boxShadow: '0 8px 24px rgba(236, 72, 153, 0.5)',
-              fontWeight: 'bold'
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              zIndex: 2
             }}
             title="Upgrade to Premium"
           >
@@ -313,7 +322,9 @@ export default function Layout({ children }) {
           <span 
             className="absolute inset-0 rounded-full animate-ping opacity-30"
             style={{
-              background: 'linear-gradient(135deg, #ec4899 0%, #a855f7 100%)'
+              background: 'linear-gradient(135deg, #ec4899 0%, #a855f7 100%)',
+              zIndex: 1,
+              pointerEvents: 'none'
             }}
           />
         </div>
