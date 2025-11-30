@@ -3437,16 +3437,22 @@ Please provide a comprehensive analysis in the following structure:
 Format your response clearly with these section headers."""
         
         # Initialize AI chat
-        api_key = os.environ.get('EMERGENT_LLM_KEY')
-        chat = LlmChat(
-            api_key=api_key,
-            session_id=f"insights_{user.id}_{datetime.now(timezone.utc).timestamp()}",
-            system_message="You are an expert financial advisor specializing in portfolio analysis, asset allocation, and risk management. Provide clear, actionable, and personalized recommendations based on the user's portfolio composition. Focus on asset distribution, investment diversification, and identifying both opportunities and risks."
-        ).with_model("openai", "gpt-4o-mini")
-        
-        # Send message
-        user_message = UserMessage(text=portfolio_context)
-        response = await chat.send_message(user_message)
+        ai_response = None
+        try:
+            api_key = os.environ.get('EMERGENT_LLM_KEY')
+            chat = LlmChat(
+                api_key=api_key,
+                session_id=f"insights_{user.id}_{datetime.now(timezone.utc).timestamp()}",
+                system_message="You are an expert financial advisor specializing in portfolio analysis, asset allocation, and risk management. Provide clear, actionable, and personalized recommendations based on the user's portfolio composition. Focus on asset distribution, investment diversification, and identifying both opportunities and risks."
+            ).with_model("openai", "gpt-4o-mini")
+            
+            # Send message
+            user_message = UserMessage(text=portfolio_context)
+            ai_response = await chat.send_message(user_message)
+        except Exception as ai_error:
+            logger.error(f"AI service error: {str(ai_error)}")
+            # Fall back to template-based insights
+            ai_response = None
         
         # Parse AI response into structured sections
         sections = {
