@@ -523,6 +523,7 @@ class TaxProfile(BaseModel):
     capital_gains: float = 0
     other_income: float = 0
     
+    demo_mode: bool = False  # Whether this is demo data
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
