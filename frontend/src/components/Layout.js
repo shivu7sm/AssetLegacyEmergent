@@ -174,8 +174,8 @@ export default function Layout({ children }) {
                     onClick={() => navigate(item.path)}
                     className="flex items-center gap-1.5 px-3 py-2 rounded-lg transition-all text-sm"
                     style={{
-                      background: isActive ? 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)' : 'transparent',
-                      color: isActive ? '#f8fafc' : '#94a3b8'
+                      background: isActive ? theme.primaryGradient : 'transparent',
+                      color: isActive ? (colorTheme === 'dark' ? '#f8fafc' : '#ffffff') : theme.textTertiary
                     }}
                   >
                     <Icon className="w-4 h-4" />
