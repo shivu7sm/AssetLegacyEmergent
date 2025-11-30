@@ -123,6 +123,32 @@ export default function Layout({ children }) {
         ? '#0b0b11'
         : ''
     }}>
+      {/* MVP Ribbon */}
+      <div 
+        className="fixed top-0 left-0 z-50 overflow-hidden"
+        style={{
+          width: '150px',
+          height: '150px',
+          pointerEvents: 'none'
+        }}
+      >
+        <div 
+          className="absolute transform -rotate-45 text-center font-bold text-xs"
+          style={{
+            background: 'linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%)',
+            color: 'white',
+            width: '200px',
+            padding: '8px 0',
+            top: '30px',
+            left: '-50px',
+            boxShadow: '0 4px 12px rgba(236, 72, 153, 0.5)',
+            letterSpacing: '1px'
+          }}
+        >
+          🚀 MVP
+        </div>
+      </div>
+
       {/* Header */}
       <header className="backdrop-blur-xl sticky top-0 z-50" style={{borderBottom: '1px solid #2d1f3d', background: 'rgba(15, 10, 30, 0.9)'}}>
         <div className="container mx-auto px-4 py-3">
