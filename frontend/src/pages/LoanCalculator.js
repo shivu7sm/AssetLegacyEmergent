@@ -23,6 +23,7 @@ const LOAN_TYPES = [
 ];
 
 export default function LoanCalculator() {
+  const { theme } = useTheme();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     principal: '',
