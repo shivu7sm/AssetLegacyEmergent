@@ -4032,7 +4032,7 @@ async def get_expenses(month: Optional[str] = None, category: Optional[str] = No
 async def get_expense(expense_id: str, user: User = Depends(require_auth)):
     """Get a specific expense entry"""
     expense = await db.monthly_expenses.find_one({"id": expense_id, "user_id": user.id}, {"_id": 0})
-    if not income:
+    if not expense:
         raise HTTPException(status_code=404, detail="Expense not found")
     return expense
 
