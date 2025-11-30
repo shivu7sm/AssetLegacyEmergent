@@ -322,6 +322,7 @@ function ConnectedAccountsSection({ demoMode }) {
 
 // Security Audit Section Component
 function SecurityAuditSection({ user }) {
+  const { theme } = useTheme();
   const [auditLogs, setAuditLogs] = useState([]);
   const [loading, setLoading] = useState(true);
 
