@@ -1532,6 +1532,55 @@ export default function Settings() {
           </div>
         );
 
+      case 'will':
+        return (
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-2xl font-bold mb-2 flex items-center gap-2" style={{color: '#f8fafc'}}>
+                <FileText className="w-7 h-7" />
+                Will & Testament
+              </h2>
+              <p style={{color: '#94a3b8'}}>Manage your digital will and asset distribution</p>
+            </div>
+
+            <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+              <CardContent className="py-6">
+                <p className="text-center mb-4" style={{color: '#cbd5e1'}}>
+                  Access your complete Will & Testament management
+                </p>
+                <div className="flex justify-center">
+                  <Button 
+                    onClick={() => window.location.href = '/will'}
+                    style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: '#fff'}}
+                  >
+                    <FileText className="w-4 h-4 mr-2" />
+                    Go to Digital Will
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card style={{background: 'rgba(168, 85, 247, 0.1)', borderColor: '#a855f7'}}>
+              <CardContent className="py-4">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 rounded-lg" style={{background: 'rgba(168, 85, 247, 0.2)'}}>
+                    <FileText className="w-5 h-5" style={{color: '#a855f7'}} />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-1" style={{color: '#f8fafc'}}>What You Can Do</h4>
+                    <ul className="space-y-1 text-sm" style={{color: '#cbd5e1'}}>
+                      <li>• Create and edit your will document</li>
+                      <li>• Add beneficiaries with contact information</li>
+                      <li>• Specify asset distribution instructions</li>
+                      <li>• Securely store and update your wishes</li>
+                    </ul>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        );
+
       case 'dms':
         return (
           <div className="space-y-6">
