@@ -422,19 +422,19 @@ export default function Dashboard() {
             <Card 
               data-testid="total-assets-card" 
               className="overflow-hidden transition-all hover:shadow-lg card"
-              style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#3b82f6'}}
+              style={{background: theme.cardBg, borderColor: theme.info, boxShadow: theme.cardShadow}}
             >
               <CardContent className="p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <p className="text-sm font-medium mb-2" style={{color: theme.textTertiary, letterSpacing: '0.5px'}}>TOTAL ASSETS</p>
-                    <div className="text-4xl font-bold mb-1" style={{color: '#f8fafc', fontFamily: 'Inter, sans-serif'}} data-testid="total-assets-count">
+                    <div className="text-4xl font-bold mb-1" style={{color: theme.text, fontFamily: 'Inter, sans-serif'}} data-testid="total-assets-count">
                       {summary?.total_assets || 0}
                     </div>
                     <p className="text-xs" style={{color: theme.textMuted}}>items tracked</p>
                   </div>
                   <div className="p-3 rounded-xl" style={{background: 'rgba(59, 130, 246, 0.1)'}}>
-                    <DollarSign className="w-8 h-8" style={{color: '#3b82f6'}} />
+                    <DollarSign className="w-8 h-8" style={{color: theme.info}} />
                   </div>
                 </div>
               </CardContent>
@@ -444,9 +444,10 @@ export default function Dashboard() {
               data-testid="net-worth-card" 
               className="overflow-hidden transition-all hover:shadow-lg card"
               style={{
-                background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', 
-                borderColor: isPositive ? '#10b981' : '#ef4444', 
-                borderWidth: '2px'
+                background: theme.cardBg, 
+                borderColor: isPositive ? theme.success : theme.error, 
+                borderWidth: '2px',
+                boxShadow: theme.cardShadow
               }}
             >
               <CardContent className="p-6">
@@ -455,7 +456,7 @@ export default function Dashboard() {
                     <p className="text-sm font-medium mb-2" style={{color: theme.textTertiary, letterSpacing: '0.5px'}}>NET WORTH</p>
                     <div 
                       className="text-3xl font-bold mb-1"
-                      style={{color: isPositive ? '#10b981' : '#ef4444', fontFamily: 'Inter, sans-serif'}} 
+                      style={{color: isPositive ? theme.success : theme.error, fontFamily: 'Inter, sans-serif'}} 
                       data-testid="net-worth-value"
                     >
                       {formatCurrency(netWorthValue, selectedCurrency, currencyFormat)}
@@ -466,9 +467,9 @@ export default function Dashboard() {
                   </div>
                   <div className="p-3 rounded-xl" style={{background: isPositive ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)'}}>
                     {isPositive ? (
-                      <TrendingUp className="w-8 h-8" style={{color: '#10b981'}} />
+                      <TrendingUp className="w-8 h-8" style={{color: theme.success}} />
                     ) : (
-                      <TrendingDown className="w-8 h-8" style={{color: '#ef4444'}} />
+                      <TrendingDown className="w-8 h-8" style={{color: theme.error}} />
                     )}
                   </div>
                 </div>
@@ -478,13 +479,13 @@ export default function Dashboard() {
             <Card 
               data-testid="nominee-status-card" 
               className="overflow-hidden transition-all hover:shadow-lg card"
-              style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: summary?.has_nominee ? '#10b981' : '#f59e0b'}}
+              style={{background: theme.cardBg, borderColor: summary?.has_nominee ? theme.success : theme.warning, boxShadow: theme.cardShadow}}
             >
               <CardContent className="p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <p className="text-sm font-medium mb-2" style={{color: theme.textTertiary, letterSpacing: '0.5px'}}>NOMINEE</p>
-                    <div className="text-2xl font-bold mb-1" style={{color: summary?.has_nominee ? '#10b981' : '#f59e0b', fontFamily: 'Inter, sans-serif'}} data-testid="nominee-status">
+                    <div className="text-2xl font-bold mb-1" style={{color: summary?.has_nominee ? theme.success : theme.warning, fontFamily: 'Inter, sans-serif'}} data-testid="nominee-status">
                       {summary?.has_nominee ? '✓ Configured' : 'Not Set'}
                     </div>
                     <p className="text-xs" style={{color: theme.textMuted}}>
@@ -492,7 +493,7 @@ export default function Dashboard() {
                     </p>
                   </div>
                   <div className="p-3 rounded-xl" style={{background: summary?.has_nominee ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)'}}>
-                    <Shield className="w-8 h-8" style={{color: summary?.has_nominee ? '#10b981' : '#f59e0b'}} />
+                    <Shield className="w-8 h-8" style={{color: summary?.has_nominee ? theme.success : theme.warning}} />
                   </div>
                 </div>
               </CardContent>
@@ -501,13 +502,13 @@ export default function Dashboard() {
             <Card 
               data-testid="dms-status-card" 
               className="overflow-hidden transition-all hover:shadow-lg card"
-              style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: summary?.has_dms ? '#10b981' : '#f59e0b'}}
+              style={{background: theme.cardBg, borderColor: summary?.has_dms ? theme.success : theme.warning, boxShadow: theme.cardShadow}}
             >
               <CardContent className="p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <p className="text-sm font-medium mb-2" style={{color: theme.textTertiary, letterSpacing: '0.5px'}}>DEAD MAN'S SWITCH</p>
-                    <div className="text-2xl font-bold mb-1" style={{color: summary?.has_dms ? '#10b981' : '#f59e0b', fontFamily: 'Inter, sans-serif'}} data-testid="dms-status">
+                    <div className="text-2xl font-bold mb-1" style={{color: summary?.has_dms ? theme.success : theme.warning, fontFamily: 'Inter, sans-serif'}} data-testid="dms-status">
                       {summary?.has_dms ? '✓ Active' : 'Not Set'}
                     </div>
                     <p className="text-xs" style={{color: theme.textMuted}}>
@@ -515,7 +516,7 @@ export default function Dashboard() {
                     </p>
                   </div>
                   <div className="p-3 rounded-xl" style={{background: summary?.has_dms ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)'}}>
-                    <HeartPulse className="w-8 h-8" style={{color: summary?.has_dms ? '#10b981' : '#f59e0b'}} />
+                    <HeartPulse className="w-8 h-8" style={{color: summary?.has_dms ? theme.success : theme.warning}} />
                   </div>
                 </div>
               </CardContent>
