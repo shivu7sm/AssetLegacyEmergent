@@ -279,14 +279,14 @@ export default function AssetsNew() {
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-4">
               <div>
-                <h1 className="text-4xl font-bold mb-2" style={{color: '#FFFFFF'}}>Assets & Portfolio</h1>
-                <p className="text-lg" style={{color: 'rgba(255,255,255,0.65)'}}>Manage your wealth in one place</p>
+                <h1 className="text-4xl font-bold mb-2" style={{color: theme.text}}>Assets & Portfolio</h1>
+                <p className="text-lg" style={{color: theme.textSecondary}}>Manage your wealth in one place</p>
               </div>
               
               {/* Account Switcher - Demo Mode & Connected Accounts */}
               {((demoMode && testAccountData) || connectedAccounts.length > 0) && (
                 <div className="ml-6">
-                  <Label className="text-xs mb-2 block" style={{color: '#94a3b8'}}>VIEWING ACCOUNT</Label>
+                  <Label className="text-xs mb-2 block" style={{color: theme.textSecondary}}>VIEWING ACCOUNT</Label>
                   <Select value={activeAccount} onValueChange={setActiveAccount}>
                     <SelectTrigger className="bg-slate-800 border-slate-700 text-white" style={{width: '320px'}}>
                       <SelectValue />
@@ -397,7 +397,7 @@ export default function AssetsNew() {
           {/* Converting Overlay */}
           {converting && (
             <div className="absolute inset-0 bg-black bg-opacity-50 z-20 flex items-center justify-center rounded-lg">
-              <div className="p-4 rounded-lg" style={{background: '#1a1229', border: '2px solid #E8C27C'}}>
+              <div className="p-4 rounded-lg" style={{background: theme.cardBg, border: '2px solid #E8C27C'}}>
                 <div className="flex items-center gap-3">
                   <div className="w-6 h-6 border-2 border-t-transparent rounded-full animate-spin" style={{borderColor: '#E8C27C', borderTopColor: 'transparent'}}></div>
                   <span style={{color: '#E8C27C', fontWeight: 600}}>Converting to {selectedCurrency}...</span>
@@ -406,18 +406,18 @@ export default function AssetsNew() {
             </div>
           )}
           
-          <Card style={{background: '#1a1229', borderColor: '#2d1f3d', padding: 0}}>
+          <Card style={{background: theme.cardBg, borderColor: theme.border, padding: 0}}>
             <CardContent className="p-0">
               <div style={{maxHeight: 'calc(100vh - 280px)', overflowY: 'auto'}}>
                 <table className="w-full" style={{fontSize: '0.813rem'}}>
-                    <thead style={{background: '#0E0F16', borderBottom: '2px solid #2d1f3d', position: 'sticky', top: 0, zIndex: 10}}>
+                    <thead style={{background: '#0E0F16', borderBottom: `2px solid ${theme.border}`, position: 'sticky', top: 0, zIndex: 10}}>
                       <tr>
-                        <th className="text-left p-3" style={{color: '#94a3b8', fontWeight: 600, width: '30%'}}>Asset</th>
-                        <th className="text-right p-3" style={{color: '#94a3b8', fontWeight: 600}}>Purchase (Original)</th>
-                        <th className="text-right p-3" style={{color: '#94a3b8', fontWeight: 600}}>Purchase ({selectedCurrency})</th>
-                        <th className="text-right p-3" style={{color: '#94a3b8', fontWeight: 600}}>Current ({selectedCurrency})</th>
-                        <th className="text-right p-3" style={{color: '#94a3b8', fontWeight: 600}}>Gain/Loss</th>
-                        <th className="text-center p-3" style={{color: '#94a3b8', fontWeight: 600}}>Actions</th>
+                        <th className="text-left p-3" style={{color: theme.textSecondary, fontWeight: 600, width: '30%'}}>Asset</th>
+                        <th className="text-right p-3" style={{color: theme.textSecondary, fontWeight: 600}}>Purchase (Original)</th>
+                        <th className="text-right p-3" style={{color: theme.textSecondary, fontWeight: 600}}>Purchase ({selectedCurrency})</th>
+                        <th className="text-right p-3" style={{color: theme.textSecondary, fontWeight: 600}}>Current ({selectedCurrency})</th>
+                        <th className="text-right p-3" style={{color: theme.textSecondary, fontWeight: 600}}>Gain/Loss</th>
+                        <th className="text-center p-3" style={{color: theme.textSecondary, fontWeight: 600}}>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -460,7 +460,7 @@ export default function AssetsNew() {
                                   <ChevronRight className="w-4 h-4" style={{color: group.color}} />
                                 }
                                 <span className="text-xl">{group.icon}</span>
-                                <span className="font-bold" style={{color: '#f8fafc', fontSize: '0.938rem'}}>
+                                <span className="font-bold" style={{color: theme.text, fontSize: '0.938rem'}}>
                                   {group.label}
                                 </span>
                                 <span className="text-xs px-2 py-1 rounded-full font-semibold" style={{background: `${group.color}20`, color: group.color}}>
@@ -503,9 +503,9 @@ export default function AssetsNew() {
                                   setEditModalOpen(true);
                                 }}>
                                   <div className="flex items-center gap-2">
-                                    <span style={{color: '#f8fafc', fontWeight: 500}}>{asset.name}</span>
+                                    <span style={{color: theme.text, fontWeight: 500}}>{asset.name}</span>
                                     {asset.symbol && (
-                                      <span className="text-xs px-2 py-0.5 rounded" style={{background: '#2d1f3d', color: '#94a3b8'}}>
+                                      <span className="text-xs px-2 py-0.5 rounded" style={{background: theme.backgroundSecondary, color: theme.textSecondary}}>
                                         {asset.symbol}
                                       </span>
                                     )}
@@ -513,12 +513,12 @@ export default function AssetsNew() {
                                 </td>
                                 
                                 {/* Purchase Value - Original Currency */}
-                                <td className="p-3 text-right" onClick={() => setSelectedAsset(asset)} style={{color: '#94a3b8', fontSize: '0.813rem'}}>
+                                <td className="p-3 text-right" onClick={() => setSelectedAsset(asset)} style={{color: theme.textSecondary, fontSize: '0.813rem'}}>
                                   {asset.purchase_currency} {purchaseValue.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})}
                                 </td>
                                 
                                 {/* Purchase Value - Converted Currency */}
-                                <td className="p-3 text-right" onClick={() => setSelectedAsset(asset)} style={{color: '#cbd5e1', fontSize: '0.813rem', fontWeight: 500}}>
+                                <td className="p-3 text-right" onClick={() => setSelectedAsset(asset)} style={{color: theme.textSecondary, fontSize: '0.813rem', fontWeight: 500}}>
                                   {formatCurrency(purchaseValue, selectedCurrency, currencyFormat)}
                                 </td>
                                 
@@ -550,7 +550,7 @@ export default function AssetsNew() {
                                 <td className="p-3 text-center" onClick={(e) => e.stopPropagation()}>
                                   {(activeAccount === 'test_account' || activeAccount !== 'own') ? (
                                     // Read-only mode for test account or connected accounts
-                                    <div className="text-xs px-2 py-1 rounded" style={{background: 'rgba(148, 163, 184, 0.1)', color: '#94a3b8'}}>
+                                    <div className="text-xs px-2 py-1 rounded" style={{background: 'rgba(148, 163, 184, 0.1)', color: theme.textSecondary}}>
                                       Read-Only
                                     </div>
                                   ) : (
@@ -605,15 +605,15 @@ export default function AssetsNew() {
         {/* Comprehensive Edit Asset Modal */}
         {selectedAsset && editModalOpen && (
           <Dialog open={editModalOpen} onOpenChange={setEditModalOpen}>
-            <DialogContent className="max-w-4xl" style={{background: '#1a1229', borderColor: '#2d1f3d', maxHeight: '90vh', overflowY: 'auto'}}>
+            <DialogContent className="max-w-4xl" style={{background: theme.cardBg, borderColor: theme.border, maxHeight: '90vh', overflowY: 'auto'}}>
               <DialogHeader>
-                <DialogTitle style={{color: '#f8fafc', fontSize: '1.5rem'}}>
+                <DialogTitle style={{color: theme.text, fontSize: '1.5rem'}}>
                   Edit Asset: {selectedAsset.name}
                 </DialogTitle>
               </DialogHeader>
               
               <div className="pt-4">
-                <p className="text-sm mb-4" style={{color: '#94a3b8'}}>
+                <p className="text-sm mb-4" style={{color: theme.textSecondary}}>
                   Update asset details below. Changes are saved immediately.
                 </p>
                 
@@ -634,7 +634,7 @@ export default function AssetsNew() {
                 {/* Loan Calculator for Loans/Credit Cards */}
                 {(selectedAsset.type === 'loan' || selectedAsset.type === 'credit_card') && (
                   <div className="mt-6 pt-6" style={{borderTop: '2px solid #2d1f3d'}}>
-                    <h3 className="text-lg font-bold mb-3 flex items-center gap-2" style={{color: '#f8fafc'}}>
+                    <h3 className="text-lg font-bold mb-3 flex items-center gap-2" style={{color: theme.text}}>
                       <Calculator className="w-5 h-5" style={{color: '#E8C27C'}} />
                       Loan Repayment Calculator
                     </h3>
@@ -701,19 +701,19 @@ export default function AssetsNew() {
                         {/* Summary Cards */}
                         <div className="grid grid-cols-3 gap-3">
                           <div className="p-3 rounded-lg" style={{background: 'rgba(168, 85, 247, 0.1)', border: '1px solid rgba(168, 85, 247, 0.3)'}}>
-                            <div className="text-xs mb-1" style={{color: '#94a3b8'}}>Monthly Payment</div>
+                            <div className="text-xs mb-1" style={{color: theme.textSecondary}}>Monthly Payment</div>
                             <div className="text-xl font-bold" style={{color: '#a855f7'}}>
                               ${loanCalcData.monthly_payment.toLocaleString()}
                             </div>
                           </div>
                           <div className="p-3 rounded-lg" style={{background: 'rgba(255, 92, 115, 0.1)', border: '1px solid rgba(255, 92, 115, 0.3)'}}>
-                            <div className="text-xs mb-1" style={{color: '#94a3b8'}}>Total Interest</div>
+                            <div className="text-xs mb-1" style={{color: theme.textSecondary}}>Total Interest</div>
                             <div className="text-xl font-bold" style={{color: '#FF5C73'}}>
                               ${loanCalcData.total_interest.toLocaleString()}
                             </div>
                           </div>
                           <div className="p-3 rounded-lg" style={{background: 'rgba(75, 224, 161, 0.1)', border: '1px solid rgba(75, 224, 161, 0.3)'}}>
-                            <div className="text-xs mb-1" style={{color: '#94a3b8'}}>Total Amount</div>
+                            <div className="text-xs mb-1" style={{color: theme.textSecondary}}>Total Amount</div>
                             <div className="text-xl font-bold" style={{color: '#4BE0A1'}}>
                               ${loanCalcData.total_amount.toLocaleString()}
                             </div>
@@ -726,7 +726,7 @@ export default function AssetsNew() {
                             <p className="text-sm font-semibold" style={{color: '#4BE0A1'}}>
                               💰 Potential Savings Detected!
                             </p>
-                            <p className="text-xs" style={{color: '#cbd5e1'}}>
+                            <p className="text-xs" style={{color: theme.textSecondary}}>
                               By adjusting your loan terms, you could save on interest. Consider refinancing.
                             </p>
                           </div>
@@ -734,26 +734,26 @@ export default function AssetsNew() {
 
                         {/* Amortization Schedule */}
                         <div>
-                          <div className="text-xs font-semibold mb-2" style={{color: '#94a3b8'}}>
+                          <div className="text-xs font-semibold mb-2" style={{color: theme.textSecondary}}>
                             PAYMENT SCHEDULE (First 12 months)
                           </div>
                           <div style={{maxHeight: '200px', overflowY: 'auto'}}>
                             <table className="w-full" style={{fontSize: '0.75rem'}}>
-                              <thead style={{background: '#16001e', position: 'sticky', top: 0}}>
+                              <thead style={{background: theme.backgroundTertiary, position: 'sticky', top: 0}}>
                                 <tr>
-                                  <th className="p-1.5 text-left" style={{color: '#94a3b8'}}>Mo</th>
-                                  <th className="p-1.5 text-right" style={{color: '#94a3b8'}}>Principal</th>
-                                  <th className="p-1.5 text-right" style={{color: '#94a3b8'}}>Interest</th>
-                                  <th className="p-1.5 text-right" style={{color: '#94a3b8'}}>Balance</th>
+                                  <th className="p-1.5 text-left" style={{color: theme.textSecondary}}>Mo</th>
+                                  <th className="p-1.5 text-right" style={{color: theme.textSecondary}}>Principal</th>
+                                  <th className="p-1.5 text-right" style={{color: theme.textSecondary}}>Interest</th>
+                                  <th className="p-1.5 text-right" style={{color: theme.textSecondary}}>Balance</th>
                                 </tr>
                               </thead>
                               <tbody>
                                 {loanCalcData.amortization_schedule.slice(0, 12).map((entry) => (
                                   <tr key={entry.month} style={{borderBottom: '1px solid rgba(255,255,255,0.03)'}}>
-                                    <td className="p-1.5" style={{color: '#cbd5e1'}}>{entry.month}</td>
+                                    <td className="p-1.5" style={{color: theme.textSecondary}}>{entry.month}</td>
                                     <td className="p-1.5 text-right" style={{color: '#4BE0A1'}}>${entry.principal_payment.toLocaleString()}</td>
                                     <td className="p-1.5 text-right" style={{color: '#FF5C73'}}>${entry.interest_payment.toLocaleString()}</td>
-                                    <td className="p-1.5 text-right" style={{color: '#94a3b8'}}>${entry.remaining_balance.toLocaleString()}</td>
+                                    <td className="p-1.5 text-right" style={{color: theme.textSecondary}}>${entry.remaining_balance.toLocaleString()}</td>
                                   </tr>
                                 ))}
                               </tbody>
@@ -765,7 +765,7 @@ export default function AssetsNew() {
                           onClick={() => setLoanCalcData(null)}
                           variant="outline"
                           size="sm"
-                          style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+                          style={{borderColor: theme.border, color: theme.textSecondary}}
                         >
                           Reset Calculator
                         </Button>
@@ -778,9 +778,9 @@ export default function AssetsNew() {
           </Dialog>
         )}
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogContent className="max-w-2xl" style={{background: '#1a1229', borderColor: '#2d1f3d', maxHeight: '90vh', overflowY: 'auto'}}>
+          <DialogContent className="max-w-2xl" style={{background: theme.cardBg, borderColor: theme.border, maxHeight: '90vh', overflowY: 'auto'}}>
             <DialogHeader>
-              <DialogTitle style={{color: '#f8fafc', fontSize: '1.5rem'}}>Add New Asset</DialogTitle>
+              <DialogTitle style={{color: theme.text, fontSize: '1.5rem'}}>Add New Asset</DialogTitle>
             </DialogHeader>
             <div className="pt-4">
               <AddAssetForm 
