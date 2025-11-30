@@ -102,10 +102,7 @@ export default function Layout({ children }) {
     { path: '/income-expense', label: 'Income & Expenses', icon: Receipt, testId: 'nav-income-expense' },
     { path: '/insights', label: 'AI Insights', icon: Sparkles, testId: 'nav-insights' },
     { path: '/schedule-messages', label: 'Messages', icon: Calendar, testId: 'nav-messages' },
-    // Only show Plans if user is on Free plan or no subscription
-    ...((!userSubscription || userSubscription.plan === 'Free') ? [{ path: '/subscription', label: 'Plans', icon: Crown, testId: 'nav-subscription' }] : []),
     { path: '/documents', label: 'Documents', icon: FolderLock, testId: 'nav-documents' },
-    { path: '/will', label: 'Will', icon: FileText, testId: 'nav-will' },
     { path: '/settings', label: 'Settings', icon: Settings, testId: 'nav-settings' }
   ];
 
