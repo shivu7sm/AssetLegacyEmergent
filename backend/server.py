@@ -4245,11 +4245,11 @@ async def delete_expense(expense_id: str, user: User = Depends(require_auth)):
 @api_router.get("/income-expense/summary")
 async def get_monthly_summary(month: str, target_currency: str = "USD", user: User = Depends(require_auth)):
     """Get monthly income and expense summary"""
-    # Fetch incomes for the month
-    incomes = await db.monthly_incomes.find({"user_id": user.id, "month": month}, {"_id": 0}).to_list(1000)
+    # Fetch incomes for the month - filter by demo/live mode
+    incomes = await db.monthly_incomes.find({"user_id": user.id, "month": month, "demo_mode": user.demo_mode}, {"_id": 0}).to_list(1000)
     
-    # Fetch expenses for the month
-    expenses = await db.monthly_expenses.find({"user_id": user.id, "month": month}, {"_id": 0}).to_list(1000)
+    # Fetch expenses for the month - filter by demo/live mode
+    expenses = await db.monthly_expenses.find({"user_id": user.id, "month": month, "demo_mode": user.demo_mode}, {"_id": 0}).to_list(1000)
     
     # Helper function to get conversion rate
     async def get_rate(from_curr, to_curr):
