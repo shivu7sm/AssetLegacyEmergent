@@ -4525,24 +4525,20 @@ cors_origins_str = os.environ.get('CORS_ORIGINS', '')
 if cors_origins_str and cors_origins_str != '*':
     # Production with specific origins configured
     cors_origins = [origin.strip() for origin in cors_origins_str.split(',')]
+    allow_origin_regex = None
     logger.info(f"CORS: Configured for specific origins: {cors_origins}")
 else:
-    # Development/testing: Accept common origins
-    # Include both localhost and common deployment domains
-    cors_origins = [
-        "http://localhost:3000",
-        "http://localhost:8000", 
-        "https://zivinc.com",
-        "https://legacy-asset-dev.emergent.host",
-        "https://*.emergent.host",
-        "https://*.emergentagent.com"
-    ]
-    logger.info("CORS: Using default development origins (including zivinc.com)")
+    # Development/testing: Use regex to match common patterns
+    # This allows any subdomain of emergent.host and emergentagent.com, plus localhost
+    cors_origins = []  # Must be empty when using regex
+    allow_origin_regex = r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$|^https://[a-zA-Z0-9\-]+\.(emergent\.host|emergentagent\.com)$|^https://zivinc\.com$"
+    logger.info("CORS: Using regex pattern for development (supports localhost, *.emergent.host, *.emergentagent.com, zivinc.com)")
 
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
     allow_origins=cors_origins,
+    allow_origin_regex=allow_origin_regex,
     allow_methods=["*"],
     allow_headers=["*"],
     expose_headers=["*"],
