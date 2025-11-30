@@ -274,7 +274,7 @@ export default function NomineeAccessCard({ nominee, onUpdate, onEdit, onDelete,
               {!nominee.access_granted ? (
                 <>
                   <Shield className="w-7 h-7 mx-auto mb-2" style={{color: '#10b981'}} />
-                  <p className="text-sm font-bold mb-1" style={{color: '#f8fafc'}}>
+                  <p className="text-sm font-bold mb-1" style={{color: theme.text}}>
                     Grant Access
                   </p>
                   <Button 
