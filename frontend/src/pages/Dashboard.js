@@ -645,7 +645,7 @@ export default function Dashboard() {
                 <AlertCircle className="w-6 h-6 flex-shrink-0 mt-1" style={{color: '#fbbf24'}} />
                 <div className="flex-1">
                   <h3 className="text-lg font-semibold mb-2" style={{color: '#fbbf24'}}>Setup Required</h3>
-                  <p className="mb-4" style={{color: '#cbd5e1'}}>
+                  <p className="mb-4" style={{color: theme.textSecondary}}>
                     {!summary?.has_nominee && 'Please add a nominee to ensure your assets reach the right person. '}
                     {!summary?.has_dms && 'Configure the dead man switch for automated protection.'}
                   </p>
@@ -740,7 +740,7 @@ export default function Dashboard() {
                                 <span style={{color: '#f8fafc', fontWeight: 500}}>{item.name}</span>
                               </div>
                             </td>
-                            <td className="text-right py-3 px-2" style={{color: '#cbd5e1', fontWeight: 600}}>
+                            <td className="text-right py-3 px-2" style={{color: theme.textSecondary, fontWeight: 600}}>
                               {formatCurrency(item.value, selectedCurrency, currencyFormat)}
                             </td>
                             <td className="text-right py-3 px-2" style={{color: item.color, fontWeight: 600}}>
@@ -832,7 +832,7 @@ export default function Dashboard() {
                                 <span style={{color: '#f8fafc', fontWeight: 500}}>{item.name}</span>
                               </div>
                             </td>
-                            <td className="text-right py-3 px-2" style={{color: '#cbd5e1', fontWeight: 600}}>
+                            <td className="text-right py-3 px-2" style={{color: theme.textSecondary, fontWeight: 600}}>
                               {formatCurrency(item.value, selectedCurrency, currencyFormat)}
                             </td>
                             <td className="text-right py-3 px-2" style={{color: item.color, fontWeight: 600}}>
