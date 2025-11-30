@@ -720,11 +720,18 @@ export default function IncomeExpense() {
                 </div>
                 <div>
                   <Label style={{color: '#94a3b8'}}>Currency</Label>
-                  <Input
-                    value={incomeForm.currency}
-                    onChange={(e) => setIncomeForm({...incomeForm, currency: e.target.value})}
-                    style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}
-                  />
+                  <Select value={incomeForm.currency} onValueChange={(value) => setIncomeForm({...incomeForm, currency: value})}>
+                    <SelectTrigger style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent style={{background: '#1a1229', borderColor: '#2d1f3d', maxHeight: '300px'}}>
+                      {CURRENCIES.map(curr => (
+                        <SelectItem key={curr.code} value={curr.code} style={{color: '#f8fafc'}}>
+                          {curr.code} - {curr.name} ({curr.symbol})
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
 
