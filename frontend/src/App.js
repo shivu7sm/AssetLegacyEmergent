@@ -44,6 +44,7 @@ function AuthProvider({ children }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   useEffect(() => {
     const handleAuth = async () => {
