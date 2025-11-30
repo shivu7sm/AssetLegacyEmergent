@@ -97,6 +97,11 @@ function AuthProvider({ children }) {
         const response = await axios.get(`${API}/auth/me`, { withCredentials: true });
         setUser(response.data);
         
+        // Check if onboarding should be shown
+        if (response.data && !response.data.onboarding_completed) {
+          setShowOnboarding(true);
+        }
+        
         // If authenticated and on home page, redirect to dashboard
         if (response.data && location.pathname === '/') {
           navigate('/dashboard', { replace: true });
