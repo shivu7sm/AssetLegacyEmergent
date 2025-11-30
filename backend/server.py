@@ -3283,6 +3283,11 @@ async def get_latest_insight(user: User = Depends(require_auth)):
 async def generate_insights(user: User = Depends(require_auth)):
     """Generate fresh AI insights and store them. Includes portfolio holdings. Filters by demo mode."""
     try:
+        # Check if LLM key is available
+        llm_key = os.environ.get("EMERGENT_LLM_KEY")
+        if not llm_key:
+            logger.warning("EMERGENT_LLM_KEY not set - AI insights will use fallback templates")
+        
         from emergentintegrations.llm.chat import LlmChat, UserMessage
         
         # Fetch user's assets and portfolios - FILTER BY DEMO MODE
