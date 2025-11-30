@@ -935,6 +935,393 @@ export default function TaxBlueprint() {
                 </Card>
               </TabsContent>
             )}
+
+            {/* Tax Benefits Guide Tab */}
+            <TabsContent value="tax-benefits">
+              {taxBenefits ? (
+                <div className="space-y-6">
+                  {/* Header */}
+                  <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#a855f7'}}>
+                    <CardContent className="p-6">
+                      <h2 className="text-2xl font-bold mb-2" style={{color: '#f8fafc'}}>
+                        📚 Complete Tax Deductions Guide
+                      </h2>
+                      <p className="text-base" style={{color: '#cbd5e1'}}>
+                        Don&apos;t leave money on the table! Here are all deductions you can claim.
+                      </p>
+                      <div className="mt-4 p-4 rounded-lg" style={{background: 'rgba(16, 185, 129, 0.1)'}}>
+                        <p className="text-xl font-bold" style={{color: '#10b981'}}>
+                          Potential Annual Savings: {taxBenefits.total_potential_saving}
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Common Deductions */}
+                  <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                    <CardHeader>
+                      <CardTitle style={{color: '#f8fafc'}}>💰 Common Tax Deductions (What You Can Claim)</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        {taxBenefits.common_deductions.filter(d => d.applicable).map((deduction, idx) => (
+                          <div key={idx} className="p-4 rounded-lg" style={{background: '#0f0a1a', border: '1px solid #2d1f3d'}}>
+                            <div className="flex justify-between items-start mb-2">
+                              <div>
+                                <h3 className="font-bold text-lg" style={{color: '#10b981'}}>
+                                  {deduction.name}
+                                </h3>
+                                <span className="text-xs px-2 py-1 rounded mt-1 inline-block" style={{background: 'rgba(168, 85, 247, 0.1)', color: '#a855f7'}}>
+                                  Section {deduction.section}
+                                </span>
+                              </div>
+                              <div className="text-right">
+                                <p className="text-sm" style={{color: '#64748b'}}>Max Limit</p>
+                                <p className="font-bold" style={{color: '#f8fafc'}}>
+                                  {typeof deduction.limit === 'number' ? formatCurrency(deduction.limit) : deduction.limit}
+                                </p>
+                              </div>
+                            </div>
+                            <p className="text-sm" style={{color: '#cbd5e1'}}>{deduction.description}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Lesser-Known Benefits */}
+                  <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                    <CardHeader>
+                      <CardTitle style={{color: '#f8fafc'}}>💎 Lesser-Known Tax Benefits (Most People Miss These!)</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        {taxBenefits.lesser_known_benefits.map((benefit, idx) => (
+                          <div key={idx} className="p-5 rounded-lg" style={{background: 'linear-gradient(135deg, #0f0a1a 0%, #1a1229 100%)', border: '2px solid #10b981'}}>
+                            <div className="flex items-start gap-3 mb-3">
+                              <Sparkles className="w-6 h-6 flex-shrink-0" style={{color: '#10b981'}} />
+                              <div className="flex-1">
+                                <h3 className="font-bold text-lg mb-2" style={{color: '#10b981'}}>
+                                  {benefit.name}
+                                </h3>
+                                <p className="text-base mb-3" style={{color: '#f8fafc'}}>
+                                  {benefit.description}
+                                </p>
+                              </div>
+                              <div className="text-right">
+                                <p className="text-xs" style={{color: '#64748b'}}>Potential Saving</p>
+                                <p className="font-bold text-lg" style={{color: '#10b981'}}>
+                                  {benefit.potential_saving}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="p-3 rounded" style={{background: 'rgba(59, 130, 246, 0.1)'}}>
+                              <p className="text-sm font-semibold mb-1" style={{color: '#3b82f6'}}>
+                                How to Claim:
+                              </p>
+                              <p className="text-sm" style={{color: '#cbd5e1'}}>
+                                {benefit.how_to_claim}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Capital Gains Account */}
+                  <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                    <CardHeader>
+                      <CardTitle style={{color: '#f8fafc'}}>🏦 {taxBenefits.capital_gains_account.name}</CardTitle>
+                      <p className="text-sm mt-2" style={{color: '#94a3b8'}}>
+                        {taxBenefits.capital_gains_account.description}
+                      </p>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="font-semibold mb-2" style={{color: '#f8fafc'}}>✅ Benefits:</h4>
+                          <ul className="space-y-2">
+                            {taxBenefits.capital_gains_account.benefits.map((benefit, idx) => (
+                              <li key={idx} className="flex items-start gap-2">
+                                <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5" style={{color: '#10b981'}} />
+                                <span style={{color: '#cbd5e1'}}>{benefit}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                        
+                        <div className="p-4 rounded-lg" style={{background: '#0f0a1a'}}>
+                          <h4 className="font-semibold mb-2" style={{color: '#f8fafc'}}>📝 How to Open:</h4>
+                          <ol className="space-y-2">
+                            {taxBenefits.capital_gains_account.how_to_open.map((step, idx) => (
+                              <li key={idx} className="flex gap-2">
+                                <span className="font-bold" style={{color: '#a855f7'}}>{idx + 1}.</span>
+                                <span style={{color: '#cbd5e1'}}>{step}</span>
+                              </li>
+                            ))}
+                          </ol>
+                        </div>
+
+                        <div className="p-3 rounded" style={{background: 'rgba(168, 85, 247, 0.1)'}}>
+                          <p className="text-sm font-semibold" style={{color: '#a855f7'}}>
+                            🏛️ Where: {taxBenefits.capital_gains_account.where_to_open}
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              ) : (
+                <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                  <CardContent className="p-12 text-center">
+                    <p style={{color: '#94a3b8'}}>Loading tax benefits guide...</p>
+                  </CardContent>
+                </Card>
+              )}
+            </TabsContent>
+
+            {/* Wealth Structures Tab */}
+            <TabsContent value="wealth-structures">
+              {wealthStructures ? (
+                <div className="space-y-6">
+                  {/* Header */}
+                  <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#a855f7'}}>
+                    <CardContent className="p-6">
+                      <h2 className="text-2xl font-bold mb-2" style={{color: '#f8fafc'}}>
+                        🏛️ Wealth Structuring: HUF & Trust
+                      </h2>
+                      <p className="text-base" style={{color: '#cbd5e1'}}>
+                        Advanced strategies for tax optimization and asset protection
+                      </p>
+                    </CardContent>
+                  </Card>
+
+                  {/* HUF Section */}
+                  <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                    <CardHeader>
+                      <CardTitle style={{color: '#f8fafc'}}>{wealthStructures.huf.name}</CardTitle>
+                      <p className="text-sm mt-2" style={{color: '#94a3b8'}}>
+                        {wealthStructures.huf.what_is_it}
+                      </p>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        {/* Tax Benefits */}
+                        <div className="p-4 rounded-lg" style={{background: 'rgba(16, 185, 129, 0.1)', border: '1px solid #10b981'}}>
+                          <h4 className="font-semibold mb-2" style={{color: '#10b981'}}>💰 Tax Benefits:</h4>
+                          <ul className="space-y-1">
+                            {wealthStructures.huf.tax_benefits.map((benefit, idx) => (
+                              <li key={idx} className="text-sm" style={{color: '#f8fafc'}}>• {benefit}</li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        {/* How It Works */}
+                        <div>
+                          <h4 className="font-semibold mb-2" style={{color: '#f8fafc'}}>🔄 How It Works:</h4>
+                          <div className="grid grid-cols-1 gap-2">
+                            {wealthStructures.huf.how_it_works.map((point, idx) => (
+                              <div key={idx} className="p-3 rounded" style={{background: '#0f0a1a'}}>
+                                <p className="text-sm" style={{color: '#cbd5e1'}}>{point}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Pros & Cons */}
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="p-4 rounded-lg" style={{background: '#0f0a1a', border: '1px solid #10b981'}}>
+                            <h4 className="font-semibold mb-2" style={{color: '#10b981'}}>✅ Pros:</h4>
+                            <ul className="space-y-1">
+                              {wealthStructures.huf.pros.map((pro, idx) => (
+                                <li key={idx} className="text-xs" style={{color: '#cbd5e1'}}>• {pro}</li>
+                              ))}
+                            </ul>
+                          </div>
+                          <div className="p-4 rounded-lg" style={{background: '#0f0a1a', border: '1px solid #ef4444'}}>
+                            <h4 className="font-semibold mb-2" style={{color: '#ef4444'}}>⚠️ Cons:</h4>
+                            <ul className="space-y-1">
+                              {wealthStructures.huf.cons.map((con, idx) => (
+                                <li key={idx} className="text-xs" style={{color: '#cbd5e1'}}>• {con}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+
+                        {/* Setup Steps */}
+                        <div className="p-4 rounded-lg" style={{background: '#0f0a1a'}}>
+                          <h4 className="font-semibold mb-3" style={{color: '#f8fafc'}}>📝 How to Setup:</h4>
+                          <ol className="space-y-2">
+                            {wealthStructures.huf.how_to_setup.map((step, idx) => (
+                              <li key={idx} className="flex gap-2">
+                                <span className="font-bold" style={{color: '#a855f7'}}>{idx + 1}.</span>
+                                <span className="text-sm" style={{color: '#cbd5e1'}}>{step}</span>
+                              </li>
+                            ))}
+                          </ol>
+                        </div>
+
+                        {/* Bottom Info */}
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="p-3 rounded" style={{background: 'rgba(168, 85, 247, 0.1)'}}>
+                            <p className="text-xs mb-1" style={{color: '#64748b'}}>Ideal For:</p>
+                            <p className="text-sm font-semibold" style={{color: '#a855f7'}}>
+                              {wealthStructures.huf.ideal_for}
+                            </p>
+                          </div>
+                          <div className="p-3 rounded" style={{background: 'rgba(59, 130, 246, 0.1)'}}>
+                            <p className="text-xs mb-1" style={{color: '#64748b'}}>Setup Cost:</p>
+                            <p className="text-sm font-semibold" style={{color: '#3b82f6'}}>
+                              {wealthStructures.huf.cost}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Trust Section */}
+                  <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                    <CardHeader>
+                      <CardTitle style={{color: '#f8fafc'}}>{wealthStructures.trust.name}</CardTitle>
+                      <p className="text-sm mt-2" style={{color: '#94a3b8'}}>
+                        {wealthStructures.trust.what_is_it}
+                      </p>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        {/* Types */}
+                        <div>
+                          <h4 className="font-semibold mb-2" style={{color: '#f8fafc'}}>Types of Trusts:</h4>
+                          <div className="grid grid-cols-1 gap-3">
+                            {wealthStructures.trust.types.map((type, idx) => (
+                              <div key={idx} className="p-3 rounded-lg" style={{background: '#0f0a1a', border: '1px solid #2d1f3d'}}>
+                                <h5 className="font-semibold mb-1" style={{color: '#10b981'}}>{type.name}</h5>
+                                <p className="text-xs mb-1" style={{color: '#94a3b8'}}>{type.description}</p>
+                                <p className="text-xs" style={{color: '#64748b'}}>Use: {type.use_case}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Benefits for Asset Tracking */}
+                        <div className="p-4 rounded-lg" style={{background: 'rgba(59, 130, 246, 0.1)', border: '1px solid #3b82f6'}}>
+                          <h4 className="font-semibold mb-2" style={{color: '#3b82f6'}}>📊 Benefits for Asset Tracking:</h4>
+                          <ul className="space-y-1">
+                            {wealthStructures.trust.benefits_for_asset_tracking.map((benefit, idx) => (
+                              <li key={idx} className="text-sm" style={{color: '#f8fafc'}}>✓ {benefit}</li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        {/* Pros & Cons */}
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="p-4 rounded-lg" style={{background: '#0f0a1a', border: '1px solid #10b981'}}>
+                            <h4 className="font-semibold mb-2" style={{color: '#10b981'}}>✅ Pros:</h4>
+                            <ul className="space-y-1">
+                              {wealthStructures.trust.pros.slice(0, 6).map((pro, idx) => (
+                                <li key={idx} className="text-xs" style={{color: '#cbd5e1'}}>• {pro}</li>
+                              ))}
+                            </ul>
+                          </div>
+                          <div className="p-4 rounded-lg" style={{background: '#0f0a1a', border: '1px solid #ef4444'}}>
+                            <h4 className="font-semibold mb-2" style={{color: '#ef4444'}}>⚠️ Cons:</h4>
+                            <ul className="space-y-1">
+                              {wealthStructures.trust.cons.slice(0, 6).map((con, idx) => (
+                                <li key={idx} className="text-xs" style={{color: '#cbd5e1'}}>• {con}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+
+                        {/* Setup Steps */}
+                        <div className="p-4 rounded-lg" style={{background: '#0f0a1a'}}>
+                          <h4 className="font-semibold mb-3" style={{color: '#f8fafc'}}>📝 How to Setup:</h4>
+                          <ol className="space-y-2">
+                            {wealthStructures.trust.how_to_setup.map((step, idx) => (
+                              <li key={idx} className="flex gap-2">
+                                <span className="font-bold" style={{color: '#a855f7'}}>{idx + 1}.</span>
+                                <span className="text-sm" style={{color: '#cbd5e1'}}>{step}</span>
+                              </li>
+                            ))}
+                          </ol>
+                        </div>
+
+                        {/* When to Consider */}
+                        <div className="p-4 rounded-lg" style={{background: 'rgba(168, 85, 247, 0.1)'}}>
+                          <h4 className="font-semibold mb-2" style={{color: '#a855f7'}}>🤔 When to Consider Trust:</h4>
+                          <ul className="grid grid-cols-2 gap-2">
+                            {wealthStructures.trust.when_to_consider.map((point, idx) => (
+                              <li key={idx} className="text-sm" style={{color: '#f8fafc'}}>• {point}</li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        {/* Cost Breakdown */}
+                        <div className="p-4 rounded-lg" style={{background: '#0f0a1a'}}>
+                          <h4 className="font-semibold mb-2" style={{color: '#f8fafc'}}>💰 Cost Breakdown:</h4>
+                          <div className="grid grid-cols-2 gap-3">
+                            {Object.entries(wealthStructures.trust.cost_breakdown).map(([key, value], idx) => (
+                              <div key={idx} className="p-2 rounded" style={{background: '#1a1229'}}>
+                                <p className="text-xs" style={{color: '#64748b'}}>
+                                  {key.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
+                                </p>
+                                <p className="text-sm font-semibold" style={{color: '#f8fafc'}}>{value}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Comparison Card */}
+                  <Card style={{background: 'linear-gradient(135deg, #0f0a1a 0%, #1a1229 100%)', borderColor: '#a855f7'}}>
+                    <CardHeader>
+                      <CardTitle style={{color: '#f8fafc'}}>⚖️ Quick Comparison</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-2 gap-6">
+                        <div>
+                          <h4 className="font-bold mb-3" style={{color: '#10b981'}}>HUF</h4>
+                          {Object.entries(wealthStructures.comparison.huf).map(([key, value], idx) => (
+                            <div key={idx} className="flex justify-between py-2 border-b" style={{borderColor: '#2d1f3d'}}>
+                              <span className="text-sm" style={{color: '#94a3b8'}}>
+                                {key.charAt(0).toUpperCase() + key.slice(1).replace('_', ' ')}:
+                              </span>
+                              <span className="text-sm font-semibold" style={{color: '#f8fafc'}}>{value}</span>
+                            </div>
+                          ))}
+                        </div>
+                        <div>
+                          <h4 className="font-bold mb-3" style={{color: '#3b82f6'}}>Trust</h4>
+                          {Object.entries(wealthStructures.comparison.trust).map(([key, value], idx) => (
+                            <div key={idx} className="flex justify-between py-2 border-b" style={{borderColor: '#2d1f3d'}}>
+                              <span className="text-sm" style={{color: '#94a3b8'}}>
+                                {key.charAt(0).toUpperCase() + key.slice(1).replace('_', ' ')}:
+                              </span>
+                              <span className="text-sm font-semibold" style={{color: '#f8fafc'}}>{value}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="mt-4 p-3 rounded" style={{background: 'rgba(168, 85, 247, 0.1)'}}>
+                        <p className="text-sm font-semibold" style={{color: '#a855f7'}}>
+                          💡 Recommendation: {wealthStructures.recommendation}
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              ) : (
+                <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                  <CardContent className="p-12 text-center">
+                    <p style={{color: '#94a3b8'}}>Loading wealth structures guide...</p>
+                  </CardContent>
+                </Card>
+              )}
+            </TabsContent>
           </Tabs>
         )}
       </div>
