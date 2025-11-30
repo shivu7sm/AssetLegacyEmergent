@@ -536,7 +536,16 @@ async def create_session(request: Request, response: Response):
     
     logger.info(f"Session created for user {user_id}, cookie set (secure=True, samesite=none, proto={forwarded_proto or 'none'})")
     
-    return {"success": True}
+    # Also return token in response body as fallback for browsers that block third-party cookies
+    return {
+        "success": True,
+        "session_token": session_token,  # Client can store this and send via Authorization header
+        "user": {
+            "id": user_id,
+            "email": existing_user["email"],
+            "name": existing_user.get("name", "")
+        }
+    }
 
 @api_router.get("/auth/me")
 async def get_me(user: User = Depends(require_auth)):
