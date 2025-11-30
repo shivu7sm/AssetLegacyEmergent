@@ -23,6 +23,17 @@ import { ThemeProvider } from "./context/ThemeContext";
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
+// Setup axios interceptor to include session token from localStorage
+axios.interceptors.request.use((config) => {
+  const token = localStorage.getItem('session_token');
+  if (token && config.url?.includes(API)) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});
+
 const AuthContext = createContext(null);
 
 function AuthProvider({ children }) {
