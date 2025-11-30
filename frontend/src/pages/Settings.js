@@ -137,7 +137,7 @@ function DemoDataSection() {
         <p style={{color: theme.textTertiary}}>Reset and manage your demo data for testing</p>
       </div>
 
-      <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#f59e0b', borderWidth: '2px'}}>
+      <Card style={{background: theme.cardBg, borderColor: '#f59e0b', borderWidth: '2px'}}>
         <CardHeader>
           <CardTitle style={{color: theme.text}}>Reset Demo Data</CardTitle>
           <CardDescription style={{color: theme.textTertiary}}>
@@ -381,7 +381,7 @@ function SecurityAuditSection({ user }) {
       </div>
 
       {/* Security Overview Card */}
-      <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#3b82f6', borderWidth: '2px'}}>
+      <Card style={{background: theme.cardBg, borderColor: '#3b82f6', borderWidth: '2px'}}>
         <CardHeader>
           <CardTitle style={{color: theme.text}}>Account Security Status</CardTitle>
         </CardHeader>
@@ -1076,7 +1076,7 @@ export default function Settings() {
             </div>
             
             {/* Detailed Subscription Card */}
-            <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#a855f7'}}>
+            <Card style={{background: theme.cardBg, borderColor: '#a855f7'}}>
               <CardContent className="py-6">
                 <div className="flex items-start justify-between flex-wrap gap-6">
                   <div className="flex-1">
@@ -1251,7 +1251,7 @@ export default function Settings() {
                           {subscription.usage.assets} / {subscription.features.max_assets > 0 ? subscription.features.max_assets : '∞'}
                         </span>
                       </div>
-                      <div className="w-full h-2 rounded-full" style={{background: '#16001e'}}>
+                      <div className="w-full h-2 rounded-full" style={{background: theme.backgroundTertiary}}>
                         <div 
                           className="h-full rounded-full transition-all"
                           style={{
@@ -1272,7 +1272,7 @@ export default function Settings() {
                           {subscription.usage.documents} / {subscription.features.max_documents > 0 ? subscription.features.max_documents : '∞'}
                         </span>
                       </div>
-                      <div className="w-full h-2 rounded-full" style={{background: '#16001e'}}>
+                      <div className="w-full h-2 rounded-full" style={{background: theme.backgroundTertiary}}>
                         <div 
                           className="h-full rounded-full transition-all"
                           style={{
@@ -1296,7 +1296,7 @@ export default function Settings() {
                           }
                         </span>
                       </div>
-                      <div className="w-full h-2 rounded-full" style={{background: '#16001e'}}>
+                      <div className="w-full h-2 rounded-full" style={{background: theme.backgroundTertiary}}>
                         <div 
                           className="h-full rounded-full transition-all"
                           style={{
@@ -1886,7 +1886,7 @@ export default function Settings() {
                   <CardTitle style={{color: theme.text}}>Communication Preferences</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between p-4 rounded-lg" style={{background: '#16001e'}}>
+                  <div className="flex items-center justify-between p-4 rounded-lg" style={{background: theme.backgroundTertiary}}>
                     <div className="flex-1">
                       <p className="font-semibold" style={{color: theme.text}}>Marketing Communications</p>
                       <p className="text-sm" style={{color: theme.textTertiary}}>Receive updates about new features and offers</p>
@@ -1897,7 +1897,7 @@ export default function Settings() {
                     />
                   </div>
 
-                  <div className="flex items-center justify-between p-4 rounded-lg" style={{background: '#16001e'}}>
+                  <div className="flex items-center justify-between p-4 rounded-lg" style={{background: theme.backgroundTertiary}}>
                     <div className="flex-1">
                       <p className="font-semibold" style={{color: theme.text}}>Important Communications</p>
                       <p className="text-sm" style={{color: theme.textTertiary}}>Security alerts and account notifications (recommended)</p>
