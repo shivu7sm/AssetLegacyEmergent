@@ -171,7 +171,7 @@ export default function NomineeAccessCard({ nominee, onUpdate, onEdit, onDelete,
         <div className="flex justify-between items-start mb-4">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <p className="font-bold text-xl" style={{color: '#f8fafc'}}>{nominee.name}</p>
+              <p className="font-bold text-xl" style={{color: theme.text}}>{nominee.name}</p>
               {nominee.access_granted && (
                 <div className="px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1" style={{background: 'rgba(16, 185, 129, 0.2)', color: '#10b981'}}>
                   <Check className="w-3 h-3" />
@@ -179,9 +179,9 @@ export default function NomineeAccessCard({ nominee, onUpdate, onEdit, onDelete,
                 </div>
               )}
             </div>
-            <p className="text-sm mb-1" style={{color: '#cbd5e1'}}>{nominee.email}</p>
+            <p className="text-sm mb-1" style={{color: theme.textSecondary}}>{nominee.email}</p>
             {nominee.phone && (
-              <p className="text-sm" style={{color: '#94a3b8'}}>{nominee.phone}</p>
+              <p className="text-sm" style={{color: theme.textTertiary}}>{nominee.phone}</p>
             )}
             <div className="flex gap-2 mt-2">
               {nominee.relationship && (
