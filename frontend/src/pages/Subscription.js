@@ -10,59 +10,59 @@ import { Check, Crown, Zap, Loader2, CreditCard, Calendar, RefreshCw, AlertCircl
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-const PLANS = [
-  {
-    name: 'Free',
-    price: 0,
-    period: 'forever',
-    features: [
-      'Track up to 10 assets',
-      'Basic dashboard',
-      'One nominee',
-      'Dead man switch (90 days)',
-      'Email notifications'
-    ],
-    color: theme.textTertiary,
-    icon: Zap
-  },
-  {
-    name: 'Pro',
-    price: 9.99,
-    period: 'month',
-    features: [
-      'Unlimited assets',
-      'Advanced analytics',
-      'Multiple nominees',
-      'Custom DMS timing',
-      'AI financial insights',
-      'Document vault (5GB)',
-      'Priority support'
-    ],
-    color: '#a855f7',
-    icon: Crown,
-    popular: true
-  },
-  {
-    name: 'Family',
-    price: 24.99,
-    period: 'month',
-    features: [
-      'Everything in Pro',
-      'Up to 5 family members',
-      'Shared asset tracking',
-      'Family financial planning',
-      'Document vault (50GB)',
-      'Scheduled messages',
-      '24/7 support',
-      'Custom integrations'
-    ],
-    color: '#ec4899',
-    icon: Crown
-  }
-];
-
 export default function Subscription() {
   const { theme } = useTheme();
+  
+  const PLANS = [
+    {
+      name: 'Free',
+      price: 0,
+      period: 'forever',
+      features: [
+        'Track up to 10 assets',
+        'Basic dashboard',
+        'One nominee',
+        'Dead man switch (90 days)',
+        'Email notifications'
+      ],
+      color: theme.textTertiary,
+      icon: Zap
+    },
+    {
+      name: 'Pro',
+      price: 9.99,
+      period: 'month',
+      features: [
+        'Unlimited assets',
+        'Advanced analytics',
+        'Multiple nominees',
+        'Custom DMS timing',
+        'AI financial insights',
+        'Document vault (5GB)',
+        'Priority support'
+      ],
+      color: theme.primary,
+      icon: Crown,
+      popular: true
+    },
+    {
+      name: 'Family',
+      price: 24.99,
+      period: 'month',
+      features: [
+        'Everything in Pro',
+        'Up to 5 family members',
+        'Shared asset tracking',
+        'Family financial planning',
+        'Document vault (50GB)',
+        'Scheduled messages',
+        '24/7 support',
+        'Custom integrations'
+      ],
+      color: '#ec4899',
+      icon: Crown
+    }
+  ];
   const [currentPlan, setCurrentPlan] = useState('Free');
   const [loading, setLoading] = useState(false);
   const [subscriptionInfo, setSubscriptionInfo] = useState(null);
