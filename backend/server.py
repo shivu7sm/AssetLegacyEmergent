@@ -4185,7 +4185,8 @@ async def create_expense(expense_data: MonthlyExpenseCreate, user: User = Depend
         payment_date=expense_data.payment_date,
         is_recurring=expense_data.is_recurring if expense_data.is_recurring is not None else False,
         is_essential=expense_data.is_essential if expense_data.is_essential is not None else True,
-        notes=expense_data.notes
+        notes=expense_data.notes,
+        demo_mode=user.demo_mode  # Track demo/live
     )
     
     expense_dict = expense.model_dump()
