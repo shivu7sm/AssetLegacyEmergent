@@ -96,6 +96,13 @@ export const ThemeProvider = ({ children }) => {
     document.body.style.backgroundColor = theme.background;
     document.body.style.color = theme.text;
     document.body.style.transition = 'background-color 0.3s ease, color 0.3s ease';
+    
+    // Toggle dark class for Tailwind dark mode and shadcn components
+    if (colorTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   }, [colorTheme, theme]);
 
   return (
