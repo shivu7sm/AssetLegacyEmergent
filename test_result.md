@@ -256,7 +256,18 @@ backend:
 
 
 frontend:
-frontend:
+  - task: "Income & Expense Feature"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/IncomeExpense.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "User reported critical bug fix - income and expense entries were not visible in UI due to MongoDB ObjectId serialization errors. Backend fixed by adding {'_id': 0} projection to GET endpoints for /api/income and /api/expenses. Need to test that entries now appear in tables after creation."
+
   - task: "Assets Table Footer Fix"
     implemented: true
     working: "NA"
