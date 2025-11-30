@@ -386,6 +386,9 @@ async def get_current_user(request: Request) -> Optional[User]:
             session_token = auth_header.replace("Bearer ", "")
     
     if not session_token:
+        # Log for debugging - check if cookies are being sent
+        cookies_present = list(request.cookies.keys())
+        logger.debug(f"No session token found. Cookies present: {cookies_present}")
         return None
     
     session = await db.user_sessions.find_one({"session_token": session_token})
