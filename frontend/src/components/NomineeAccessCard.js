@@ -325,7 +325,7 @@ export default function NomineeAccessCard({ nominee, onUpdate, onEdit, onDelete,
               <div className="flex items-center justify-between gap-2">
                 <div className="flex-1 overflow-hidden">
                   <p className="text-xs font-semibold mb-1" style={{color: '#10b981'}}>SECURE ACCESS LINK</p>
-                  <p className="text-xs truncate font-mono" style={{color: '#cbd5e1'}}>
+                  <p className="text-xs truncate font-mono" style={{color: theme.textSecondary}}>
                     {accessLink}
                   </p>
                 </div>
@@ -338,7 +338,7 @@ export default function NomineeAccessCard({ nominee, onUpdate, onEdit, onDelete,
           
           {/* Explanation Text - Below the row */}
           <div className="mt-3 p-3 rounded-lg" style={{background: 'rgba(232, 194, 124, 0.05)', border: '1px solid rgba(232, 194, 124, 0.2)'}}>
-            <p className="text-xs" style={{color: '#cbd5e1'}}>
+            <p className="text-xs" style={{color: theme.textSecondary}}>
               {nominee.access_type === 'immediate' && '⚡ Immediate access - They can view your portfolio right now. Access auto-granted.'}
               {nominee.access_type === 'temporary' && '⏰ Temporary access - 7-day limited access. Perfect for temporary sharing.'}
               {nominee.access_type === 'after_dms' && '🛡️ After DMS - Access only activates if you\'re inactive beyond your Dead Man\'s Switch threshold. Auto-revokes current access.'}
