@@ -274,9 +274,9 @@ export default function Dashboard() {
                   <div 
                     className="flex items-center justify-between p-4 rounded-lg transition-all hover:shadow-md cursor-pointer"
                     style={{
-                      background: dashboardTheme === 'modern' ? '#fff' : 'rgba(26, 18, 41, 0.5)',
+                      background: theme.backgroundSecondary,
                       border: '1px solid',
-                      borderColor: dashboardTheme === 'modern' ? '#fecaca' : '#3d1828'
+                      borderColor: theme.border
                     }}
                     onClick={() => navigate('/settings?tab=nominees')}
                   >
@@ -285,20 +285,20 @@ export default function Dashboard() {
                         className="w-10 h-10 rounded-full flex items-center justify-center"
                         style={{background: 'rgba(239, 68, 68, 0.1)'}}
                       >
-                        <Shield className="w-5 h-5" style={{color: '#ef4444'}} />
+                        <Shield className="w-5 h-5" style={{color: theme.error}} />
                       </div>
                       <div>
-                        <div className="font-semibold" style={{color: dashboardTheme === 'modern' ? '#1a1f36' : '#f8fafc'}}>
+                        <div className="font-semibold" style={{color: theme.text}}>
                           Add a Nominee
                         </div>
-                        <div className="text-sm" style={{color: dashboardTheme === 'modern' ? '#697386' : '#94a3b8'}}>
+                        <div className="text-sm" style={{color: theme.textSecondary}}>
                           Designate someone to inherit your assets
                         </div>
                       </div>
                     </div>
                     <Button 
                       size="sm"
-                      style={{background: '#ef4444', color: '#fff'}}
+                      style={{background: theme.error, color: '#fff'}}
                     >
                       Set Up Now →
                     </Button>
@@ -309,9 +309,9 @@ export default function Dashboard() {
                   <div 
                     className="flex items-center justify-between p-4 rounded-lg transition-all hover:shadow-md cursor-pointer"
                     style={{
-                      background: dashboardTheme === 'modern' ? '#fff' : 'rgba(26, 18, 41, 0.5)',
+                      background: theme.backgroundSecondary,
                       border: '1px solid',
-                      borderColor: dashboardTheme === 'modern' ? '#fecaca' : '#3d1828'
+                      borderColor: theme.border
                     }}
                     onClick={() => navigate('/settings?tab=dms')}
                   >
@@ -320,20 +320,20 @@ export default function Dashboard() {
                         className="w-10 h-10 rounded-full flex items-center justify-center"
                         style={{background: 'rgba(239, 68, 68, 0.1)'}}
                       >
-                        <Clock className="w-5 h-5" style={{color: '#ef4444'}} />
+                        <Clock className="w-5 h-5" style={{color: theme.error}} />
                       </div>
                       <div>
-                        <div className="font-semibold" style={{color: dashboardTheme === 'modern' ? '#1a1f36' : '#f8fafc'}}>
+                        <div className="font-semibold" style={{color: theme.text}}>
                           Enable Dead Man's Switch
                         </div>
-                        <div className="text-sm" style={{color: dashboardTheme === 'modern' ? '#697386' : '#94a3b8'}}>
+                        <div className="text-sm" style={{color: theme.textSecondary}}>
                           Automatic notifications if you're inactive
                         </div>
                       </div>
                     </div>
                     <Button 
                       size="sm"
-                      style={{background: '#ef4444', color: '#fff'}}
+                      style={{background: theme.error, color: '#fff'}}
                     >
                       Set Up Now →
                     </Button>
@@ -341,8 +341,8 @@ export default function Dashboard() {
                 )}
               </div>
 
-              <div className="mt-4 p-3 rounded-lg" style={{background: dashboardTheme === 'modern' ? 'rgba(239, 68, 68, 0.05)' : 'rgba(239, 68, 68, 0.1)'}}>
-                <p className="text-xs" style={{color: dashboardTheme === 'modern' ? '#7f1d1d' : '#cbd5e1'}}>
+              <div className="mt-4 p-3 rounded-lg" style={{background: `rgba(239, 68, 68, ${theme.name === 'dark' ? '0.1' : '0.05'})`}}>
+                <p className="text-xs" style={{color: theme.textSecondary}}>
                   💡 <strong>Why this matters:</strong> Without these safeguards, your assets could be lost forever to your family. 
                   Complete setup takes less than 5 minutes.
                 </p>
