@@ -348,7 +348,7 @@ export default function NomineeAccessCard({ nominee, onUpdate, onEdit, onDelete,
 
         {/* Last Accessed Info */}
         {nominee.last_accessed_at && (
-          <div className="text-xs text-center" style={{color: '#64748b'}}>
+          <div className="text-xs text-center" style={{color: theme.textMuted}}>
             Last accessed: {new Date(nominee.last_accessed_at).toLocaleString()}
           </div>
         )}
