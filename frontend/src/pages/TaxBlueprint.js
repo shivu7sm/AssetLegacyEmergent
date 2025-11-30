@@ -108,7 +108,32 @@ export default function TaxBlueprint() {
 
   const handleSaveProfile = async () => {
     try {
-      await axios.post(`${API}/tax-blueprint/profile`, profileForm, { withCredentials: true });
+      // Validate required fields
+      if (!profileForm.annual_gross_income || parseFloat(profileForm.annual_gross_income) <= 0) {
+        toast.error('Please enter your annual gross income');
+        return;
+      }
+
+      // Prepare data with proper number conversions
+      const profileData = {
+        ...profileForm,
+        annual_gross_income: parseFloat(profileForm.annual_gross_income) || 0,
+        monthly_net_income: profileForm.monthly_net_income ? parseFloat(profileForm.monthly_net_income) : null,
+        children_count: parseInt(profileForm.children_count) || 0,
+        current_80c_investment: parseFloat(profileForm.current_80c_investment) || 0,
+        health_insurance_self: parseFloat(profileForm.health_insurance_self) || 0,
+        health_insurance_parents: parseFloat(profileForm.health_insurance_parents) || 0,
+        home_loan_principal: parseFloat(profileForm.home_loan_principal) || 0,
+        home_loan_interest: parseFloat(profileForm.home_loan_interest) || 0,
+        education_loan_interest: parseFloat(profileForm.education_loan_interest) || 0,
+        donations_80g: parseFloat(profileForm.donations_80g) || 0,
+        nps_additional: parseFloat(profileForm.nps_additional) || 0,
+        rental_income: parseFloat(profileForm.rental_income) || 0,
+        capital_gains: parseFloat(profileForm.capital_gains) || 0,
+        other_income: parseFloat(profileForm.other_income) || 0
+      };
+
+      await axios.post(`${API}/tax-blueprint/profile`, profileData, { withCredentials: true });
       toast.success('Profile saved successfully!');
       setShowProfileDialog(false);
       fetchProfile();
