@@ -46,21 +46,18 @@ function AuthProvider({ children }) {
             withCredentials: true
           });
           
-          // Clear the hash
-          window.location.hash = '';
-          
           // Fetch user data
           const response = await axios.get(`${API}/auth/me`, { withCredentials: true });
           setUser(response.data);
-          setLoading(false);
           
-          // Navigate immediately after user state is set
+          // Clear the hash and navigate
+          window.history.replaceState(null, '', window.location.pathname);
           navigate('/dashboard', { replace: true });
-          return;
         } catch (error) {
           console.error('Auth failed:', error);
-          setLoading(false);
           setUser(null);
+        } finally {
+          setLoading(false);
         }
         return;
       }
@@ -82,7 +79,7 @@ function AuthProvider({ children }) {
     };
 
     handleAuth();
-  }, []);
+  }, [location.hash]);
 
   if (loading) {
     return (
