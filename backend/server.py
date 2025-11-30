@@ -433,6 +433,7 @@ class MonthlyExpense(BaseModel):
     is_recurring: bool = False
     is_essential: bool = True
     notes: Optional[str] = None
+    demo_mode: bool = False  # Whether this is demo data
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
