@@ -471,9 +471,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Demo Data Reseed Endpoint"
-    - "Loan Calculator with Timeout"
-    - "Demo Mode Filtering"
+    - "Tax & Wealth Blueprint Feature"
   stuck_tasks:
     - "Loan Calculator with Timeout"
   test_all: false
