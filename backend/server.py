@@ -4348,51 +4348,61 @@ async def get_expense_categories():
 @api_router.post("/tax-blueprint/profile")
 async def create_tax_profile(profile_data: TaxProfileCreate, user: User = Depends(require_auth)):
     """Create or update user's tax profile"""
-    # Check if profile already exists
-    existing_profile = await db.tax_profiles.find_one({"user_id": user.id}, {"_id": 0})
-    
-    if existing_profile:
-        # Update existing profile
-        update_dict = profile_data.model_dump()
-        update_dict["updated_at"] = datetime.now(timezone.utc).isoformat()
+    try:
+        # Validate income
+        if profile_data.annual_gross_income <= 0:
+            raise HTTPException(status_code=400, detail="Annual gross income must be greater than 0")
         
-        await db.tax_profiles.update_one(
-            {"user_id": user.id},
-            {"$set": update_dict}
-        )
-        profile_id = existing_profile["id"]
-    else:
-        # Create new profile
-        profile = TaxProfile(
-            user_id=user.id,
-            **profile_data.model_dump()
-        )
+        # Check if profile already exists
+        existing_profile = await db.tax_profiles.find_one({"user_id": user.id}, {"_id": 0})
         
-        profile_dict = profile.model_dump()
-        profile_dict['created_at'] = profile_dict['created_at'].isoformat()
-        profile_dict['updated_at'] = profile_dict['updated_at'].isoformat()
+        if existing_profile:
+            # Update existing profile
+            update_dict = profile_data.model_dump()
+            update_dict["updated_at"] = datetime.now(timezone.utc).isoformat()
+            
+            await db.tax_profiles.update_one(
+                {"user_id": user.id},
+                {"$set": update_dict}
+            )
+            profile_id = existing_profile["id"]
+        else:
+            # Create new profile
+            profile = TaxProfile(
+                user_id=user.id,
+                **profile_data.model_dump()
+            )
+            
+            profile_dict = profile.model_dump()
+            profile_dict['created_at'] = profile_dict['created_at'].isoformat()
+            profile_dict['updated_at'] = profile_dict['updated_at'].isoformat()
+            
+            await db.tax_profiles.insert_one(profile_dict)
+            profile_id = profile.id
         
-        await db.tax_profiles.insert_one(profile_dict)
-        profile_id = profile.id
-    
-    # Calculate completion percentage
-    required_fields = [
-        "employment_status", "annual_gross_income", "tax_regime",
-        "marital_status", "risk_appetite"
-    ]
-    completed_fields = sum(1 for field in required_fields if getattr(profile_data, field, None))
-    completion_percentage = int((completed_fields / len(required_fields)) * 100)
-    
-    missing_fields = []
-    if profile_data.health_insurance_self == 0:
-        missing_fields.append("health_insurance_self")
-    
-    return {
-        "profile_id": profile_id,
-        "completion_percentage": completion_percentage,
-        "missing_fields": missing_fields,
-        "next_steps": ["Review your expense patterns" if completion_percentage >= 80 else "Complete remaining profile fields"]
-    }
+        # Calculate completion percentage
+        required_fields = [
+            "employment_status", "annual_gross_income", "tax_regime",
+            "marital_status", "risk_appetite"
+        ]
+        completed_fields = sum(1 for field in required_fields if getattr(profile_data, field, None))
+        completion_percentage = int((completed_fields / len(required_fields)) * 100)
+        
+        missing_fields = []
+        if profile_data.health_insurance_self == 0:
+            missing_fields.append("health_insurance_self")
+        
+        return {
+            "profile_id": profile_id,
+            "completion_percentage": completion_percentage,
+            "missing_fields": missing_fields,
+            "next_steps": ["Review your expense patterns" if completion_percentage >= 80 else "Complete remaining profile fields"]
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating tax profile: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to save profile")
 
 @api_router.get("/tax-blueprint/profile")
 async def get_tax_profile(user: User = Depends(require_auth)):
