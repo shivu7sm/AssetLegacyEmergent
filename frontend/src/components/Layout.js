@@ -119,9 +119,8 @@ export default function Layout({ children }) {
 
   return (
     <div className="min-h-screen" style={{
-      background: dashboardTheme === 'modern' 
-        ? '#0b0b11'
-        : ''
+      background: theme.background,
+      transition: 'background-color 0.3s ease'
     }}>
       {/* MVP Ribbon */}
       <div 
@@ -135,13 +134,13 @@ export default function Layout({ children }) {
         <div 
           className="absolute transform -rotate-45 text-center font-bold text-xs"
           style={{
-            background: 'linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%)',
+            background: theme.primaryGradient,
             color: 'white',
             width: '200px',
             padding: '8px 0',
             top: '30px',
             left: '-50px',
-            boxShadow: '0 4px 12px rgba(236, 72, 153, 0.5)',
+            boxShadow: colorTheme === 'dark' ? '0 4px 12px rgba(236, 72, 153, 0.5)' : '0 4px 12px rgba(139, 92, 246, 0.3)',
             letterSpacing: '1px'
           }}
         >
@@ -150,13 +149,17 @@ export default function Layout({ children }) {
       </div>
 
       {/* Header */}
-      <header className="backdrop-blur-xl sticky top-0 z-50" style={{borderBottom: '1px solid #2d1f3d', background: 'rgba(15, 10, 30, 0.9)'}}>
+      <header className="backdrop-blur-xl sticky top-0 z-50" style={{
+        borderBottom: `1px solid ${theme.border}`, 
+        background: theme.headerBg,
+        transition: 'all 0.3s ease'
+      }}>
         <div className="container mx-auto px-4 py-3">
           <div className="flex justify-between items-center">
             {/* Logo */}
             <div className="flex items-center gap-2 min-w-fit">
-              <ShieldCheck className="w-7 h-7" style={{color: '#ec4899'}} />
-              <h1 className="text-xl font-bold whitespace-nowrap" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>AssetVault</h1>
+              <ShieldCheck className="w-7 h-7" style={{color: theme.primary}} />
+              <h1 className="text-xl font-bold whitespace-nowrap" style={{fontFamily: 'Space Grotesk, sans-serif', color: theme.text}}>AssetVault</h1>
             </div>
             
             {/* Desktop Navigation */}
