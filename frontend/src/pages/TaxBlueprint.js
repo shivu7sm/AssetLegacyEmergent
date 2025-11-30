@@ -22,6 +22,8 @@ export default function TaxBlueprint() {
   const [profile, setProfile] = useState(null);
   const [blueprint, setBlueprint] = useState(null);
   const [regimeComparison, setRegimeComparison] = useState(null);
+  const [taxBenefits, setTaxBenefits] = useState(null);
+  const [wealthStructures, setWealthStructures] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showProfileDialog, setShowProfileDialog] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
