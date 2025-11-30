@@ -107,6 +107,7 @@ function AppearanceSection() {
 
 // Demo Data Section Component
 function DemoDataSection() {
+  const { theme } = useTheme();
   const [resetting, setResetting] = useState(false);
 
   const handleResetDemoData = async () => {
