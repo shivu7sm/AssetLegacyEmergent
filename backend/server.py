@@ -3470,6 +3470,31 @@ Format your response clearly with these section headers."""
         else:
             # Use fallback template when AI fails
             lines = []
+            # Pre-populate sections with template-based insights
+            sections["summary"] = f"Portfolio analysis shows net worth of ${net_worth:,.2f} across {total_assets_count + total_portfolios_count} holdings."
+            sections["distribution"] = f"Your portfolio includes {len(asset_types)} different asset types with the following distribution: {asset_distribution_str}."
+            sections["recommendations"] = [
+                "Consider diversifying across multiple asset classes to reduce risk",
+                "Maintain 3-6 months of expenses in liquid emergency funds",
+                "Review and rebalance your portfolio quarterly",
+                "Consider tax-advantaged investment accounts"
+            ]
+            sections["advantages"] = [
+                "Comprehensive tracking of all financial assets",
+                "Clear visibility into total net worth",
+                "Organized financial overview for planning"
+            ]
+            sections["risks"] = [
+                "Monitor concentration risk in any single asset type",
+                "Consider liquidity needs for emergency situations",
+                "Stay informed about market volatility impacts"
+            ]
+            sections["actions"] = [
+                "Update current market valuations for all assets",
+                "Set up regular portfolio review schedule",
+                "Consider professional financial planning consultation",
+                "Evaluate insurance coverage adequacy"
+            ]
         
         for line in lines:
             line = line.strip()
