@@ -132,9 +132,20 @@ function AuthProvider({ children }) {
     );
   }
 
+  const handleOnboardingComplete = () => {
+    setShowOnboarding(false);
+    // Update user state to reflect onboarding completion
+    if (user) {
+      setUser({...user, onboarding_completed: true});
+    }
+  };
+
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       {children}
+      {user && showOnboarding && (
+        <Onboarding open={showOnboarding} onComplete={handleOnboardingComplete} />
+      )}
     </AuthContext.Provider>
   );
 }
