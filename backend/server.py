@@ -4849,11 +4849,12 @@ async def get_wealth_structures_guide(user: User = Depends(require_auth)):
 async def generate_blueprint(force_refresh: bool = False, user: User = Depends(require_auth)):
     """Generate AI-powered Tax & Wealth Blueprint"""
     
-    # Check if recent blueprint exists (within 30 days)
+    # Check if recent blueprint exists (within 30 days) - filter by demo/live mode
     if not force_refresh:
         recent_blueprint = await db.tax_blueprints.find_one(
             {
                 "user_id": user.id,
+                "demo_mode": user.demo_mode,
                 "expires_at": {"$gt": datetime.now(timezone.utc).isoformat()}
             },
             {"_id": 0}
