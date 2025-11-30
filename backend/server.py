@@ -4025,7 +4025,7 @@ async def get_expenses(month: Optional[str] = None, category: Optional[str] = No
     if category:
         query["category"] = category
     
-    expenses = await db.monthly_expenses.find(query).sort("month", -1).to_list(1000)
+    expenses = await db.monthly_expenses.find(query, {"_id": 0}).sort("month", -1).to_list(1000)
     return {"expenses": expenses}
 
 @api_router.get("/expenses/{expense_id}")
