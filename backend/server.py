@@ -4108,7 +4108,8 @@ async def create_income(income_data: MonthlyIncomeCreate, user: User = Depends(r
         currency=income_data.currency or "USD",
         payment_date=income_data.payment_date,
         notes=income_data.notes,
-        recurring=income_data.recurring if income_data.recurring is not None else True
+        recurring=income_data.recurring if income_data.recurring is not None else True,
+        demo_mode=user.demo_mode  # Track demo/live
     )
     
     income_dict = income.model_dump()
