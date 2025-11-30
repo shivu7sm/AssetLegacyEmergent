@@ -3961,7 +3961,7 @@ async def get_income(income_id: str, user: User = Depends(require_auth)):
 @api_router.put("/income/{income_id}")
 async def update_income(income_id: str, update_data: MonthlyIncomeUpdate, user: User = Depends(require_auth)):
     """Update an income entry"""
-    income = await db.monthly_incomes.find_one({"id": income_id, "user_id": user.id})
+    income = await db.monthly_incomes.find_one({"id": income_id, "user_id": user.id}, {"_id": 0})
     if not income:
         raise HTTPException(status_code=404, detail="Income not found")
     
