@@ -641,12 +641,12 @@ export default function Dashboard() {
 
         {/* Alerts */}
         {(!summary?.has_nominee || !summary?.has_dms) && (
-          <Card data-testid="setup-alert" style={{background: 'rgba(251, 191, 36, 0.1)', borderColor: 'rgba(251, 191, 36, 0.3)'}}>
+          <Card data-testid="setup-alert" style={{background: `rgba(251, 191, 36, ${theme.name === 'dark' ? '0.1' : '0.05'})`, borderColor: `rgba(251, 191, 36, ${theme.name === 'dark' ? '0.3' : '0.2'})`, boxShadow: theme.cardShadow}}>
             <CardContent className="pt-6">
               <div className="flex items-start gap-4">
-                <AlertCircle className="w-6 h-6 flex-shrink-0 mt-1" style={{color: '#fbbf24'}} />
+                <AlertCircle className="w-6 h-6 flex-shrink-0 mt-1" style={{color: theme.warning}} />
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold mb-2" style={{color: '#fbbf24'}}>Setup Required</h3>
+                  <h3 className="text-lg font-semibold mb-2" style={{color: theme.warning}}>Setup Required</h3>
                   <p className="mb-4" style={{color: theme.textSecondary}}>
                     {!summary?.has_nominee && 'Please add a nominee to ensure your assets reach the right person. '}
                     {!summary?.has_dms && 'Configure the dead man switch for automated protection.'}
@@ -655,7 +655,7 @@ export default function Dashboard() {
                     data-testid="complete-setup-btn"
                     onClick={() => navigate('/settings')} 
                     className="text-white rounded-full"
-                    style={{background: '#f59e0b'}}
+                    style={{background: theme.warning}}
                   >
                     Complete Setup
                   </Button>
