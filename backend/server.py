@@ -470,6 +470,166 @@ class MonthlySummary(BaseModel):
     income_by_source: Dict[str, float] = {}
     expenses_by_category: Dict[str, float] = {}
 
+# Tax & Wealth Blueprint Models
+class Instrument80C(BaseModel):
+    type: str
+    annual_contribution: float
+    lock_in_years: Optional[int] = None
+
+class TaxProfile(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    
+    # Employment & Income
+    employment_status: str  # salaried_private, salaried_govt, self_employed, freelancer, retired
+    annual_gross_income: float
+    monthly_net_income: Optional[float] = None
+    tax_regime: str  # old, new, undecided
+    residential_status: str = "resident"  # resident, nri, rnor
+    
+    # Family Structure
+    marital_status: str  # single, married_earning, married_non_earning, divorced
+    children_count: int = 0
+    children_age_groups: List[str] = []
+    dependent_parents: str = "none"  # none, one_senior, two_senior, disabled
+    
+    # Financial Goals
+    primary_goals: List[str] = []
+    goal_time_horizon: str = "long"  # short, medium, long, retirement
+    risk_appetite: str = "moderate"  # conservative, moderate, aggressive
+    
+    # Current 80C Status
+    current_80c_investment: float = 0
+    existing_80c_instruments: List[Instrument80C] = []
+    
+    # Health Insurance (80D)
+    health_insurance_self: float = 0
+    health_insurance_parents: float = 0
+    
+    # Other Deductions
+    home_loan_principal: float = 0
+    home_loan_interest: float = 0
+    education_loan_interest: float = 0
+    donations_80g: float = 0
+    nps_additional: float = 0
+    
+    # Additional Income
+    rental_income: float = 0
+    capital_gains: float = 0
+    other_income: float = 0
+    
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class TaxProfileCreate(BaseModel):
+    employment_status: str
+    annual_gross_income: float
+    monthly_net_income: Optional[float] = None
+    tax_regime: str
+    residential_status: str = "resident"
+    marital_status: str
+    children_count: int = 0
+    children_age_groups: List[str] = []
+    dependent_parents: str = "none"
+    primary_goals: List[str] = []
+    goal_time_horizon: str = "long"
+    risk_appetite: str = "moderate"
+    current_80c_investment: float = 0
+    existing_80c_instruments: List[Dict[str, Any]] = []
+    health_insurance_self: float = 0
+    health_insurance_parents: float = 0
+    home_loan_principal: float = 0
+    home_loan_interest: float = 0
+    education_loan_interest: float = 0
+    donations_80g: float = 0
+    nps_additional: float = 0
+    rental_income: float = 0
+    capital_gains: float = 0
+    other_income: float = 0
+
+class InstrumentRecommendation(BaseModel):
+    instrument: str
+    suggested_amount: float
+    rationale: str
+    expected_return: float
+    risk_level: str
+    monthly_sip: float
+    tax_saved: float
+    action: str
+
+class HiddenSIPOpportunity(BaseModel):
+    expense_category: str
+    current_monthly_spend: float
+    recommended_reduction: float
+    reduction_percentage: float
+    hidden_sip_amount: float
+    wealth_projection_1yr: float
+    wealth_projection_5yr: float
+    wealth_projection_10yr: float
+    behavioral_tips: List[str]
+    action: str
+
+class PriorityAction(BaseModel):
+    rank: int
+    action: str
+    impact: str
+    effort: str
+    expected_saving: float
+    time_to_complete: str
+
+class TaxBlueprint(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    financial_year: str
+    
+    # Tax Analysis
+    estimated_tax_liability: float
+    current_tax_saved: float
+    section_80c_max_limit: float = 150000
+    section_80c_utilized: float
+    section_80c_gap: float
+    section_80c_recommendations: List[InstrumentRecommendation] = []
+    
+    # Other Deductions
+    section_80d_opportunity: float = 0
+    section_80e_opportunity: float = 0
+    section_24b_opportunity: float = 0
+    section_80ccd1b_opportunity: float = 0
+    total_tax_saving_opportunity: float
+    
+    # Expense Optimization
+    hidden_sip_opportunities: List[HiddenSIPOpportunity] = []
+    total_hidden_sip_potential: float = 0
+    
+    # Wealth Projection
+    current_monthly_savings: float
+    optimized_monthly_savings: float
+    projected_wealth_1yr: float
+    projected_wealth_3yr: float
+    projected_wealth_5yr: float
+    projected_wealth_10yr: float
+    projected_wealth_20yr: float = 0
+    
+    # AI Recommendations
+    priority_actions: List[PriorityAction] = []
+    ai_summary: str
+    confidence_score: float = 0
+    
+    generated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    expires_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc) + timedelta(days=30))
+
+class RegimeComparison(BaseModel):
+    old_regime_tax: float
+    old_regime_deductions: float
+    old_regime_final_tax: float
+    new_regime_tax: float
+    new_regime_final_tax: float
+    recommended_regime: str
+    tax_saving_difference: float
+    rationale: str
+
 # Auth Helper
 async def get_current_user(request: Request) -> Optional[User]:
     session_token = request.cookies.get("session_token")
