@@ -108,6 +108,24 @@ export default function TaxBlueprint() {
     }
   };
 
+  const fetchTaxBenefits = async () => {
+    try {
+      const response = await axios.get(`${API}/tax-blueprint/tax-benefits-guide`, { withCredentials: true });
+      setTaxBenefits(response.data);
+    } catch (error) {
+      console.error('Failed to fetch tax benefits:', error);
+    }
+  };
+
+  const fetchWealthStructures = async () => {
+    try {
+      const response = await axios.get(`${API}/tax-blueprint/wealth-structures`, { withCredentials: true });
+      setWealthStructures(response.data);
+    } catch (error) {
+      console.error('Failed to fetch wealth structures:', error);
+    }
+  };
+
   const handleSaveProfile = async () => {
     try {
       // Validate required fields
