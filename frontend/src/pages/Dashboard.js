@@ -251,21 +251,21 @@ export default function Dashboard() {
           <Card 
             className="border-l-4"
             style={{
-              background: dashboardTheme === 'modern' 
-                ? 'linear-gradient(135deg, #fff5f5 0%, #ffe5e5 100%)' 
-                : 'linear-gradient(135deg, #2d0e1e 0%, #3d1828 100%)',
-              borderColor: '#ef4444',
-              borderLeftWidth: '4px'
+              background: theme.cardBg,
+              borderColor: theme.error,
+              borderLeftWidth: '4px',
+              borderWidth: '1px',
+              borderStyle: 'solid'
             }}
           >
             <CardHeader>
-              <CardTitle className="flex items-center gap-3" style={{color: dashboardTheme === 'modern' ? '#991b1b' : '#fca5a5'}}>
+              <CardTitle className="flex items-center gap-3" style={{color: theme.error}}>
                 <AlertCircle className="w-6 h-6" />
                 <span>Complete Your Profile Setup</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="mb-4" style={{color: dashboardTheme === 'modern' ? '#7f1d1d' : '#cbd5e1', fontSize: '0.9375rem'}}>
+              <p className="mb-4" style={{color: theme.textSecondary, fontSize: '0.9375rem'}}>
                 Secure your legacy by completing these essential steps. Your loved ones will thank you.
               </p>
               
