@@ -366,7 +366,7 @@ export default function Dashboard() {
                     <div className="stat-value">
                       {formatCurrency(netWorthValue, selectedCurrency, currencyFormat)}
                     </div>
-                    <p className="text-sm mt-2" style={{color: 'rgba(255,255,255,0.8)'}}>
+                    <p className="text-sm mt-2" style={{color: theme.textSecondary}}>
                       {selectedCurrency} • {isPositive ? 'Healthy portfolio' : 'Review recommended'}
                     </p>
                   </div>
