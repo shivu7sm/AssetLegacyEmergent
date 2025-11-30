@@ -446,7 +446,7 @@ export default function Documents() {
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
                   className="px-3 py-2 rounded-md"
-                  style={{background: '#0f0a1e', borderColor: theme.border, color: theme.text, border: '1px solid'}}
+                  style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text, border: '1px solid'}}
                 >
                   <option value="date-desc">Newest First</option>
                   <option value="date-asc">Oldest First</option>
