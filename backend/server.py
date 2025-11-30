@@ -3471,7 +3471,7 @@ Format your response clearly with these section headers."""
             # Use fallback template when AI fails
             lines = []
             # Pre-populate sections with template-based insights
-            sections["summary"] = f"Portfolio analysis shows net worth of ${net_worth:,.2f} across {total_assets_count + total_portfolios_count} holdings."
+            sections["summary"] = f"Portfolio analysis shows net worth of ${net_worth:,.2f} across {len(assets) + len(portfolios)} holdings."
             sections["distribution"] = f"Your portfolio includes {len(asset_types)} different asset types with the following distribution: {asset_distribution_str}."
             sections["recommendations"] = [
                 "Consider diversifying across multiple asset classes to reduce risk",
