@@ -500,18 +500,23 @@ async def create_session(request: Request, response: Response):
     session_dict['created_at'] = session_dict['created_at'].isoformat()
     await db.user_sessions.insert_one(session_dict)
     
-    # Cookie settings for production (HTTPS + cross-origin)
+    # Detect if request came through HTTPS (via ingress/load balancer)
+    # Check X-Forwarded-Proto header that ingress adds
+    forwarded_proto = request.headers.get("X-Forwarded-Proto", "http")
+    is_https = forwarded_proto.lower() == "https"
+    
+    # Cookie settings: Use secure + samesite=none for HTTPS (production)
     response.set_cookie(
         key="session_token",
         value=session_token,
         httponly=True,
-        secure=False,  # Set to False as the app runs on HTTP internally, ingress handles HTTPS
-        samesite="lax",  # Changed from 'none' to 'lax' for better compatibility
+        secure=is_https,  # True in production (HTTPS), False in dev (HTTP)
+        samesite="none" if is_https else "lax",  # 'none' for cross-origin in production
         max_age=7 * 24 * 60 * 60,
         path="/"
     )
     
-    logger.info(f"Session created and cookie set for user {user_id}")
+    logger.info(f"Session created for user {user_id}, cookie set (secure={is_https}, proto={forwarded_proto})")
     
     return {"success": True}
 
