@@ -116,10 +116,10 @@ export default function Admin() {
       <div className="space-y-8" style={{padding: '2rem 1.5rem', margin: '0 auto', maxWidth: '1600px'}}>
         {/* Header */}
         <div>
-          <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{fontFamily: 'Space Grotesk, sans-serif', color: '#f8fafc'}}>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{fontFamily: 'Space Grotesk, sans-serif', color: theme.text}}>
             Admin Dashboard
           </h1>
-          <p style={{color: '#94a3b8'}}>Platform management and monitoring</p>
+          <p style={{color: theme.textSecondary}}>Platform management and monitoring</p>
         </div>
 
         {/* Refresh Button */}
@@ -135,7 +135,7 @@ export default function Admin() {
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex gap-2 border-b overflow-x-auto" style={{borderColor: '#2d1f3d'}}>
+        <div className="flex gap-2 border-b overflow-x-auto" style={{borderColor: theme.border}}>
           <button
             onClick={() => setActiveTab('overview')}
             className="px-6 py-3 font-semibold transition-all whitespace-nowrap"
@@ -193,13 +193,13 @@ export default function Admin() {
           <div className="space-y-6">
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#3b82f6'}}>
+              <Card style={{background: theme.cardBg, borderColor: '#3b82f6'}}>
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <p className="text-sm font-medium mb-2" style={{color: '#94a3b8'}}>TOTAL USERS</p>
+                      <p className="text-sm font-medium mb-2" style={{color: theme.textSecondary}}>TOTAL USERS</p>
                       <div className="text-4xl font-bold mb-1" style={{color: '#3b82f6'}}>{stats.users.total}</div>
-                      <p className="text-xs" style={{color: '#64748b'}}>+{stats.users.recent_30_days} in last 30 days</p>
+                      <p className="text-xs" style={{color: theme.textMuted}}>+{stats.users.recent_30_days} in last 30 days</p>
                     </div>
                     <div className="p-3 rounded-xl" style={{background: 'rgba(59, 130, 246, 0.1)'}}>
                       <Users className="w-8 h-8" style={{color: '#3b82f6'}} />
@@ -208,13 +208,13 @@ export default function Admin() {
                 </CardContent>
               </Card>
 
-              <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#10b981'}}>
+              <Card style={{background: theme.cardBg, borderColor: '#10b981'}}>
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <p className="text-sm font-medium mb-2" style={{color: '#94a3b8'}}>TOTAL ASSETS</p>
+                      <p className="text-sm font-medium mb-2" style={{color: theme.textSecondary}}>TOTAL ASSETS</p>
                       <div className="text-4xl font-bold mb-1" style={{color: '#10b981'}}>{stats.assets.total}</div>
-                      <p className="text-xs" style={{color: '#64748b'}}>across all users</p>
+                      <p className="text-xs" style={{color: theme.textMuted}}>across all users</p>
                     </div>
                     <div className="p-3 rounded-xl" style={{background: 'rgba(16, 185, 129, 0.1)'}}>
                       <Package className="w-8 h-8" style={{color: '#10b981'}} />
@@ -223,15 +223,15 @@ export default function Admin() {
                 </CardContent>
               </Card>
 
-              <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#ec4899'}}>
+              <Card style={{background: theme.cardBg, borderColor: '#ec4899'}}>
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <p className="text-sm font-medium mb-2" style={{color: '#94a3b8'}}>SUBSCRIPTIONS</p>
+                      <p className="text-sm font-medium mb-2" style={{color: theme.textSecondary}}>SUBSCRIPTIONS</p>
                       <div className="text-4xl font-bold mb-1" style={{color: '#ec4899'}}>
                         {(stats.users.by_subscription?.Pro || 0) + (stats.users.by_subscription?.Family || 0)}
                       </div>
-                      <p className="text-xs" style={{color: '#64748b'}}>Pro: {stats.users.by_subscription?.Pro || 0}, Family: {stats.users.by_subscription?.Family || 0}</p>
+                      <p className="text-xs" style={{color: theme.textMuted}}>Pro: {stats.users.by_subscription?.Pro || 0}, Family: {stats.users.by_subscription?.Family || 0}</p>
                     </div>
                     <div className="p-3 rounded-xl" style={{background: 'rgba(236, 72, 153, 0.1)'}}>
                       <CreditCard className="w-8 h-8" style={{color: '#ec4899'}} />
@@ -240,13 +240,13 @@ export default function Admin() {
                 </CardContent>
               </Card>
 
-              <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#a855f7'}}>
+              <Card style={{background: theme.cardBg, borderColor: '#a855f7'}}>
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <p className="text-sm font-medium mb-2" style={{color: '#94a3b8'}}>AI INSIGHTS</p>
+                      <p className="text-sm font-medium mb-2" style={{color: theme.textSecondary}}>AI INSIGHTS</p>
                       <div className="text-4xl font-bold mb-1" style={{color: '#a855f7'}}>{stats.ai_insights.total_generated}</div>
-                      <p className="text-xs" style={{color: '#64748b'}}>total generated</p>
+                      <p className="text-xs" style={{color: theme.textMuted}}>total generated</p>
                     </div>
                     <div className="p-3 rounded-xl" style={{background: 'rgba(168, 85, 247, 0.1)'}}>
                       <Sparkles className="w-8 h-8" style={{color: '#a855f7'}} />
@@ -257,16 +257,16 @@ export default function Admin() {
             </div>
 
             {/* Asset Distribution */}
-            <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+            <Card style={{background: '#1a1229', borderColor: theme.border}}>
               <CardHeader>
-                <CardTitle style={{color: '#f8fafc'}}>Asset Distribution by Type</CardTitle>
+                <CardTitle style={{color: theme.text}}>Asset Distribution by Type</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   {Object.entries(stats.assets.by_type || {}).map(([type, count]) => (
                     <div key={type} className="p-4 rounded-lg" style={{background: '#16001e'}}>
                       <div className="text-2xl font-bold mb-1" style={{color: '#10b981'}}>{count}</div>
-                      <div className="text-sm capitalize" style={{color: '#94a3b8'}}>{type.replace('_', ' ')}</div>
+                      <div className="text-sm capitalize" style={{color: theme.textSecondary}}>{type.replace('_', ' ')}</div>
                     </div>
                   ))}
                 </div>
@@ -275,40 +275,40 @@ export default function Admin() {
 
             {/* Scheduled Messages Overview */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+              <Card style={{background: '#1a1229', borderColor: theme.border}}>
                 <CardHeader>
-                  <CardTitle style={{color: '#f8fafc'}}>Scheduled Messages Status</CardTitle>
+                  <CardTitle style={{color: theme.text}}>Scheduled Messages Status</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
                     <div className="flex justify-between items-center p-3 rounded-lg" style={{background: '#16001e'}}>
-                      <span style={{color: '#94a3b8'}}>Pending</span>
+                      <span style={{color: theme.textSecondary}}>Pending</span>
                       <span className="font-bold" style={{color: '#f59e0b'}}>{stats.scheduled_messages.pending}</span>
                     </div>
                     <div className="flex justify-between items-center p-3 rounded-lg" style={{background: '#16001e'}}>
-                      <span style={{color: '#94a3b8'}}>Sent</span>
+                      <span style={{color: theme.textSecondary}}>Sent</span>
                       <span className="font-bold" style={{color: '#10b981'}}>{stats.scheduled_messages.sent}</span>
                     </div>
                     <div className="flex justify-between items-center p-3 rounded-lg" style={{background: '#16001e'}}>
-                      <span style={{color: '#94a3b8'}}>Failed</span>
+                      <span style={{color: theme.textSecondary}}>Failed</span>
                       <span className="font-bold" style={{color: '#ef4444'}}>{stats.scheduled_messages.failed}</span>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+              <Card style={{background: '#1a1229', borderColor: theme.border}}>
                 <CardHeader>
-                  <CardTitle style={{color: '#f8fafc'}}>Dead Man Switch Status</CardTitle>
+                  <CardTitle style={{color: theme.text}}>Dead Man Switch Status</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
                     <div className="flex justify-between items-center p-3 rounded-lg" style={{background: '#16001e'}}>
-                      <span style={{color: '#94a3b8'}}>Total Configured</span>
+                      <span style={{color: theme.textSecondary}}>Total Configured</span>
                       <span className="font-bold" style={{color: '#3b82f6'}}>{stats.dead_man_switches.total}</span>
                     </div>
                     <div className="flex justify-between items-center p-3 rounded-lg" style={{background: '#16001e'}}>
-                      <span style={{color: '#94a3b8'}}>Active</span>
+                      <span style={{color: theme.textSecondary}}>Active</span>
                       <span className="font-bold" style={{color: '#10b981'}}>{stats.dead_man_switches.active}</span>
                     </div>
                   </div>
@@ -320,22 +320,22 @@ export default function Admin() {
 
         {/* Users Tab */}
         {activeTab === 'users' && (
-          <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+          <Card style={{background: '#1a1229', borderColor: theme.border}}>
             <CardHeader>
-              <CardTitle style={{color: '#f8fafc'}}>User Management</CardTitle>
+              <CardTitle style={{color: theme.text}}>User Management</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
                     <tr style={{borderBottom: '2px solid #2d1f3d'}}>
-                      <th className="text-left py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>USER</th>
-                      <th className="text-left py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>EMAIL</th>
-                      <th className="text-center py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>ROLE</th>
-                      <th className="text-center py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>PLAN</th>
-                      <th className="text-center py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>ASSETS</th>
-                      <th className="text-left py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>JOINED</th>
-                      <th className="text-center py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>ACTIONS</th>
+                      <th className="text-left py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>USER</th>
+                      <th className="text-left py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>EMAIL</th>
+                      <th className="text-center py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>ROLE</th>
+                      <th className="text-center py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>PLAN</th>
+                      <th className="text-center py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>ASSETS</th>
+                      <th className="text-left py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>JOINED</th>
+                      <th className="text-center py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>ACTIONS</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -346,16 +346,16 @@ export default function Admin() {
                             {user.picture && (
                               <img src={user.picture} alt={user.name} className="w-8 h-8 rounded-full" />
                             )}
-                            <span style={{color: '#f8fafc', fontWeight: 500}}>{user.name}</span>
+                            <span style={{color: theme.text, fontWeight: 500}}>{user.name}</span>
                           </div>
                         </td>
-                        <td className="py-3 px-2" style={{color: '#94a3b8'}}>{user.email}</td>
+                        <td className="py-3 px-2" style={{color: theme.textSecondary}}>{user.email}</td>
                         <td className="py-3 px-2 text-center">
                           <Select
                             value={user.role}
                             onValueChange={(value) => updateUserRole(user.id, value)}
                           >
-                            <SelectTrigger className="w-32 mx-auto" style={{borderColor: '#2d1f3d'}}>
+                            <SelectTrigger className="w-32 mx-auto" style={{borderColor: theme.border}}>
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
@@ -382,7 +382,7 @@ export default function Admin() {
                         <td className="py-3 px-2 text-center" style={{color: '#10b981', fontWeight: 600}}>
                           {user.asset_count}
                         </td>
-                        <td className="py-3 px-2" style={{color: '#94a3b8', fontSize: '13px'}}>
+                        <td className="py-3 px-2" style={{color: theme.textSecondary, fontSize: '13px'}}>
                           {formatDate(user.created_at)}
                         </td>
                         <td className="py-3 px-2 text-center">
@@ -410,11 +410,11 @@ export default function Admin() {
         {activeTab === 'jobs' && (
           <div className="space-y-6">
             {/* Scheduled Messages */}
-            <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+            <Card style={{background: '#1a1229', borderColor: theme.border}}>
               <CardHeader>
                 <div className="flex items-center gap-3">
                   <Clock className="w-5 h-5" style={{color: '#f59e0b'}} />
-                  <CardTitle style={{color: '#f8fafc'}}>Scheduled Messages</CardTitle>
+                  <CardTitle style={{color: theme.text}}>Scheduled Messages</CardTitle>
                 </div>
               </CardHeader>
               <CardContent>
@@ -423,10 +423,10 @@ export default function Admin() {
                     <table className="w-full">
                       <thead>
                         <tr style={{borderBottom: '2px solid #2d1f3d'}}>
-                          <th className="text-left py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>RECIPIENT</th>
-                          <th className="text-left py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>SUBJECT</th>
-                          <th className="text-left py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>SEND DATE</th>
-                          <th className="text-center py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>STATUS</th>
+                          <th className="text-left py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>RECIPIENT</th>
+                          <th className="text-left py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>SUBJECT</th>
+                          <th className="text-left py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>SEND DATE</th>
+                          <th className="text-center py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>STATUS</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -434,12 +434,12 @@ export default function Admin() {
                           <tr key={msg.id} style={{borderBottom: '1px solid #1a1229'}}>
                             <td className="py-3 px-2">
                               <div>
-                                <div style={{color: '#f8fafc', fontWeight: 500}}>{msg.recipient_name}</div>
-                                <div style={{color: '#64748b', fontSize: '12px'}}>{msg.recipient_email}</div>
+                                <div style={{color: theme.text, fontWeight: 500}}>{msg.recipient_name}</div>
+                                <div style={{color: theme.textMuted, fontSize: '12px'}}>{msg.recipient_email}</div>
                               </div>
                             </td>
-                            <td className="py-3 px-2" style={{color: '#94a3b8'}}>{msg.subject}</td>
-                            <td className="py-3 px-2" style={{color: '#94a3b8', fontSize: '13px'}}>{msg.send_date}</td>
+                            <td className="py-3 px-2" style={{color: theme.textSecondary}}>{msg.subject}</td>
+                            <td className="py-3 px-2" style={{color: theme.textSecondary, fontSize: '13px'}}>{msg.send_date}</td>
                             <td className="py-3 px-2 text-center">
                               {msg.status === 'sent' && <CheckCircle className="w-5 h-5 mx-auto" style={{color: '#10b981'}} />}
                               {msg.status === 'scheduled' && <Clock className="w-5 h-5 mx-auto" style={{color: '#f59e0b'}} />}
@@ -451,17 +451,17 @@ export default function Admin() {
                     </table>
                   </div>
                 ) : (
-                  <p style={{color: '#94a3b8', textAlign: 'center', padding: '2rem'}}>No scheduled messages</p>
+                  <p style={{color: theme.textSecondary, textAlign: 'center', padding: '2rem'}}>No scheduled messages</p>
                 )}
               </CardContent>
             </Card>
 
             {/* DMS Reminders */}
-            <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+            <Card style={{background: '#1a1229', borderColor: theme.border}}>
               <CardHeader>
                 <div className="flex items-center gap-3">
                   <Shield className="w-5 h-5" style={{color: '#a855f7'}} />
-                  <CardTitle style={{color: '#f8fafc'}}>Dead Man Switch Monitoring</CardTitle>
+                  <CardTitle style={{color: theme.text}}>Dead Man Switch Monitoring</CardTitle>
                 </div>
               </CardHeader>
               <CardContent>
@@ -470,11 +470,11 @@ export default function Admin() {
                     <table className="w-full">
                       <thead>
                         <tr style={{borderBottom: '2px solid #2d1f3d'}}>
-                          <th className="text-left py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>USER</th>
-                          <th className="text-center py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>DAYS INACTIVE</th>
-                          <th className="text-center py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>DAYS UNTIL TRIGGER</th>
-                          <th className="text-center py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>REMINDERS SENT</th>
-                          <th className="text-center py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>STATUS</th>
+                          <th className="text-left py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>USER</th>
+                          <th className="text-center py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>DAYS INACTIVE</th>
+                          <th className="text-center py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>DAYS UNTIL TRIGGER</th>
+                          <th className="text-center py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>REMINDERS SENT</th>
+                          <th className="text-center py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>STATUS</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -482,8 +482,8 @@ export default function Admin() {
                           <tr key={dms.id} style={{borderBottom: '1px solid #1a1229'}}>
                             <td className="py-3 px-2">
                               <div>
-                                <div style={{color: '#f8fafc', fontWeight: 500}}>{dms.user_name}</div>
-                                <div style={{color: '#64748b', fontSize: '12px'}}>{dms.user_email}</div>
+                                <div style={{color: theme.text, fontWeight: 500}}>{dms.user_name}</div>
+                                <div style={{color: theme.textMuted, fontSize: '12px'}}>{dms.user_email}</div>
                               </div>
                             </td>
                             <td className="py-3 px-2 text-center">
@@ -508,14 +508,14 @@ export default function Admin() {
                                 {dms.days_until_trigger}
                               </span>
                             </td>
-                            <td className="py-3 px-2 text-center" style={{color: '#94a3b8', fontWeight: 600}}>
+                            <td className="py-3 px-2 text-center" style={{color: theme.textSecondary, fontWeight: 600}}>
                               {dms.reminders_sent}
                             </td>
                             <td className="py-3 px-2 text-center">
                               {dms.is_active ? (
                                 <CheckCircle className="w-5 h-5 mx-auto" style={{color: '#10b981'}} />
                               ) : (
-                                <XCircle className="w-5 h-5 mx-auto" style={{color: '#64748b'}} />
+                                <XCircle className="w-5 h-5 mx-auto" style={{color: theme.textMuted}} />
                               )}
                             </td>
                           </tr>
@@ -524,7 +524,7 @@ export default function Admin() {
                     </table>
                   </div>
                 ) : (
-                  <p style={{color: '#94a3b8', textAlign: 'center', padding: '2rem'}}>No DMS configured</p>
+                  <p style={{color: theme.textSecondary, textAlign: 'center', padding: '2rem'}}>No DMS configured</p>
                 )}
               </CardContent>
             </Card>
@@ -536,39 +536,39 @@ export default function Admin() {
           <div className="space-y-6">
             {/* Revenue Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#10b981'}}>
+              <Card style={{background: theme.cardBg, borderColor: '#10b981'}}>
                 <CardContent className="p-6">
-                  <p className="text-sm font-medium mb-2" style={{color: '#94a3b8'}}>MONTHLY RECURRING REVENUE</p>
+                  <p className="text-sm font-medium mb-2" style={{color: theme.textSecondary}}>MONTHLY RECURRING REVENUE</p>
                   <div className="text-4xl font-bold" style={{color: '#10b981'}}>
                     ${analytics.monthly_recurring_revenue}
                   </div>
                 </CardContent>
               </Card>
 
-              <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#3b82f6'}}>
+              <Card style={{background: theme.cardBg, borderColor: '#3b82f6'}}>
                 <CardContent className="p-6">
-                  <p className="text-sm font-medium mb-2" style={{color: '#94a3b8'}}>ANNUAL RECURRING REVENUE</p>
+                  <p className="text-sm font-medium mb-2" style={{color: theme.textSecondary}}>ANNUAL RECURRING REVENUE</p>
                   <div className="text-4xl font-bold" style={{color: '#3b82f6'}}>
                     ${analytics.annual_recurring_revenue}
                   </div>
                 </CardContent>
               </Card>
 
-              <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#ec4899'}}>
+              <Card style={{background: theme.cardBg, borderColor: '#ec4899'}}>
                 <CardContent className="p-6">
-                  <p className="text-sm font-medium mb-2" style={{color: '#94a3b8'}}>PAID SUBSCRIBERS</p>
+                  <p className="text-sm font-medium mb-2" style={{color: theme.textSecondary}}>PAID SUBSCRIBERS</p>
                   <div className="text-4xl font-bold" style={{color: '#ec4899'}}>
                     {analytics.total_paid_subscribers}
                   </div>
-                  <p className="text-xs mt-1" style={{color: '#64748b'}}>+{analytics.recent_subscriptions_30d} this month</p>
+                  <p className="text-xs mt-1" style={{color: theme.textMuted}}>+{analytics.recent_subscriptions_30d} this month</p>
                 </CardContent>
               </Card>
             </div>
 
             {/* Current Subscriptions Breakdown */}
-            <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+            <Card style={{background: '#1a1229', borderColor: theme.border}}>
               <CardHeader>
-                <CardTitle style={{color: '#f8fafc'}}>Current Subscription Distribution</CardTitle>
+                <CardTitle style={{color: theme.text}}>Current Subscription Distribution</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-3 gap-4">
@@ -579,7 +579,7 @@ export default function Admin() {
                       }}>
                         {count}
                       </div>
-                      <div className="text-sm" style={{color: '#94a3b8'}}>{plan}</div>
+                      <div className="text-sm" style={{color: theme.textSecondary}}>{plan}</div>
                     </div>
                   ))}
                 </div>
@@ -587,15 +587,15 @@ export default function Admin() {
             </Card>
 
             {/* Revenue Trend */}
-            <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+            <Card style={{background: '#1a1229', borderColor: theme.border}}>
               <CardHeader>
-                <CardTitle style={{color: '#f8fafc'}}>12-Month Revenue Trend</CardTitle>
+                <CardTitle style={{color: theme.text}}>12-Month Revenue Trend</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
                   {analytics.revenue_trend_12_months.slice(-6).map((month, index) => (
                     <div key={index} className="flex items-center gap-4">
-                      <div className="w-24 text-sm" style={{color: '#94a3b8'}}>{month.month}</div>
+                      <div className="w-24 text-sm" style={{color: theme.textSecondary}}>{month.month}</div>
                       <div className="flex-1">
                         <div className="h-8 rounded-lg flex items-center px-3" style={{
                           background: 'linear-gradient(90deg, #10b981 0%, #3b82f6 100%)',
@@ -605,7 +605,7 @@ export default function Admin() {
                           <span className="text-sm font-semibold text-white">${month.revenue}</span>
                         </div>
                       </div>
-                      <div className="w-20 text-sm text-right" style={{color: '#64748b'}}>
+                      <div className="w-20 text-sm text-right" style={{color: theme.textMuted}}>
                         {month.subscribers} subs
                       </div>
                     </div>
@@ -618,13 +618,13 @@ export default function Admin() {
 
         {/* Audit Logs Tab */}
         {activeTab === 'audit' && (
-          <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+          <Card style={{background: '#1a1229', borderColor: theme.border}}>
             <CardHeader>
               <div className="flex items-center gap-3">
                 <Shield className="w-5 h-5" style={{color: '#a855f7'}} />
-                <CardTitle style={{color: '#f8fafc'}}>Audit Logs</CardTitle>
+                <CardTitle style={{color: theme.text}}>Audit Logs</CardTitle>
               </div>
-              <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Track all system changes and admin actions</p>
+              <p className="text-sm mt-1" style={{color: theme.textSecondary}}>Track all system changes and admin actions</p>
             </CardHeader>
             <CardContent>
               {auditLogs.length > 0 ? (
@@ -632,12 +632,12 @@ export default function Admin() {
                   <table className="w-full">
                     <thead>
                       <tr style={{borderBottom: '2px solid #2d1f3d'}}>
-                        <th className="text-left py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>TIME</th>
-                        <th className="text-left py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>USER</th>
-                        <th className="text-center py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>ACTION</th>
-                        <th className="text-center py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>RESOURCE</th>
-                        <th className="text-left py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>IP ADDRESS</th>
-                        <th className="text-left py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>DETAILS</th>
+                        <th className="text-left py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>TIME</th>
+                        <th className="text-left py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>USER</th>
+                        <th className="text-center py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>ACTION</th>
+                        <th className="text-center py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>RESOURCE</th>
+                        <th className="text-left py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>IP ADDRESS</th>
+                        <th className="text-left py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>DETAILS</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -649,12 +649,12 @@ export default function Admin() {
                             background: log.is_admin_action ? 'rgba(168, 85, 247, 0.1)' : 'transparent'
                           }}
                         >
-                          <td className="py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>
+                          <td className="py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>
                             {new Date(log.timestamp).toLocaleString()}
                           </td>
                           <td className="py-3 px-2">
                             <div>
-                              <div style={{color: '#f8fafc', fontWeight: 500}}>{log.user_email}</div>
+                              <div style={{color: theme.text, fontWeight: 500}}>{log.user_email}</div>
                               {log.is_admin_action && (
                                 <span className="text-xs px-2 py-1 rounded-full" style={{background: '#a855f7', color: '#fff'}}>
                                   ADMIN
@@ -679,10 +679,10 @@ export default function Admin() {
                           <td className="py-3 px-2 text-center" style={{color: '#cbd5e1'}}>
                             {log.resource_type}
                           </td>
-                          <td className="py-3 px-2" style={{color: '#64748b', fontSize: '12px', fontFamily: 'monospace'}}>
+                          <td className="py-3 px-2" style={{color: theme.textMuted, fontSize: '12px', fontFamily: 'monospace'}}>
                             {log.ip_address || 'N/A'}
                           </td>
-                          <td className="py-3 px-2" style={{color: '#94a3b8', fontSize: '12px'}}>
+                          <td className="py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>
                             {log.changes ? JSON.stringify(log.changes).substring(0, 50) + '...' : '-'}
                           </td>
                         </tr>
@@ -691,7 +691,7 @@ export default function Admin() {
                   </table>
                 </div>
               ) : (
-                <p style={{color: '#94a3b8', textAlign: 'center', padding: '2rem'}}>No audit logs found</p>
+                <p style={{color: theme.textSecondary, textAlign: 'center', padding: '2rem'}}>No audit logs found</p>
               )}
             </CardContent>
           </Card>
