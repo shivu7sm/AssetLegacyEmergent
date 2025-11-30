@@ -379,46 +379,46 @@ export default function IncomeExpense() {
         {/* Summary Cards */}
         {summary && (
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#10b981'}}>
+            <Card style={{background: theme.cardBg, borderColor: theme.success, boxShadow: theme.cardShadow}}>
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm" style={{color: theme.textTertiary}}>Total Income</p>
-                    <p className="text-2xl font-bold mt-1" style={{color: '#10b981'}}>
+                    <p className="text-2xl font-bold mt-1" style={{color: theme.success}}>
                       {formatCurrency(summary.total_income_after_tax)}
                     </p>
                     <p className="text-xs mt-1" style={{color: theme.textMuted}}>After tax</p>
                   </div>
                   <div className="p-3 rounded-lg" style={{background: 'rgba(16, 185, 129, 0.1)'}}>
-                    <ArrowDownRight className="w-6 h-6" style={{color: '#10b981'}} />
+                    <ArrowDownRight className="w-6 h-6" style={{color: theme.success}} />
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#ef4444'}}>
+            <Card style={{background: theme.cardBg, borderColor: theme.error, boxShadow: theme.cardShadow}}>
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm" style={{color: theme.textTertiary}}>Total Expenses</p>
-                    <p className="text-2xl font-bold mt-1" style={{color: '#ef4444'}}>
+                    <p className="text-2xl font-bold mt-1" style={{color: theme.error}}>
                       {formatCurrency(summary.total_expenses)}
                     </p>
                     <p className="text-xs mt-1" style={{color: theme.textMuted}}>Monthly spending</p>
                   </div>
                   <div className="p-3 rounded-lg" style={{background: 'rgba(239, 68, 68, 0.1)'}}>
-                    <ArrowUpRight className="w-6 h-6" style={{color: '#ef4444'}} />
+                    <ArrowUpRight className="w-6 h-6" style={{color: theme.error}} />
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#3b82f6'}}>
+            <Card style={{background: theme.cardBg, borderColor: theme.info, boxShadow: theme.cardShadow}}>
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm" style={{color: theme.textTertiary}}>Net Savings</p>
-                    <p className="text-2xl font-bold mt-1" style={{color: summary.net_savings >= 0 ? '#10b981' : '#ef4444'}}>
+                    <p className="text-2xl font-bold mt-1" style={{color: summary.net_savings >= 0 ? theme.success : theme.error}}>
                       {formatCurrency(summary.net_savings)}
                     </p>
                     <p className="text-xs mt-1" style={{color: theme.textMuted}}>
@@ -426,24 +426,24 @@ export default function IncomeExpense() {
                     </p>
                   </div>
                   <div className="p-3 rounded-lg" style={{background: 'rgba(59, 130, 246, 0.1)'}}>
-                    <Wallet className="w-6 h-6" style={{color: '#3b82f6'}} />
+                    <Wallet className="w-6 h-6" style={{color: theme.info}} />
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card style={{background: 'linear-gradient(135deg, #1a1229 0%, #2d1f3d 100%)', borderColor: '#a855f7'}}>
+            <Card style={{background: theme.cardBg, borderColor: theme.primary, boxShadow: theme.cardShadow}}>
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm" style={{color: theme.textTertiary}}>Savings Rate</p>
-                    <p className="text-2xl font-bold mt-1" style={{color: '#a855f7'}}>
+                    <p className="text-2xl font-bold mt-1" style={{color: theme.primary}}>
                       {summary.savings_rate.toFixed(1)}%
                     </p>
                     <p className="text-xs mt-1" style={{color: theme.textMuted}}>Of income saved</p>
                   </div>
                   <div className="p-3 rounded-lg" style={{background: 'rgba(168, 85, 247, 0.1)'}}>
-                    <PieChart className="w-6 h-6" style={{color: '#a855f7'}} />
+                    <PieChart className="w-6 h-6" style={{color: theme.primary}} />
                   </div>
                 </div>
               </CardContent>
