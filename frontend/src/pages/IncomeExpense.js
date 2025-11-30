@@ -355,19 +355,19 @@ export default function IncomeExpense() {
         {/* Header */}
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold" style={{color: '#f8fafc'}}>Income & Expenses</h1>
-            <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Track your monthly cash flow</p>
+            <h1 className="text-3xl font-bold" style={{color: theme.text}}>Income & Expenses</h1>
+            <p className="text-sm mt-1" style={{color: theme.textTertiary}}>Track your monthly cash flow</p>
           </div>
           
           <div className="flex gap-3">
             <Select value={selectedMonth} onValueChange={setSelectedMonth}>
-              <SelectTrigger className="w-48" style={{background: '#1a1229', borderColor: '#2d1f3d', color: '#f8fafc'}}>
+              <SelectTrigger className="w-48" style={{background: theme.backgroundSecondary, borderColor: theme.border, color: theme.text}}>
                 <Calendar className="w-4 h-4 mr-2" />
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+              <SelectContent style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                 {getMonthOptions().map(option => (
-                  <SelectItem key={option.value} value={option.value} style={{color: '#f8fafc'}}>
+                  <SelectItem key={option.value} value={option.value} style={{color: theme.text}}>
                     {option.label}
                   </SelectItem>
                 ))}
@@ -383,11 +383,11 @@ export default function IncomeExpense() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm" style={{color: '#94a3b8'}}>Total Income</p>
+                    <p className="text-sm" style={{color: theme.textTertiary}}>Total Income</p>
                     <p className="text-2xl font-bold mt-1" style={{color: '#10b981'}}>
                       {formatCurrency(summary.total_income_after_tax)}
                     </p>
-                    <p className="text-xs mt-1" style={{color: '#64748b'}}>After tax</p>
+                    <p className="text-xs mt-1" style={{color: theme.textMuted}}>After tax</p>
                   </div>
                   <div className="p-3 rounded-lg" style={{background: 'rgba(16, 185, 129, 0.1)'}}>
                     <ArrowDownRight className="w-6 h-6" style={{color: '#10b981'}} />
@@ -400,11 +400,11 @@ export default function IncomeExpense() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm" style={{color: '#94a3b8'}}>Total Expenses</p>
+                    <p className="text-sm" style={{color: theme.textTertiary}}>Total Expenses</p>
                     <p className="text-2xl font-bold mt-1" style={{color: '#ef4444'}}>
                       {formatCurrency(summary.total_expenses)}
                     </p>
-                    <p className="text-xs mt-1" style={{color: '#64748b'}}>Monthly spending</p>
+                    <p className="text-xs mt-1" style={{color: theme.textMuted}}>Monthly spending</p>
                   </div>
                   <div className="p-3 rounded-lg" style={{background: 'rgba(239, 68, 68, 0.1)'}}>
                     <ArrowUpRight className="w-6 h-6" style={{color: '#ef4444'}} />
@@ -417,11 +417,11 @@ export default function IncomeExpense() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm" style={{color: '#94a3b8'}}>Net Savings</p>
+                    <p className="text-sm" style={{color: theme.textTertiary}}>Net Savings</p>
                     <p className="text-2xl font-bold mt-1" style={{color: summary.net_savings >= 0 ? '#10b981' : '#ef4444'}}>
                       {formatCurrency(summary.net_savings)}
                     </p>
-                    <p className="text-xs mt-1" style={{color: '#64748b'}}>
+                    <p className="text-xs mt-1" style={{color: theme.textMuted}}>
                       {summary.net_savings >= 0 ? 'Surplus' : 'Deficit'}
                     </p>
                   </div>
@@ -436,11 +436,11 @@ export default function IncomeExpense() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm" style={{color: '#94a3b8'}}>Savings Rate</p>
+                    <p className="text-sm" style={{color: theme.textTertiary}}>Savings Rate</p>
                     <p className="text-2xl font-bold mt-1" style={{color: '#a855f7'}}>
                       {summary.savings_rate.toFixed(1)}%
                     </p>
-                    <p className="text-xs mt-1" style={{color: '#64748b'}}>Of income saved</p>
+                    <p className="text-xs mt-1" style={{color: theme.textMuted}}>Of income saved</p>
                   </div>
                   <div className="p-3 rounded-lg" style={{background: 'rgba(168, 85, 247, 0.1)'}}>
                     <PieChart className="w-6 h-6" style={{color: '#a855f7'}} />
@@ -453,10 +453,10 @@ export default function IncomeExpense() {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
-            <TabsTrigger value="summary" style={{color: '#94a3b8'}}>Summary</TabsTrigger>
-            <TabsTrigger value="income" style={{color: '#94a3b8'}}>Income</TabsTrigger>
-            <TabsTrigger value="expenses" style={{color: '#94a3b8'}}>Expenses</TabsTrigger>
+          <TabsList style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
+            <TabsTrigger value="summary" style={{color: theme.textTertiary}}>Summary</TabsTrigger>
+            <TabsTrigger value="income" style={{color: theme.textTertiary}}>Income</TabsTrigger>
+            <TabsTrigger value="expenses" style={{color: theme.textTertiary}}>Expenses</TabsTrigger>
           </TabsList>
 
           {/* Summary Tab */}
@@ -464,16 +464,16 @@ export default function IncomeExpense() {
             {summary && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Income Breakdown */}
-                <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                   <CardHeader>
-                    <CardTitle style={{color: '#f8fafc'}}>Income by Source</CardTitle>
+                    <CardTitle style={{color: theme.text}}>Income by Source</CardTitle>
                   </CardHeader>
                   <CardContent>
                     {Object.entries(summary.income_by_source).length > 0 ? (
                       <div className="space-y-3">
                         {Object.entries(summary.income_by_source).map(([source, amount]) => (
                           <div key={source} className="flex justify-between items-center">
-                            <span style={{color: '#cbd5e1'}}>{source}</span>
+                            <span style={{color: theme.textSecondary}}>{source}</span>
                             <span className="font-semibold" style={{color: '#10b981'}}>
                               {formatCurrency(amount)}
                             </span>
@@ -481,15 +481,15 @@ export default function IncomeExpense() {
                         ))}
                       </div>
                     ) : (
-                      <p className="text-center py-4" style={{color: '#64748b'}}>No income recorded</p>
+                      <p className="text-center py-4" style={{color: theme.textMuted}}>No income recorded</p>
                     )}
                   </CardContent>
                 </Card>
 
                 {/* Expense Breakdown */}
-                <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                   <CardHeader>
-                    <CardTitle style={{color: '#f8fafc'}}>Expenses by Category</CardTitle>
+                    <CardTitle style={{color: theme.text}}>Expenses by Category</CardTitle>
                   </CardHeader>
                   <CardContent>
                     {Object.entries(summary.expenses_by_category).length > 0 ? (
@@ -499,7 +499,7 @@ export default function IncomeExpense() {
                           .slice(0, 8)
                           .map(([category, amount]) => (
                             <div key={category} className="flex justify-between items-center">
-                              <span style={{color: '#cbd5e1'}}>{category}</span>
+                              <span style={{color: theme.textSecondary}}>{category}</span>
                               <span className="font-semibold" style={{color: '#ef4444'}}>
                                 {formatCurrency(amount)}
                               </span>
@@ -507,7 +507,7 @@ export default function IncomeExpense() {
                           ))}
                       </div>
                     ) : (
-                      <p className="text-center py-4" style={{color: '#64748b'}}>No expenses recorded</p>
+                      <p className="text-center py-4" style={{color: theme.textMuted}}>No expenses recorded</p>
                     )}
                   </CardContent>
                 </Card>
@@ -517,10 +517,10 @@ export default function IncomeExpense() {
 
           {/* Income Tab */}
           <TabsContent value="income">
-            <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+            <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
               <CardHeader>
                 <div className="flex justify-between items-center">
-                  <CardTitle style={{color: '#f8fafc'}}>Income Entries</CardTitle>
+                  <CardTitle style={{color: theme.text}}>Income Entries</CardTitle>
                   <Button 
                     onClick={() => openIncomeDialog()}
                     style={{background: '#10b981', color: 'white'}}
@@ -536,20 +536,20 @@ export default function IncomeExpense() {
                     <table className="w-full">
                       <thead style={{borderBottom: '1px solid #2d1f3d'}}>
                         <tr>
-                          <th className="p-3 text-left" style={{color: '#94a3b8'}}>Source</th>
-                          <th className="p-3 text-left" style={{color: '#94a3b8'}}>Description</th>
-                          <th className="p-3 text-right" style={{color: '#94a3b8'}}>Before Tax</th>
-                          <th className="p-3 text-right" style={{color: '#94a3b8'}}>Tax</th>
-                          <th className="p-3 text-right" style={{color: '#94a3b8'}}>After Tax</th>
-                          <th className="p-3 text-center" style={{color: '#94a3b8'}}>Actions</th>
+                          <th className="p-3 text-left" style={{color: theme.textTertiary}}>Source</th>
+                          <th className="p-3 text-left" style={{color: theme.textTertiary}}>Description</th>
+                          <th className="p-3 text-right" style={{color: theme.textTertiary}}>Before Tax</th>
+                          <th className="p-3 text-right" style={{color: theme.textTertiary}}>Tax</th>
+                          <th className="p-3 text-right" style={{color: theme.textTertiary}}>After Tax</th>
+                          <th className="p-3 text-center" style={{color: theme.textTertiary}}>Actions</th>
                         </tr>
                       </thead>
                       <tbody>
                         {incomes.map(income => (
                           <tr key={income.id} style={{borderBottom: '1px solid #2d1f3d'}}>
-                            <td className="p-3" style={{color: '#f8fafc'}}>{income.source}</td>
-                            <td className="p-3" style={{color: '#cbd5e1'}}>{income.description}</td>
-                            <td className="p-3 text-right" style={{color: '#94a3b8'}}>
+                            <td className="p-3" style={{color: theme.text}}>{income.source}</td>
+                            <td className="p-3" style={{color: theme.textSecondary}}>{income.description}</td>
+                            <td className="p-3 text-right" style={{color: theme.textTertiary}}>
                               {formatCurrency(income.amount_before_tax)}
                             </td>
                             <td className="p-3 text-right" style={{color: '#ef4444'}}>
@@ -564,7 +564,7 @@ export default function IncomeExpense() {
                                   onClick={() => openIncomeDialog(income)}
                                   variant="outline"
                                   size="sm"
-                                  style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+                                  style={{borderColor: theme.border, color: theme.textTertiary}}
                                 >
                                   <Edit className="w-4 h-4" />
                                 </Button>
@@ -586,7 +586,7 @@ export default function IncomeExpense() {
                 ) : (
                   <div className="text-center py-12">
                     <Receipt className="w-12 h-12 mx-auto mb-4" style={{color: '#2d1f3d'}} />
-                    <p style={{color: '#64748b'}}>No income recorded for {formatMonth(selectedMonth)}</p>
+                    <p style={{color: theme.textMuted}}>No income recorded for {formatMonth(selectedMonth)}</p>
                     <Button 
                       onClick={() => openIncomeDialog()}
                       className="mt-4"
@@ -602,10 +602,10 @@ export default function IncomeExpense() {
 
           {/* Expenses Tab */}
           <TabsContent value="expenses">
-            <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+            <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
               <CardHeader>
                 <div className="flex justify-between items-center">
-                  <CardTitle style={{color: '#f8fafc'}}>Expense Entries</CardTitle>
+                  <CardTitle style={{color: theme.text}}>Expense Entries</CardTitle>
                   <Button 
                     onClick={() => openExpenseDialog()}
                     style={{background: '#ef4444', color: 'white'}}
@@ -621,23 +621,23 @@ export default function IncomeExpense() {
                     <table className="w-full">
                       <thead style={{borderBottom: '1px solid #2d1f3d'}}>
                         <tr>
-                          <th className="p-3 text-left" style={{color: '#94a3b8'}}>Category</th>
-                          <th className="p-3 text-left" style={{color: '#94a3b8'}}>Description</th>
-                          <th className="p-3 text-right" style={{color: '#94a3b8'}}>Amount</th>
-                          <th className="p-3 text-center" style={{color: '#94a3b8'}}>Type</th>
-                          <th className="p-3 text-center" style={{color: '#94a3b8'}}>Actions</th>
+                          <th className="p-3 text-left" style={{color: theme.textTertiary}}>Category</th>
+                          <th className="p-3 text-left" style={{color: theme.textTertiary}}>Description</th>
+                          <th className="p-3 text-right" style={{color: theme.textTertiary}}>Amount</th>
+                          <th className="p-3 text-center" style={{color: theme.textTertiary}}>Type</th>
+                          <th className="p-3 text-center" style={{color: theme.textTertiary}}>Actions</th>
                         </tr>
                       </thead>
                       <tbody>
                         {expenses.map(expense => (
                           <tr key={expense.id} style={{borderBottom: '1px solid #2d1f3d'}}>
-                            <td className="p-3" style={{color: '#f8fafc'}}>
+                            <td className="p-3" style={{color: theme.text}}>
                               {expense.category}
                               {expense.subcategory && (
-                                <span className="text-xs ml-2" style={{color: '#64748b'}}>({expense.subcategory})</span>
+                                <span className="text-xs ml-2" style={{color: theme.textMuted}}>({expense.subcategory})</span>
                               )}
                             </td>
-                            <td className="p-3" style={{color: '#cbd5e1'}}>{expense.description}</td>
+                            <td className="p-3" style={{color: theme.textSecondary}}>{expense.description}</td>
                             <td className="p-3 text-right font-semibold" style={{color: '#ef4444'}}>
                               {formatCurrency(expense.amount)}
                             </td>
@@ -658,7 +658,7 @@ export default function IncomeExpense() {
                                   onClick={() => openExpenseDialog(expense)}
                                   variant="outline"
                                   size="sm"
-                                  style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+                                  style={{borderColor: theme.border, color: theme.textTertiary}}
                                 >
                                   <Edit className="w-4 h-4" />
                                 </Button>
@@ -680,7 +680,7 @@ export default function IncomeExpense() {
                 ) : (
                   <div className="text-center py-12">
                     <Receipt className="w-12 h-12 mx-auto mb-4" style={{color: '#2d1f3d'}} />
-                    <p style={{color: '#64748b'}}>No expenses recorded for {formatMonth(selectedMonth)}</p>
+                    <p style={{color: theme.textMuted}}>No expenses recorded for {formatMonth(selectedMonth)}</p>
                     <Button 
                       onClick={() => openExpenseDialog()}
                       className="mt-4"
@@ -697,23 +697,23 @@ export default function IncomeExpense() {
 
         {/* Income Dialog */}
         <Dialog open={incomeDialogOpen} onOpenChange={setIncomeDialogOpen}>
-          <DialogContent style={{background: '#1a1229', borderColor: '#2d1f3d', maxWidth: '600px'}}>
+          <DialogContent style={{background: theme.backgroundSecondary, borderColor: theme.border, maxWidth: '600px'}}>
             <DialogHeader>
-              <DialogTitle style={{color: '#f8fafc'}}>
+              <DialogTitle style={{color: theme.text}}>
                 {editingIncome ? 'Edit Income' : 'Add Income'}
               </DialogTitle>
             </DialogHeader>
             <form onSubmit={editingIncome ? handleUpdateIncome : handleCreateIncome} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label style={{color: '#94a3b8'}}>Source</Label>
+                  <Label style={{color: theme.textTertiary}}>Source</Label>
                   <Select value={incomeForm.source} onValueChange={(value) => setIncomeForm({...incomeForm, source: value})}>
-                    <SelectTrigger style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}>
+                    <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                    <SelectContent style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                       {categories.income_sources.map(source => (
-                        <SelectItem key={source} value={source} style={{color: '#f8fafc'}}>
+                        <SelectItem key={source} value={source} style={{color: theme.text}}>
                           {source}
                         </SelectItem>
                       ))}
@@ -721,14 +721,14 @@ export default function IncomeExpense() {
                   </Select>
                 </div>
                 <div>
-                  <Label style={{color: '#94a3b8'}}>Currency</Label>
+                  <Label style={{color: theme.textTertiary}}>Currency</Label>
                   <Select value={incomeForm.currency} onValueChange={(value) => setIncomeForm({...incomeForm, currency: value})}>
-                    <SelectTrigger style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}>
+                    <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent style={{background: '#1a1229', borderColor: '#2d1f3d', maxHeight: '300px'}}>
+                    <SelectContent style={{background: theme.backgroundSecondary, borderColor: theme.border, maxHeight: '300px'}}>
                       {CURRENCIES.map(curr => (
-                        <SelectItem key={curr.code} value={curr.code} style={{color: '#f8fafc'}}>
+                        <SelectItem key={curr.code} value={curr.code} style={{color: theme.text}}>
                           {curr.code} - {curr.name} ({curr.symbol})
                         </SelectItem>
                       ))}
@@ -738,57 +738,57 @@ export default function IncomeExpense() {
               </div>
 
               <div>
-                <Label style={{color: '#94a3b8'}}>Description</Label>
+                <Label style={{color: theme.textTertiary}}>Description</Label>
                 <Input
                   value={incomeForm.description}
                   onChange={(e) => setIncomeForm({...incomeForm, description: e.target.value})}
                   placeholder="e.g., Monthly salary from Company XYZ"
                   required
-                  style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}
+                  style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label style={{color: '#94a3b8'}}>Amount Before Tax</Label>
+                  <Label style={{color: theme.textTertiary}}>Amount Before Tax</Label>
                   <Input
                     type="number"
                     step="0.01"
                     value={incomeForm.amount_before_tax}
                     onChange={(e) => setIncomeForm({...incomeForm, amount_before_tax: e.target.value})}
                     required
-                    style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}
+                    style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
                   />
                 </div>
                 <div>
-                  <Label style={{color: '#94a3b8'}}>Tax Deducted</Label>
+                  <Label style={{color: theme.textTertiary}}>Tax Deducted</Label>
                   <Input
                     type="number"
                     step="0.01"
                     value={incomeForm.tax_deducted}
                     onChange={(e) => setIncomeForm({...incomeForm, tax_deducted: e.target.value})}
-                    style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}
+                    style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
                   />
                 </div>
               </div>
 
               <div>
-                <Label style={{color: '#94a3b8'}}>Payment Date (Optional)</Label>
+                <Label style={{color: theme.textTertiary}}>Payment Date (Optional)</Label>
                 <Input
                   type="date"
                   value={incomeForm.payment_date}
                   onChange={(e) => setIncomeForm({...incomeForm, payment_date: e.target.value})}
-                  style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}
+                  style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
                 />
               </div>
 
               <div>
-                <Label style={{color: '#94a3b8'}}>Notes (Optional)</Label>
+                <Label style={{color: theme.textTertiary}}>Notes (Optional)</Label>
                 <Input
                   value={incomeForm.notes}
                   onChange={(e) => setIncomeForm({...incomeForm, notes: e.target.value})}
                   placeholder="Additional notes"
-                  style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}
+                  style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
                 />
               </div>
 
@@ -804,7 +804,7 @@ export default function IncomeExpense() {
                     resetIncomeForm();
                   }}
                   variant="outline"
-                  style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+                  style={{borderColor: theme.border, color: theme.textTertiary}}
                 >
                   Cancel
                 </Button>
@@ -815,23 +815,23 @@ export default function IncomeExpense() {
 
         {/* Expense Dialog */}
         <Dialog open={expenseDialogOpen} onOpenChange={setExpenseDialogOpen}>
-          <DialogContent style={{background: '#1a1229', borderColor: '#2d1f3d', maxWidth: '600px', maxHeight: '90vh', overflowY: 'auto'}}>
+          <DialogContent style={{background: theme.backgroundSecondary, borderColor: theme.border, maxWidth: '600px', maxHeight: '90vh', overflowY: 'auto'}}>
             <DialogHeader>
-              <DialogTitle style={{color: '#f8fafc'}}>
+              <DialogTitle style={{color: theme.text}}>
                 {editingExpense ? 'Edit Expense' : 'Add Expense'}
               </DialogTitle>
             </DialogHeader>
             <form onSubmit={editingExpense ? handleUpdateExpense : handleCreateExpense} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label style={{color: '#94a3b8'}}>Category</Label>
+                  <Label style={{color: theme.textTertiary}}>Category</Label>
                   <Select value={expenseForm.category} onValueChange={(value) => setExpenseForm({...expenseForm, category: value, subcategory: ''})}>
-                    <SelectTrigger style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}>
+                    <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                    <SelectContent style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                       {Object.keys(categories.expense_categories).map(category => (
-                        <SelectItem key={category} value={category} style={{color: '#f8fafc'}}>
+                        <SelectItem key={category} value={category} style={{color: theme.text}}>
                           {category}
                         </SelectItem>
                       ))}
@@ -839,14 +839,14 @@ export default function IncomeExpense() {
                   </Select>
                 </div>
                 <div>
-                  <Label style={{color: '#94a3b8'}}>Subcategory</Label>
+                  <Label style={{color: theme.textTertiary}}>Subcategory</Label>
                   <Select value={expenseForm.subcategory} onValueChange={(value) => setExpenseForm({...expenseForm, subcategory: value})}>
-                    <SelectTrigger style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}>
+                    <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
                       <SelectValue placeholder="Optional" />
                     </SelectTrigger>
-                    <SelectContent style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                    <SelectContent style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                       {(categories.expense_categories[expenseForm.category] || []).map(sub => (
-                        <SelectItem key={sub} value={sub} style={{color: '#f8fafc'}}>
+                        <SelectItem key={sub} value={sub} style={{color: theme.text}}>
                           {sub}
                         </SelectItem>
                       ))}
@@ -856,37 +856,37 @@ export default function IncomeExpense() {
               </div>
 
               <div>
-                <Label style={{color: '#94a3b8'}}>Description</Label>
+                <Label style={{color: theme.textTertiary}}>Description</Label>
                 <Input
                   value={expenseForm.description}
                   onChange={(e) => setExpenseForm({...expenseForm, description: e.target.value})}
                   placeholder="e.g., Dinner at restaurant"
                   required
-                  style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}
+                  style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label style={{color: '#94a3b8'}}>Amount</Label>
+                  <Label style={{color: theme.textTertiary}}>Amount</Label>
                   <Input
                     type="number"
                     step="0.01"
                     value={expenseForm.amount}
                     onChange={(e) => setExpenseForm({...expenseForm, amount: e.target.value})}
                     required
-                    style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}
+                    style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
                   />
                 </div>
                 <div>
-                  <Label style={{color: '#94a3b8'}}>Currency</Label>
+                  <Label style={{color: theme.textTertiary}}>Currency</Label>
                   <Select value={expenseForm.currency} onValueChange={(value) => setExpenseForm({...expenseForm, currency: value})}>
-                    <SelectTrigger style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}>
+                    <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent style={{background: '#1a1229', borderColor: '#2d1f3d', maxHeight: '300px'}}>
+                    <SelectContent style={{background: theme.backgroundSecondary, borderColor: theme.border, maxHeight: '300px'}}>
                       {CURRENCIES.map(curr => (
-                        <SelectItem key={curr.code} value={curr.code} style={{color: '#f8fafc'}}>
+                        <SelectItem key={curr.code} value={curr.code} style={{color: theme.text}}>
                           {curr.code} - {curr.name} ({curr.symbol})
                         </SelectItem>
                       ))}
@@ -897,14 +897,14 @@ export default function IncomeExpense() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label style={{color: '#94a3b8'}}>Payment Method</Label>
+                  <Label style={{color: theme.textTertiary}}>Payment Method</Label>
                   <Select value={expenseForm.payment_method} onValueChange={(value) => setExpenseForm({...expenseForm, payment_method: value})}>
-                    <SelectTrigger style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}>
+                    <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+                    <SelectContent style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                       {categories.payment_methods.map(method => (
-                        <SelectItem key={method} value={method} style={{color: '#f8fafc'}}>
+                        <SelectItem key={method} value={method} style={{color: theme.text}}>
                           {method}
                         </SelectItem>
                       ))}
@@ -912,12 +912,12 @@ export default function IncomeExpense() {
                   </Select>
                 </div>
                 <div>
-                  <Label style={{color: '#94a3b8'}}>Payment Date</Label>
+                  <Label style={{color: theme.textTertiary}}>Payment Date</Label>
                   <Input
                     type="date"
                     value={expenseForm.payment_date}
                     onChange={(e) => setExpenseForm({...expenseForm, payment_date: e.target.value})}
-                    style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}
+                    style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
                   />
                 </div>
               </div>
@@ -931,7 +931,7 @@ export default function IncomeExpense() {
                     onChange={(e) => setExpenseForm({...expenseForm, is_recurring: e.target.checked})}
                     style={{accentColor: '#a855f7'}}
                   />
-                  <Label htmlFor="is_recurring" style={{color: '#94a3b8'}}>Recurring Expense</Label>
+                  <Label htmlFor="is_recurring" style={{color: theme.textTertiary}}>Recurring Expense</Label>
                 </div>
                 <div className="flex items-center gap-2">
                   <input
@@ -941,17 +941,17 @@ export default function IncomeExpense() {
                     onChange={(e) => setExpenseForm({...expenseForm, is_essential: e.target.checked})}
                     style={{accentColor: '#a855f7'}}
                   />
-                  <Label htmlFor="is_essential" style={{color: '#94a3b8'}}>Essential Expense</Label>
+                  <Label htmlFor="is_essential" style={{color: theme.textTertiary}}>Essential Expense</Label>
                 </div>
               </div>
 
               <div>
-                <Label style={{color: '#94a3b8'}}>Notes (Optional)</Label>
+                <Label style={{color: theme.textTertiary}}>Notes (Optional)</Label>
                 <Input
                   value={expenseForm.notes}
                   onChange={(e) => setExpenseForm({...expenseForm, notes: e.target.value})}
                   placeholder="Additional notes"
-                  style={{background: '#0f0a1a', borderColor: '#2d1f3d', color: '#f8fafc'}}
+                  style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
                 />
               </div>
 
@@ -967,7 +967,7 @@ export default function IncomeExpense() {
                     resetExpenseForm();
                   }}
                   variant="outline"
-                  style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+                  style={{borderColor: theme.border, color: theme.textTertiary}}
                 >
                   Cancel
                 </Button>
