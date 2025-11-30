@@ -5177,7 +5177,8 @@ Return response in JSON format matching this structure:
         projected_wealth_10yr=calculate_sip_value(optimized_savings, 10),
         priority_actions=priority_actions,
         ai_summary=ai_content.get("ai_summary", "Complete your profile for detailed recommendations."),
-        confidence_score=ai_content.get("confidence_score", 75)
+        confidence_score=ai_content.get("confidence_score", 75),
+        demo_mode=user.demo_mode  # Track demo/live
     )
     
     # Save to database
