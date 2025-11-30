@@ -70,7 +70,7 @@ function AssetTableRow({ asset, typeInfo, purchaseValueOriginal, currentValueOri
 
   return (
     <tr style={{
-      borderBottom: '1px solid #2d1f3d',
+      borderBottom: `1px solid ${theme.border}`,
       background: isLiability ? 'rgba(220, 38, 38, 0.05)' : 'transparent'
     }}>
       <td className="p-4">
