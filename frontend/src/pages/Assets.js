@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { toast } from 'sonner';
 import { Plus, Edit, Trash2, DollarSign, TrendingUp, Grid, List, Filter, Calculator, MapPin } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
+import { useTheme } from '@/context/ThemeContext';
 import { formatCurrency, convertCurrency } from '@/utils/currencyConversion';
 import LoanCalculatorModal from '@/components/LoanCalculatorModal';
 
