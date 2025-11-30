@@ -104,18 +104,18 @@ function AssetTableRow({ asset, typeInfo, purchaseValueOriginal, currentValueOri
           {isLiability ? '-' : ''}{asset.purchase_currency} {purchaseValueOriginal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
         </div>
       </td>
-      <td className="p-4 text-right" style={{color: isLiability ? '#ef4444' : '#f8fafc'}}>
+      <td className="p-4 text-right" style={{color: isLiability ? theme.error : theme.text}}>
         {loading ? '...' : (isLiability ? '-' : '') + formatCurrency(purchaseConverted, selectedCurrency, currencyFormat)}
       </td>
       <td className="p-4 text-right">
-        <div style={{color: isLiability ? '#dc2626' : '#ec4899', fontWeight: 600}}>
+        <div style={{color: isLiability ? theme.error : theme.primary, fontWeight: 600}}>
           {loading ? '...' : (isLiability ? '-' : '') + formatCurrency(currentConverted, selectedCurrency, currencyFormat)}
         </div>
       </td>
       <td className="p-4 text-right">
         {!isLiability && !loading && gain !== 0 && (
           <div>
-            <div style={{color: gain > 0 ? '#22c55e' : '#ef4444', fontWeight: 600}}>
+            <div style={{color: gain > 0 ? theme.success : theme.error, fontWeight: 600}}>
               {gain > 0 ? '+' : ''}{gain.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
             </div>
             <div className="text-xs" style={{color: gain > 0 ? '#22c55e' : '#ef4444'}}>
