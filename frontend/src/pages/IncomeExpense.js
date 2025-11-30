@@ -44,6 +44,7 @@ const CURRENCIES = [
 
 export default function IncomeExpense() {
   const { selectedCurrency } = useApp();
+  const { theme } = useTheme();
   
   // State
   const [activeTab, setActiveTab] = useState('summary');
