@@ -507,8 +507,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Financial Health Ratios Frontend"
-    - "Net Worth Growth Rate Calculation Fix"
+    - "Onboarding Flow and Demo Data Auto-Loading"
   stuck_tasks:
     - "Loan Calculator with Timeout"
   test_all: false
