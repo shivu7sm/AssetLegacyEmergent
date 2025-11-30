@@ -379,7 +379,7 @@ export default function TaxBlueprint() {
               ⚡ Tax & Wealth Blueprint
             </h1>
             <p className="text-sm mt-1" style={{color: '#94a3b8'}}>
-              "अपने सपनों को सच करें" - Save Smart, Grow Wealth
+              &quot;अपने सपनों को सच करें&quot; - Save Smart, Grow Wealth
             </p>
           </div>
           
