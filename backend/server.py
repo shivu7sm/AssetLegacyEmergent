@@ -622,6 +622,7 @@ class TaxBlueprint(BaseModel):
     ai_summary: str
     confidence_score: float = 0
     
+    demo_mode: bool = False  # Whether this is demo data
     generated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     expires_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc) + timedelta(days=30))
 
