@@ -8,7 +8,7 @@ import json
 import time
 
 def test_admin_endpoints():
-    base_url = "https://legacy-asset-dev.preview.emergentagent.com"
+    base_url = "https://legacy-planner-13.preview.emergentagent.com"
     api_url = f"{base_url}/api"
     
     # Create admin user
