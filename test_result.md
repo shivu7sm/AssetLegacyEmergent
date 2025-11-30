@@ -525,7 +525,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Light/White Theme System"
+    - "Nominee Section White Theme Fix"
   stuck_tasks:
     - "Loan Calculator with Timeout"
   test_all: false
