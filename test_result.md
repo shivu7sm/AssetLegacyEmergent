@@ -480,7 +480,8 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Tax & Wealth Blueprint Feature"
+    - "Financial Health Ratios Frontend"
+    - "Net Worth Growth Rate Calculation Fix"
   stuck_tasks:
     - "Loan Calculator with Timeout"
   test_all: false
