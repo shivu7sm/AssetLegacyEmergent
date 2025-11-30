@@ -456,6 +456,7 @@ metadata:
 
 test_plan:
   current_focus:
+    - "Income & Expense Feature"
     - "Demo Data Reseed Endpoint"
     - "Loan Calculator with Timeout"
     - "Demo Mode Filtering"
