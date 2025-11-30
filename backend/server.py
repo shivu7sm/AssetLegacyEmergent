@@ -510,22 +510,31 @@ async def create_session(request: Request, response: Response):
     await db.user_sessions.insert_one(session_dict)
     
     # Detect if request came through HTTPS (via ingress/load balancer)
-    # Check X-Forwarded-Proto header that ingress adds
-    forwarded_proto = request.headers.get("X-Forwarded-Proto", "http")
-    is_https = forwarded_proto.lower() == "https"
+    # Check multiple headers that might indicate HTTPS
+    forwarded_proto = request.headers.get("X-Forwarded-Proto", "")
+    forwarded_ssl = request.headers.get("X-Forwarded-Ssl", "")
     
-    # Cookie settings: Use secure + samesite=none for HTTPS (production)
+    # Determine if HTTPS based on headers or environment
+    is_https = (
+        forwarded_proto.lower() == "https" or
+        forwarded_ssl.lower() == "on" or
+        os.environ.get("ENVIRONMENT") == "production" or
+        request.url.scheme == "https"
+    )
+    
+    # For cross-domain auth (zivinc.com -> legacy-asset-dev.emergent.host),
+    # we MUST use secure=True and samesite="none"
     response.set_cookie(
         key="session_token",
         value=session_token,
         httponly=True,
-        secure=is_https,  # True in production (HTTPS), False in dev (HTTP)
-        samesite="none" if is_https else "lax",  # 'none' for cross-origin in production
+        secure=True,  # Always True for production cross-domain cookies
+        samesite="none",  # Required for cross-origin cookies
         max_age=7 * 24 * 60 * 60,
         path="/"
     )
     
-    logger.info(f"Session created for user {user_id}, cookie set (secure={is_https}, proto={forwarded_proto})")
+    logger.info(f"Session created for user {user_id}, cookie set (secure=True, samesite=none, proto={forwarded_proto or 'none'})")
     
     return {"success": True}
 
