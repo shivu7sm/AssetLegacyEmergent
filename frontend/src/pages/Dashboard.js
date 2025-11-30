@@ -863,11 +863,11 @@ export default function Dashboard() {
           {/* Liability Distribution Row (if liabilities exist) */}
           {liabilityDistributionData.length > 0 && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+              <Card style={{background: theme.backgroundSecondary, borderColor: theme.border, boxShadow: theme.cardShadow}}>
                 <CardHeader>
                   <div className="flex justify-between items-center">
                     <div>
-                      <CardTitle style={{color: '#f8fafc'}}>Liability Distribution</CardTitle>
+                      <CardTitle style={{color: theme.text}}>Liability Distribution</CardTitle>
                       <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Breakdown by debt type</p>
                     </div>
                     <ChartTypeSwitcher 
