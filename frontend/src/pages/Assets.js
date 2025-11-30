@@ -1399,7 +1399,7 @@ export default function Assets() {
           /* PORTFOLIOS VIEW */
           <div>
             {portfolios.length === 0 ? (
-              <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
+              <Card style={{background: theme.cardBg, borderColor: theme.cardBorder, boxShadow: theme.cardShadow}}>
                 <CardContent className="py-16">
                   <div className="text-center">
                     <div className="text-6xl mb-4">📊</div>
