@@ -4391,6 +4391,7 @@ async def create_tax_profile(profile_data: TaxProfileCreate, user: User = Depend
             # Create new profile
             profile = TaxProfile(
                 user_id=user.id,
+                demo_mode=user.demo_mode,  # Track demo/live
                 **profile_data.model_dump()
             )
             
