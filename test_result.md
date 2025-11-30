@@ -256,6 +256,18 @@ backend:
 
 
 frontend:
+  - task: "Onboarding Flow and Demo Data Auto-Loading"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/Onboarding.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "NEW TESTING REQUEST - Comprehensive 6-step onboarding flow for new users with auto-loaded demo data. Features: 1) Onboarding appears immediately after auth for new users 2) Cannot close by clicking outside or ESC 3) 6 steps with progress bar (Welcome to AssetVault, Demo Mode explanation, Demo/Live toggle guide, Reset demo data guide, Key features tour, Final setup) 4) Demo data auto-loads (18+ assets, income/expenses, 5 documents) 5) Demo mode is default 6) Onboarding_completed flag tracking 7) Onboarding doesn't repeat after completion. Backend endpoints: /user/complete-onboarding, /demo/reseed. Component implemented in Onboarding.js with proper modal behavior and step navigation."
+
   - task: "Tax & Wealth Blueprint Feature"
     implemented: true
     working: true
