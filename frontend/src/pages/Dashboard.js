@@ -547,7 +547,7 @@ export default function Dashboard() {
           return (
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-2xl font-bold" style={{color: '#f8fafc', fontFamily: 'Space Grotesk, sans-serif'}}>
+                <h2 className="text-2xl font-bold" style={{color: theme.text, fontFamily: 'Space Grotesk, sans-serif'}}>
                   Financial Health Indicators
                 </h2>
                 {/* Legend */}
