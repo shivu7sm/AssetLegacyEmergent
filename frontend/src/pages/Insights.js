@@ -208,7 +208,7 @@ export default function Insights() {
                         </DialogHeader>
                         <div className="space-y-6 mt-4">
                           {/* Detailed Summary */}
-                          <div className="p-4 rounded-lg" style={{background: '#16001e', borderLeft: '3px solid #10b981'}}>
+                          <div className="p-4 rounded-lg" style={{background: theme.backgroundTertiary, borderLeft: '3px solid #10b981'}}>
                             <h4 className="font-semibold mb-2" style={{color: '#10b981', fontSize: '16px'}}>Portfolio Overview</h4>
                             <p 
                               style={{color: theme.textSecondary, lineHeight: '1.8'}}
@@ -218,7 +218,7 @@ export default function Insights() {
 
                           {/* Asset Distribution Analysis */}
                           {insights.asset_distribution_analysis && (
-                            <div className="p-4 rounded-lg" style={{background: '#16001e', borderLeft: '3px solid #3b82f6'}}>
+                            <div className="p-4 rounded-lg" style={{background: theme.backgroundTertiary, borderLeft: '3px solid #3b82f6'}}>
                               <h4 className="font-semibold mb-2" style={{color: '#3b82f6', fontSize: '16px'}}>Asset Distribution Analysis</h4>
                               <p 
                                 style={{color: theme.textSecondary, lineHeight: '1.8'}}
@@ -233,7 +233,7 @@ export default function Insights() {
                               <h4 className="font-semibold mb-3" style={{color: '#a855f7', fontSize: '18px'}}>Allocation Recommendations</h4>
                               <ul className="space-y-2">
                                 {insights.allocation_recommendations.map((rec, index) => (
-                                  <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: '#16001e'}}>
+                                  <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: theme.backgroundTertiary}}>
                                     <span className="text-xl">💡</span>
                                     <p 
                                       style={{color: theme.textSecondary, lineHeight: '1.6'}}
@@ -251,7 +251,7 @@ export default function Insights() {
                               <h4 className="font-semibold mb-3" style={{color: '#10b981', fontSize: '18px'}}>Portfolio Advantages</h4>
                               <ul className="space-y-2">
                                 {insights.advantages.map((adv, index) => (
-                                  <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: '#16001e'}}>
+                                  <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: theme.backgroundTertiary}}>
                                     <CheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{color: '#10b981'}} />
                                     <p 
                                       style={{color: theme.textSecondary, lineHeight: '1.6'}}
@@ -269,7 +269,7 @@ export default function Insights() {
                               <h4 className="font-semibold mb-3" style={{color: '#f59e0b', fontSize: '18px'}}>Risk Assessment</h4>
                               <ul className="space-y-2">
                                 {insights.risks.map((risk, index) => (
-                                  <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: '#16001e'}}>
+                                  <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: theme.backgroundTertiary}}>
                                     <XCircle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{color: '#f59e0b'}} />
                                     <p 
                                       style={{color: theme.textSecondary, lineHeight: '1.6'}}
@@ -287,7 +287,7 @@ export default function Insights() {
                               <h4 className="font-semibold mb-3" style={{color: '#ec4899', fontSize: '18px'}}>Recommended Actions</h4>
                               <ul className="space-y-2">
                                 {insights.action_items.map((action, index) => (
-                                  <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: '#16001e'}}>
+                                  <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: theme.backgroundTertiary}}>
                                     <span className="text-xl">✅</span>
                                     <p 
                                       style={{color: theme.textSecondary, lineHeight: '1.6'}}
@@ -331,7 +331,7 @@ export default function Insights() {
                   <CardContent>
                     <ul className="space-y-3">
                       {insights.allocation_recommendations.slice(0, expandedSections.recommendations ? undefined : 2).map((rec, index) => (
-                        <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: '#16001e', borderLeft: '2px solid #a855f7'}}>
+                        <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: theme.backgroundTertiary, borderLeft: '2px solid #a855f7'}}>
                           <span className="text-lg">💡</span>
                           <p 
                             style={{color: theme.textSecondary, lineHeight: '1.6', fontSize: '14px'}}
@@ -376,7 +376,7 @@ export default function Insights() {
                   <CardContent>
                     <ul className="space-y-3">
                       {insights.risks.slice(0, expandedSections.risks ? undefined : 2).map((risk, index) => (
-                        <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: '#16001e', borderLeft: '2px solid #f59e0b'}}>
+                        <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: theme.backgroundTertiary, borderLeft: '2px solid #f59e0b'}}>
                           <AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{color: '#f59e0b'}} />
                           <p 
                             style={{color: theme.textSecondary, lineHeight: '1.6', fontSize: '14px'}}
@@ -421,7 +421,7 @@ export default function Insights() {
                   <CardContent>
                     <ul className="space-y-3">
                       {insights.advantages.slice(0, expandedSections.advantages ? undefined : 2).map((adv, index) => (
-                        <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: '#16001e', borderLeft: '2px solid #10b981'}}>
+                        <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: theme.backgroundTertiary, borderLeft: '2px solid #10b981'}}>
                           <CheckCircle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{color: '#10b981'}} />
                           <p 
                             style={{color: theme.textSecondary, lineHeight: '1.6', fontSize: '14px'}}
@@ -466,7 +466,7 @@ export default function Insights() {
                   <CardContent>
                     <ul className="space-y-3">
                       {insights.action_items.slice(0, expandedSections.actions ? undefined : 2).map((action, index) => (
-                        <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: '#16001e', borderLeft: '2px solid #ec4899'}}>
+                        <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: theme.backgroundTertiary, borderLeft: '2px solid #ec4899'}}>
                           <span className="text-lg">✅</span>
                           <p 
                             style={{color: theme.textSecondary, lineHeight: '1.6', fontSize: '14px'}}
