@@ -505,6 +505,8 @@ export default function TaxBlueprint() {
               <TabsTrigger value="dashboard" style={{color: '#94a3b8'}}>Dashboard</TabsTrigger>
               <TabsTrigger value="80c-planner" style={{color: '#94a3b8'}}>80C Planner</TabsTrigger>
               <TabsTrigger value="hidden-sip" style={{color: '#94a3b8'}}>Hidden SIP</TabsTrigger>
+              <TabsTrigger value="tax-benefits" style={{color: '#94a3b8'}}>📚 Tax Guide</TabsTrigger>
+              <TabsTrigger value="wealth-structures" style={{color: '#94a3b8'}}>🏛️ HUF & Trust</TabsTrigger>
               {regimeComparison && (
                 <TabsTrigger value="regime" style={{color: '#94a3b8'}}>Tax Regime</TabsTrigger>
               )}
