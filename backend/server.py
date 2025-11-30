@@ -3831,6 +3831,16 @@ async def get_monthly_summary(month: str, target_currency: str = "USD", user: Us
     # Fetch expenses for the month
     expenses = await db.monthly_expenses.find({"user_id": user.id, "month": month}).to_list(1000)
     
+    # Helper function to get conversion rate
+    async def get_rate(from_curr, to_curr):
+        if from_curr.upper() == to_curr.upper():
+            return 1.0
+        try:
+            result = await get_currency_conversion(from_curr, to_curr)
+            return result['rate']
+        except:
+            return 1.0
+    
     # Convert all to target currency
     total_income_before_tax = 0
     total_tax_deducted = 0
@@ -3838,7 +3848,7 @@ async def get_monthly_summary(month: str, target_currency: str = "USD", user: Us
     income_by_source = {}
     
     for income in incomes:
-        rate = await get_conversion_rate(income['currency'], target_currency)
+        rate = await get_rate(income['currency'], target_currency)
         before_tax = income['amount_before_tax'] * rate
         tax = income['tax_deducted'] * rate
         after_tax = income['amount_after_tax'] * rate
@@ -3854,7 +3864,7 @@ async def get_monthly_summary(month: str, target_currency: str = "USD", user: Us
     expenses_by_category = {}
     
     for expense in expenses:
-        rate = await get_conversion_rate(expense['currency'], target_currency)
+        rate = await get_rate(expense['currency'], target_currency)
         amount = expense['amount'] * rate
         total_expenses += amount
         
