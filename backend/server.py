@@ -2079,6 +2079,22 @@ async def complete_onboarding(user: User = Depends(require_auth)):
         "message": "Onboarding completed"
     }
 
+@api_router.post("/user/theme")
+async def update_theme(theme: str, user: User = Depends(require_auth)):
+    """Update user's color theme preference"""
+    if theme not in ["dark", "light"]:
+        raise HTTPException(status_code=400, detail="Invalid theme. Must be 'dark' or 'light'")
+    
+    await db.users.update_one(
+        {"id": user.id},
+        {"$set": {"color_theme": theme}}
+    )
+    
+    return {
+        "success": True,
+        "theme": theme
+    }
+
 @api_router.post("/demo/reseed")
 async def reseed_demo_data(user: User = Depends(require_auth)):
     """Force reseed demo data - useful after updates"""
