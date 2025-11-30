@@ -174,7 +174,7 @@ export default function Dashboard() {
   
   return (
     <Layout>
-      <div className={`${dashboardTheme}-theme space-y-8`} data-testid="dashboard-container" style={dashboardTheme === 'modern' ? {padding: '2rem', background: '#0b0b11'} : {padding: '2rem 0'}}>
+      <div className={`${dashboardTheme}-theme space-y-8`} data-testid="dashboard-container" style={dashboardTheme === 'modern' ? {padding: '2rem', background: theme.background} : {padding: '2rem 0'}}>
         {/* Header */}
         <div>
           <h1 className={`${dashboardTheme === 'modern' ? 'text-3xl' : 'text-4xl'} font-bold mb-2`} style={dashboardTheme === 'modern' ? {fontFamily: 'Inter, sans-serif', color: theme.text} : {fontFamily: 'Space Grotesk, sans-serif', color: theme.text}} data-testid="dashboard-title">
