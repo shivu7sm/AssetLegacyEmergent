@@ -4963,9 +4963,9 @@ Return response in JSON format matching this structure:
         # Call AI using Emergent LLM
         llm_key = os.environ.get('EMERGENT_LLM_KEY')
         if not llm_key:
-            raise HTTPException(status_code=500, detail="AI service not configured")
+            logger.warning("EMERGENT_LLM_KEY not configured, using fallback recommendations")
+            raise Exception("AI key not configured")
         
-        import json
         response = requests.post(
             "https://api.openai.com/v1/chat/completions",
             headers={
@@ -4985,7 +4985,8 @@ Return response in JSON format matching this structure:
         )
         
         if response.status_code != 200:
-            raise HTTPException(status_code=500, detail="AI service error")
+            logger.error(f"AI API error: {response.status_code} - {response.text}")
+            raise Exception("AI service error")
         
         ai_response = response.json()
         ai_content = json.loads(ai_response["choices"][0]["message"]["content"])
