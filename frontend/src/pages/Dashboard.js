@@ -13,7 +13,6 @@ import { formatCurrency } from '@/utils/currencyConversion';
 import NetWorthChart from '@/components/NetWorthChart';
 import ChartTypeSwitcher from '@/components/ChartTypeSwitcher';
 import FlexibleChart from '@/components/FlexibleChart';
-import ThemeSwitcher from '@/components/ThemeSwitcher';
 import '@/styles/modernTheme.css';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
