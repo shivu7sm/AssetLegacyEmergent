@@ -1,7 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { PieChart, BarChart3, LineChart, Donut } from 'lucide-react';
+import { useTheme } from '@/context/ThemeContext';
 
 export default function ChartTypeSwitcher({ currentType, onChange, availableTypes = ['pie', 'bar', 'line', 'donut'] }) {
+  const { theme } = useTheme();
+  
   const chartTypes = [
     { value: 'pie', icon: PieChart, label: 'Pie' },
     { value: 'bar', icon: BarChart3, label: 'Bar' },
@@ -12,7 +15,7 @@ export default function ChartTypeSwitcher({ currentType, onChange, availableType
   const filteredTypes = chartTypes.filter(type => availableTypes.includes(type.value));
 
   return (
-    <div className="flex gap-1 p-1 rounded-lg" style={{background: '#16001e'}}>
+    <div className="flex gap-1 p-1 rounded-lg" style={{background: theme.backgroundTertiary}}>
       {filteredTypes.map((type) => {
         const Icon = type.icon;
         const isActive = currentType === type.value;
@@ -26,7 +29,7 @@ export default function ChartTypeSwitcher({ currentType, onChange, availableType
             className="px-3 py-2 transition-all"
             style={{
               background: isActive ? 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)' : 'transparent',
-              color: isActive ? '#fff' : '#94a3b8'
+              color: isActive ? theme.text : theme.textMuted
             }}
           >
             <Icon className="w-4 h-4 mr-1" />
