@@ -148,26 +148,26 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
               <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
                 {initialType === 'liability' ? (
                   <>
-                    <SelectItem value="loan" className="text-white">💸 Loan</SelectItem>
-                    <SelectItem value="credit_card" className="text-white">💳 Credit Card</SelectItem>
+                    <SelectItem value="loan" style={{color: theme.text}}>💸 Loan</SelectItem>
+                    <SelectItem value="credit_card" style={{color: theme.text}}>💳 Credit Card</SelectItem>
                   </>
                 ) : (
                   <>
-                    <SelectItem value="bank" className="text-white">🏦 Bank Account</SelectItem>
-                    <SelectItem value="crypto" className="text-white">₿ Cryptocurrency</SelectItem>
-                    <SelectItem value="stock" className="text-white">📈 Stocks</SelectItem>
-                    <SelectItem value="mutual_fund" className="text-white">📊 Mutual Fund</SelectItem>
-                    <SelectItem value="property" className="text-white">🏠 Real Estate</SelectItem>
-                    <SelectItem value="precious_metals" className="text-white">🥇 Precious Metals</SelectItem>
-                    <SelectItem value="investment" className="text-white">💰 Investment/FD</SelectItem>
-                    <SelectItem value="insurance" className="text-white">🛡️ Insurance</SelectItem>
-                    <SelectItem value="vehicle" className="text-white">🚗 Vehicle</SelectItem>
-                    <SelectItem value="art" className="text-white">🎨 Art/Collectibles</SelectItem>
-                    <SelectItem value="nft" className="text-white">🖼️ NFT</SelectItem>
-                    <SelectItem value="diamond" className="text-white">💎 Diamond/Jewelry</SelectItem>
-                    <SelectItem value="locker" className="text-white">🔐 Safe/Locker</SelectItem>
-                    <SelectItem value="loan" className="text-white">💸 Loan</SelectItem>
-                    <SelectItem value="credit_card" className="text-white">💳 Credit Card</SelectItem>
+                    <SelectItem value="bank" style={{color: theme.text}}>🏦 Bank Account</SelectItem>
+                    <SelectItem value="crypto" style={{color: theme.text}}>₿ Cryptocurrency</SelectItem>
+                    <SelectItem value="stock" style={{color: theme.text}}>📈 Stocks</SelectItem>
+                    <SelectItem value="mutual_fund" style={{color: theme.text}}>📊 Mutual Fund</SelectItem>
+                    <SelectItem value="property" style={{color: theme.text}}>🏠 Real Estate</SelectItem>
+                    <SelectItem value="precious_metals" style={{color: theme.text}}>🥇 Precious Metals</SelectItem>
+                    <SelectItem value="investment" style={{color: theme.text}}>💰 Investment/FD</SelectItem>
+                    <SelectItem value="insurance" style={{color: theme.text}}>🛡️ Insurance</SelectItem>
+                    <SelectItem value="vehicle" style={{color: theme.text}}>🚗 Vehicle</SelectItem>
+                    <SelectItem value="art" style={{color: theme.text}}>🎨 Art/Collectibles</SelectItem>
+                    <SelectItem value="nft" style={{color: theme.text}}>🖼️ NFT</SelectItem>
+                    <SelectItem value="diamond" style={{color: theme.text}}>💎 Diamond/Jewelry</SelectItem>
+                    <SelectItem value="locker" style={{color: theme.text}}>🔐 Safe/Locker</SelectItem>
+                    <SelectItem value="loan" style={{color: theme.text}}>💸 Loan</SelectItem>
+                    <SelectItem value="credit_card" style={{color: theme.text}}>💳 Credit Card</SelectItem>
                   </>
                 )}
               </SelectContent>
@@ -175,38 +175,38 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
           </div>
           
           <div>
-            <Label className="text-slate-300">Asset Name *</Label>
+            <Label style={{color: theme.textSecondary}}>Asset Name *</Label>
             <Input
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               placeholder="e.g., Chase Savings, Bitcoin"
               required
-              className="bg-slate-800 border-slate-700 text-white"
+              style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
             />
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <Label className="text-slate-300">Currency</Label>
+            <Label style={{color: theme.textSecondary}}>Currency</Label>
             <Select value={formData.purchase_currency} onValueChange={(value) => setFormData({ ...formData, purchase_currency: value })}>
-              <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
+              <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="bg-slate-800 border-slate-700">
                 {CURRENCIES.map(curr => (
-                  <SelectItem key={curr} value={curr} className="text-white">{curr}</SelectItem>
+                  <SelectItem key={curr} value={curr} style={{color: theme.text}}>{curr}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
           <div>
-            <Label className="text-slate-300">Purchase Date</Label>
+            <Label style={{color: theme.textSecondary}}>Purchase Date</Label>
             <Input
               type="date"
               value={formData.purchase_date}
               onChange={(e) => setFormData({ ...formData, purchase_date: e.target.value })}
-              className="bg-slate-800 border-slate-700 text-white"
+              style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
             />
           </div>
         </div>
@@ -220,7 +220,7 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
         {(formData.type === 'crypto' || formData.type === 'stock') && (
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <Label className="text-slate-300">Quantity *</Label>
+              <Label style={{color: theme.textSecondary}}>Quantity *</Label>
               <Input
                 type="number"
                 step="any"
@@ -228,11 +228,11 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
                 onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
                 placeholder="10"
                 required
-                className="bg-slate-800 border-slate-700 text-white"
+                style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
               />
             </div>
             <div>
-              <Label className="text-slate-300">Unit Price *</Label>
+              <Label style={{color: theme.textSecondary}}>Unit Price *</Label>
               <Input
                 type="number"
                 step="any"
@@ -240,16 +240,16 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
                 onChange={(e) => setFormData({ ...formData, unit_price: e.target.value })}
                 placeholder="50000"
                 required
-                className="bg-slate-800 border-slate-700 text-white"
+                style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
               />
             </div>
             <div>
-              <Label className="text-slate-300">Symbol</Label>
+              <Label style={{color: theme.textSecondary}}>Symbol</Label>
               <Input
                 value={formData.symbol}
                 onChange={(e) => setFormData({ ...formData, symbol: e.target.value })}
                 placeholder="BTC, AAPL"
-                className="bg-slate-800 border-slate-700 text-white"
+                style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
               />
             </div>
           </div>
@@ -259,7 +259,7 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
         {formData.type === 'precious_metals' && (
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <Label className="text-slate-300">Weight *</Label>
+              <Label style={{color: theme.textSecondary}}>Weight *</Label>
               <Input
                 type="number"
                 step="any"
@@ -267,24 +267,24 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
                 onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
                 placeholder="100"
                 required
-                className="bg-slate-800 border-slate-700 text-white"
+                style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
               />
             </div>
             <div>
-              <Label className="text-slate-300">Unit</Label>
+              <Label style={{color: theme.textSecondary}}>Unit</Label>
               <Select value={formData.weight_unit} onValueChange={(value) => setFormData({ ...formData, weight_unit: value })}>
-                <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
+                <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="bg-slate-800 border-slate-700">
                   {WEIGHT_UNITS.map(unit => (
-                    <SelectItem key={unit} value={unit} className="text-white">{unit}</SelectItem>
+                    <SelectItem key={unit} value={unit} style={{color: theme.text}}>{unit}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
             <div>
-              <Label className="text-slate-300">Price Per Unit *</Label>
+              <Label style={{color: theme.textSecondary}}>Price Per Unit *</Label>
               <Input
                 type="number"
                 step="any"
@@ -292,7 +292,7 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
                 onChange={(e) => setFormData({ ...formData, unit_price: e.target.value })}
                 placeholder="60"
                 required
-                className="bg-slate-800 border-slate-700 text-white"
+                style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
               />
             </div>
           </div>
@@ -302,7 +302,7 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
         {formData.type === 'property' && (
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <Label className="text-slate-300">Area *</Label>
+              <Label style={{color: theme.textSecondary}}>Area *</Label>
               <Input
                 type="number"
                 step="any"
@@ -310,24 +310,24 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
                 onChange={(e) => setFormData({ ...formData, area: e.target.value })}
                 placeholder="2500"
                 required
-                className="bg-slate-800 border-slate-700 text-white"
+                style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
               />
             </div>
             <div>
-              <Label className="text-slate-300">Unit</Label>
+              <Label style={{color: theme.textSecondary}}>Unit</Label>
               <Select value={formData.area_unit} onValueChange={(value) => setFormData({ ...formData, area_unit: value })}>
-                <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
+                <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="bg-slate-800 border-slate-700">
                   {AREA_UNITS.map(unit => (
-                    <SelectItem key={unit} value={unit} className="text-white">{unit}</SelectItem>
+                    <SelectItem key={unit} value={unit} style={{color: theme.text}}>{unit}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
             <div>
-              <Label className="text-slate-300">Price Per {formData.area_unit} *</Label>
+              <Label style={{color: theme.textSecondary}}>Price Per {formData.area_unit} *</Label>
               <Input
                 type="number"
                 step="any"
@@ -335,7 +335,7 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
                 onChange={(e) => setFormData({ ...formData, price_per_area: e.target.value })}
                 placeholder="250"
                 required
-                className="bg-slate-800 border-slate-700 text-white"
+                style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
               />
             </div>
           </div>
@@ -345,7 +345,7 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
         {(formData.type === 'loan' || formData.type === 'credit_card') && (
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <Label className="text-slate-300">Principal Amount *</Label>
+              <Label style={{color: theme.textSecondary}}>Principal Amount *</Label>
               <Input
                 type="number"
                 step="any"
@@ -353,28 +353,28 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
                 onChange={(e) => setFormData({ ...formData, principal_amount: e.target.value })}
                 placeholder="50000"
                 required
-                className="bg-slate-800 border-slate-700 text-white"
+                style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
               />
             </div>
             <div>
-              <Label className="text-slate-300">Interest Rate (%)</Label>
+              <Label style={{color: theme.textSecondary}}>Interest Rate (%)</Label>
               <Input
                 type="number"
                 step="any"
                 value={formData.interest_rate}
                 onChange={(e) => setFormData({ ...formData, interest_rate: e.target.value })}
                 placeholder="8.5"
-                className="bg-slate-800 border-slate-700 text-white"
+                style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
               />
             </div>
             <div>
-              <Label className="text-slate-300">Tenure (months)</Label>
+              <Label style={{color: theme.textSecondary}}>Tenure (months)</Label>
               <Input
                 type="number"
                 value={formData.tenure_months}
                 onChange={(e) => setFormData({ ...formData, tenure_months: e.target.value })}
                 placeholder="60"
-                className="bg-slate-800 border-slate-700 text-white"
+                style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
               />
             </div>
           </div>
@@ -385,36 +385,36 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
           <>
             <div className="grid grid-cols-3 gap-4">
               <div>
-                <Label className="text-slate-300">Make</Label>
+                <Label style={{color: theme.textSecondary}}>Make</Label>
                 <Input
                   value={formData.make || ''}
                   onChange={(e) => setFormData({ ...formData, make: e.target.value })}
                   placeholder="Tesla"
-                  className="bg-slate-800 border-slate-700 text-white"
+                  style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
                 />
               </div>
               <div>
-                <Label className="text-slate-300">Model</Label>
+                <Label style={{color: theme.textSecondary}}>Model</Label>
                 <Input
                   value={formData.model || ''}
                   onChange={(e) => setFormData({ ...formData, model: e.target.value })}
                   placeholder="Model Y"
-                  className="bg-slate-800 border-slate-700 text-white"
+                  style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
                 />
               </div>
               <div>
-                <Label className="text-slate-300">Year</Label>
+                <Label style={{color: theme.textSecondary}}>Year</Label>
                 <Input
                   type="number"
                   value={formData.year || ''}
                   onChange={(e) => setFormData({ ...formData, year: e.target.value })}
                   placeholder="2023"
-                  className="bg-slate-800 border-slate-700 text-white"
+                  style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
                 />
               </div>
             </div>
             <div>
-              <Label className="text-slate-300">Purchase Value *</Label>
+              <Label style={{color: theme.textSecondary}}>Purchase Value *</Label>
               <Input
                 type="number"
                 step="any"
@@ -422,7 +422,7 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
                 onChange={(e) => setFormData({ ...formData, total_value: e.target.value })}
                 placeholder="65000"
                 required
-                className="bg-slate-800 border-slate-700 text-white"
+                style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
               />
             </div>
           </>
@@ -433,26 +433,26 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
           <>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label className="text-slate-300">Collection Name</Label>
+                <Label style={{color: theme.textSecondary}}>Collection Name</Label>
                 <Input
                   value={formData.collection || ''}
                   onChange={(e) => setFormData({ ...formData, collection: e.target.value })}
                   placeholder="Bored Ape Yacht Club"
-                  className="bg-slate-800 border-slate-700 text-white"
+                  style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
                 />
               </div>
               <div>
-                <Label className="text-slate-300">Token ID</Label>
+                <Label style={{color: theme.textSecondary}}>Token ID</Label>
                 <Input
                   value={formData.token_id || ''}
                   onChange={(e) => setFormData({ ...formData, token_id: e.target.value })}
                   placeholder="4521"
-                  className="bg-slate-800 border-slate-700 text-white"
+                  style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
                 />
               </div>
             </div>
             <div>
-              <Label className="text-slate-300">Purchase Price (ETH) *</Label>
+              <Label style={{color: theme.textSecondary}}>Purchase Price (ETH) *</Label>
               <Input
                 type="number"
                 step="any"
@@ -460,7 +460,7 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
                 onChange={(e) => setFormData({ ...formData, total_value: e.target.value })}
                 placeholder="45"
                 required
-                className="bg-slate-800 border-slate-700 text-white"
+                style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
               />
             </div>
           </>
@@ -470,16 +470,16 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
         {formData.type === 'mutual_fund' && (
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label className="text-slate-300">Fund Name</Label>
+              <Label style={{color: theme.textSecondary}}>Fund Name</Label>
               <Input
                 value={formData.fund_name || ''}
                 onChange={(e) => setFormData({ ...formData, fund_name: e.target.value })}
                 placeholder="Vanguard S&P 500"
-                className="bg-slate-800 border-slate-700 text-white"
+                style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
               />
             </div>
             <div>
-              <Label className="text-slate-300">Total Investment *</Label>
+              <Label style={{color: theme.textSecondary}}>Total Investment *</Label>
               <Input
                 type="number"
                 step="any"
@@ -487,7 +487,7 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
                 onChange={(e) => setFormData({ ...formData, total_value: e.target.value })}
                 placeholder="25000"
                 required
-                className="bg-slate-800 border-slate-700 text-white"
+                style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
               />
             </div>
           </div>
@@ -496,7 +496,7 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
         {/* Other assets - simple total value */}
         {!['crypto', 'stock', 'precious_metals', 'property', 'loan', 'credit_card'].includes(formData.type) && (
           <div>
-            <Label className="text-slate-300">Total Value *</Label>
+            <Label style={{color: theme.textSecondary}}>Total Value *</Label>
             <Input
               type="number"
               step="any"
@@ -504,7 +504,7 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
               onChange={(e) => setFormData({ ...formData, total_value: e.target.value })}
               placeholder="10000"
               required
-              className="bg-slate-800 border-slate-700 text-white"
+              style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
             />
           </div>
         )}
@@ -520,41 +520,41 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
         <div className="grid grid-cols-2 gap-4">
           {(formData.type === 'crypto' || formData.type === 'stock' || formData.type === 'precious_metals') && (
             <div>
-              <Label className="text-slate-300">Current Price Per Unit</Label>
+              <Label style={{color: theme.textSecondary}}>Current Price Per Unit</Label>
               <Input
                 type="number"
                 step="any"
                 value={formData.current_unit_price}
                 onChange={(e) => setFormData({ ...formData, current_unit_price: e.target.value })}
                 placeholder="Auto-fetched if available"
-                className="bg-slate-800 border-slate-700 text-white"
+                style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
               />
             </div>
           )}
           
           {formData.type === 'property' && (
             <div>
-              <Label className="text-slate-300">Current Price Per {formData.area_unit}</Label>
+              <Label style={{color: theme.textSecondary}}>Current Price Per {formData.area_unit}</Label>
               <Input
                 type="number"
                 step="any"
                 value={formData.current_price_per_area}
                 onChange={(e) => setFormData({ ...formData, current_price_per_area: e.target.value })}
                 placeholder="Current market rate"
-                className="bg-slate-800 border-slate-700 text-white"
+                style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
               />
             </div>
           )}
           
           <div>
-            <Label className="text-slate-300">Manual Current Total Value</Label>
+            <Label style={{color: theme.textSecondary}}>Manual Current Total Value</Label>
             <Input
               type="number"
               step="any"
               value={formData.current_total_value || ''}
               onChange={(e) => setFormData({ ...formData, current_total_value: e.target.value })}
               placeholder="Override calculated value"
-              className="bg-slate-800 border-slate-700 text-white"
+              style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
             />
           </div>
         </div>
