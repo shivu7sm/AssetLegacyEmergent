@@ -66,6 +66,8 @@ const ASSET_GROUPS = {
 };
 
 export default function AssetsNew() {
+  const location = useLocation();
+  const navigate = useNavigate();
   const { selectedCurrency, currencyFormat } = useApp();
   const { theme, colorTheme } = useTheme();
   const [assets, setAssets] = useState([]);
