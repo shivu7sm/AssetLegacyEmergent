@@ -478,6 +478,8 @@ export default function AssetsNew() {
                         return sum + calculateAssetValue(asset, true);
                       }, 0);
                       
+                      const groupColor = colorTheme === 'light' ? group.colorLight : group.color;
+                      
                       return (
                         <>
                           {/* Group Header Row */}
@@ -487,30 +489,33 @@ export default function AssetsNew() {
                             onClick={() => toggleGroup(groupKey)}
                             className="cursor-pointer transition-all"
                             style={{
-                              background: isLiability 
-                                ? 'rgba(255, 92, 115, 0.12)' 
-                                : `${group.color}15`,
-                              borderTop: `2px solid ${group.color}40`,
-                              borderBottom: `1px solid ${group.color}30`
+                              background: colorTheme === 'light'
+                                ? (isLiability ? 'rgba(220, 38, 38, 0.08)' : `${groupColor}15`)
+                                : (isLiability ? 'rgba(239, 68, 68, 0.12)' : `${groupColor}15`),
+                              borderTop: `2px solid ${groupColor}${colorTheme === 'light' ? '50' : '40'}`,
+                              borderBottom: `1px solid ${groupColor}${colorTheme === 'light' ? '40' : '30'}`
                             }}
                           >
                             <td colSpan="2" className="p-3">
                               <div className="flex items-center gap-3">
                                 {isExpanded ? 
-                                  <ChevronDown className="w-4 h-4" style={{color: group.color}} /> : 
-                                  <ChevronRight className="w-4 h-4" style={{color: group.color}} />
+                                  <ChevronDown className="w-4 h-4" style={{color: groupColor}} /> : 
+                                  <ChevronRight className="w-4 h-4" style={{color: groupColor}} />
                                 }
                                 <span className="text-xl">{group.icon}</span>
                                 <span className="font-bold" style={{color: theme.text, fontSize: '0.938rem'}}>
                                   {group.label}
                                 </span>
-                                <span className="text-xs px-2 py-1 rounded-full font-semibold" style={{background: `${group.color}20`, color: group.color}}>
+                                <span className="text-xs px-2 py-1 rounded-full font-semibold" style={{
+                                  background: colorTheme === 'light' ? `${groupColor}20` : `${groupColor}20`, 
+                                  color: groupColor
+                                }}>
                                   {groupAssets.length}
                                 </span>
                               </div>
                             </td>
                             <td className="p-3 text-right" colSpan="2">
-                              <span className="font-bold" style={{color: group.color, fontSize: '0.938rem'}}>
+                              <span className="font-bold" style={{color: groupColor, fontSize: '0.938rem'}}>
                                 {isLiability ? '-' : ''}{formatCurrency(groupTotal, selectedCurrency, currencyFormat)}
                               </span>
                             </td>
