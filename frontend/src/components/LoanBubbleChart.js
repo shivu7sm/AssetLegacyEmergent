@@ -162,12 +162,17 @@ export default function LoanBubbleChart({ data, selectedCurrency, currencyFormat
             dataKey="y"
             stroke={theme.textSecondary}
             label={{
-              value: 'Interest Rate (%)',
+              value: metric === 'amount' ? 'Interest Rate (%)' : 'Loan Amount',
               angle: -90,
               position: 'insideLeft',
               style: { fill: theme.textSecondary, fontSize: '12px' }
             }}
             domain={[0, 'auto']}
+            tickFormatter={metric === 'rate' ? (value) => {
+              if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`;
+              if (value >= 1000) return `${(value / 1000).toFixed(0)}K`;
+              return value;
+            } : undefined}
           />
           <ZAxis
             type="number"
