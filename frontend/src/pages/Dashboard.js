@@ -872,21 +872,21 @@ export default function Dashboard() {
               <Card style={{background: theme.backgroundSecondary, borderColor: theme.border, boxShadow: theme.cardShadow}}>
                 <CardHeader>
                   <CardTitle style={{color: theme.text}}>Liability Details</CardTitle>
-                  <p className="text-sm mt-1" style={{color: theme.textTertiary}}>Debt breakdown</p>
+                  <p className="text-sm mt-1" style={{color: theme.textTertiary}}>Individual debt breakdown</p>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     <table className="w-full">
                       <thead>
                         <tr style={{borderBottom: `2px solid ${theme.border}`}}>
-                          <th className="text-left py-3 px-2" style={{color: theme.textTertiary, fontSize: '12px', fontWeight: 600}}>DEBT TYPE</th>
+                          <th className="text-left py-3 px-2" style={{color: theme.textTertiary, fontSize: '12px', fontWeight: 600}}>DEBT NAME</th>
                           <th className="text-right py-3 px-2" style={{color: theme.textTertiary, fontSize: '12px', fontWeight: 600}}>VALUE</th>
                           <th className="text-right py-3 px-2" style={{color: theme.textTertiary, fontSize: '12px', fontWeight: 600}}>%</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {liabilityDistributionData
-                          .slice(0, showAllLiabilities ? liabilityDistributionData.length : 4)
+                        {loanDetails
+                          .slice(0, showAllLiabilities ? loanDetails.length : 4)
                           .map((item, index) => (
                             <tr key={index} style={{borderBottom: `1px solid ${theme.border}`}}>
                               <td className="py-3 px-2">
@@ -899,7 +899,7 @@ export default function Dashboard() {
                                 </div>
                               </td>
                               <td className="text-right py-3 px-2" style={{color: theme.error, fontWeight: 600}}>
-                                {formatCurrency(item.value, selectedCurrency, currencyFormat)}
+                                {formatCurrency(item.amount, selectedCurrency, currencyFormat)}
                               </td>
                               <td className="text-right py-3 px-2" style={{color: item.color, fontWeight: 600}}>
                                 {item.percentage}%
@@ -908,7 +908,7 @@ export default function Dashboard() {
                           ))}
                       </tbody>
                     </table>
-                    {liabilityDistributionData.length > 4 && (
+                    {loanDetails.length > 4 && (
                       <div className="flex justify-center pt-2">
                         <Button
                           onClick={() => setShowAllLiabilities(!showAllLiabilities)}
@@ -916,7 +916,7 @@ export default function Dashboard() {
                           size="sm"
                           style={{color: theme.primary}}
                         >
-                          {showAllLiabilities ? 'Show Less' : `Show ${liabilityDistributionData.length - 4} More`}
+                          {showAllLiabilities ? 'Show Less' : `Show ${loanDetails.length - 4} More`}
                           <span className="ml-2">{showAllLiabilities ? '↑' : '↓'}</span>
                         </Button>
                       </div>
