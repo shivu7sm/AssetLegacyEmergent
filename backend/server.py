@@ -3275,6 +3275,7 @@ Dad""",
             "payment_date": datetime.now(timezone.utc).replace(day=1).isoformat().split('T')[0],
             "notes": "Regular monthly salary",
             "recurring": True,
+            "demo_mode": True,
             "created_at": datetime.now(timezone.utc).isoformat(),
             "updated_at": datetime.now(timezone.utc).isoformat()
         },
@@ -3291,6 +3292,7 @@ Dad""",
             "payment_date": datetime.now(timezone.utc).replace(day=15).isoformat().split('T')[0],
             "notes": "One-time project payment",
             "recurring": False,
+            "demo_mode": True,
             "created_at": datetime.now(timezone.utc).isoformat(),
             "updated_at": datetime.now(timezone.utc).isoformat()
         },
@@ -3307,6 +3309,7 @@ Dad""",
             "payment_date": datetime.now(timezone.utc).replace(day=20).isoformat().split('T')[0],
             "notes": "Quarterly dividend payment",
             "recurring": True,
+            "demo_mode": True,
             "created_at": datetime.now(timezone.utc).isoformat(),
             "updated_at": datetime.now(timezone.utc).isoformat()
         }
