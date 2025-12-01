@@ -1597,11 +1597,11 @@ export default function Settings() {
             </div>
 
             {/* Visual Explanation */}
-            <Card style={{background: 'linear-gradient(135deg, #1a0b2e 0%, #2d0e3e 100%)', borderColor: '#a855f7', borderWidth: '2px'}}>
+            <Card style={{background: theme.cardBg, borderColor: theme.primary, borderWidth: '2px'}}>
               <CardContent className="py-8">
                 <div className="flex flex-col items-center text-center">
                   <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4" style={{background: 'rgba(168, 85, 247, 0.2)'}}>
-                    <AlertTriangle className="w-10 h-10" style={{color: '#a855f7'}} />
+                    <AlertTriangle className="w-10 h-10" style={{color: theme.primary}} />
                   </div>
                   <h3 className="text-xl font-bold mb-3" style={{color: theme.text}}>How Dead Man's Switch Works</h3>
                   <p className="text-sm max-w-2xl mb-6" style={{color: theme.textSecondary}}>
