@@ -876,27 +876,42 @@ export default function Dashboard() {
                         </tr>
                       </thead>
                       <tbody>
-                        {liabilityDistributionData.map((item, index) => (
-                          <tr key={index} style={{borderBottom: `1px solid ${theme.border}`}}>
-                            <td className="py-3 px-2">
-                              <div className="flex items-center gap-2">
-                                <div 
-                                  className="w-3 h-3 rounded-full" 
-                                  style={{background: item.color}}
-                                />
-                                <span style={{color: theme.text, fontWeight: 500}}>{item.name}</span>
-                              </div>
-                            </td>
-                            <td className="text-right py-3 px-2" style={{color: theme.error, fontWeight: 600}}>
-                              {formatCurrency(item.value, selectedCurrency, currencyFormat)}
-                            </td>
-                            <td className="text-right py-3 px-2" style={{color: item.color, fontWeight: 600}}>
-                              {item.percentage}%
-                            </td>
-                          </tr>
-                        ))}
+                        {liabilityDistributionData
+                          .slice(0, showAllLiabilities ? liabilityDistributionData.length : 4)
+                          .map((item, index) => (
+                            <tr key={index} style={{borderBottom: `1px solid ${theme.border}`}}>
+                              <td className="py-3 px-2">
+                                <div className="flex items-center gap-2">
+                                  <div 
+                                    className="w-3 h-3 rounded-full" 
+                                    style={{background: item.color}}
+                                  />
+                                  <span style={{color: theme.text, fontWeight: 500}}>{item.name}</span>
+                                </div>
+                              </td>
+                              <td className="text-right py-3 px-2" style={{color: theme.error, fontWeight: 600}}>
+                                {formatCurrency(item.value, selectedCurrency, currencyFormat)}
+                              </td>
+                              <td className="text-right py-3 px-2" style={{color: item.color, fontWeight: 600}}>
+                                {item.percentage}%
+                              </td>
+                            </tr>
+                          ))}
                       </tbody>
                     </table>
+                    {liabilityDistributionData.length > 4 && (
+                      <div className="flex justify-center pt-2">
+                        <Button
+                          onClick={() => setShowAllLiabilities(!showAllLiabilities)}
+                          variant="ghost"
+                          size="sm"
+                          style={{color: theme.primary}}
+                        >
+                          {showAllLiabilities ? 'Show Less' : `Show ${liabilityDistributionData.length - 4} More`}
+                          <span className="ml-2">{showAllLiabilities ? '↑' : '↓'}</span>
+                        </Button>
+                      </div>
+                    )}
                     <div className="pt-4 border-t-2" style={{borderColor: theme.border}}>
                       <div className="flex justify-between items-center">
                         <span style={{color: theme.text, fontWeight: 600, fontSize: '16px'}}>Total Liabilities</span>
