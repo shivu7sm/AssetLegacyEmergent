@@ -166,8 +166,6 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
                     <SelectItem value="nft" style={{color: theme.text}}>🖼️ NFT</SelectItem>
                     <SelectItem value="diamond" style={{color: theme.text}}>💎 Diamond/Jewelry</SelectItem>
                     <SelectItem value="locker" style={{color: theme.text}}>🔐 Safe/Locker</SelectItem>
-                    <SelectItem value="loan" style={{color: theme.text}}>💸 Loan</SelectItem>
-                    <SelectItem value="credit_card" style={{color: theme.text}}>💳 Credit Card</SelectItem>
                   </>
                 )}
               </SelectContent>
