@@ -162,7 +162,7 @@ export default function NetWorthChart() {
     <div className="space-y-6">
       {/* Trend Summary */}
       {trends && trends.trend !== 'insufficient_data' && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card style={{background: theme.cardBg, borderColor: theme.border}}>
             <CardContent className="py-4">
               <div className="flex items-center justify-between">
@@ -195,6 +195,28 @@ export default function NetWorthChart() {
               <p className="text-sm" style={{color: theme.textSecondary}}>Data Points</p>
               <p className="text-2xl font-bold" style={{color: theme.text}}>{trends.period_days}</p>
               <p className="text-xs" style={{color: theme.textMuted}}>snapshots tracked</p>
+            </CardContent>
+          </Card>
+
+          <Card style={{background: theme.cardBg, borderColor: theme.primary, boxShadow: '0 4px 12px rgba(168, 85, 247, 0.2)'}}>
+            <CardContent className="py-4">
+              <p className="text-xs mb-2" style={{color: theme.textSecondary}}>AI INSIGHTS</p>
+              <p className="text-sm font-semibold mb-2" style={{color: theme.text}}>Smart Recommendations</p>
+              <button
+                onClick={() => window.location.href = '/insights'}
+                style={{
+                  background: theme.primaryGradient,
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '6px',
+                  padding: '6px 12px',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                }}
+              >
+                View Insights →
+              </button>
             </CardContent>
           </Card>
         </div>
