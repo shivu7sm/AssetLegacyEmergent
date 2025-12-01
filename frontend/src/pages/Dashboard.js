@@ -494,6 +494,38 @@ export default function Dashboard() {
                 </div>
               </CardContent>
             </Card>
+
+            {/* AI Financial Insights Card - 4th Card */}
+            <Card 
+              data-testid="ai-insights-card"
+              className="overflow-hidden transition-all hover:shadow-lg card"
+              style={{background: theme.cardBg, borderColor: theme.primary, boxShadow: theme.cardShadow}}
+            >
+              <CardContent className="p-6">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Sparkles className="w-5 h-5" style={{color: theme.primary}} />
+                      <p className="text-sm font-medium" style={{color: theme.textTertiary, letterSpacing: '0.5px'}}>AI INSIGHTS</p>
+                    </div>
+                    <div className="text-xl font-bold mb-1" style={{color: theme.text, fontFamily: 'Inter, sans-serif'}}>
+                      Smart Recommendations
+                    </div>
+                    <p className="text-xs mb-3" style={{color: theme.textMuted}}>
+                      Powered by AI analysis
+                    </p>
+                  </div>
+                </div>
+                <Button
+                  onClick={() => navigate('/insights')}
+                  size="sm"
+                  className="w-full text-white"
+                  style={{background: theme.primaryGradient}}
+                >
+                  View Insights →
+                </Button>
+              </CardContent>
+            </Card>
         </div>
 
         {/* Financial Ratios */}
