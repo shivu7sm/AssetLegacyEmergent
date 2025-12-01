@@ -112,7 +112,7 @@ export default function LoanBubbleChart({ data, selectedCurrency, currencyFormat
 
   if (bubbleData.length === 0) {
     return (
-      <div className="h-[400px] flex items-center justify-center" style={{ color: theme.textTertiary }}>
+      <div className="h-[300px] flex items-center justify-center" style={{ color: theme.textTertiary }}>
         <p>No loan data available</p>
       </div>
     );
