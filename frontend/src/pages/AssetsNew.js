@@ -66,7 +66,7 @@ const ASSET_GROUPS = {
 
 export default function AssetsNew() {
   const { selectedCurrency, currencyFormat } = useApp();
-  const { theme } = useTheme();
+  const { theme, colorTheme } = useTheme();
   const [assets, setAssets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expandedGroups, setExpandedGroups] = useState(Object.keys(ASSET_GROUPS));
