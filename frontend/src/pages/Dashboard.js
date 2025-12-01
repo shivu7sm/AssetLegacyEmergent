@@ -14,6 +14,7 @@ import NetWorthChart from '@/components/NetWorthChart';
 import ChartTypeSwitcher from '@/components/ChartTypeSwitcher';
 import FlexibleChart from '@/components/FlexibleChart';
 import AssetTreeMap from '@/components/AssetTreeMap';
+import LoanBubbleChart from '@/components/LoanBubbleChart';
 import '@/styles/modernTheme.css';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
