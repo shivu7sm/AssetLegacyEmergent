@@ -156,15 +156,15 @@ export default function AssetWorldMap({ assets, selectedCurrency, currencyFormat
                     geography={geo}
                     fill={
                       hasData
-                        ? `rgba(168, 85, 247, ${0.3 + (countryData.totalValue / maxValue) * 0.6})`
+                        ? `rgba(168, 85, 247, ${0.5 + (countryData.totalValue / maxValue) * 0.5})`
                         : theme.backgroundTertiary
                     }
-                    stroke={theme.border}
-                    strokeWidth={0.5}
+                    stroke={hasData ? '#a855f7' : theme.border}
+                    strokeWidth={hasData ? 1.5 : 0.5}
                     style={{
                       default: { outline: 'none' },
                       hover: {
-                        fill: hasData ? '#a855f7' : theme.backgroundSecondary,
+                        fill: hasData ? '#ec4899' : theme.backgroundSecondary,
                         outline: 'none',
                         cursor: hasData ? 'pointer' : 'default',
                       },
