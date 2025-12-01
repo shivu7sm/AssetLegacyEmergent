@@ -791,26 +791,26 @@ export default function Settings() {
                 {/* Additional Profile Fields */}
                 <div className="grid grid-cols-2 gap-4 pt-6" style={{borderTop: '1px solid #2d1f3d'}}>
                   <div>
-                    <Label style={{color: theme.textSecondary}}>Phone Number</Label>
+                    <Label className="text-slate-300">Phone Number</Label>
                     <Input
                       type="tel"
                       defaultValue={user?.phone || ''}
                       placeholder="+1 234 567 8900"
-                      style={{background: theme.inputBg, borderColor: theme.border, color: theme.text}} mt-2"
+                      className="bg-slate-800 border-slate-700 text-white mt-2"
                     />
                   </div>
                   <div>
-                    <Label style={{color: theme.textSecondary}}>Date of Birth</Label>
+                    <Label className="text-slate-300">Date of Birth</Label>
                     <Input
                       type="date"
                       defaultValue={user?.date_of_birth || ''}
-                      style={{background: theme.inputBg, borderColor: theme.border, color: theme.text}} mt-2"
+                      className="bg-slate-800 border-slate-700 text-white mt-2"
                     />
                   </div>
                   <div>
-                    <Label style={{color: theme.textSecondary}}>Country/Region</Label>
+                    <Label className="text-slate-300">Country/Region</Label>
                     <Select defaultValue={user?.country || 'US'}>
-                      <SelectTrigger style={{background: theme.inputBg, borderColor: theme.border, color: theme.text}} mt-2">
+                      <SelectTrigger className="bg-slate-800 border-slate-700 text-white mt-2">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-slate-800 border-slate-700">
@@ -824,9 +824,9 @@ export default function Settings() {
                     </Select>
                   </div>
                   <div>
-                    <Label style={{color: theme.textSecondary}}>Language</Label>
+                    <Label className="text-slate-300">Language</Label>
                     <Select defaultValue="en">
-                      <SelectTrigger style={{background: theme.inputBg, borderColor: theme.border, color: theme.text}} mt-2">
+                      <SelectTrigger className="bg-slate-800 border-slate-700 text-white mt-2">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-slate-800 border-slate-700">
@@ -845,18 +845,18 @@ export default function Settings() {
                   <h3 className="text-lg font-semibold mb-4" style={{color: theme.text}}>Emergency Contact</h3>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label style={{color: theme.textSecondary}}>Contact Name</Label>
+                      <Label className="text-slate-300">Contact Name</Label>
                       <Input
                         placeholder="Emergency contact person"
-                        style={{background: theme.inputBg, borderColor: theme.border, color: theme.text}} mt-2"
+                        className="bg-slate-800 border-slate-700 text-white mt-2"
                       />
                     </div>
                     <div>
-                      <Label style={{color: theme.textSecondary}}>Contact Phone</Label>
+                      <Label className="text-slate-300">Contact Phone</Label>
                       <Input
                         type="tel"
                         placeholder="+1 234 567 8900"
-                        style={{background: theme.inputBg, borderColor: theme.border, color: theme.text}} mt-2"
+                        className="bg-slate-800 border-slate-700 text-white mt-2"
                       />
                     </div>
                   </div>
@@ -918,12 +918,12 @@ export default function Settings() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <Label style={{color: theme.textSecondary}}>Default Currency</Label>
+                    <Label className="text-slate-300">Default Currency</Label>
                     <Select 
                       value={preferencesForm.default_currency || 'USD'} 
                       onValueChange={(value) => setPreferencesForm({...preferencesForm, default_currency: value})}
                     >
-                      <SelectTrigger style={{background: theme.inputBg, borderColor: theme.border, color: theme.text}}">
+                      <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-slate-800 border-slate-700">
@@ -943,12 +943,12 @@ export default function Settings() {
                   </div>
                   
                   <div>
-                    <Label style={{color: theme.textSecondary}}>Currency Format</Label>
+                    <Label className="text-slate-300">Currency Format</Label>
                     <Select 
                       value={preferencesForm.currency_format} 
                       onValueChange={(value) => setPreferencesForm({...preferencesForm, currency_format: value})}
                     >
-                      <SelectTrigger style={{background: theme.inputBg, borderColor: theme.border, color: theme.text}}">
+                      <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-slate-800 border-slate-700">
@@ -967,12 +967,12 @@ export default function Settings() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <Label style={{color: theme.textSecondary}}>Default View</Label>
+                    <Label className="text-slate-300">Default View</Label>
                     <Select 
                       value={preferencesForm.default_asset_view} 
                       onValueChange={(value) => setPreferencesForm({...preferencesForm, default_asset_view: value})}
                     >
-                      <SelectTrigger style={{background: theme.inputBg, borderColor: theme.border, color: theme.text}}">
+                      <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-slate-800 border-slate-700">
@@ -992,12 +992,12 @@ export default function Settings() {
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <Label style={{color: theme.textSecondary}}>Area Unit</Label>
+                      <Label className="text-slate-300">Area Unit</Label>
                       <Select 
                         value={preferencesForm.measurement_unit} 
                         onValueChange={(value) => setPreferencesForm({...preferencesForm, measurement_unit: value})}
                       >
-                        <SelectTrigger style={{background: theme.inputBg, borderColor: theme.border, color: theme.text}}">
+                        <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent className="bg-slate-800 border-slate-700">
@@ -1008,12 +1008,12 @@ export default function Settings() {
                     </div>
 
                     <div>
-                      <Label style={{color: theme.textSecondary}}>Weight Unit</Label>
+                      <Label className="text-slate-300">Weight Unit</Label>
                       <Select 
                         value={preferencesForm.weight_unit} 
                         onValueChange={(value) => setPreferencesForm({...preferencesForm, weight_unit: value})}
                       >
-                        <SelectTrigger style={{background: theme.inputBg, borderColor: theme.border, color: theme.text}}">
+                        <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent className="bg-slate-800 border-slate-700">
@@ -1353,22 +1353,22 @@ export default function Settings() {
                   <form onSubmit={handleNomineeSubmit} className="space-y-4 pt-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <Label style={{color: theme.textSecondary}}>Name *</Label>
+                        <Label className="text-slate-300">Name *</Label>
                         <Input
                           value={nomineeForm.name}
                           onChange={(e) => setNomineeForm({ ...nomineeForm, name: e.target.value })}
                           placeholder="John Doe"
                           required
-                          style={{background: theme.inputBg, borderColor: theme.border, color: theme.text}}"
+                          className="bg-slate-800 border-slate-700 text-white"
                         />
                       </div>
                       <div>
-                        <Label style={{color: theme.textSecondary}}>Relationship</Label>
+                        <Label className="text-slate-300">Relationship</Label>
                         <Select 
                           value={nomineeForm.relationship} 
                           onValueChange={(value) => setNomineeForm({ ...nomineeForm, relationship: value })}
                         >
-                          <SelectTrigger style={{background: theme.inputBg, borderColor: theme.border, color: theme.text}}">
+                          <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
                             <SelectValue placeholder="Select" />
                           </SelectTrigger>
                           <SelectContent className="bg-slate-800 border-slate-700">
@@ -1384,25 +1384,25 @@ export default function Settings() {
                     </div>
                     
                     <div>
-                      <Label style={{color: theme.textSecondary}}>Email *</Label>
+                      <Label className="text-slate-300">Email *</Label>
                       <Input
                         type="email"
                         value={nomineeForm.email}
                         onChange={(e) => setNomineeForm({ ...nomineeForm, email: e.target.value })}
                         placeholder="john@example.com"
                         required
-                        style={{background: theme.inputBg, borderColor: theme.border, color: theme.text}}"
+                        className="bg-slate-800 border-slate-700 text-white"
                       />
                     </div>
                     
                     <div>
-                      <Label style={{color: theme.textSecondary}}>Phone</Label>
+                      <Label className="text-slate-300">Phone</Label>
                       <Input
                         type="tel"
                         value={nomineeForm.phone}
                         onChange={(e) => setNomineeForm({ ...nomineeForm, phone: e.target.value })}
                         placeholder="+1 234 567 8900"
-                        style={{background: theme.inputBg, borderColor: theme.border, color: theme.text}}"
+                        className="bg-slate-800 border-slate-700 text-white"
                       />
                     </div>
                     
@@ -1749,7 +1749,7 @@ export default function Settings() {
                         min="30"
                         max="365"
                         required
-                        style={{background: theme.inputBg, borderColor: theme.border, color: theme.text}}"
+                        className="bg-slate-800 border-slate-700 text-white"
                       />
                       <p className="text-xs mt-1" style={{color: theme.textMuted}}>
                         Number of days of inactivity before triggering alerts
@@ -1768,7 +1768,7 @@ export default function Settings() {
                         min="1"
                         max={dmsForm.inactivity_days - 1}
                         required
-                        style={{background: theme.inputBg, borderColor: theme.border, color: theme.text}}"
+                        className="bg-slate-800 border-slate-700 text-white"
                       />
                       <p className="text-xs mt-1" style={{color: theme.textMuted}}>
                         Email reminder to check in
@@ -1787,7 +1787,7 @@ export default function Settings() {
                         min={dmsForm.reminder_1_days + 1}
                         max={dmsForm.inactivity_days - 1}
                         required
-                        style={{background: theme.inputBg, borderColor: theme.border, color: theme.text}}"
+                        className="bg-slate-800 border-slate-700 text-white"
                       />
                       <p className="text-xs mt-1" style={{color: theme.textMuted}}>
                         Urgent reminder to check in
@@ -1806,7 +1806,7 @@ export default function Settings() {
                         min={dmsForm.reminder_2_days + 1}
                         max={dmsForm.inactivity_days - 1}
                         required
-                        style={{background: theme.inputBg, borderColor: theme.border, color: theme.text}}"
+                        className="bg-slate-800 border-slate-700 text-white"
                       />
                       <p className="text-xs mt-1" style={{color: theme.textMuted}}>
                         Last chance before notifying nominees
