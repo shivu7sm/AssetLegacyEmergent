@@ -796,7 +796,7 @@ export default function Settings() {
                       type="tel"
                       defaultValue={user?.phone || ''}
                       placeholder="+1 234 567 8900"
-                      className="mt-2" style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
+                      className="bg-slate-800 border-slate-700 text-white mt-2"
                     />
                   </div>
                   <div>
@@ -804,13 +804,13 @@ export default function Settings() {
                     <Input
                       type="date"
                       defaultValue={user?.date_of_birth || ''}
-                      className="mt-2" style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
+                      className="bg-slate-800 border-slate-700 text-white mt-2"
                     />
                   </div>
                   <div>
                     <Label className="text-slate-300">Country/Region</Label>
                     <Select defaultValue={user?.country || 'US'}>
-                      <SelectTrigger className="mt-2" style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
+                      <SelectTrigger className="bg-slate-800 border-slate-700 text-white mt-2">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-slate-800 border-slate-700">
@@ -826,7 +826,7 @@ export default function Settings() {
                   <div>
                     <Label className="text-slate-300">Language</Label>
                     <Select defaultValue="en">
-                      <SelectTrigger className="mt-2" style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
+                      <SelectTrigger className="bg-slate-800 border-slate-700 text-white mt-2">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-slate-800 border-slate-700">
@@ -848,7 +848,7 @@ export default function Settings() {
                       <Label className="text-slate-300">Contact Name</Label>
                       <Input
                         placeholder="Emergency contact person"
-                        className="mt-2" style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
+                        className="bg-slate-800 border-slate-700 text-white mt-2"
                       />
                     </div>
                     <div>
@@ -856,7 +856,7 @@ export default function Settings() {
                       <Input
                         type="tel"
                         placeholder="+1 234 567 8900"
-                        className="mt-2" style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
+                        className="bg-slate-800 border-slate-700 text-white mt-2"
                       />
                     </div>
                   </div>
@@ -923,7 +923,7 @@ export default function Settings() {
                       value={preferencesForm.default_currency || 'USD'} 
                       onValueChange={(value) => setPreferencesForm({...preferencesForm, default_currency: value})}
                     >
-                      <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
+                      <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-slate-800 border-slate-700">
@@ -948,7 +948,7 @@ export default function Settings() {
                       value={preferencesForm.currency_format} 
                       onValueChange={(value) => setPreferencesForm({...preferencesForm, currency_format: value})}
                     >
-                      <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
+                      <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-slate-800 border-slate-700">
@@ -972,7 +972,7 @@ export default function Settings() {
                       value={preferencesForm.default_asset_view} 
                       onValueChange={(value) => setPreferencesForm({...preferencesForm, default_asset_view: value})}
                     >
-                      <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
+                      <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-slate-800 border-slate-700">
@@ -997,7 +997,7 @@ export default function Settings() {
                         value={preferencesForm.measurement_unit} 
                         onValueChange={(value) => setPreferencesForm({...preferencesForm, measurement_unit: value})}
                       >
-                        <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
+                        <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent className="bg-slate-800 border-slate-700">
@@ -1013,7 +1013,7 @@ export default function Settings() {
                         value={preferencesForm.weight_unit} 
                         onValueChange={(value) => setPreferencesForm({...preferencesForm, weight_unit: value})}
                       >
-                        <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
+                        <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent className="bg-slate-800 border-slate-700">
@@ -1359,7 +1359,7 @@ export default function Settings() {
                           onChange={(e) => setNomineeForm({ ...nomineeForm, name: e.target.value })}
                           placeholder="John Doe"
                           required
-                          style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
+                          className="bg-slate-800 border-slate-700 text-white"
                         />
                       </div>
                       <div>
@@ -1368,7 +1368,7 @@ export default function Settings() {
                           value={nomineeForm.relationship} 
                           onValueChange={(value) => setNomineeForm({ ...nomineeForm, relationship: value })}
                         >
-                          <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
+                          <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
                             <SelectValue placeholder="Select" />
                           </SelectTrigger>
                           <SelectContent className="bg-slate-800 border-slate-700">
@@ -1391,7 +1391,7 @@ export default function Settings() {
                         onChange={(e) => setNomineeForm({ ...nomineeForm, email: e.target.value })}
                         placeholder="john@example.com"
                         required
-                        style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
+                        className="bg-slate-800 border-slate-700 text-white"
                       />
                     </div>
                     
@@ -1402,7 +1402,7 @@ export default function Settings() {
                         value={nomineeForm.phone}
                         onChange={(e) => setNomineeForm({ ...nomineeForm, phone: e.target.value })}
                         placeholder="+1 234 567 8900"
-                        style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
+                        className="bg-slate-800 border-slate-700 text-white"
                       />
                     </div>
                     
@@ -1749,7 +1749,7 @@ export default function Settings() {
                         min="30"
                         max="365"
                         required
-                        style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
+                        className="bg-slate-800 border-slate-700 text-white"
                       />
                       <p className="text-xs mt-1" style={{color: theme.textMuted}}>
                         Number of days of inactivity before triggering alerts
@@ -1768,7 +1768,7 @@ export default function Settings() {
                         min="1"
                         max={dmsForm.inactivity_days - 1}
                         required
-                        style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
+                        className="bg-slate-800 border-slate-700 text-white"
                       />
                       <p className="text-xs mt-1" style={{color: theme.textMuted}}>
                         Email reminder to check in
@@ -1787,7 +1787,7 @@ export default function Settings() {
                         min={dmsForm.reminder_1_days + 1}
                         max={dmsForm.inactivity_days - 1}
                         required
-                        style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
+                        className="bg-slate-800 border-slate-700 text-white"
                       />
                       <p className="text-xs mt-1" style={{color: theme.textMuted}}>
                         Urgent reminder to check in
@@ -1806,7 +1806,7 @@ export default function Settings() {
                         min={dmsForm.reminder_2_days + 1}
                         max={dmsForm.inactivity_days - 1}
                         required
-                        style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
+                        className="bg-slate-800 border-slate-700 text-white"
                       />
                       <p className="text-xs mt-1" style={{color: theme.textMuted}}>
                         Last chance before notifying nominees
