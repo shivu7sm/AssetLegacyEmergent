@@ -93,9 +93,6 @@ export const ThemeProvider = ({ children }) => {
 
   return (
     <ThemeContext.Provider value={{ 
-      dashboardTheme, 
-      toggleTheme: toggleDashboardTheme, 
-      setTheme,
       colorTheme,
       toggleColorTheme,
       setColorTheme: setColor,
