@@ -872,26 +872,26 @@ export default function Settings() {
             </Card>
 
             {/* Account Stats */}
-            <Card style={{background: 'linear-gradient(135deg, #1a0b2e 0%, #2d0e3e 100%)', borderColor: '#a855f7', borderWidth: '1px'}}>
+            <Card style={{background: theme.cardBg, borderColor: theme.primary, borderWidth: '1px'}}>
               <CardHeader>
                 <CardTitle style={{color: theme.text}}>Account Activity</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-3 gap-4">
                   <div className="text-center p-4 rounded-lg" style={{background: 'rgba(168, 85, 247, 0.1)'}}>
-                    <p className="text-3xl font-bold mb-1" style={{color: '#a855f7'}}>
+                    <p className="text-3xl font-bold mb-1" style={{color: theme.primary}}>
                       {user?.last_activity ? Math.floor((Date.now() - new Date(user.last_activity)) / (1000 * 60 * 60 * 24)) : 0}
                     </p>
                     <p className="text-xs" style={{color: theme.textTertiary}}>Days Since Last Active</p>
                   </div>
                   <div className="text-center p-4 rounded-lg" style={{background: 'rgba(16, 185, 129, 0.1)'}}>
-                    <p className="text-3xl font-bold mb-1" style={{color: '#10b981'}}>
+                    <p className="text-3xl font-bold mb-1" style={{color: theme.success}}>
                       {Math.floor((Date.now() - new Date(user?.created_at)) / (1000 * 60 * 60 * 24))}
                     </p>
                     <p className="text-xs" style={{color: theme.textTertiary}}>Days as Member</p>
                   </div>
                   <div className="text-center p-4 rounded-lg" style={{background: 'rgba(245, 158, 11, 0.1)'}}>
-                    <p className="text-3xl font-bold mb-1" style={{color: '#f59e0b'}}>
+                    <p className="text-3xl font-bold mb-1" style={{color: theme.warning}}>
                       {user?.role === 'admin' ? 'Admin' : 'User'}
                     </p>
                     <p className="text-xs" style={{color: theme.textTertiary}}>Account Type</p>
