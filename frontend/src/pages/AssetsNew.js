@@ -160,6 +160,25 @@ export default function AssetsNew() {
     loadAccountAssets();
   }, [activeAccount, connectedAccounts, testAccountData]);
 
+  // Handle query parameters to auto-open add forms
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const action = searchParams.get('action');
+    const type = searchParams.get('type');
+
+    if (action === 'add') {
+      if (type === 'liability') {
+        setDialogType('liability');
+      } else {
+        setDialogType('asset');
+      }
+      setDialogOpen(true);
+      
+      // Clear query params after opening dialog
+      navigate('/assets', { replace: true });
+    }
+  }, [location.search, navigate]);
+
   const checkDemoMode = async () => {
     try {
       const response = await axios.get(`${API}/demo/status`, { withCredentials: true });
