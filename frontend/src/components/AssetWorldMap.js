@@ -4,7 +4,8 @@ import { useTheme } from '@/context/ThemeContext';
 import { formatCurrency } from '@/utils/currencyConversion';
 import { Tooltip } from 'recharts';
 
-const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
+// Using Natural Earth data which shows internationally recognized borders including India's standard map
+const geoUrl = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson";
 
 // Currency to country mapping
 const CURRENCY_TO_COUNTRY = {
