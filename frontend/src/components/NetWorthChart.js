@@ -201,12 +201,12 @@ export default function NetWorthChart() {
       )}
 
       {/* Chart */}
-      <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+      <Card style={{background: theme.cardBg, borderColor: theme.border}}>
         <CardHeader>
           <div className="flex justify-between items-center flex-wrap gap-3">
             <div>
-              <CardTitle style={{color: '#f8fafc'}}>Net Worth Trend</CardTitle>
-              <p className="text-sm mt-1" style={{color: '#94a3b8'}}>Historical net worth over time</p>
+              <CardTitle style={{color: theme.text}}>Net Worth Trend</CardTitle>
+              <p className="text-sm mt-1" style={{color: theme.textSecondary}}>Historical net worth over time</p>
             </div>
             <div className="flex gap-2">
               <Button
