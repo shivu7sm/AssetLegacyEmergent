@@ -791,7 +791,7 @@ export default function Settings() {
                 {/* Additional Profile Fields */}
                 <div className="grid grid-cols-2 gap-4 pt-6" style={{borderTop: '1px solid #2d1f3d'}}>
                   <div>
-                    <Label className="text-slate-300">Phone Number</Label>
+                    <Label style={{color: theme.textSecondary}}>Phone Number</Label>
                     <Input
                       type="tel"
                       defaultValue={user?.phone || ''}
@@ -800,7 +800,7 @@ export default function Settings() {
                     />
                   </div>
                   <div>
-                    <Label className="text-slate-300">Date of Birth</Label>
+                    <Label style={{color: theme.textSecondary}}>Date of Birth</Label>
                     <Input
                       type="date"
                       defaultValue={user?.date_of_birth || ''}
@@ -808,7 +808,7 @@ export default function Settings() {
                     />
                   </div>
                   <div>
-                    <Label className="text-slate-300">Country/Region</Label>
+                    <Label style={{color: theme.textSecondary}}>Country/Region</Label>
                     <Select defaultValue={user?.country || 'US'}>
                       <SelectTrigger className="mt-2" style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
                         <SelectValue />
@@ -824,7 +824,7 @@ export default function Settings() {
                     </Select>
                   </div>
                   <div>
-                    <Label className="text-slate-300">Language</Label>
+                    <Label style={{color: theme.textSecondary}}>Language</Label>
                     <Select defaultValue="en">
                       <SelectTrigger className="mt-2" style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
                         <SelectValue />
@@ -845,14 +845,14 @@ export default function Settings() {
                   <h3 className="text-lg font-semibold mb-4" style={{color: theme.text}}>Emergency Contact</h3>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label className="text-slate-300">Contact Name</Label>
+                      <Label style={{color: theme.textSecondary}}>Contact Name</Label>
                       <Input
                         placeholder="Emergency contact person"
                         className="mt-2" style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}
                       />
                     </div>
                     <div>
-                      <Label className="text-slate-300">Contact Phone</Label>
+                      <Label style={{color: theme.textSecondary}}>Contact Phone</Label>
                       <Input
                         type="tel"
                         placeholder="+1 234 567 8900"
@@ -918,7 +918,7 @@ export default function Settings() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <Label className="text-slate-300">Default Currency</Label>
+                    <Label style={{color: theme.textSecondary}}>Default Currency</Label>
                     <Select 
                       value={preferencesForm.default_currency || 'USD'} 
                       onValueChange={(value) => setPreferencesForm({...preferencesForm, default_currency: value})}
@@ -943,7 +943,7 @@ export default function Settings() {
                   </div>
                   
                   <div>
-                    <Label className="text-slate-300">Currency Format</Label>
+                    <Label style={{color: theme.textSecondary}}>Currency Format</Label>
                     <Select 
                       value={preferencesForm.currency_format} 
                       onValueChange={(value) => setPreferencesForm({...preferencesForm, currency_format: value})}
@@ -967,7 +967,7 @@ export default function Settings() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <Label className="text-slate-300">Default View</Label>
+                    <Label style={{color: theme.textSecondary}}>Default View</Label>
                     <Select 
                       value={preferencesForm.default_asset_view} 
                       onValueChange={(value) => setPreferencesForm({...preferencesForm, default_asset_view: value})}
@@ -992,7 +992,7 @@ export default function Settings() {
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <Label className="text-slate-300">Area Unit</Label>
+                      <Label style={{color: theme.textSecondary}}>Area Unit</Label>
                       <Select 
                         value={preferencesForm.measurement_unit} 
                         onValueChange={(value) => setPreferencesForm({...preferencesForm, measurement_unit: value})}
@@ -1008,7 +1008,7 @@ export default function Settings() {
                     </div>
 
                     <div>
-                      <Label className="text-slate-300">Weight Unit</Label>
+                      <Label style={{color: theme.textSecondary}}>Weight Unit</Label>
                       <Select 
                         value={preferencesForm.weight_unit} 
                         onValueChange={(value) => setPreferencesForm({...preferencesForm, weight_unit: value})}
@@ -1353,7 +1353,7 @@ export default function Settings() {
                   <form onSubmit={handleNomineeSubmit} className="space-y-4 pt-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <Label className="text-slate-300">Name *</Label>
+                        <Label style={{color: theme.textSecondary}}>Name *</Label>
                         <Input
                           value={nomineeForm.name}
                           onChange={(e) => setNomineeForm({ ...nomineeForm, name: e.target.value })}
@@ -1363,7 +1363,7 @@ export default function Settings() {
                         />
                       </div>
                       <div>
-                        <Label className="text-slate-300">Relationship</Label>
+                        <Label style={{color: theme.textSecondary}}>Relationship</Label>
                         <Select 
                           value={nomineeForm.relationship} 
                           onValueChange={(value) => setNomineeForm({ ...nomineeForm, relationship: value })}
@@ -1384,7 +1384,7 @@ export default function Settings() {
                     </div>
                     
                     <div>
-                      <Label className="text-slate-300">Email *</Label>
+                      <Label style={{color: theme.textSecondary}}>Email *</Label>
                       <Input
                         type="email"
                         value={nomineeForm.email}
@@ -1396,7 +1396,7 @@ export default function Settings() {
                     </div>
                     
                     <div>
-                      <Label className="text-slate-300">Phone</Label>
+                      <Label style={{color: theme.textSecondary}}>Phone</Label>
                       <Input
                         type="tel"
                         value={nomineeForm.phone}
