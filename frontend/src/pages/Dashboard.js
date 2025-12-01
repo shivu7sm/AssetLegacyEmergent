@@ -111,14 +111,23 @@ export default function Dashboard() {
       // Filter only loans and credit cards, extract relevant data
       const loans = response.data
         .filter(asset => asset.type === 'loan' || asset.type === 'credit_card')
-        .map(loan => ({
+        .map((loan, index) => ({
           name: loan.name,
           amount: Math.abs(loan.current_value || loan.total_value || 0),
           rate: loan.details?.interest_rate || loan.interest_rate || 5,
           term: loan.details?.tenure_months ? `${loan.details.tenure_months} months` : null,
-          color: loan.type === 'credit_card' ? '#ef4444' : '#f59e0b',
+          color: loan.type === 'credit_card' ? '#ef4444' : (index % 2 === 0 ? '#f59e0b' : '#f97316'),
+          type: loan.type,
         }));
       setLoanDetails(loans);
+      
+      // Calculate percentages for table display
+      const totalLiabilities = loans.reduce((sum, loan) => sum + loan.amount, 0);
+      const loansWithPercentage = loans.map(loan => ({
+        ...loan,
+        percentage: totalLiabilities > 0 ? ((loan.amount / totalLiabilities) * 100).toFixed(1) : 0,
+      }));
+      setLoanDetails(loansWithPercentage);
     } catch (error) {
       console.error('Failed to fetch loan details:', error);
     }
