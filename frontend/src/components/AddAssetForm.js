@@ -140,12 +140,12 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
         
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <Label className="text-slate-300">{initialType === 'liability' ? 'Liability Type *' : 'Asset Type *'}</Label>
+            <Label style={{color: theme.textSecondary}}>{initialType === 'liability' ? 'Liability Type *' : 'Asset Type *'}</Label>
             <Select value={formData.type} onValueChange={(value) => setFormData({ ...formData, type: value })}>
-              <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
+              <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-slate-800 border-slate-700">
+              <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
                 {initialType === 'liability' ? (
                   <>
                     <SelectItem value="loan" className="text-white">💸 Loan</SelectItem>
