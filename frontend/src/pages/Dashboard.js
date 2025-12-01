@@ -841,8 +841,8 @@ export default function Dashboard() {
             </Card>
           </div>
 
-          {/* Liability Distribution Row (if liabilities exist) */}
-          {liabilityDistributionData.length > 0 && (
+          {/* Loan Analysis Row (if loans exist) */}
+          {loanDetails.length > 0 && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card style={{background: theme.backgroundSecondary, borderColor: theme.border, boxShadow: theme.cardShadow}}>
                 <CardHeader>
@@ -851,7 +851,7 @@ export default function Dashboard() {
                 </CardHeader>
                 <CardContent>
                   <LoanBubbleChart
-                    data={liabilityDistributionData}
+                    data={loanDetails}
                     selectedCurrency={selectedCurrency}
                     currencyFormat={currencyFormat}
                   />
