@@ -1844,12 +1844,12 @@ export default function Settings() {
             </form>
 
             {/* Info Card */}
-            <Card style={{background: 'linear-gradient(135deg, #2d0e1e 0%, #3d1828 100%)', borderColor: '#ef4444', borderLeftWidth: '4px'}}>
+            <Card style={{background: theme.cardBg, borderColor: theme.error, borderLeftWidth: '4px'}}>
               <CardContent className="py-6">
                 <div className="flex items-start gap-4">
-                  <Shield className="w-6 h-6 flex-shrink-0" style={{color: '#fca5a5'}} />
+                  <Shield className="w-6 h-6 flex-shrink-0" style={{color: theme.error}} />
                   <div>
-                    <h3 className="font-semibold mb-2" style={{color: '#fca5a5'}}>Why This Matters</h3>
+                    <h3 className="font-semibold mb-2" style={{color: theme.error}}>Why This Matters</h3>
                     <ul className="text-sm space-y-2" style={{color: theme.textSecondary}}>
                       <li>• <strong>Life is unpredictable:</strong> Accidents, health emergencies, or sudden events can happen anytime</li>
                       <li>• <strong>Protect your legacy:</strong> Without this, your assets could be lost forever to your family</li>
