@@ -351,74 +351,8 @@ export default function Dashboard() {
           </Card>
         )}
 
-        {dashboardTheme === 'modern' ? (
-          /* Modern Layout - Hero Card + Grid */
-          <>
-            {/* Net Worth Hero Card */}
-            <Card 
-              data-testid="net-worth-card" 
-              className="overflow-hidden transition-all hover:shadow-lg net-worth-hero"
-            >
-              <CardContent className="p-0">
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <p className="stat-label">NET WORTH</p>
-                    <div className="stat-value">
-                      {formatCurrency(netWorthValue, selectedCurrency, currencyFormat)}
-                    </div>
-                    <p className="text-sm mt-2" style={{color: theme.textSecondary}}>
-                      {selectedCurrency} • {isPositive ? 'Healthy portfolio' : 'Review recommended'}
-                    </p>
-                  </div>
-                  <div className="stat-icon">
-                    {isPositive ? (
-                      <TrendingUp className="w-7 h-7" />
-                    ) : (
-                      <TrendingDown className="w-7 h-7" />
-                    )}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Quick Stats Row */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="quick-stat">
-                <div className="quick-stat-icon neutral">
-                  <DollarSign className="w-4 h-4" />
-                </div>
-                <div>
-                  <div className="quick-stat-value" data-testid="total-assets-count">{summary?.total_assets || 0}</div>
-                  <div className="quick-stat-label">Total Assets</div>
-                </div>
-              </div>
-
-              <div className="quick-stat">
-                <div className="quick-stat-icon orange">
-                  <AlertCircle className="w-4 h-4" />
-                </div>
-                <div>
-                  <div className="quick-stat-value">{summary?.total_liabilities || 0}</div>
-                  <div className="quick-stat-label">Liabilities</div>
-                </div>
-              </div>
-
-              <div className="quick-stat">
-                <div className={`quick-stat-icon ${summary?.has_nominee ? 'positive' : 'orange'}`}>
-                  <Shield className="w-4 h-4" />
-                </div>
-                <div>
-                  <div className="quick-stat-value" data-testid="nominee-status">
-                    {summary?.has_nominee ? 'Active' : 'Not Set'}
-                  </div>
-                  <div className="quick-stat-label">Nominee Status</div>
-                </div>
-              </div>
-            </div>
-          </>
-        ) : (
-          /* Standard Layout - 4-column grid with DMS card */
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Standard Layout - 4-column grid with DMS card */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Card 
               data-testid="total-assets-card" 
               className="overflow-hidden transition-all hover:shadow-lg card"
