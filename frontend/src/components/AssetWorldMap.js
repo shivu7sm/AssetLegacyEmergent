@@ -129,14 +129,15 @@ export default function AssetWorldMap({ assets, selectedCurrency, currencyFormat
     <div style={{ width: '100%', height: '400px', position: 'relative' }}>
       <ComposableMap
         projectionConfig={{
-          scale: 147,
+          scale: 180,
+          center: [0, 20],
         }}
         style={{
           width: '100%',
           height: '100%',
         }}
       >
-        <ZoomableGroup>
+        <ZoomableGroup zoom={1.2}>
           <Geographies geography={geoUrl}>
             {({ geographies }) =>
               geographies.map((geo) => {
