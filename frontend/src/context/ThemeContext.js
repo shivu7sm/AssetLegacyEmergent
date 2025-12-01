@@ -59,29 +59,15 @@ export const themes = {
 };
 
 export const ThemeProvider = ({ children }) => {
-  const [dashboardTheme, setDashboardTheme] = useState(() => {
-    return localStorage.getItem('dashboardTheme') || 'standard';
-  });
-
+  // Simplified: Only use colorTheme (dark/light), remove dashboardTheme
   const [colorTheme, setColorTheme] = useState(() => {
     return localStorage.getItem('colorTheme') || 'dark';
   });
-
-  const toggleDashboardTheme = () => {
-    const newTheme = dashboardTheme === 'standard' ? 'modern' : 'standard';
-    setDashboardTheme(newTheme);
-    localStorage.setItem('dashboardTheme', newTheme);
-  };
 
   const toggleColorTheme = () => {
     const newTheme = colorTheme === 'dark' ? 'light' : 'dark';
     setColorTheme(newTheme);
     localStorage.setItem('colorTheme', newTheme);
-  };
-
-  const setTheme = (theme) => {
-    setDashboardTheme(theme);
-    localStorage.setItem('dashboardTheme', theme);
   };
 
   const setColor = (theme) => {
