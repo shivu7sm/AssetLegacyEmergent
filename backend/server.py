@@ -798,14 +798,18 @@ async def create_session(request: Request, response: Response):
     
     logger.info(f"Session created for user {user_id}, cookie set (secure=True, samesite=none, proto={forwarded_proto or 'none'})")
     
+    # Get current user data for response (could be new or existing user)
+    current_user = await db.users.find_one({"id": user_id}, {"_id": 0})
+    
     # Also return token in response body as fallback for browsers that block third-party cookies
     return {
         "success": True,
         "session_token": session_token,  # Client can store this and send via Authorization header
         "user": {
             "id": user_id,
-            "email": existing_user["email"],
-            "name": existing_user.get("name", "")
+            "email": current_user["email"],
+            "name": current_user.get("name", ""),
+            "onboarding_completed": current_user.get("onboarding_completed", False)
         }
     }
 
