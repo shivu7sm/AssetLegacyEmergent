@@ -1034,47 +1034,6 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        {/* Quick Actions */}
-        <Card data-testid="quick-actions-card" style={{background: theme.backgroundSecondary, borderColor: theme.border, boxShadow: theme.cardShadow}}>
-          <CardHeader>
-            <CardTitle style={{color: theme.text}}>Quick Actions</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <Button 
-                data-testid="add-asset-btn"
-                onClick={() => navigate('/assets')} 
-                className="text-white justify-start rounded-xl h-14"
-                style={{background: theme.primaryGradient}}
-              >
-                <Plus className="w-5 h-5 mr-3" />
-                Add New Asset
-              </Button>
-              
-              <Button 
-                data-testid="view-assets-btn"
-                onClick={() => navigate('/assets')} 
-                variant="outline"
-                className="justify-start rounded-xl h-14"
-                style={{borderColor: theme.border, color: theme.textTertiary}}
-              >
-                <DollarSign className="w-5 h-5 mr-3" />
-                View All Assets
-              </Button>
-              
-              <Button 
-                data-testid="settings-btn"
-                onClick={() => navigate('/settings')} 
-                variant="outline"
-                className="justify-start rounded-xl h-14"
-                style={{borderColor: theme.border, color: theme.textTertiary}}
-              >
-                <Shield className="w-5 h-5 mr-3" />
-                Security Settings
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </Layout>
   );
