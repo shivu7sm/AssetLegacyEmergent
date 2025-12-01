@@ -163,11 +163,11 @@ export default function NetWorthChart() {
       {/* Trend Summary */}
       {trends && trends.trend !== 'insufficient_data' && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+          <Card style={{background: theme.cardBg, borderColor: theme.border}}>
             <CardContent className="py-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm" style={{color: '#94a3b8'}}>YoY Change</p>
+                  <p className="text-sm" style={{color: theme.textSecondary}}>YoY Change</p>
                   <p className="text-2xl font-bold" style={{color: trends.trend === 'positive' ? '#10b981' : '#ef4444'}}>
                     {trends.trend === 'positive' ? '+' : ''}{formatCurrency(trends.yoy_change, selectedCurrency, currencyFormat)}
                   </p>
@@ -181,20 +181,20 @@ export default function NetWorthChart() {
             </CardContent>
           </Card>
 
-          <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+          <Card style={{background: theme.cardBg, borderColor: theme.border}}>
             <CardContent className="py-4">
-              <p className="text-sm" style={{color: '#94a3b8'}}>Growth Rate</p>
+              <p className="text-sm" style={{color: theme.textSecondary}}>Growth Rate</p>
               <p className="text-2xl font-bold" style={{color: trends.yoy_percent >= 0 ? '#10b981' : '#ef4444'}}>
                 {trends.yoy_percent >= 0 ? '+' : ''}{trends.yoy_percent}%
               </p>
             </CardContent>
           </Card>
 
-          <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+          <Card style={{background: theme.cardBg, borderColor: theme.border}}>
             <CardContent className="py-4">
-              <p className="text-sm" style={{color: '#94a3b8'}}>Data Points</p>
-              <p className="text-2xl font-bold" style={{color: '#f8fafc'}}>{trends.period_days}</p>
-              <p className="text-xs" style={{color: '#64748b'}}>snapshots tracked</p>
+              <p className="text-sm" style={{color: theme.textSecondary}}>Data Points</p>
+              <p className="text-2xl font-bold" style={{color: theme.text}}>{trends.period_days}</p>
+              <p className="text-xs" style={{color: theme.textMuted}}>snapshots tracked</p>
             </CardContent>
           </Card>
         </div>
