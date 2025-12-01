@@ -945,6 +945,36 @@ export default function Dashboard() {
         {/* Historical Net Worth Chart - Moved below charts */}
         <NetWorthChart />
 
+        {/* Asset Geographic Distribution Map */}
+        {allAssets.length > 0 && (
+          <Card style={{background: theme.backgroundSecondary, borderColor: theme.border, boxShadow: theme.cardShadow}}>
+            <CardHeader>
+              <CardTitle style={{color: theme.text}}>Asset Geographic Distribution</CardTitle>
+              <p className="text-sm mt-1" style={{color: theme.textTertiary}}>
+                Global spread of your investments • Bubble size represents total value
+              </p>
+            </CardHeader>
+            <CardContent>
+              <AssetWorldMap 
+                assets={allAssets}
+                selectedCurrency={selectedCurrency}
+                currencyFormat={currencyFormat}
+              />
+              {/* Legend */}
+              <div className="mt-4 flex items-center justify-center gap-6 text-xs" style={{color: theme.textTertiary}}>
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 rounded-full" style={{background: 'rgba(168, 85, 247, 0.5)'}}></div>
+                  <span>Countries with assets</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 rounded-full" style={{background: '#ec4899'}}></div>
+                  <span>Asset count & value</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* AI Financial Insights Card */}
         {summary?.total_assets > 0 && (
           <Card style={{background: theme.cardBg, borderColor: theme.primary, boxShadow: theme.cardShadow}}>
