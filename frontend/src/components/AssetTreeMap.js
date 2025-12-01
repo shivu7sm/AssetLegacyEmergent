@@ -6,6 +6,9 @@ import { formatCurrency } from '@/utils/currencyConversion';
 const CustomizedContent = ({ root, depth, x, y, width, height, index, payload, colors, name, selectedCurrency, currencyFormat }) => {
   const { theme } = useTheme();
   
+  // Safety check for payload
+  if (!payload) return null;
+  
   // Only show rectangles with meaningful size
   if (width < 30 || height < 30) return null;
 
