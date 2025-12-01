@@ -825,25 +825,14 @@ export default function Dashboard() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card style={{background: theme.backgroundSecondary, borderColor: theme.border, boxShadow: theme.cardShadow}}>
                 <CardHeader>
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <CardTitle style={{color: theme.text}}>Liability Distribution</CardTitle>
-                      <p className="text-sm mt-1" style={{color: theme.textTertiary}}>Breakdown by debt type</p>
-                    </div>
-                    <ChartTypeSwitcher 
-                      currentType={liabilityDistChartType} 
-                      onChange={handleLiabilityDistChartChange}
-                      availableTypes={['pie', 'donut', 'bar']}
-                    />
-                  </div>
+                  <CardTitle style={{color: theme.text}}>Loan Analysis</CardTitle>
+                  <p className="text-sm mt-1" style={{color: theme.textTertiary}}>Interactive bubble chart - size represents loan amount or interest rate</p>
                 </CardHeader>
                 <CardContent>
-                  <FlexibleChart
+                  <LoanBubbleChart
                     data={liabilityDistributionData}
-                    chartType={liabilityDistChartType}
-                    colors={[]}
-                    CustomTooltip={CustomTooltip}
-                    labelFormatter={({ name, percentage }) => `${name} ${percentage}%`}
+                    selectedCurrency={selectedCurrency}
+                    currencyFormat={currencyFormat}
                   />
                 </CardContent>
               </Card>
