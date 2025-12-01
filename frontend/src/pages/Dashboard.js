@@ -925,7 +925,7 @@ export default function Dashboard() {
                       <div className="flex justify-between items-center">
                         <span style={{color: theme.text, fontWeight: 600, fontSize: '16px'}}>Total Liabilities</span>
                         <span style={{color: theme.error, fontWeight: 700, fontSize: '18px'}}>
-                          {formatCurrency(summary?.total_liabilities_value || 0, selectedCurrency, currencyFormat)}
+                          {formatCurrency(loanDetails.reduce((sum, loan) => sum + loan.amount, 0), selectedCurrency, currencyFormat)}
                         </span>
                       </div>
                     </div>
