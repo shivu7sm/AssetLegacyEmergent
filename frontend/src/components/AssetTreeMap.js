@@ -3,18 +3,18 @@ import { Treemap, ResponsiveContainer, Tooltip } from 'recharts';
 import { useTheme } from '@/context/ThemeContext';
 import { formatCurrency } from '@/utils/currencyConversion';
 
-const CustomizedContent = ({ root, depth, x, y, width, height, index, payload, colors, name, selectedCurrency, currencyFormat }) => {
+const CustomizedContent = (props) => {
+  const { root, depth, x, y, width, height, index, payload, colors, selectedCurrency, currencyFormat } = props;
   const { theme } = useTheme();
   
-  // Safety check for payload
-  if (!payload) return null;
-  
-  // Only show rectangles with meaningful size
-  if (width < 30 || height < 30) return null;
+  // Safety checks
+  if (!payload || depth !== 1) return null;
+  if (!width || !height || width < 10 || height < 10) return null;
 
-  const fontSize = width > 100 && height > 50 ? '14px' : '11px';
-  const showValue = width > 120 && height > 60;
-  const showPercentage = width > 80 && height > 40;
+  const fontSize = width > 100 && height > 50 ? '14px' : width > 60 && height > 35 ? '12px' : '10px';
+  const showValue = width > 100 && height > 50;
+  const showPercentage = width > 60 && height > 35;
+  const showName = width > 40 && height > 25;
 
   return (
     <g>
@@ -25,16 +25,16 @@ const CustomizedContent = ({ root, depth, x, y, width, height, index, payload, c
         height={height}
         style={{
           fill: payload.color || colors[index % colors.length],
-          stroke: theme.background,
+          stroke: theme.background || '#0f172a',
           strokeWidth: 2,
           strokeOpacity: 1,
         }}
       />
-      {width > 50 && height > 30 && (
+      {showName && (
         <>
           <text
             x={x + width / 2}
-            y={y + height / 2 - (showValue ? 10 : 0)}
+            y={y + height / 2 - (showValue ? 12 : showPercentage ? 5 : 0)}
             textAnchor="middle"
             fill="#fff"
             fontSize={fontSize}
@@ -45,10 +45,10 @@ const CustomizedContent = ({ root, depth, x, y, width, height, index, payload, c
           {showPercentage && (
             <text
               x={x + width / 2}
-              y={y + height / 2 + 5}
+              y={y + height / 2 + (showValue ? 4 : 8)}
               textAnchor="middle"
               fill="#fff"
-              fontSize="12px"
+              fontSize="11px"
               opacity={0.9}
             >
               {payload.percentage}%
@@ -60,7 +60,7 @@ const CustomizedContent = ({ root, depth, x, y, width, height, index, payload, c
               y={y + height / 2 + 20}
               textAnchor="middle"
               fill="#fff"
-              fontSize="11px"
+              fontSize="10px"
               opacity={0.8}
             >
               {formatCurrency(payload.value, selectedCurrency, currencyFormat)}
