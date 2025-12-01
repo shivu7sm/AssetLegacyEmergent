@@ -494,12 +494,12 @@ function SecurityAuditSection({ user }) {
       </Card>
 
       {/* Info Card */}
-      <Card style={{background: 'linear-gradient(135deg, #2d0e1e 0%, #3d1828 100%)', borderColor: '#3b82f6', borderLeftWidth: '4px'}}>
+      <Card style={{background: theme.cardBg, borderColor: theme.info, borderLeftWidth: '4px'}}>
         <CardContent className="py-6">
           <div className="flex items-start gap-4">
-            <Shield className="w-6 h-6 flex-shrink-0" style={{color: '#60a5fa'}} />
+            <Shield className="w-6 h-6 flex-shrink-0" style={{color: theme.info}} />
             <div>
-              <h3 className="font-semibold mb-2" style={{color: '#60a5fa'}}>Why Audit Logs Matter</h3>
+              <h3 className="font-semibold mb-2" style={{color: theme.info}}>Why Audit Logs Matter</h3>
               <ul className="text-sm space-y-2" style={{color: theme.textSecondary}}>
                 <li>• <strong>Detect suspicious activity:</strong> Monitor for unauthorized access attempts</li>
                 <li>• <strong>Track changes:</strong> See what was modified and when</li>
