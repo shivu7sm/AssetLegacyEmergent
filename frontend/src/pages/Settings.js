@@ -1452,7 +1452,7 @@ export default function Settings() {
             )}
 
             {/* How Nominee Access Works - Visual Guide */}
-            <Card style={{background: 'linear-gradient(135deg, #1a0b2e 0%, #2d0e3e 100%)', borderColor: '#a855f7', borderWidth: '2px'}}>
+            <Card style={{background: theme.cardBg, borderColor: theme.primary, borderWidth: '2px'}}>
               <CardHeader>
                 <CardTitle style={{color: theme.text}}>How Nominee Access Works</CardTitle>
               </CardHeader>
@@ -1468,7 +1468,7 @@ export default function Settings() {
                       <p className="text-xs" style={{color: theme.textMuted}}>Generate secure link</p>
                     </div>
                     
-                    <div style={{color: '#a855f7', fontSize: '1.5rem'}}>→</div>
+                    <div style={{color: theme.primary, fontSize: '1.5rem'}}>→</div>
                     
                     <div className="text-center flex-1">
                       <div className="w-16 h-16 rounded-full mx-auto mb-2 flex items-center justify-center" style={{background: 'rgba(245, 158, 11, 0.2)'}}>
@@ -1478,7 +1478,7 @@ export default function Settings() {
                       <p className="text-xs" style={{color: theme.textMuted}}>Immediate or After DMS</p>
                     </div>
                     
-                    <div style={{color: '#a855f7', fontSize: '1.5rem'}}>→</div>
+                    <div style={{color: theme.primary, fontSize: '1.5rem'}}>→</div>
                     
                     <div className="text-center flex-1">
                       <div className="w-16 h-16 rounded-full mx-auto mb-2 flex items-center justify-center" style={{background: 'rgba(16, 185, 129, 0.2)'}}>
@@ -1490,8 +1490,8 @@ export default function Settings() {
                   </div>
 
                   {/* FAQ */}
-                  <div className="pt-6" style={{borderTop: '1px solid #2d1f3d'}}>
-                    <h4 className="font-semibold mb-3" style={{color: '#fca5a5'}}>Frequently Asked Questions</h4>
+                  <div className="pt-6" style={{borderTop: `1px solid ${theme.border}`}}>
+                    <h4 className="font-semibold mb-3" style={{color: theme.error}}>Frequently Asked Questions</h4>
                     <div className="space-y-3">
                       <div>
                         <p className="text-sm font-semibold" style={{color: theme.textSecondary}}>Q: What can nominees see?</p>
