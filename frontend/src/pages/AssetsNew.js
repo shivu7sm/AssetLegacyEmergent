@@ -331,14 +331,30 @@ export default function AssetsNew() {
             </div>
             
             <div className="flex gap-3 items-center">
-              <Button 
-                onClick={() => setDialogOpen(true)}
-                className="text-white"
-                style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Add Asset
-              </Button>
+              <div className="flex gap-2">
+                <Button 
+                  onClick={() => {
+                    setDialogType('asset');
+                    setDialogOpen(true);
+                  }}
+                  className="text-white"
+                  style={{background: 'linear-gradient(135deg, #10b981 0%, #3b82f6 100%)'}}
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Asset
+                </Button>
+                <Button 
+                  onClick={() => {
+                    setDialogType('liability');
+                    setDialogOpen(true);
+                  }}
+                  className="text-white"
+                  style={{background: 'linear-gradient(135deg, #ef4444 0%, #f59e0b 100%)'}}
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Liability
+                </Button>
+              </div>
             </div>
           </div>
 
