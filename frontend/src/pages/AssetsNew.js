@@ -573,7 +573,12 @@ export default function AssetsNew() {
                                   setSelectedAsset(asset);
                                   setEditModalOpen(true);
                                 }}>
-                                  <span style={{color: isLiability ? '#FF5C73' : '#5CE3D7', fontWeight: 600}}>
+                                  <span style={{
+                                    color: isLiability 
+                                      ? (colorTheme === 'light' ? '#dc2626' : '#ef4444')
+                                      : (colorTheme === 'light' ? '#0891b2' : '#06b6d4'), 
+                                    fontWeight: 600
+                                  }}>
                                     {formatCurrency(currentValue, selectedCurrency, currencyFormat)}
                                   </span>
                                 </td>
@@ -582,10 +587,20 @@ export default function AssetsNew() {
                                 <td className="p-3 text-right" onClick={() => setSelectedAsset(asset)}>
                                   {!isLiability && gain !== 0 && (
                                     <div>
-                                      <div style={{color: gain > 0 ? '#4BE0A1' : '#FF5C73', fontWeight: 600, fontSize: '0.813rem'}}>
+                                      <div style={{
+                                        color: gain > 0 
+                                          ? (colorTheme === 'light' ? '#059669' : '#10b981')
+                                          : (colorTheme === 'light' ? '#dc2626' : '#ef4444'), 
+                                        fontWeight: 600, 
+                                        fontSize: '0.813rem'
+                                      }}>
                                         {gain > 0 ? '↑' : '↓'} {formatCurrency(Math.abs(gain), selectedCurrency, currencyFormat)}
                                       </div>
-                                      <div className="text-xs" style={{color: gain > 0 ? '#4BE0A1' : '#FF5C73'}}>
+                                      <div className="text-xs" style={{
+                                        color: gain > 0 
+                                          ? (colorTheme === 'light' ? '#059669' : '#10b981')
+                                          : (colorTheme === 'light' ? '#dc2626' : '#ef4444')
+                                      }}>
                                         ({gainPercent}%)
                                       </div>
                                     </div>
