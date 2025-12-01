@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { useApp } from '@/context/AppContext';
 import { useAuth } from '@/App';
 import { useTheme } from '@/context/ThemeContext';
+import FloatingQuickActions from '@/components/FloatingQuickActions';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
