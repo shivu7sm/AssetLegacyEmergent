@@ -128,9 +128,11 @@ export default function AssetTreeMap({ data, selectedCurrency, currencyFormat })
     '#6366f1', // Indigo
   ];
 
-  // Transform data for treemap - add colors to each item
+  // Ensure data has all required fields and colors
   const treemapData = data.map((item, index) => ({
-    ...item,
+    name: item.name || 'Unknown',
+    value: item.value || 0,
+    percentage: item.percentage || 0,
     color: item.color || COLORS[index % COLORS.length],
   }));
 
@@ -145,13 +147,21 @@ export default function AssetTreeMap({ data, selectedCurrency, currencyFormat })
     );
   };
 
+  if (!data || data.length === 0) {
+    return (
+      <div className="h-[400px] flex items-center justify-center" style={{ color: theme.textTertiary }}>
+        <p>No asset data available</p>
+      </div>
+    );
+  }
+
   return (
     <ResponsiveContainer width="100%" height={400}>
       <Treemap
         data={treemapData}
         dataKey="value"
         aspectRatio={4 / 3}
-        stroke={theme.background}
+        stroke={theme?.background || '#fff'}
         fill="#8884d8"
         content={renderContent}
       >
