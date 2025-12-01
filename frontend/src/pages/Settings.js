@@ -20,7 +20,7 @@ const API = `${BACKEND_URL}/api`;
 
 // Appearance Section Component
 function AppearanceSection() {
-  const { dashboardTheme, setTheme, theme } = useTheme();
+  const { colorTheme, setColorTheme, theme } = useTheme();
 
   return (
     <div className="space-y-6">
@@ -29,74 +29,74 @@ function AppearanceSection() {
           <Palette className="w-7 h-7" />
           Appearance
         </h2>
-        <p style={{color: theme.textTertiary}}>Customize the look and feel of your dashboard</p>
+        <p style={{color: theme.textTertiary}}>Choose between Standard (Dark) or White (Light) theme</p>
       </div>
 
       <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
         <CardHeader>
           <CardTitle style={{color: theme.text}}>Theme Selection</CardTitle>
           <CardDescription style={{color: theme.textTertiary}}>
-            Choose your preferred dashboard theme. Your selection will be remembered across sessions.
+            Choose your preferred color theme. Your selection will be remembered across sessions.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Standard Theme Card */}
+            {/* Dark Theme Card */}
             <div 
-              onClick={() => setTheme('standard')}
+              onClick={() => setColorTheme('dark')}
               className="cursor-pointer relative p-6 rounded-lg border-2 transition-all"
               style={{
-                background: dashboardTheme === 'standard' ? 'rgba(168, 85, 247, 0.1)' : 'theme.backgroundTertiary',
-                borderColor: dashboardTheme === 'standard' ? '#a855f7' : '#2d1f3d',
-                transform: dashboardTheme === 'standard' ? 'scale(1.02)' : 'scale(1)'
+                background: colorTheme === 'dark' ? 'rgba(168, 85, 247, 0.1)' : theme.backgroundTertiary,
+                borderColor: colorTheme === 'dark' ? '#a855f7' : theme.border,
+                transform: colorTheme === 'dark' ? 'scale(1.02)' : 'scale(1)'
               }}
             >
-              {dashboardTheme === 'standard' && (
+              {colorTheme === 'dark' && (
                 <div className="absolute top-3 right-3 w-6 h-6 rounded-full flex items-center justify-center" style={{background: '#a855f7'}}>
                   <span style={{color: '#fff', fontSize: '14px'}}>✓</span>
                 </div>
               )}
-              <h3 className="text-lg font-bold mb-2" style={{color: theme.text}}>Standard Theme</h3>
+              <h3 className="text-lg font-bold mb-2" style={{color: theme.text}}>Standard (Dark)</h3>
               <p className="text-sm mb-4" style={{color: theme.textTertiary}}>
-                Classic dark theme with purple and pink gradient accents. Perfect for those who prefer vibrant colors.
+                Dark theme with purple and pink gradient accents. Easy on the eyes with vibrant colors.
               </p>
               <div className="flex gap-2">
-                <div className="w-8 h-8 rounded" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}></div>
-                <div className="w-8 h-8 rounded" style={{background: theme.backgroundSecondary}}></div>
-                <div className="w-8 h-8 rounded" style={{background: '#ec4899'}}></div>
+                <div className="w-8 h-8 rounded" style={{background: '#0b0b11'}}></div>
+                <div className="w-8 h-8 rounded" style={{background: '#1a1229'}}></div>
+                <div className="w-8 h-8 rounded" style={{background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)'}}></div>
               </div>
             </div>
 
-            {/* Modern Theme Card */}
+            {/* Light Theme Card */}
             <div 
-              onClick={() => setTheme('modern')}
+              onClick={() => setColorTheme('light')}
               className="cursor-pointer relative p-6 rounded-lg border-2 transition-all"
               style={{
-                background: dashboardTheme === 'modern' ? 'rgba(232, 194, 124, 0.1)' : 'theme.backgroundTertiary',
-                borderColor: dashboardTheme === 'modern' ? '#E8C27C' : '#2d1f3d',
-                transform: dashboardTheme === 'modern' ? 'scale(1.02)' : 'scale(1)'
+                background: colorTheme === 'light' ? 'rgba(139, 92, 246, 0.1)' : theme.backgroundTertiary,
+                borderColor: colorTheme === 'light' ? '#8b5cf6' : theme.border,
+                transform: colorTheme === 'light' ? 'scale(1.02)' : 'scale(1)'
               }}
             >
-              {dashboardTheme === 'modern' && (
-                <div className="absolute top-3 right-3 w-6 h-6 rounded-full flex items-center justify-center" style={{background: '#E8C27C'}}>
-                  <span style={{color: '#0B0B11', fontSize: '14px'}}>✓</span>
+              {colorTheme === 'light' && (
+                <div className="absolute top-3 right-3 w-6 h-6 rounded-full flex items-center justify-center" style={{background: '#8b5cf6'}}>
+                  <span style={{color: '#fff', fontSize: '14px'}}>✓</span>
                 </div>
               )}
-              <h3 className="text-lg font-bold mb-2" style={{color: theme.text}}>Modern Theme</h3>
+              <h3 className="text-lg font-bold mb-2" style={{color: theme.text}}>White (Light)</h3>
               <p className="text-sm mb-4" style={{color: theme.textTertiary}}>
-                Premium dark theme with gold accents and refined spacing. Ideal for a sophisticated, professional look.
+                Clean white theme with dark text. Perfect for bright environments and better readability.
               </p>
               <div className="flex gap-2">
-                <div className="w-8 h-8 rounded" style={{background: '#E8C27C'}}></div>
-                <div className="w-8 h-8 rounded" style={{background: 'linear-gradient(135deg, #0B0B11 0%, #131622 100%)'}}></div>
-                <div className="w-8 h-8 rounded" style={{background: '#5CE3D7'}}></div>
+                <div className="w-8 h-8 rounded" style={{background: '#ffffff', border: '1px solid #e2e8f0'}}></div>
+                <div className="w-8 h-8 rounded" style={{background: '#f8fafc'}}></div>
+                <div className="w-8 h-8 rounded" style={{background: 'linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%)'}}></div>
               </div>
             </div>
           </div>
 
-          <div className="mt-4 p-4 rounded-lg" style={{background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.3)'}}>
+          <div className="mt-4 p-4 rounded-lg" style={{background: colorTheme === 'dark' ? 'rgba(168, 85, 247, 0.1)' : 'rgba(139, 92, 246, 0.1)', border: `1px solid ${colorTheme === 'dark' ? 'rgba(168, 85, 247, 0.3)' : 'rgba(139, 92, 246, 0.3)'}`}}>
             <p className="text-sm" style={{color: theme.textSecondary}}>
-              <strong style={{color: '#60a5fa'}}>Current theme:</strong> {dashboardTheme === 'modern' ? 'Modern' : 'Standard'}
+              <strong style={{color: theme.primary}}>Current theme:</strong> {colorTheme === 'dark' ? 'Standard (Dark)' : 'White (Light)'}
             </p>
           </div>
         </CardContent>
