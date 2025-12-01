@@ -203,7 +203,11 @@ export default function LoanBubbleChart({ data, selectedCurrency, currencyFormat
         <p className="mb-2" style={{ color: theme.textSecondary, fontWeight: 600 }}>
           Bubble Size: {metric === 'amount' ? 'Loan Amount' : 'Interest Rate'}
         </p>
-        <p>Y-axis shows interest rates • Hover over bubbles for details</p>
+        <p>
+          {metric === 'amount' 
+            ? 'Y-axis: Interest Rate • Bigger bubble = Larger loan' 
+            : 'Y-axis: Loan Amount • Bigger bubble = Higher rate'}
+        </p>
       </div>
     </div>
   );
