@@ -70,6 +70,7 @@ export default function AssetsNew() {
   const [calculatingLoan, setCalculatingLoan] = useState(false);
   const [loanParams, setLoanParams] = useState({ interestRate: 0, tenure: 0 });
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogType, setDialogType] = useState('asset'); // 'asset' or 'liability'
   const [activeFilter, setActiveFilter] = useState('all'); // Filter by asset group
   const [activeAccount, setActiveAccount] = useState('own'); // 'own' or 'test_account' or account_id
   const [testAccountData, setTestAccountData] = useState(null);
