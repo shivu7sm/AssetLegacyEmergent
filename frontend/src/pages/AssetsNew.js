@@ -372,15 +372,23 @@ export default function AssetsNew() {
             onClick={() => setActiveFilter('all')}
             className="px-4 py-2 rounded-full text-sm font-semibold transition-all hover:scale-105"
             style={{
-              background: activeFilter === 'all' ? '#E8C27C' : 'rgba(232, 194, 124, 0.15)',
-              border: `1.5px solid ${activeFilter === 'all' ? '#E8C27C' : 'rgba(232, 194, 124, 0.4)'}`,
-              color: activeFilter === 'all' ? '#0B0B11' : '#E8C27C',
+              background: activeFilter === 'all' 
+                ? (colorTheme === 'light' ? '#ca8a04' : '#eab308')
+                : (colorTheme === 'light' ? 'rgba(202, 138, 4, 0.15)' : 'rgba(234, 179, 8, 0.15)'),
+              border: `1.5px solid ${activeFilter === 'all' 
+                ? (colorTheme === 'light' ? '#ca8a04' : '#eab308')
+                : (colorTheme === 'light' ? 'rgba(202, 138, 4, 0.4)' : 'rgba(234, 179, 8, 0.4)')}`,
+              color: activeFilter === 'all' 
+                ? '#ffffff'
+                : (colorTheme === 'light' ? '#ca8a04' : '#eab308'),
               fontWeight: activeFilter === 'all' ? 700 : 600
             }}
           >
             ALL
             <span className="ml-2 px-2 py-0.5 rounded-full text-xs" style={{
-              background: activeFilter === 'all' ? 'rgba(11, 11, 17, 0.2)' : 'rgba(232, 194, 124, 0.2)'
+              background: activeFilter === 'all' 
+                ? 'rgba(255, 255, 255, 0.25)' 
+                : (colorTheme === 'light' ? 'rgba(202, 138, 4, 0.2)' : 'rgba(234, 179, 8, 0.2)')
             }}>
               {assets.length}
             </span>
@@ -391,22 +399,32 @@ export default function AssetsNew() {
             const groupAssets = groupedAssets[groupKey] || [];
             if (groupAssets.length === 0) return null;
             
+            const pillColor = colorTheme === 'light' ? group.colorLight : group.color;
+            
             return (
               <button
                 key={groupKey}
                 onClick={() => setActiveFilter(groupKey)}
                 className="px-4 py-2 rounded-full text-sm font-semibold transition-all hover:scale-105"
                 style={{
-                  background: activeFilter === groupKey ? group.color : `${group.color}15`,
-                  border: `1.5px solid ${activeFilter === groupKey ? group.color : `${group.color}40`}`,
-                  color: activeFilter === groupKey ? '#0B0B11' : group.color,
+                  background: activeFilter === groupKey 
+                    ? pillColor
+                    : (colorTheme === 'light' ? `${pillColor}20` : `${pillColor}15`),
+                  border: `1.5px solid ${activeFilter === groupKey 
+                    ? pillColor
+                    : (colorTheme === 'light' ? `${pillColor}50` : `${pillColor}40`)}`,
+                  color: activeFilter === groupKey 
+                    ? '#ffffff'
+                    : pillColor,
                   fontWeight: activeFilter === groupKey ? 700 : 600
                 }}
               >
                 <span className="mr-2">{group.icon}</span>
                 {group.label}
                 <span className="ml-2 px-2 py-0.5 rounded-full text-xs" style={{
-                  background: activeFilter === groupKey ? 'rgba(11, 11, 17, 0.2)' : `${group.color}20`
+                  background: activeFilter === groupKey 
+                    ? 'rgba(255, 255, 255, 0.25)' 
+                    : (colorTheme === 'light' ? `${pillColor}25` : `${pillColor}20`)
                 }}>
                   {groupAssets.length}
                 </span>
