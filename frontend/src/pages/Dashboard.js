@@ -76,6 +76,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     fetchSummary();
+    fetchLoanDetails();
     checkDemoMode();
   }, [selectedCurrency]); // Refetch when currency changes
 
@@ -100,6 +101,25 @@ export default function Dashboard() {
       toast.error('Failed to load dashboard');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchLoanDetails = async () => {
+    try {
+      const response = await axios.get(`${API}/assets`, { withCredentials: true });
+      // Filter only loans and credit cards, extract relevant data
+      const loans = response.data
+        .filter(asset => asset.type === 'loan' || asset.type === 'credit_card')
+        .map(loan => ({
+          name: loan.name,
+          amount: Math.abs(loan.current_value || loan.total_value || 0),
+          rate: loan.details?.interest_rate || loan.interest_rate || 5,
+          term: loan.details?.tenure_months ? `${loan.details.tenure_months} months` : null,
+          color: loan.type === 'credit_card' ? '#ef4444' : '#f59e0b',
+        }));
+      setLoanDetails(loans);
+    } catch (error) {
+      console.error('Failed to fetch loan details:', error);
     }
   };
 
