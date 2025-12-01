@@ -8,7 +8,7 @@ const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
 // Currency to country mapping
 const CURRENCY_TO_COUNTRY = {
-  'USD': { name: 'United States', code: 'US', coords: [-95, 37] },
+  'USD': { name: 'United States', code: 'US', coords: [-98, 39] },
   'EUR': { name: 'Germany', code: 'DE', coords: [10, 51] },
   'GBP': { name: 'United Kingdom', code: 'GB', coords: [-3, 54] },
   'JPY': { name: 'Japan', code: 'JP', coords: [138, 36] },
