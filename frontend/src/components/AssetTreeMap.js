@@ -128,6 +128,17 @@ export default function AssetTreeMap({ data, selectedCurrency, currencyFormat })
     color: item.color || COLORS[index % COLORS.length],
   }));
 
+  const renderContent = (props) => {
+    return (
+      <CustomizedContent
+        {...props}
+        colors={COLORS}
+        selectedCurrency={selectedCurrency}
+        currencyFormat={currencyFormat}
+      />
+    );
+  };
+
   return (
     <ResponsiveContainer width="100%" height={400}>
       <Treemap
@@ -136,13 +147,7 @@ export default function AssetTreeMap({ data, selectedCurrency, currencyFormat })
         aspectRatio={4 / 3}
         stroke={theme.background}
         fill="#8884d8"
-        content={
-          <CustomizedContent
-            colors={COLORS}
-            selectedCurrency={selectedCurrency}
-            currencyFormat={currencyFormat}
-          />
-        }
+        content={renderContent}
       >
         <Tooltip
           content={
