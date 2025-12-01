@@ -157,7 +157,7 @@ export default function Dashboard() {
       color: ASSET_COLORS[key] || '#64748b',
       percentage: ((Math.abs(value) / totalAssets) * 100).toFixed(1)
     };
-  }).filter(item => item.value > 0) : [];
+  }).filter(item => item.value > 0).sort((a, b) => b.value - a.value) : []; // Sort highest to lowest
 
   // Liability Distribution (only liabilities)
   const liabilityDistributionData = summary?.liability_values_separate ? Object.entries(summary.liability_values_separate).map(([key, value]) => {
