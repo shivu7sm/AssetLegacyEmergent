@@ -2567,6 +2567,111 @@ async def seed_demo_data(user_id: str, force: bool = False):
             },
             "created_at": datetime.now(timezone.utc).isoformat()
         },
+        {
+            "id": f"{demo_prefix}loan3",
+            "user_id": user_id,
+            "name": "Personal Loan",
+            "type": "loan",
+            "purchase_currency": "USD",
+            "purchase_date": "2024-01-15",
+            "principal_amount": 15000,
+            "interest_rate": 8.99,
+            "tenure_months": 36,
+            "total_value": 15000,
+            "current_value": 12500,
+            "details": {
+                "loan_type": "Personal Loan",
+                "bank_name": "Bank of America",
+                "interest_rate": 8.99,
+                "emi_amount": 475,
+                "tenure_months": 36,
+                "remaining_months": 28
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}loan4",
+            "user_id": user_id,
+            "name": "Student Loan",
+            "type": "loan",
+            "purchase_currency": "USD",
+            "purchase_date": "2018-09-01",
+            "principal_amount": 45000,
+            "interest_rate": 5.5,
+            "tenure_months": 120,
+            "total_value": 45000,
+            "current_value": 28000,
+            "details": {
+                "loan_type": "Student Loan",
+                "bank_name": "Federal Student Aid",
+                "interest_rate": 5.5,
+                "emi_amount": 485,
+                "tenure_months": 120,
+                "remaining_months": 62
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}loan5",
+            "user_id": user_id,
+            "name": "Business Loan",
+            "type": "loan",
+            "purchase_currency": "USD",
+            "purchase_date": "2023-03-20",
+            "principal_amount": 75000,
+            "interest_rate": 6.75,
+            "tenure_months": 84,
+            "total_value": 75000,
+            "current_value": 68000,
+            "details": {
+                "loan_type": "Business Loan",
+                "bank_name": "Chase Business Banking",
+                "interest_rate": 6.75,
+                "emi_amount": 1150,
+                "tenure_months": 84,
+                "remaining_months": 72
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}credit2",
+            "user_id": user_id,
+            "name": "Amex Platinum Card",
+            "type": "credit_card",
+            "purchase_currency": "USD",
+            "purchase_date": "2022-06-15",
+            "total_value": 3800,
+            "current_value": 3800,
+            "details": {
+                "card_number": "****8765",
+                "interest_rate": 21.99,
+                "credit_limit": 50000,
+                "min_payment": 120
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
+        {
+            "id": f"{demo_prefix}loan6",
+            "user_id": user_id,
+            "name": "Home Equity Line of Credit",
+            "type": "loan",
+            "purchase_currency": "USD",
+            "purchase_date": "2023-11-01",
+            "principal_amount": 50000,
+            "interest_rate": 7.25,
+            "tenure_months": 120,
+            "total_value": 50000,
+            "current_value": 48000,
+            "details": {
+                "loan_type": "HELOC",
+                "bank_name": "Citibank",
+                "interest_rate": 7.25,
+                "emi_amount": 590,
+                "tenure_months": 120,
+                "remaining_months": 116
+            },
+            "created_at": datetime.now(timezone.utc).isoformat()
+        },
         # New Asset Types - Multi-country
         {
             "id": f"{demo_prefix}vehicle1",
