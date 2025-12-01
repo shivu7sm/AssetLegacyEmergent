@@ -50,7 +50,7 @@ export default function Dashboard() {
     return sessionStorage.getItem('comparisonChartType') || 'pie';
   });
   const [assetDistChartType, setAssetDistChartType] = useState(() => {
-    return sessionStorage.getItem('assetDistChartType') || 'pie';
+    return sessionStorage.getItem('assetDistChartType') || 'treemap';
   });
   const [liabilityDistChartType, setLiabilityDistChartType] = useState(() => {
     return sessionStorage.getItem('liabilityDistChartType') || 'pie';
