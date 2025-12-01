@@ -41,7 +41,7 @@ const ASSET_COLORS = {
 export default function Dashboard() {
   const navigate = useNavigate();
   const { selectedCurrency, currencyFormat } = useApp();
-  const { dashboardTheme, theme } = useTheme();
+  const { theme } = useTheme();
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
   const [demoMode, setDemoMode] = useState(false);
@@ -54,6 +54,7 @@ export default function Dashboard() {
   const [liabilityDistChartType, setLiabilityDistChartType] = useState(() => {
     return sessionStorage.getItem('liabilityDistChartType') || 'pie';
   });
+  const [showAllAssets, setShowAllAssets] = useState(false);
 
   const handleComparisonChartChange = (type) => {
     setComparisonChartType(type);
