@@ -11,7 +11,7 @@ from datetime import datetime, timezone, timedelta
 import time
 
 class AdminPanelTester:
-    def __init__(self, base_url="https://white-theme-ui.preview.emergentagent.com"):
+    def __init__(self, base_url="https://wealth-mapper-5.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.admin_session_token = None

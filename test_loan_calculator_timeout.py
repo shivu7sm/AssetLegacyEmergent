@@ -11,7 +11,7 @@ from datetime import datetime
 
 class LoanCalculatorTester:
     def __init__(self):
-        self.base_url = "https://white-theme-ui.preview.emergentagent.com"
+        self.base_url = "https://wealth-mapper-5.preview.emergentagent.com"
         self.api_url = f"{self.base_url}/api"
         self.session_token = None
         self.user_id = None
