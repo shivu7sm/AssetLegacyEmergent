@@ -1815,7 +1815,7 @@ export default function Settings() {
                   </div>
 
                   {dms && (
-                    <div className="p-4 rounded-lg" style={{background: '#131835', border: '1px solid #1e293b'}}>
+                    <div className="p-4 rounded-lg" style={{background: theme.backgroundTertiary, border: `1px solid ${theme.border}`}}>
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="text-sm font-semibold mb-1" style={{color: theme.text}}>Last Activity</p>
@@ -1827,7 +1827,7 @@ export default function Settings() {
                           type="button"
                           onClick={resetLastActivity}
                           size="sm"
-                          style={{background: '#3b82f6', color: '#fff'}}
+                          style={{background: theme.info, color: '#fff'}}
                         >
                           <RefreshCw className="w-4 h-4 mr-2" />
                           I'm Active
