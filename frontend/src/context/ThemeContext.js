@@ -59,9 +59,9 @@ export const themes = {
 };
 
 export const ThemeProvider = ({ children }) => {
-  // Simplified: Only use colorTheme (dark/light), remove dashboardTheme
+  // Simplified: Only use colorTheme (dark/light), default to light (white theme)
   const [colorTheme, setColorTheme] = useState(() => {
-    return localStorage.getItem('colorTheme') || 'dark';
+    return localStorage.getItem('colorTheme') || 'light';
   });
 
   const toggleColorTheme = () => {
