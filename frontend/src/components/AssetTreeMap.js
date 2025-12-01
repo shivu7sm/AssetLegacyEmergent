@@ -4,17 +4,22 @@ import { useTheme } from '@/context/ThemeContext';
 import { formatCurrency } from '@/utils/currencyConversion';
 
 const CustomizedContent = (props) => {
-  const { root, depth, x, y, width, height, index, payload, colors, selectedCurrency, currencyFormat } = props;
+  const { depth, x, y, width, height, index, name, value, percentage, color, colors, selectedCurrency, currencyFormat } = props;
   const { theme } = useTheme();
   
-  // Safety checks
-  if (!payload || depth !== 1) return null;
-  if (!width || !height || width < 10 || height < 10) return null;
+  // Only render depth 1 (actual items, not root)
+  if (depth !== 1) return null;
+  
+  // Don't render tiny rectangles
+  if (!width || !height || width < 5 || height < 5) return null;
 
-  const fontSize = width > 100 && height > 50 ? '14px' : width > 60 && height > 35 ? '12px' : '10px';
-  const showValue = width > 100 && height > 50;
-  const showPercentage = width > 60 && height > 35;
-  const showName = width > 40 && height > 25;
+  const fontSize = width > 100 && height > 50 ? '13px' : width > 60 ? '11px' : '9px';
+  const showValue = width > 120 && height > 60;
+  const showPercentage = width > 70 && height > 40;
+  const showName = width > 45 && height > 30;
+
+  // Use the color from data or fallback
+  const fillColor = color || (colors && colors[index % colors.length]) || '#3b82f6';
 
   return (
     <g>
@@ -24,49 +29,50 @@ const CustomizedContent = (props) => {
         width={width}
         height={height}
         style={{
-          fill: payload.color || colors[index % colors.length],
-          stroke: theme.background || '#0f172a',
-          strokeWidth: 2,
+          fill: fillColor,
+          stroke: theme?.background || '#fff',
+          strokeWidth: 3,
           strokeOpacity: 1,
         }}
       />
-      {showName && (
-        <>
+      {showName && name && (
+        <g>
           <text
             x={x + width / 2}
-            y={y + height / 2 - (showValue ? 12 : showPercentage ? 5 : 0)}
+            y={y + height / 2 - (showValue ? 12 : showPercentage ? 6 : 0)}
             textAnchor="middle"
             fill="#fff"
             fontSize={fontSize}
-            fontWeight="600"
+            fontWeight="700"
           >
-            {payload.name}
+            {name}
           </text>
-          {showPercentage && (
+          {showPercentage && percentage && (
             <text
               x={x + width / 2}
-              y={y + height / 2 + (showValue ? 4 : 8)}
+              y={y + height / 2 + (showValue ? 5 : 10)}
+              textAnchor="middle"
+              fill="#fff"
+              fontSize="12px"
+              fontWeight="600"
+              opacity={0.95}
+            >
+              {percentage}%
+            </text>
+          )}
+          {showValue && value && (
+            <text
+              x={x + width / 2}
+              y={y + height / 2 + 22}
               textAnchor="middle"
               fill="#fff"
               fontSize="11px"
-              opacity={0.9}
+              opacity={0.85}
             >
-              {payload.percentage}%
+              {formatCurrency(value, selectedCurrency, currencyFormat)}
             </text>
           )}
-          {showValue && (
-            <text
-              x={x + width / 2}
-              y={y + height / 2 + 20}
-              textAnchor="middle"
-              fill="#fff"
-              fontSize="10px"
-              opacity={0.8}
-            >
-              {formatCurrency(payload.value, selectedCurrency, currencyFormat)}
-            </text>
-          )}
-        </>
+        </g>
       )}
     </g>
   );
