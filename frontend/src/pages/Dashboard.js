@@ -947,34 +947,130 @@ export default function Dashboard() {
         {/* Historical Net Worth Chart - Moved below charts */}
         <NetWorthChart />
 
-        {/* Asset Geographic Distribution Map */}
+        {/* Asset Geographic Distribution Map & Table */}
         {allAssets.length > 0 && (
-          <Card style={{background: theme.backgroundSecondary, borderColor: theme.border, boxShadow: theme.cardShadow}}>
-            <CardHeader>
-              <CardTitle style={{color: theme.text}}>Asset Geographic Distribution</CardTitle>
-              <p className="text-sm mt-1" style={{color: theme.textTertiary}}>
-                Global spread of your investments • Bubble size represents total value
-              </p>
-            </CardHeader>
-            <CardContent>
-              <AssetWorldMap 
-                assets={allAssets}
-                selectedCurrency={selectedCurrency}
-                currencyFormat={currencyFormat}
-              />
-              {/* Legend */}
-              <div className="mt-4 flex items-center justify-center gap-6 text-xs" style={{color: theme.textTertiary}}>
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded-full" style={{background: 'rgba(168, 85, 247, 0.5)'}}></div>
-                  <span>Countries with assets</span>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card style={{background: theme.backgroundSecondary, borderColor: theme.border, boxShadow: theme.cardShadow}}>
+              <CardHeader>
+                <CardTitle style={{color: theme.text}}>Asset Geographic Distribution</CardTitle>
+                <p className="text-sm mt-1" style={{color: theme.textTertiary}}>
+                  Global spread of your investments
+                </p>
+              </CardHeader>
+              <CardContent>
+                <AssetWorldMap 
+                  assets={allAssets}
+                  selectedCurrency={selectedCurrency}
+                  currencyFormat={currencyFormat}
+                />
+                {/* Legend */}
+                <div className="mt-4 flex items-center justify-center gap-6 text-xs" style={{color: theme.textTertiary}}>
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 rounded-full" style={{background: 'rgba(168, 85, 247, 0.5)'}}></div>
+                    <span>Countries with assets</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 rounded-full" style={{background: '#ec4899'}}></div>
+                    <span>Asset locations</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded-full" style={{background: '#ec4899'}}></div>
-                  <span>Asset count & value</span>
+              </CardContent>
+            </Card>
+
+            <Card style={{background: theme.backgroundSecondary, borderColor: theme.border, boxShadow: theme.cardShadow}}>
+              <CardHeader>
+                <CardTitle style={{color: theme.text}}>Assets by Country</CardTitle>
+                <p className="text-sm mt-1" style={{color: theme.textTertiary}}>Country-wise breakdown</p>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <table className="w-full">
+                    <thead>
+                      <tr style={{borderBottom: `2px solid ${theme.border}`}}>
+                        <th className="text-left py-3 px-2" style={{color: theme.textTertiary, fontSize: '12px', fontWeight: 600}}>COUNTRY</th>
+                        <th className="text-right py-3 px-2" style={{color: theme.textTertiary, fontSize: '12px', fontWeight: 600}}>ASSETS</th>
+                        <th className="text-right py-3 px-2" style={{color: theme.textTertiary, fontSize: '12px', fontWeight: 600}}>VALUE</th>
+                        <th className="text-right py-3 px-2" style={{color: theme.textTertiary, fontSize: '12px', fontWeight: 600}}>%</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {(() => {
+                        // Calculate assets by country
+                        const assetsByCountry = {};
+                        const CURRENCY_TO_COUNTRY = {
+                          'USD': 'United States', 'EUR': 'Germany', 'GBP': 'United Kingdom',
+                          'JPY': 'Japan', 'CNY': 'China', 'AUD': 'Australia', 'CAD': 'Canada',
+                          'CHF': 'Switzerland', 'INR': 'India', 'SGD': 'Singapore'
+                        };
+                        
+                        allAssets.forEach(asset => {
+                          const country = asset.details?.country || asset.country || 
+                                         CURRENCY_TO_COUNTRY[asset.purchase_currency || asset.currency] || 'Unknown';
+                          const value = Math.abs(asset.current_value || asset.total_value || 0);
+                          
+                          if (!assetsByCountry[country]) {
+                            assetsByCountry[country] = { count: 0, value: 0 };
+                          }
+                          assetsByCountry[country].count += 1;
+                          assetsByCountry[country].value += value;
+                        });
+
+                        const totalValue = Object.values(assetsByCountry).reduce((sum, c) => sum + c.value, 0);
+                        const countryData = Object.entries(assetsByCountry)
+                          .map(([country, data]) => ({
+                            country,
+                            count: data.count,
+                            value: data.value,
+                            percentage: totalValue > 0 ? ((data.value / totalValue) * 100).toFixed(1) : 0
+                          }))
+                          .sort((a, b) => b.value - a.value)
+                          .slice(0, showAllAssets ? undefined : 4);
+
+                        return countryData.map((item, index) => (
+                          <tr key={index} style={{borderBottom: `1px solid ${theme.border}`}}>
+                            <td className="py-3 px-2">
+                              <div className="flex items-center gap-2">
+                                <div className="w-3 h-3 rounded-full" style={{background: '#a855f7'}}></div>
+                                <span style={{color: theme.text, fontWeight: 500}}>{item.country}</span>
+                              </div>
+                            </td>
+                            <td className="text-right py-3 px-2" style={{color: theme.textSecondary, fontWeight: 600}}>
+                              {item.count}
+                            </td>
+                            <td className="text-right py-3 px-2" style={{color: theme.success, fontWeight: 600}}>
+                              {formatCurrency(item.value, selectedCurrency, currencyFormat)}
+                            </td>
+                            <td className="text-right py-3 px-2" style={{color: '#a855f7', fontWeight: 600}}>
+                              {item.percentage}%
+                            </td>
+                          </tr>
+                        ));
+                      })()}
+                    </tbody>
+                  </table>
+                  {(() => {
+                    const totalCountries = new Set(allAssets.map(a => 
+                      a.details?.country || a.country || 
+                      ({'USD': 'United States', 'EUR': 'Germany', 'GBP': 'United Kingdom'}[a.purchase_currency || a.currency] || 'Unknown')
+                    )).size;
+                    return totalCountries > 4 && (
+                      <div className="flex justify-center pt-2">
+                        <Button
+                          onClick={() => setShowAllAssets(!showAllAssets)}
+                          variant="ghost"
+                          size="sm"
+                          style={{color: theme.primary}}
+                        >
+                          {showAllAssets ? 'Show Less' : `Show ${totalCountries - 4} More`}
+                          <span className="ml-2">{showAllAssets ? '↑' : '↓'}</span>
+                        </Button>
+                      </div>
+                    );
+                  })()}
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </div>
         )}
 
         {/* Portfolio Guide Card */}
