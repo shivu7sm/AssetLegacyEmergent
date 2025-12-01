@@ -24,37 +24,43 @@ const ASSET_GROUPS = {
     label: 'Stocks & Bonds',
     icon: '📈',
     types: ['stock', 'investment', 'mutual_fund'],
-    color: '#4BE0A1'
+    color: '#10b981',        // Emerald green - good contrast on both themes
+    colorLight: '#059669'    // Darker emerald for light theme
   },
   crypto: {
     label: 'Cryptocurrency & NFT',
     icon: '₿',
     types: ['crypto', 'portfolio', 'nft'],
-    color: '#5CE3D7'
+    color: '#06b6d4',        // Cyan - good contrast
+    colorLight: '#0891b2'    // Darker cyan for light theme
   },
   realEstate: {
     label: 'Real Estate',
     icon: '🏠',
     types: ['property'],
-    color: '#CF8F86'
+    color: '#f97316',        // Orange - vibrant and visible
+    colorLight: '#ea580c'    // Darker orange for light theme
   },
   banking: {
     label: 'Banking & Cash',
     icon: '🏦',
     types: ['bank'],
-    color: '#E8C27C'
+    color: '#eab308',        // Yellow - matches gold theme
+    colorLight: '#ca8a04'    // Darker yellow for light theme
   },
   valuables: {
     label: 'Valuables & Others',
     icon: '💎',
     types: ['precious_metals', 'diamond', 'locker', 'insurance', 'vehicle', 'art'],
-    color: '#F5C26B'
+    color: '#a855f7',        // Purple - elegant
+    colorLight: '#9333ea'    // Darker purple for light theme
   },
   liabilities: {
     label: 'Loans & Debts',
     icon: '💳',
     types: ['loan', 'credit_card'],
-    color: '#FF5C73'
+    color: '#ef4444',        // Red - attention grabbing
+    colorLight: '#dc2626'    // Darker red for light theme
   }
 };
 
