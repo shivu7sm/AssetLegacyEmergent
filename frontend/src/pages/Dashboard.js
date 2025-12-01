@@ -455,10 +455,9 @@ export default function Dashboard() {
                 </div>
               </CardContent>
             </Card>
-          </div>
-        )}
+        </div>
 
-        {/* Financial Ratios - Both Themes */}
+        {/* Financial Ratios */}
         {summary?.financial_ratios && (() => {
           // Collect all ratios with their status
           const ratios = [
