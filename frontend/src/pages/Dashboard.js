@@ -110,6 +110,10 @@ export default function Dashboard() {
   const fetchLoanDetails = async () => {
     try {
       const response = await axios.get(`${API}/assets`, { withCredentials: true });
+      
+      // Store all assets for the map
+      setAllAssets(response.data);
+      
       // Filter only loans and credit cards, extract relevant data
       const loans = response.data
         .filter(asset => asset.type === 'loan' || asset.type === 'credit_card')
