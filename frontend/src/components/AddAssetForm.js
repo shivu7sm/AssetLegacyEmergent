@@ -15,6 +15,8 @@ const AREA_UNITS = ['sqft', 'sqmt', 'yard', 'acre'];
 const WEIGHT_UNITS = ['gram', 'kilogram', 'ounce', 'pound'];
 
 export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null, initialType = 'asset' }) {
+  const { theme } = useTheme();
+  
   // Get today's date in YYYY-MM-DD format
   const getTodayDate = () => {
     const today = new Date();
