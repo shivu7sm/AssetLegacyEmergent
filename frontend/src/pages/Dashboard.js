@@ -975,29 +975,6 @@ export default function Dashboard() {
           </Card>
         )}
 
-        {/* AI Financial Insights Card */}
-        {summary?.total_assets > 0 && (
-          <Card style={{background: theme.cardBg, borderColor: theme.primary, boxShadow: theme.cardShadow}}>
-            <CardHeader>
-              <div className="flex items-center gap-3">
-                <Sparkles className="w-6 h-6" style={{color: theme.primary}} />
-                <CardTitle style={{color: theme.text}}>AI Financial Insights</CardTitle>
-              </div>
-              <p className="text-sm mt-1" style={{color: theme.textTertiary}}>Powered by AI analysis of your portfolio</p>
-            </CardHeader>
-            <CardContent>
-              <Button
-                onClick={() => navigate('/insights')}
-                className="text-white rounded-full w-full sm:w-auto"
-                style={{background: theme.primaryGradient}}
-              >
-                <Sparkles className="w-4 h-4 mr-2" />
-                View AI Insights & Recommendations
-              </Button>
-            </CardContent>
-          </Card>
-        )}
-
         {/* Portfolio Guide Card */}
         <Card style={{background: theme.cardBg, borderColor: theme.primary, borderWidth: '2px', boxShadow: theme.cardShadow}}>
           <CardContent className="p-6">
