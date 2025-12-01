@@ -137,27 +137,36 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
         
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <Label className="text-slate-300">Asset Type *</Label>
+            <Label className="text-slate-300">{initialType === 'liability' ? 'Liability Type *' : 'Asset Type *'}</Label>
             <Select value={formData.type} onValueChange={(value) => setFormData({ ...formData, type: value })}>
               <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="bg-slate-800 border-slate-700">
-                <SelectItem value="bank" className="text-white">🏦 Bank Account</SelectItem>
-                <SelectItem value="crypto" className="text-white">₿ Cryptocurrency</SelectItem>
-                <SelectItem value="stock" className="text-white">📈 Stocks</SelectItem>
-                <SelectItem value="mutual_fund" className="text-white">📊 Mutual Fund</SelectItem>
-                <SelectItem value="property" className="text-white">🏠 Real Estate</SelectItem>
-                <SelectItem value="precious_metals" className="text-white">🥇 Precious Metals</SelectItem>
-                <SelectItem value="investment" className="text-white">💰 Investment/FD</SelectItem>
-                <SelectItem value="insurance" className="text-white">🛡️ Insurance</SelectItem>
-                <SelectItem value="vehicle" className="text-white">🚗 Vehicle</SelectItem>
-                <SelectItem value="art" className="text-white">🎨 Art/Collectibles</SelectItem>
-                <SelectItem value="nft" className="text-white">🖼️ NFT</SelectItem>
-                <SelectItem value="diamond" className="text-white">💎 Diamond/Jewelry</SelectItem>
-                <SelectItem value="locker" className="text-white">🔐 Safe/Locker</SelectItem>
-                <SelectItem value="loan" className="text-white">💸 Loan</SelectItem>
-                <SelectItem value="credit_card" className="text-white">💳 Credit Card</SelectItem>
+                {initialType === 'liability' ? (
+                  <>
+                    <SelectItem value="loan" className="text-white">💸 Loan</SelectItem>
+                    <SelectItem value="credit_card" className="text-white">💳 Credit Card</SelectItem>
+                  </>
+                ) : (
+                  <>
+                    <SelectItem value="bank" className="text-white">🏦 Bank Account</SelectItem>
+                    <SelectItem value="crypto" className="text-white">₿ Cryptocurrency</SelectItem>
+                    <SelectItem value="stock" className="text-white">📈 Stocks</SelectItem>
+                    <SelectItem value="mutual_fund" className="text-white">📊 Mutual Fund</SelectItem>
+                    <SelectItem value="property" className="text-white">🏠 Real Estate</SelectItem>
+                    <SelectItem value="precious_metals" className="text-white">🥇 Precious Metals</SelectItem>
+                    <SelectItem value="investment" className="text-white">💰 Investment/FD</SelectItem>
+                    <SelectItem value="insurance" className="text-white">🛡️ Insurance</SelectItem>
+                    <SelectItem value="vehicle" className="text-white">🚗 Vehicle</SelectItem>
+                    <SelectItem value="art" className="text-white">🎨 Art/Collectibles</SelectItem>
+                    <SelectItem value="nft" className="text-white">🖼️ NFT</SelectItem>
+                    <SelectItem value="diamond" className="text-white">💎 Diamond/Jewelry</SelectItem>
+                    <SelectItem value="locker" className="text-white">🔐 Safe/Locker</SelectItem>
+                    <SelectItem value="loan" className="text-white">💸 Loan</SelectItem>
+                    <SelectItem value="credit_card" className="text-white">💳 Credit Card</SelectItem>
+                  </>
+                )}
               </SelectContent>
             </Select>
           </div>
