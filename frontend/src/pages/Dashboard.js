@@ -214,6 +214,7 @@ export default function Dashboard() {
   
   return (
     <Layout>
+      <FloatingQuickActions />
       <div className="space-y-8" data-testid="dashboard-container" style={{padding: '2rem 0'}}>
         {/* Header */}
         <div>
