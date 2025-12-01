@@ -57,6 +57,7 @@ export default function Dashboard() {
     return sessionStorage.getItem('liabilityDistChartType') || 'pie';
   });
   const [showAllAssets, setShowAllAssets] = useState(false);
+  const [showAllLiabilities, setShowAllLiabilities] = useState(false);
   const [loanDetails, setLoanDetails] = useState([]);
 
   const handleComparisonChartChange = (type) => {
