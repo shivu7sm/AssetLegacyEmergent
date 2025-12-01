@@ -235,14 +235,14 @@ export default function NetWorthChart() {
         <CardContent>
           <ResponsiveContainer width="100%" height={400}>
             <LineChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#2d1f3d" />
+              <CartesianGrid strokeDasharray="3 3" stroke={theme.border} />
               <XAxis 
                 dataKey="date" 
-                stroke="#94a3b8"
+                stroke={theme.textSecondary}
                 style={{ fontSize: '12px' }}
               />
               <YAxis 
-                stroke="#94a3b8"
+                stroke={theme.textSecondary}
                 style={{ fontSize: '12px' }}
                 tickFormatter={(value) => {
                   if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`;
@@ -250,7 +250,7 @@ export default function NetWorthChart() {
                   return value;
                 }}
               />
-              <Tooltip content={<CustomTooltip selectedCurrency={selectedCurrency} currencyFormat={currencyFormat} />} />
+              <Tooltip content={<CustomTooltip selectedCurrency={selectedCurrency} currencyFormat={currencyFormat} theme={theme} />} />
               <Legend />
               <Line 
                 type="monotone" 
