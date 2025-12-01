@@ -823,27 +823,42 @@ export default function Dashboard() {
                         </tr>
                       </thead>
                       <tbody>
-                        {assetDistributionData.map((item, index) => (
-                          <tr key={index} style={{borderBottom: `1px solid ${theme.border}`}}>
-                            <td className="py-3 px-2">
-                              <div className="flex items-center gap-2">
-                                <div 
-                                  className="w-3 h-3 rounded-full" 
-                                  style={{background: item.color}}
-                                />
-                                <span style={{color: theme.text, fontWeight: 500}}>{item.name}</span>
-                              </div>
-                            </td>
-                            <td className="text-right py-3 px-2" style={{color: theme.textSecondary, fontWeight: 600}}>
-                              {formatCurrency(item.value, selectedCurrency, currencyFormat)}
-                            </td>
-                            <td className="text-right py-3 px-2" style={{color: item.color, fontWeight: 600}}>
-                              {item.percentage}%
-                            </td>
-                          </tr>
-                        ))}
+                        {assetDistributionData
+                          .slice(0, showAllAssets ? assetDistributionData.length : 4)
+                          .map((item, index) => (
+                            <tr key={index} style={{borderBottom: `1px solid ${theme.border}`}}>
+                              <td className="py-3 px-2">
+                                <div className="flex items-center gap-2">
+                                  <div 
+                                    className="w-3 h-3 rounded-full" 
+                                    style={{background: item.color}}
+                                  />
+                                  <span style={{color: theme.text, fontWeight: 500}}>{item.name}</span>
+                                </div>
+                              </td>
+                              <td className="text-right py-3 px-2" style={{color: theme.textSecondary, fontWeight: 600}}>
+                                {formatCurrency(item.value, selectedCurrency, currencyFormat)}
+                              </td>
+                              <td className="text-right py-3 px-2" style={{color: item.color, fontWeight: 600}}>
+                                {item.percentage}%
+                              </td>
+                            </tr>
+                          ))}
                       </tbody>
                     </table>
+                    {assetDistributionData.length > 4 && (
+                      <div className="flex justify-center pt-2">
+                        <Button
+                          onClick={() => setShowAllAssets(!showAllAssets)}
+                          variant="ghost"
+                          size="sm"
+                          style={{color: theme.primary}}
+                        >
+                          {showAllAssets ? 'Show Less' : `Show ${assetDistributionData.length - 4} More`}
+                          <span className="ml-2">{showAllAssets ? '↑' : '↓'}</span>
+                        </Button>
+                      </div>
+                    )}
                     <div className="pt-4 border-t-2" style={{borderColor: theme.border}}>
                       <div className="flex justify-between items-center">
                         <span style={{color: theme.text, fontWeight: 600, fontSize: '16px'}}>Total Assets</span>
