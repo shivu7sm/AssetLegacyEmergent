@@ -797,10 +797,13 @@ export default function AssetsNew() {
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogContent className="max-w-2xl" style={{background: theme.cardBg, borderColor: theme.border, maxHeight: '90vh', overflowY: 'auto'}}>
             <DialogHeader>
-              <DialogTitle style={{color: theme.text, fontSize: '1.5rem'}}>Add New Asset</DialogTitle>
+              <DialogTitle style={{color: theme.text, fontSize: '1.5rem'}}>
+                {dialogType === 'liability' ? 'Add New Liability' : 'Add New Asset'}
+              </DialogTitle>
             </DialogHeader>
             <div className="pt-4">
-              <AddAssetForm 
+              <AddAssetForm
+                initialType={dialogType} 
                 onSuccess={() => {
                   setDialogOpen(false);
                   fetchAssets();
