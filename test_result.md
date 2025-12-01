@@ -558,3 +558,35 @@ agent_communication:
     message: "🎨 LIGHT/WHITE THEME SYSTEM TESTING COMPLETE - Comprehensive theme system analysis completed with mixed results due to authentication limitations. LANDING PAGE THEME TESTING: ✅ THEME SYSTEM WORKING: Successfully tested theme selector with multiple color options in header at https://zivinc.com. Confirmed theme switching between dark (#0f0a1e background), purple/pink gradient, teal/green, and other color schemes. Visual confirmation via screenshots shows themes are properly applied. ✅ THEME SELECTOR FUNCTIONAL: Found 10+ theme selector buttons in header, successfully clicked and applied different themes with immediate visual feedback. ❌ AUTHENTICATION BARRIER: OAuth authentication (Google Sign In) prevents automated testing of authenticated theme system. Cannot test: 1) Sun/Moon toggle button in authenticated header (Layout.js lines 234-249) 2) Dark theme as default in Dashboard (#0b0b11 background) 3) Light theme with white background (#ffffff) 4) Theme persistence via localStorage across protected routes 5) Demo/Live data separation with theme changes 6) Navigation across Assets/Income & Expenses/Tax & Wealth Blueprint/Settings pages. CODE ANALYSIS CONFIRMS IMPLEMENTATION: ThemeContext.js has comprehensive dark/light theme system with localStorage persistence, Layout.js has Sun/Moon toggle with proper styling. RECOMMENDATION: Landing page theme system is functional, but full authenticated theme testing requires manual Google OAuth authentication to access protected Dashboard and other routes."
   - agent: "testing"
     message: "✅ NOMINEE SECTION WHITE THEME FIX TESTING COMPLETE - The critical UI bug has been successfully resolved and verified! COMPREHENSIVE VERIFICATION: 1) ✅ THEME INTEGRATION CONFIRMED: NomineeAccessCard.js properly imports useTheme() hook from '@/context/ThemeContext' (lines 8, 14) and uses theme variables throughout the component. 2) ✅ HARDCODED COLORS ELIMINATED: All hardcoded color values (#f8fafc, #cbd5e1, #94a3b8, #64748b, etc.) have been replaced with dynamic theme variables: theme.cardBg (main card background), theme.border (card borders), theme.text/textSecondary/textTertiary/textMuted (all text colors), theme.backgroundTertiary (button backgrounds). 3) ✅ THEME SYSTEM FUNCTIONAL: ThemeContext.js provides comprehensive dark/light theme configurations - dark theme (#0b0b11 background) and light theme (#f8fafc background) with proper color mappings for all UI elements. 4) ✅ AUTHENTICATION & SECURITY: OAuth flow working correctly, Settings page properly redirects when not authenticated, confirming security is intact. 5) ✅ LANDING PAGE THEME TESTING: Successfully tested theme switching with multiple color options in header, visual confirmation via screenshots. 6) ✅ COMPONENT IMPLEMENTATION: All nominee card elements now use theme variables ensuring proper visibility in both themes: priority buttons, edit/delete buttons, access type selection cards (Immediate, Temporary, After DMS), grant access section, all text elements. CONCLUSION: The white theme fix is properly implemented. All text will be readable in both light and dark themes (no white text on white background or dark text on dark background). The Nominee section is ready for production use with full theme support. Manual authentication required to test complete end-to-end flow, but code analysis confirms proper implementation."
+# Authentication Double-Login Bug Fix - Session 2
+
+backend:
+  - task: "Google OAuth Double-Login Bug Fix"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "critical"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "CRITICAL BUG FIX IMPLEMENTED: Fixed double-login issue for new Google sign-up users. ROOT CAUSE: In /auth/session endpoint (lines 807-809), the code was trying to access 'existing_user' variable for new users, but this variable is None when a user signs up for the first time. This caused the endpoint to fail/crash when returning user data. FIX APPLIED: Added line 802 to fetch current user data from database after user creation: 'current_user = await db.users.find_one({\"id\": user_id}, {\"_id\": 0})'. Now using 'current_user' instead of 'existing_user' in the response (lines 810-812). Also added 'onboarding_completed' flag to response for proper onboarding flow. This ensures both new and existing users get correct data returned. Backend has auto-reloaded successfully with the fix."
+
+metadata:
+  created_by: "main_agent"
+  version: "4.0"
+  test_sequence: 4
+  run_ui: false
+
+test_plan:
+  current_focus:
+    - "Google OAuth Double-Login Bug Fix - NEW USER SIGN-UP FLOW"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "main"
+    message: "CRITICAL AUTHENTICATION BUG FIX COMPLETE: Identified and fixed the root cause of the double-login issue. The /auth/session endpoint was attempting to access 'existing_user' variable when returning user data, but this is None for new users signing up for the first time. Fixed by querying the database to get 'current_user' data after user creation. This fix ensures seamless authentication for both new and existing users. The backend has auto-reloaded with the changes. NEXT STEP: Need frontend testing agent to verify the complete Google OAuth sign-up flow for NEW users - they should be able to access the dashboard immediately after first sign-up without needing to log in a second time."
+
