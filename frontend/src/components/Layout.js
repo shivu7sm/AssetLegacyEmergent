@@ -328,6 +328,9 @@ export default function Layout({ children }) {
         {children}
       </main>
 
+      {/* Floating Quick Actions - Available throughout the app */}
+      <FloatingQuickActions />
+
       {/* Floating Subscription Button - Only show if not subscribed or on Free plan */}
       {(!userSubscription || userSubscription.plan === 'Free') && (
         <div 
