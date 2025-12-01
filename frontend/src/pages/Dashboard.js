@@ -174,14 +174,14 @@ export default function Dashboard() {
   
   return (
     <Layout>
-      <div className={`${dashboardTheme}-theme space-y-8`} data-testid="dashboard-container" style={dashboardTheme === 'modern' ? {padding: '2rem', background: theme.background} : {padding: '2rem 0'}}>
+      <div className="space-y-8" data-testid="dashboard-container" style={{padding: '2rem 0'}}>
         {/* Header */}
         <div>
-          <h1 className={`${dashboardTheme === 'modern' ? 'text-3xl' : 'text-4xl'} font-bold mb-2`} style={dashboardTheme === 'modern' ? {fontFamily: 'Inter, sans-serif', color: theme.text} : {fontFamily: 'Space Grotesk, sans-serif', color: theme.text}} data-testid="dashboard-title">
-            {dashboardTheme === 'modern' ? 'Dashboard' : 'Financial Dashboard'}
+          <h1 className="text-4xl font-bold mb-2" style={{fontFamily: 'Space Grotesk, sans-serif', color: theme.text}} data-testid="dashboard-title">
+            Financial Dashboard
           </h1>
-          <p style={dashboardTheme === 'modern' ? {color: theme.textSecondary, fontSize: '0.9375rem'} : {color: theme.textTertiary}}>
-            {dashboardTheme === 'modern' ? 'Your complete financial overview' : 'Overview of your assets and financial health'}
+          <p style={{color: theme.textTertiary}}>
+            Overview of your assets and financial health
           </p>
         </div>
 
