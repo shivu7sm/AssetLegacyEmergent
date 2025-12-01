@@ -1,11 +1,12 @@
 import { Button } from '@/components/ui/button';
-import { PieChart, BarChart3, LineChart, Donut } from 'lucide-react';
+import { PieChart, BarChart3, LineChart, Donut, LayoutGrid } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 
 export default function ChartTypeSwitcher({ currentType, onChange, availableTypes = ['pie', 'bar', 'line', 'donut'] }) {
   const { theme } = useTheme();
   
   const chartTypes = [
+    { value: 'treemap', icon: LayoutGrid, label: 'Tree' },
     { value: 'pie', icon: PieChart, label: 'Pie' },
     { value: 'bar', icon: BarChart3, label: 'Bar' },
     { value: 'line', icon: LineChart, label: 'Line' },
