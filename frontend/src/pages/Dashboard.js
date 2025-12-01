@@ -60,6 +60,7 @@ export default function Dashboard() {
   const [showAllAssets, setShowAllAssets] = useState(false);
   const [showAllLiabilities, setShowAllLiabilities] = useState(false);
   const [loanDetails, setLoanDetails] = useState([]);
+  const [allAssets, setAllAssets] = useState([]);
 
   const handleComparisonChartChange = (type) => {
     setComparisonChartType(type);
