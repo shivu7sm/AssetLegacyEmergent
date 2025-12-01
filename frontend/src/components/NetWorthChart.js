@@ -5,20 +5,21 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { TrendingUp, TrendingDown, Calendar } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
+import { useTheme } from '@/context/ThemeContext';
 import { formatCurrency } from '@/utils/currencyConversion';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-const CustomTooltip = ({ active, payload, label, selectedCurrency, currencyFormat }) => {
+const CustomTooltip = ({ active, payload, label, selectedCurrency, currencyFormat, theme }) => {
   if (active && payload && payload.length) {
     return (
-      <div style={{ background: '#1a1229', border: '1px solid #2d1f3d', borderRadius: '8px', padding: '12px' }}>
-        <p style={{ color: '#f8fafc', fontWeight: 600, marginBottom: '8px' }}>{label}</p>
+      <div style={{ background: theme.cardBg, border: `1px solid ${theme.border}`, borderRadius: '8px', padding: '12px' }}>
+        <p style={{ color: theme.text, fontWeight: 600, marginBottom: '8px' }}>{label}</p>
         {payload.map((entry, index) => (
           <div key={index} style={{ marginBottom: '4px' }}>
             <span style={{ color: entry.color, fontWeight: 500 }}>{entry.name}: </span>
-            <span style={{ color: '#f8fafc' }}>{formatCurrency(entry.value, selectedCurrency, currencyFormat)}</span>
+            <span style={{ color: theme.text }}>{formatCurrency(entry.value, selectedCurrency, currencyFormat)}</span>
           </div>
         ))}
       </div>
@@ -29,6 +30,7 @@ const CustomTooltip = ({ active, payload, label, selectedCurrency, currencyForma
 
 export default function NetWorthChart() {
   const { selectedCurrency, currencyFormat } = useApp();
+  const { theme } = useTheme();
   const [history, setHistory] = useState([]);
   const [trends, setTrends] = useState(null);
   const [loading, setLoading] = useState(true);
