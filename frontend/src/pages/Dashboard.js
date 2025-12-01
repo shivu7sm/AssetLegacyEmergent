@@ -717,20 +717,28 @@ export default function Dashboard() {
                     <ChartTypeSwitcher 
                       currentType={assetDistChartType} 
                       onChange={handleAssetDistChartChange}
-                      availableTypes={['pie', 'donut', 'bar']}
+                      availableTypes={['treemap', 'pie', 'donut', 'bar']}
                     />
                   )}
                 </div>
               </CardHeader>
               <CardContent>
                 {assetDistributionData.length > 0 ? (
-                  <FlexibleChart
-                    data={assetDistributionData}
-                    chartType={assetDistChartType}
-                    colors={[]}
-                    CustomTooltip={CustomTooltip}
-                    labelFormatter={({ name, percentage }) => `${name} ${percentage}%`}
-                  />
+                  assetDistChartType === 'treemap' ? (
+                    <AssetTreeMap 
+                      data={assetDistributionData}
+                      selectedCurrency={selectedCurrency}
+                      currencyFormat={currencyFormat}
+                    />
+                  ) : (
+                    <FlexibleChart
+                      data={assetDistributionData}
+                      chartType={assetDistChartType}
+                      colors={[]}
+                      CustomTooltip={CustomTooltip}
+                      labelFormatter={({ name, percentage }) => `${name} ${percentage}%`}
+                    />
+                  )
                 ) : (
                   <div className="h-[300px] flex items-center justify-center" style={{color: theme.textTertiary}}>
                     <p>No assets tracked yet</p>
