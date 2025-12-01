@@ -13,9 +13,15 @@ const CURRENCIES = ['USD', 'EUR', 'GBP', 'INR', 'JPY', 'AUD', 'CAD'];
 const AREA_UNITS = ['sqft', 'sqmt', 'yard', 'acre'];
 const WEIGHT_UNITS = ['gram', 'kilogram', 'ounce', 'pound'];
 
-export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null }) {
+export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null, initialType = 'asset' }) {
+  // Get today's date in YYYY-MM-DD format
+  const getTodayDate = () => {
+    const today = new Date();
+    return today.toISOString().split('T')[0];
+  };
+
   const [formData, setFormData] = useState({
-    type: editingAsset?.type || 'bank',
+    type: editingAsset?.type || (initialType === 'liability' ? 'loan' : 'bank'),
     name: editingAsset?.name || '',
     quantity: editingAsset?.quantity?.toString() || '',
     unit_price: editingAsset?.unit_price?.toString() || '',
@@ -32,7 +38,7 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null 
     interest_rate: editingAsset?.interest_rate?.toString() || '',
     tenure_months: editingAsset?.tenure_months?.toString() || '',
     purchase_currency: editingAsset?.purchase_currency || 'USD',
-    purchase_date: editingAsset?.purchase_date || '',
+    purchase_date: editingAsset?.purchase_date || getTodayDate(),
     symbol: editingAsset?.symbol || '',
     make: editingAsset?.details?.make || '',
     model: editingAsset?.details?.model || '',
