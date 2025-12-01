@@ -95,8 +95,10 @@ export default function LoanBubbleChart({ data, selectedCurrency, currencyFormat
       rate: rate,
       // x-axis: index position (for spreading bubbles)
       x: index + 1,
-      // y-axis: interest rate (always)
-      y: rate,
+      // y-axis: CHANGES based on metric
+      // If "by amount" -> y-axis shows rate
+      // If "by rate" -> y-axis shows amount
+      y: metric === 'amount' ? rate : amount,
       // z-axis (bubble size): either amount or rate based on metric
       z: metric === 'amount' ? amount : rate * 10000, // Multiply rate for better visibility
       color: item.color || COLORS[index % COLORS.length],
