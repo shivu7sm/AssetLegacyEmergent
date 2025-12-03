@@ -110,15 +110,42 @@ export default function Dashboard() {
         axios.get(`${API}/dms`, { withCredentials: true }).catch(() => null)
       ]);
 
-      setProgressStatus({
+      const status = {
         profileComplete: userRes?.data?.name && userRes?.data?.email,
         nomineeSetup: nomineesRes?.data?.length > 0,
         assetsRecorded: assetsRes?.data?.length > 0,
         dmsConfigured: dmsRes?.data?.is_active === true
-      });
+      };
+
+      setProgressStatus(status);
+
+      // Check if timeline should be shown
+      const allComplete = status.profileComplete && status.nomineeSetup && status.assetsRecorded && status.dmsConfigured;
+      const dismissed = localStorage.getItem('progressTimelineDismissed') === 'true';
+      
+      // Show timeline if:
+      // 1. Not all complete, OR
+      // 2. All complete but not dismissed yet, OR
+      // 3. Was dismissed but now incomplete (re-surface)
+      if (!allComplete) {
+        // If it was dismissed but now incomplete, clear the dismissal
+        if (dismissed) {
+          localStorage.removeItem('progressTimelineDismissed');
+        }
+        setShowProgressTimeline(true);
+      } else {
+        // All complete - only show if not dismissed
+        setShowProgressTimeline(!dismissed);
+      }
     } catch (error) {
       console.error('Failed to check progress status:', error);
     }
+  };
+
+  const handleDismissTimeline = () => {
+    localStorage.setItem('progressTimelineDismissed', 'true');
+    setShowProgressTimeline(false);
+    toast.success('Progress timeline hidden. It will reappear if any step becomes incomplete.');
   };
 
   const fetchSummary = async () => {
