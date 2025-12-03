@@ -2014,6 +2014,332 @@ print('Admin test data cleaned up');
         
         return True
 
+    def test_tax_blueprint_profile_save_and_generation_flow(self):
+        """Test Tax Blueprint Profile Save and Generation Complete Flow"""
+        print("\n💰 Testing Tax Blueprint Profile Save and Generation Complete Flow...")
+        
+        # Clean up existing data first
+        self.cleanup_user_data()
+        
+        # Sample profile data from the review request
+        complete_profile_data = {
+            "employment_status": "salaried_private",
+            "annual_gross_income": 1200000,
+            "monthly_net_income": 85000,
+            "tax_regime": "old",
+            "residential_status": "resident",
+            "marital_status": "single",
+            "children_count": 0,
+            "dependent_parents": "none",
+            "primary_goals": ["tax_saving", "retirement"],
+            "goal_time_horizon": "long",
+            "risk_appetite": "moderate",
+            "current_80c_investment": 50000,
+            "health_insurance_self": 15000
+        }
+        
+        print("   📝 Test 1: Complete Tax Profile Creation Flow")
+        
+        # Step 1: POST /tax-blueprint/profile with complete profile data
+        profile_response = self.run_test(
+            "Create complete tax profile",
+            "POST",
+            "tax-blueprint/profile",
+            200,
+            complete_profile_data
+        )
+        
+        profile_id = None
+        if profile_response:
+            profile_id = profile_response.get('profile_id')
+            completion_percentage = profile_response.get('completion_percentage', 0)
+            
+            # Verify response structure
+            required_fields = ['profile_id', 'completion_percentage', 'missing_fields', 'next_steps']
+            missing_fields = [f for f in required_fields if f not in profile_response]
+            
+            if not missing_fields:
+                self.log_test(
+                    "Profile creation returns proper response structure",
+                    True,
+                    f"Profile ID: {profile_id}, Completion: {completion_percentage}%"
+                )
+            else:
+                self.log_test(
+                    "Profile creation returns proper response structure",
+                    False,
+                    f"Missing fields: {missing_fields}"
+                )
+            
+            print(f"   Created profile ID: {profile_id}")
+            print(f"   Completion percentage: {completion_percentage}%")
+        
+        # Step 2: GET /tax-blueprint/profile immediately after (should NOT return 404)
+        retrieved_profile = self.run_test(
+            "Retrieve saved tax profile immediately",
+            "GET",
+            "tax-blueprint/profile",
+            200
+        )
+        
+        if retrieved_profile:
+            # Verify profile contains all submitted data
+            profile_matches = True
+            mismatched_fields = []
+            
+            for key, expected_value in complete_profile_data.items():
+                actual_value = retrieved_profile.get(key)
+                if actual_value != expected_value:
+                    profile_matches = False
+                    mismatched_fields.append(f"{key}: expected {expected_value}, got {actual_value}")
+            
+            if profile_matches:
+                self.log_test(
+                    "Retrieved profile contains all submitted data",
+                    True,
+                    "All profile fields match submitted data"
+                )
+            else:
+                self.log_test(
+                    "Retrieved profile contains all submitted data",
+                    False,
+                    f"Mismatched fields: {mismatched_fields[:3]}"  # Show first 3 mismatches
+                )
+            
+            print(f"   Profile user_id: {retrieved_profile.get('user_id')}")
+            print(f"   Profile annual income: ${retrieved_profile.get('annual_gross_income', 0):,}")
+        
+        # Step 3: POST /tax-blueprint/generate (should NOT return 404 "Tax profile not found")
+        blueprint_response = self.run_test(
+            "Generate tax blueprint based on saved profile",
+            "POST",
+            "tax-blueprint/generate",
+            200
+        )
+        
+        if blueprint_response:
+            # Verify blueprint response structure
+            expected_blueprint_fields = [
+                'financial_year', 'estimated_tax_liability', 'current_tax_saved',
+                'section_80c_gap', 'total_tax_saving_opportunity', 'ai_summary'
+            ]
+            
+            missing_blueprint_fields = [f for f in expected_blueprint_fields if f not in blueprint_response]
+            
+            if not missing_blueprint_fields:
+                self.log_test(
+                    "Blueprint generation returns complete structure",
+                    True,
+                    f"Blueprint contains all expected fields: {len(expected_blueprint_fields)} fields"
+                )
+            else:
+                self.log_test(
+                    "Blueprint generation returns complete structure",
+                    False,
+                    f"Missing blueprint fields: {missing_blueprint_fields}"
+                )
+            
+            # Verify tax calculations
+            tax_liability = blueprint_response.get('estimated_tax_liability', 0)
+            tax_saved = blueprint_response.get('current_tax_saved', 0)
+            section_80c_gap = blueprint_response.get('section_80c_gap', 0)
+            
+            print(f"   Estimated tax liability: ₹{tax_liability:,.0f}")
+            print(f"   Current tax saved: ₹{tax_saved:,.0f}")
+            print(f"   Section 80C gap: ₹{section_80c_gap:,.0f}")
+            
+            # Verify AI summary exists and is meaningful
+            ai_summary = blueprint_response.get('ai_summary', '')
+            if ai_summary and len(ai_summary) > 50:
+                self.log_test(
+                    "Blueprint contains meaningful AI summary",
+                    True,
+                    f"AI summary length: {len(ai_summary)} characters"
+                )
+            else:
+                self.log_test(
+                    "Blueprint contains meaningful AI summary",
+                    False,
+                    f"AI summary too short or missing: '{ai_summary[:50]}...'"
+                )
+        
+        print("   📝 Test 2: Profile Update Flow")
+        
+        # Update existing profile with new data
+        updated_profile_data = {
+            **complete_profile_data,
+            "annual_gross_income": 1500000,  # Increased income
+            "current_80c_investment": 75000,  # Increased investment
+            "health_insurance_self": 25000,   # Increased insurance
+            "marital_status": "married_earning"  # Changed status
+        }
+        
+        update_response = self.run_test(
+            "Update existing tax profile",
+            "POST",
+            "tax-blueprint/profile",
+            200,
+            updated_profile_data
+        )
+        
+        if update_response:
+            print(f"   Updated profile completion: {update_response.get('completion_percentage', 0)}%")
+        
+        # Verify updated data is retrievable
+        updated_retrieved = self.run_test(
+            "Retrieve updated tax profile",
+            "GET",
+            "tax-blueprint/profile",
+            200
+        )
+        
+        if updated_retrieved:
+            # Check key updated fields
+            income_updated = updated_retrieved.get('annual_gross_income') == 1500000
+            investment_updated = updated_retrieved.get('current_80c_investment') == 75000
+            marital_updated = updated_retrieved.get('marital_status') == "married_earning"
+            
+            if income_updated and investment_updated and marital_updated:
+                self.log_test(
+                    "Profile updates are properly saved and retrievable",
+                    True,
+                    f"Income: ₹{updated_retrieved.get('annual_gross_income'):,}, 80C: ₹{updated_retrieved.get('current_80c_investment'):,}"
+                )
+            else:
+                self.log_test(
+                    "Profile updates are properly saved and retrievable",
+                    False,
+                    f"Income updated: {income_updated}, Investment updated: {investment_updated}, Marital updated: {marital_updated}"
+                )
+        
+        # Verify blueprint can be regenerated with updated data
+        updated_blueprint = self.run_test(
+            "Regenerate blueprint with updated profile data",
+            "POST",
+            "tax-blueprint/generate?force_refresh=true",
+            200
+        )
+        
+        if updated_blueprint and blueprint_response:
+            # Compare tax calculations - should be different due to higher income
+            old_tax = blueprint_response.get('estimated_tax_liability', 0)
+            new_tax = updated_blueprint.get('estimated_tax_liability', 0)
+            
+            if new_tax > old_tax:
+                self.log_test(
+                    "Blueprint recalculates correctly with updated income",
+                    True,
+                    f"Tax liability increased from ₹{old_tax:,.0f} to ₹{new_tax:,.0f}"
+                )
+            else:
+                self.log_test(
+                    "Blueprint recalculates correctly with updated income",
+                    False,
+                    f"Expected higher tax with increased income. Old: ₹{old_tax:,.0f}, New: ₹{new_tax:,.0f}"
+                )
+        
+        print("   📝 Test 3: Demo Mode Consistency")
+        
+        # Get current user info to check demo_mode
+        user_info = self.run_test(
+            "Get current user info for demo mode test",
+            "GET",
+            "auth/me",
+            200
+        )
+        
+        if user_info:
+            demo_mode = user_info.get('demo_mode', False)
+            print(f"   Current user demo_mode: {demo_mode}")
+            
+            # Verify profile is correctly associated with demo_mode
+            if retrieved_profile:
+                profile_demo_mode = retrieved_profile.get('demo_mode', False)
+                
+                if profile_demo_mode == demo_mode:
+                    self.log_test(
+                        "Profile demo_mode matches user demo_mode",
+                        True,
+                        f"Both set to: {demo_mode}"
+                    )
+                else:
+                    self.log_test(
+                        "Profile demo_mode matches user demo_mode",
+                        False,
+                        f"User: {demo_mode}, Profile: {profile_demo_mode}"
+                    )
+        
+        # Test the specific fix mentioned in the review request
+        print("   🔧 Testing Demo Mode Filtering Fix")
+        
+        # The fix was: Updated POST /tax-blueprint/profile to filter existing profiles by demo_mode (line 4518)
+        # and profile update operation to filter by demo_mode (line 4526)
+        
+        # Create another profile update to test the filtering
+        final_update = {
+            **updated_profile_data,
+            "annual_gross_income": 1800000,  # Another increase
+            "primary_goals": ["tax_saving", "retirement", "wealth_creation"]
+        }
+        
+        final_response = self.run_test(
+            "Final profile update to test demo_mode filtering",
+            "POST",
+            "tax-blueprint/profile",
+            200,
+            final_update
+        )
+        
+        if final_response:
+            # Immediately retrieve to ensure no 404 (the bug that was fixed)
+            final_retrieved = self.run_test(
+                "Retrieve profile after final update (should not be 404)",
+                "GET",
+                "tax-blueprint/profile",
+                200
+            )
+            
+            if final_retrieved:
+                final_income = final_retrieved.get('annual_gross_income')
+                if final_income == 1800000:
+                    self.log_test(
+                        "Demo mode filtering fix working - no 404 after profile update",
+                        True,
+                        f"Successfully retrieved updated profile with income ₹{final_income:,}"
+                    )
+                else:
+                    self.log_test(
+                        "Demo mode filtering fix working - no 404 after profile update",
+                        False,
+                        f"Profile not updated correctly. Expected ₹1,800,000, got ₹{final_income:,}"
+                    )
+        
+        # Final blueprint generation test
+        final_blueprint = self.run_test(
+            "Final blueprint generation (should not be 404)",
+            "POST",
+            "tax-blueprint/generate?force_refresh=true",
+            200
+        )
+        
+        if final_blueprint:
+            self.log_test(
+                "Complete flow works - profile saves, retrieves, and generates blueprint",
+                True,
+                "End-to-end tax blueprint flow successful"
+            )
+            
+            print(f"   ✅ Final tax liability: ₹{final_blueprint.get('estimated_tax_liability', 0):,.0f}")
+            print(f"   ✅ Final 80C gap: ₹{final_blueprint.get('section_80c_gap', 0):,.0f}")
+        else:
+            self.log_test(
+                "Complete flow works - profile saves, retrieves, and generates blueprint",
+                False,
+                "Final blueprint generation failed"
+            )
+        
+        print("   🎯 Tax Blueprint Profile Save and Generation Flow Testing Complete!")
+
     def cleanup_user_data(self):
         """Clean up all user data including snapshots and insights"""
         if not self.user_id:
