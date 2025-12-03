@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
-import { User, Settings as SettingsIcon, Eye, Globe, Shield, CreditCard, Users, Clock, RefreshCw, Link, Bell, AlertTriangle, ChevronUp, ChevronDown, Trash2, Heart, Palette, FileText } from 'lucide-react';
+import { User, Settings as SettingsIcon, Eye, Globe, Shield, CreditCard, Users, Clock, RefreshCw, Link, Bell, AlertTriangle, ChevronUp, ChevronDown, Trash2, Heart, Palette, FileText, Mail } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 import { useTheme } from '@/context/ThemeContext';
 import NomineeAccessCard from '@/components/NomineeAccessCard';
