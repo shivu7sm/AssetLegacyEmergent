@@ -1,4 +1,4 @@
-import { CheckCircle2, Circle, ArrowRight } from 'lucide-react';
+import { CheckCircle2, Circle, User, Users, Briefcase, Shield, PartyPopper } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { useTheme } from '@/context/ThemeContext';
 import { useNavigate } from 'react-router-dom';
@@ -15,36 +15,41 @@ export default function ProgressTimeline({
   const steps = [
     {
       id: 'profile',
-      title: 'Complete Profile',
-      description: 'Fill in your basic information',
+      title: 'Profile',
+      description: 'Basic info',
+      icon: User,
       completed: profileComplete,
       action: () => navigate('/settings?tab=profile')
     },
     {
       id: 'nominee',
-      title: 'Nominee Setup',
-      description: 'Add nominees with order and access',
+      title: 'Nominees',
+      description: 'Add beneficiaries',
+      icon: Users,
       completed: nomineeSetup,
       action: () => navigate('/settings?tab=security')
     },
     {
       id: 'assets',
-      title: 'Record Assets & Liabilities',
-      description: 'Add your assets and liabilities',
+      title: 'Assets',
+      description: 'Record holdings',
+      icon: Briefcase,
       completed: assetsRecorded,
       action: () => navigate('/assets')
     },
     {
       id: 'dms',
-      title: 'Dead Man Switch',
-      description: 'Setup reminder config and turn on',
+      title: 'Protection',
+      description: 'Setup DMS',
+      icon: Shield,
       completed: dmsConfigured,
       action: () => navigate('/settings?tab=dms')
     },
     {
       id: 'relax',
-      title: 'Sit Back and Relax',
-      description: 'You\'re all set! We\'ll take care of the rest',
+      title: 'All Set!',
+      description: 'Relax now',
+      icon: PartyPopper,
       completed: profileComplete && nomineeSetup && assetsRecorded && dmsConfigured,
       action: null
     }
