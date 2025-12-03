@@ -5132,7 +5132,16 @@ Return response in JSON format matching this structure:
         }}
     ],
     "ai_summary": "<personalized motivational message>",
-    "confidence_score": <0-100>
+    "confidence_score": <0-100>{f''',
+    "nri_specific": {{
+        "tax_on_indian_income": "<explanation of TDS rates on rental, interest, capital gains>",
+        "dtaa_benefits": "<how to claim DTAA benefits>",
+        "account_recommendations": "<NRE vs NRO recommendations>",
+        "repatriation_rules": "<fund transfer rules>",
+        "investment_restrictions": "<what NRIs cannot invest in>",
+        "compliance_requirements": "<Form 15CA/15CB and other requirements>",
+        "recommended_investments": ["<NRI-friendly investment options>"]
+    }}''' if is_nri else ''}
 }}"""
     
     try:
