@@ -1760,6 +1760,29 @@ export default function Settings() {
                     
                     <div>
                       <Label className="text-slate-300 flex items-center gap-2 mb-2">
+                        <Mail className="w-4 h-4" />
+                        Reminder Method *
+                      </Label>
+                      <Select 
+                        value={dmsForm.reminder_method} 
+                        onValueChange={(value) => setDmsForm({ ...dmsForm, reminder_method: value })}
+                      >
+                        <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
+                          <SelectItem value="email" style={{color: theme.text}}>📧 Email Only</SelectItem>
+                          <SelectItem value="phone" style={{color: theme.text}}>📱 Phone Only</SelectItem>
+                          <SelectItem value="both" style={{color: theme.text}}>📧📱 Both (Email & Phone)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <p className="text-xs mt-1" style={{color: theme.textMuted}}>
+                        How should we send you reminders?
+                      </p>
+                    </div>
+                    
+                    <div>
+                      <Label className="text-slate-300 flex items-center gap-2 mb-2">
                         <Bell className="w-4 h-4" style={{color: '#f59e0b'}} />
                         First Reminder (days)
                       </Label>
