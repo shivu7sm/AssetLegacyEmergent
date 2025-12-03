@@ -585,6 +585,15 @@ class PriorityAction(BaseModel):
     expected_saving: float
     time_to_complete: str
 
+class NRITaxAnalysis(BaseModel):
+    tax_on_indian_income: str = ""
+    dtaa_benefits: str = ""
+    account_recommendations: str = ""
+    repatriation_rules: str = ""
+    investment_restrictions: str = ""
+    compliance_requirements: str = ""
+    recommended_investments: List[str] = []
+
 class TaxBlueprint(BaseModel):
     model_config = ConfigDict(extra="ignore")
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
