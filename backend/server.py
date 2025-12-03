@@ -4523,7 +4523,7 @@ async def create_tax_profile(profile_data: TaxProfileCreate, user: User = Depend
             update_dict["updated_at"] = datetime.now(timezone.utc).isoformat()
             
             await db.tax_profiles.update_one(
-                {"user_id": user.id},
+                {"user_id": user.id, "demo_mode": user.demo_mode},
                 {"$set": update_dict}
             )
             profile_id = existing_profile["id"]
