@@ -1,5 +1,6 @@
-import { CheckCircle2, Circle, User, Users, Briefcase, Shield, PartyPopper } from 'lucide-react';
+import { CheckCircle2, Circle, User, Users, Briefcase, Shield, PartyPopper, X } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { useTheme } from '@/context/ThemeContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,7 +8,8 @@ export default function ProgressTimeline({
   profileComplete, 
   nomineeSetup, 
   assetsRecorded, 
-  dmsConfigured 
+  dmsConfigured,
+  onDismiss 
 }) {
   const { theme, colorTheme } = useTheme();
   const navigate = useNavigate();
