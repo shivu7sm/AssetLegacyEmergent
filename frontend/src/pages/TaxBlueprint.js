@@ -1319,6 +1319,7 @@ export default function TaxBlueprint() {
                       </div>
                     </CardContent>
                   </Card>
+                  </div>
 
                   {/* Comparison Card */}
                   <Card style={{background: 'linear-gradient(135deg, #0f0a1a 0%, theme.cardBg 100%)', borderColor: '#a855f7'}}>
