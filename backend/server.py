@@ -4514,8 +4514,8 @@ async def create_tax_profile(profile_data: TaxProfileCreate, user: User = Depend
         if profile_data.annual_gross_income <= 0:
             raise HTTPException(status_code=400, detail="Annual gross income must be greater than 0")
         
-        # Check if profile already exists
-        existing_profile = await db.tax_profiles.find_one({"user_id": user.id}, {"_id": 0})
+        # Check if profile already exists (filter by demo_mode to match GET behavior)
+        existing_profile = await db.tax_profiles.find_one({"user_id": user.id, "demo_mode": user.demo_mode}, {"_id": 0})
         
         if existing_profile:
             # Update existing profile
