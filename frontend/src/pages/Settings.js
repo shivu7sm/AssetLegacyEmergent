@@ -556,6 +556,7 @@ export default function Settings() {
     reminder_1_days: 60,
     reminder_2_days: 75,
     reminder_3_days: 85,
+    reminder_method: 'email',
     is_active: true
   });
 
