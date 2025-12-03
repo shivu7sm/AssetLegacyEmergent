@@ -280,13 +280,16 @@ export default function Dashboard() {
           </p>
         </div>
 
-        {/* Progress Timeline */}
-        <ProgressTimeline 
-          profileComplete={progressStatus.profileComplete}
-          nomineeSetup={progressStatus.nomineeSetup}
-          assetsRecorded={progressStatus.assetsRecorded}
-          dmsConfigured={progressStatus.dmsConfigured}
-        />
+        {/* Progress Timeline - Show if not dismissed or incomplete */}
+        {showProgressTimeline && (
+          <ProgressTimeline 
+            profileComplete={progressStatus.profileComplete}
+            nomineeSetup={progressStatus.nomineeSetup}
+            assetsRecorded={progressStatus.assetsRecorded}
+            dmsConfigured={progressStatus.dmsConfigured}
+            onDismiss={handleDismissTimeline}
+          />
+        )}
 
         {/* Demo Mode Banner */}
         {demoMode && (
