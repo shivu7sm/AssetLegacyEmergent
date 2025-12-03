@@ -252,6 +252,14 @@ export default function Dashboard() {
           </p>
         </div>
 
+        {/* Progress Timeline */}
+        <ProgressTimeline 
+          profileComplete={progressStatus.profileComplete}
+          nomineeSetup={progressStatus.nomineeSetup}
+          assetsRecorded={progressStatus.assetsRecorded}
+          dmsConfigured={progressStatus.dmsConfigured}
+        />
+
         {/* Demo Mode Banner */}
         {demoMode && (
           <Card 
