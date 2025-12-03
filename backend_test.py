@@ -2350,6 +2350,8 @@ use('test_database');
 db.assets.deleteMany({{user_id: '{self.user_id}'}});
 db.networth_snapshots.deleteMany({{user_id: '{self.user_id}'}});
 db.ai_insights.deleteMany({{user_id: '{self.user_id}'}});
+db.tax_profiles.deleteMany({{user_id: '{self.user_id}'}});
+db.tax_blueprints.deleteMany({{user_id: '{self.user_id}'}});
 print('User data cleaned up');
 """
         
