@@ -540,7 +540,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Nominee Section White Theme Fix"
+    - "Dropdown Fields White Theme Fix - All Forms"
   stuck_tasks:
     - "Loan Calculator with Timeout"
   test_all: false
