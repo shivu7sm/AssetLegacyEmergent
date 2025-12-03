@@ -640,15 +640,6 @@ class TaxBlueprint(BaseModel):
     generated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     expires_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc) + timedelta(days=30))
 
-class NRITaxAnalysis(BaseModel):
-    tax_on_indian_income: str = ""
-    dtaa_benefits: str = ""
-    account_recommendations: str = ""
-    repatriation_rules: str = ""
-    investment_restrictions: str = ""
-    compliance_requirements: str = ""
-    recommended_investments: List[str] = []
-
 class RegimeComparison(BaseModel):
     old_regime_tax: float
     old_regime_deductions: float
