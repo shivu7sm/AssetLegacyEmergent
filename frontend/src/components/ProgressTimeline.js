@@ -60,6 +60,7 @@ export default function ProgressTimeline({
   const completedCount = steps.filter(s => s.completed && s.id !== 'relax').length;
   const totalSteps = steps.length - 1; // Exclude 'relax' from count
   const progressPercentage = (completedCount / totalSteps) * 100;
+  const allComplete = completedCount === totalSteps;
 
   return (
     <Card style={{ 
@@ -67,12 +68,30 @@ export default function ProgressTimeline({
         ? 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)'
         : 'linear-gradient(135deg, #1a0f2e 0%, #2d1f3d 100%)', 
       borderColor: theme.border,
-      borderWidth: '2px'
+      borderWidth: '2px',
+      position: 'relative'
     }}>
       <CardContent className="p-6">
+        {/* Close Button - Only show when all complete */}
+        {allComplete && onDismiss && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onDismiss}
+            className="absolute top-4 right-4 h-8 w-8 p-0 rounded-full hover:bg-opacity-20"
+            style={{
+              color: theme.textMuted,
+              background: 'transparent'
+            }}
+            title="Dismiss - You can always access setup from Settings"
+          >
+            <X className="w-4 h-4" />
+          </Button>
+        )}
+
         {/* Header */}
         <div className="mb-6">
-          <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center justify-between mb-3 pr-8">
             <h3 className="text-xl font-bold" style={{ color: theme.text }}>
               Getting Started
             </h3>
