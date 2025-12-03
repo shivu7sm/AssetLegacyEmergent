@@ -5029,6 +5029,10 @@ async def generate_blueprint(force_refresh: bool = False, user: User = Depends(r
         amount = expense.get("amount", 0)
         expense_by_category[category] = expense_by_category.get(category, 0) + amount
     
+    # Calculate average monthly income first
+    total_income = sum(inc.get("amount_after_tax", 0) for inc in incomes_data)
+    avg_monthly_income = total_income / max(len(months), 1) if months else profile.get("monthly_net_income", profile.get("annual_gross_income", 0) / 12)
+    
     # Average over 3 months
     avg_expense_by_category = {k: v / max(len(months), 1) for k, v in expense_by_category.items()}
     
@@ -5043,10 +5047,6 @@ async def generate_blueprint(force_refresh: bool = False, user: User = Depends(r
             "Subscriptions": avg_monthly_income * 0.03    # 3%
         }
         avg_expense_by_category = estimated_expenses
-    
-    # Calculate average monthly income
-    total_income = sum(inc.get("amount_after_tax", 0) for inc in incomes_data)
-    avg_monthly_income = total_income / max(len(months), 1) if months else profile.get("monthly_net_income", profile.get("annual_gross_income", 0) / 12)
     
     # Call AI for blueprint generation
     ai_prompt = f"""Generate Tax & Wealth Blueprint for an Indian taxpayer:
