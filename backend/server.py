@@ -5079,10 +5079,20 @@ GOALS:
 
 Please provide:
 1. 80C gap analysis with specific instrument recommendations (ELSS, NPS, PPF)
-2. Top 3 expense categories where user can reduce spending by 25-40% (Hidden SIP opportunities)
+2. Top 3 expense categories where user can reduce spending by 25-40% (Hidden SIP opportunities) - MANDATORY even if expenses are estimated
 3. Calculate wealth projection for reduced expenses invested at 12% CAGR for 1yr, 5yr, 10yr
 4. Provide 5 priority actions ranked by impact and ease
 5. Write a motivational summary in simple language
+{f'''
+6. NRI-SPECIFIC ANALYSIS (IMPORTANT):
+   - Tax on Indian income (rental, interest, capital gains) - rates and TDS implications
+   - DTAA benefits if residing in {profile.get('country_of_residence', 'applicable country')}
+   - NRE/NRO account recommendations and tax treatment
+   - Repatriation rules for funds
+   - Investment restrictions (no PPF, limited NPS, etc.)
+   - Form 15CA/15CB requirements for foreign remittances
+   - Consider NRI-specific mutual funds and bonds
+''' if is_nri else ''}
 
 Return response in JSON format matching this structure:
 {{
