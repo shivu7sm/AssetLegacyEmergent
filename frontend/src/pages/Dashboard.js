@@ -68,6 +68,7 @@ export default function Dashboard() {
     assetsRecorded: false,
     dmsConfigured: false
   });
+  const [showProgressTimeline, setShowProgressTimeline] = useState(true);
 
   const handleComparisonChartChange = (type) => {
     setComparisonChartType(type);
