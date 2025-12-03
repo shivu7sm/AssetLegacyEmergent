@@ -222,6 +222,7 @@ class DMSCreate(BaseModel):
     reminder_1_days: int = 60
     reminder_2_days: int = 75
     reminder_3_days: int = 85
+    reminder_method: str = "email"  # email, phone, or both
 
 class DigitalWillCreate(BaseModel):
     will_text: str
