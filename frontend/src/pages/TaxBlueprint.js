@@ -1134,13 +1134,15 @@ export default function TaxBlueprint() {
                         🏛️ Wealth Structuring: HUF & Trust
                       </h2>
                       <p className="text-base" style={{color: theme.textSecondary}}>
-                        Advanced strategies for tax optimization and asset protection
+                        Advanced strategies for tax optimization and asset protection - Compare side by side
                       </p>
                     </CardContent>
                   </Card>
 
-                  {/* HUF Section */}
-                  <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
+                  {/* HUF & Trust Side by Side Comparison */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {/* HUF Section */}
+                    <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
                     <CardHeader>
                       <CardTitle style={{color: theme.text}}>{wealthStructures.huf.name}</CardTitle>
                       <p className="text-sm mt-2" style={{color: theme.textTertiary}}>
