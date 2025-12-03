@@ -4299,6 +4299,9 @@ print('Test data cleaned up');
             self.test_loan_calculator_with_timeout()
             self.test_demo_mode_filtering()
             
+            # Tax Blueprint Profile Save and Generation Complete Flow (Review Request)
+            self.test_tax_blueprint_profile_save_and_generation_flow()
+            
         finally:
             # Always cleanup
             self.cleanup_test_data()
