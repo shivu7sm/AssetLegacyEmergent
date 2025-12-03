@@ -5276,9 +5276,13 @@ Return response in JSON format matching this structure:
             action=rec.get("action", "")
         ))
     
+    # Use AI-provided hidden SIPs or fallback to generated ones
+    ai_hidden_sips = ai_content.get("hidden_sip_opportunities", [])
+    hidden_sip_data = ai_hidden_sips if len(ai_hidden_sips) > 0 else fallback_hidden_sips
+    
     hidden_opportunities = []
     total_hidden_sip = 0
-    for opp in ai_content.get("hidden_sip_opportunities", []):
+    for opp in hidden_sip_data:
         reduction = opp.get("reduction_amount", 0)
         total_hidden_sip += reduction
         hidden_opportunities.append(HiddenSIPOpportunity(
