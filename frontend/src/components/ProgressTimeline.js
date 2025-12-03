@@ -70,7 +70,7 @@ export default function ProgressTimeline({
       <CardContent className="p-6">
         {/* Header */}
         <div className="mb-6">
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center justify-between mb-3">
             <h3 className="text-xl font-bold" style={{ color: theme.text }}>
               Getting Started
             </h3>
@@ -100,74 +100,107 @@ export default function ProgressTimeline({
           </div>
         </div>
 
-        {/* Timeline Steps */}
-        <div className="space-y-4">
-          {steps.map((step, index) => (
-            <div 
-              key={step.id}
-              className={`flex items-start gap-4 p-3 rounded-lg transition-all ${
-                step.action ? 'cursor-pointer hover:scale-[1.02]' : ''
-              }`}
-              onClick={step.action}
-              style={{
-                background: step.completed 
-                  ? (colorTheme === 'light' ? '#10b98108' : '#10b98115')
-                  : (colorTheme === 'light' ? theme.backgroundSecondary : theme.backgroundTertiary),
-                border: `1px solid ${step.completed 
-                  ? (colorTheme === 'light' ? '#10b98130' : '#10b98140')
-                  : theme.border}`,
-                opacity: step.id === 'relax' && !step.completed ? 0.5 : 1
-              }}
-            >
-              {/* Icon */}
-              <div className="flex-shrink-0 mt-1">
-                {step.completed ? (
-                  <CheckCircle2 
-                    className="w-6 h-6" 
-                    style={{ 
-                      color: colorTheme === 'light' ? '#059669' : '#10b981'
-                    }} 
-                  />
-                ) : (
-                  <Circle 
-                    className="w-6 h-6" 
-                    style={{ 
-                      color: colorTheme === 'light' ? '#94a3b8' : '#64748b'
-                    }} 
-                  />
-                )}
-              </div>
+        {/* Horizontal Timeline Steps */}
+        <div className="relative">
+          {/* Connecting Line */}
+          <div className="absolute top-6 left-0 right-0 h-0.5 hidden md:block" 
+            style={{ 
+              background: theme.backgroundTertiary,
+              zIndex: 0
+            }}
+          />
+          
+          {/* Progress Line */}
+          <div 
+            className="absolute top-6 left-0 h-0.5 hidden md:block transition-all duration-500" 
+            style={{ 
+              width: `${(completedCount / totalSteps) * 100}%`,
+              background: 'linear-gradient(90deg, #10b981 0%, #059669 100%)',
+              zIndex: 1
+            }}
+          />
 
-              {/* Content */}
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
-                  <h4 className="font-semibold text-sm" style={{ color: theme.text }}>
+          {/* Steps */}
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 relative z-10">
+            {steps.map((step, index) => {
+              const StepIcon = step.icon;
+              return (
+                <div 
+                  key={step.id}
+                  className={`flex flex-col items-center text-center ${
+                    step.action ? 'cursor-pointer' : ''
+                  }`}
+                  onClick={step.action}
+                >
+                  {/* Icon Circle */}
+                  <div 
+                    className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 transition-all ${
+                      step.action ? 'hover:scale-110' : ''
+                    }`}
+                    style={{
+                      background: step.completed
+                        ? (colorTheme === 'light' 
+                          ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
+                          : 'linear-gradient(135deg, #10b981 0%, #059669 100%)')
+                        : (colorTheme === 'light' ? theme.backgroundTertiary : theme.backgroundSecondary),
+                      border: `2px solid ${step.completed 
+                        ? (colorTheme === 'light' ? '#059669' : '#10b981')
+                        : theme.border}`,
+                      boxShadow: step.completed 
+                        ? '0 4px 12px rgba(16, 185, 129, 0.3)'
+                        : 'none',
+                      opacity: step.id === 'relax' && !step.completed ? 0.5 : 1
+                    }}
+                  >
+                    {step.completed ? (
+                      <CheckCircle2 
+                        className="w-6 h-6" 
+                        style={{ color: '#ffffff' }}
+                      />
+                    ) : (
+                      <StepIcon 
+                        className="w-5 h-5" 
+                        style={{ 
+                          color: colorTheme === 'light' ? '#64748b' : '#94a3b8'
+                        }}
+                      />
+                    )}
+                  </div>
+
+                  {/* Title */}
+                  <h4 
+                    className="font-semibold text-sm mb-1" 
+                    style={{ 
+                      color: step.completed ? theme.text : theme.textSecondary 
+                    }}
+                  >
                     {step.title}
                   </h4>
-                  {step.action && !step.completed && (
-                    <ArrowRight className="w-4 h-4" style={{ color: theme.textMuted }} />
+                  
+                  {/* Description */}
+                  <p 
+                    className="text-xs" 
+                    style={{ color: theme.textMuted }}
+                  >
+                    {step.description}
+                  </p>
+
+                  {/* Status Badge */}
+                  {step.completed && (
+                    <span 
+                      className="mt-2 text-xs font-medium px-2 py-0.5 rounded-full" 
+                      style={{
+                        background: colorTheme === 'light' ? '#10b98115' : '#10b98125',
+                        color: colorTheme === 'light' ? '#059669' : '#10b981'
+                      }}
+                    >
+                      {step.id === 'relax' ? '🎉' : '✓ Done'}
+                    </span>
                   )}
                 </div>
-                <p className="text-xs" style={{ color: theme.textSecondary }}>
-                  {step.description}
-                </p>
-              </div>
-
-              {/* Status Badge */}
-              {step.completed && step.id !== 'relax' && (
-                <span className="flex-shrink-0 text-xs font-medium px-2 py-1 rounded" style={{
-                  background: colorTheme === 'light' ? '#10b98120' : '#10b98130',
-                  color: colorTheme === 'light' ? '#059669' : '#10b981'
-                }}>
-                  Done
-                </span>
-              )}
-              
-              {step.id === 'relax' && step.completed && (
-                <span className="flex-shrink-0 text-xl">🎉</span>
-              )}
-            </div>
-          ))}
+              );
+            })}
+          </div>
         </div>
 
         {/* Call to Action */}
@@ -176,7 +209,7 @@ export default function ProgressTimeline({
             background: colorTheme === 'light' ? '#3b82f608' : '#3b82f615',
             border: `1px solid ${colorTheme === 'light' ? '#3b82f620' : '#3b82f630'}`
           }}>
-            <p className="text-sm" style={{ color: theme.textSecondary }}>
+            <p className="text-sm text-center" style={{ color: theme.textSecondary }}>
               💡 <strong style={{ color: theme.text }}>Quick Tip:</strong> Complete all steps to ensure your assets are fully protected and your wishes are documented.
             </p>
           </div>
