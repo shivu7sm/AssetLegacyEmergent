@@ -29,7 +29,7 @@ const ASSET_GROUPS = {
     colorLight: '#059669'    // Darker emerald for light theme
   },
   crypto: {
-    label: 'Cryptocurrency & NFT',
+    label: 'Crypto & NFT',
     icon: '₿',
     types: ['crypto', 'portfolio', 'nft'],
     color: '#06b6d4',        // Cyan - good contrast
