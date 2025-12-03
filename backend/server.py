@@ -5049,12 +5049,16 @@ async def generate_blueprint(force_refresh: bool = False, user: User = Depends(r
         avg_expense_by_category = estimated_expenses
     
     # Call AI for blueprint generation
+    residential_status = profile.get('residential_status', 'resident')
+    is_nri = residential_status in ['nri', 'rnor']
+    
     ai_prompt = f"""Generate Tax & Wealth Blueprint for an Indian taxpayer:
 
 INCOME:
 - Annual Gross: ₹{profile.get('annual_gross_income', 0):,.0f}
 - Monthly Net: ₹{avg_monthly_income:,.0f}
 - Tax Regime: {profile.get('tax_regime', 'old')}
+- Residential Status: {residential_status.upper()} {'(Non-Resident Indian)' if is_nri else '(Resident Indian)'}
 
 FAMILY:
 - Status: {profile.get('marital_status', 'single')}
