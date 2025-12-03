@@ -615,6 +615,7 @@ export default function Settings() {
           reminder_1_days: dmsRes.data.reminder_1_days,
           reminder_2_days: dmsRes.data.reminder_2_days,
           reminder_3_days: dmsRes.data.reminder_3_days,
+          reminder_method: dmsRes.data.reminder_method || 'email',
           is_active: dmsRes.data.is_active !== false
         });
       }
