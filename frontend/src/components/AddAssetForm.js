@@ -191,7 +191,7 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
               <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-slate-800 border-slate-700">
+              <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
                 {CURRENCIES.map(curr => (
                   <SelectItem key={curr} value={curr} style={{color: theme.text}}>{curr}</SelectItem>
                 ))}
@@ -274,7 +274,7 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
                 <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-slate-800 border-slate-700">
+                <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
                   {WEIGHT_UNITS.map(unit => (
                     <SelectItem key={unit} value={unit} style={{color: theme.text}}>{unit}</SelectItem>
                   ))}
@@ -317,7 +317,7 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
                 <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-slate-800 border-slate-700">
+                <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
                   {AREA_UNITS.map(unit => (
                     <SelectItem key={unit} value={unit} style={{color: theme.text}}>{unit}</SelectItem>
                   ))}

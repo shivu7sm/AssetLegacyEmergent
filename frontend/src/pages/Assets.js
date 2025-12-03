@@ -786,7 +786,7 @@ export default function Assets() {
                     <SelectTrigger id="asset-type" data-testid="asset-type-select" className="bg-slate-800 border-slate-700 text-white">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-slate-800 border-slate-700">
+                    <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
                       {ASSET_TYPES.map((type) => (
                         <SelectItem key={type.value} value={type.value} className="text-white">
                           {type.icon} {type.label}
@@ -862,7 +862,7 @@ export default function Assets() {
                         <Label className="text-slate-300">Unit</Label>
                         <Select value={formData.weight_unit} onValueChange={(value) => setFormData({ ...formData, weight_unit: value })}>
                           <SelectTrigger className="bg-slate-800 border-slate-700 text-white"><SelectValue /></SelectTrigger>
-                          <SelectContent className="bg-slate-800 border-slate-700">
+                          <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
                             {WEIGHT_UNITS.map(unit => (<SelectItem key={unit} value={unit} className="text-white">{unit}</SelectItem>))}
                           </SelectContent>
                         </Select>
@@ -923,7 +923,7 @@ export default function Assets() {
                         <Label className="text-slate-300">Unit</Label>
                         <Select value={formData.area_unit} onValueChange={(value) => setFormData({ ...formData, area_unit: value })}>
                           <SelectTrigger className="bg-slate-800 border-slate-700 text-white"><SelectValue /></SelectTrigger>
-                          <SelectContent className="bg-slate-800 border-slate-700">
+                          <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
                             {AREA_UNITS.map(unit => (<SelectItem key={unit} value={unit} className="text-white">{unit}</SelectItem>))}
                           </SelectContent>
                         </Select>
@@ -1030,7 +1030,7 @@ export default function Assets() {
                     <Label className="text-slate-300">Currency</Label>
                     <Select value={formData.purchase_currency} onValueChange={(value) => setFormData({ ...formData, purchase_currency: value })}>
                       <SelectTrigger className="bg-slate-800 border-slate-700 text-white"><SelectValue /></SelectTrigger>
-                      <SelectContent className="bg-slate-800 border-slate-700">
+                      <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
                         {CURRENCIES.map((curr) => (<SelectItem key={curr} value={curr} className="text-white">{curr}</SelectItem>))}
                       </SelectContent>
                     </Select>
@@ -1701,7 +1701,7 @@ export default function Assets() {
                       <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
                         <SelectValue placeholder="Select provider" />
                       </SelectTrigger>
-                      <SelectContent className="bg-slate-800 border-slate-700">
+                      <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
                         {PORTFOLIO_PROVIDERS.map(provider => (
                           <SelectItem key={provider.value} value={provider.value} className="text-white">
                             {provider.label} ({provider.type.replace('_', ' ')})
@@ -1717,7 +1717,7 @@ export default function Assets() {
                       <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="bg-slate-800 border-slate-700">
+                      <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
                         {CURRENCIES.map((curr) => (
                           <SelectItem key={curr} value={curr} className="text-white">{curr}</SelectItem>
                         ))}
@@ -1762,7 +1762,7 @@ export default function Assets() {
                         <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="bg-slate-800 border-slate-700">
+                        <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
                           <SelectItem value="crypto" className="text-white">Cryptocurrency</SelectItem>
                           <SelectItem value="stock" className="text-white">Stock</SelectItem>
                           <SelectItem value="bond" className="text-white">Bond</SelectItem>
@@ -1839,7 +1839,7 @@ export default function Assets() {
                         <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="bg-slate-800 border-slate-700">
+                        <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
                           {CURRENCIES.map((curr) => (
                             <SelectItem key={curr} value={curr} className="text-white">{curr}</SelectItem>
                           ))}

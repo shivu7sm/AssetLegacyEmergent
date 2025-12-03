@@ -147,7 +147,7 @@ export default function PortfolioDialog({ open, onOpenChange, onSave }) {
                   <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-slate-800 border-slate-700">
+                  <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
                     {PORTFOLIO_PROVIDERS.map(provider => (
                       <SelectItem key={provider.value} value={provider.value} className="text-white">
                         {provider.label}
@@ -166,7 +166,7 @@ export default function PortfolioDialog({ open, onOpenChange, onSave }) {
                   <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-slate-800 border-slate-700">
+                  <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
                     {CURRENCIES.map(curr => (
                       <SelectItem key={curr} value={curr} className="text-white">{curr}</SelectItem>
                     ))}
@@ -258,7 +258,7 @@ export default function PortfolioDialog({ open, onOpenChange, onSave }) {
                   <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-slate-800 border-slate-700">
+                  <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
                     <SelectItem value="crypto" className="text-white">Crypto</SelectItem>
                     <SelectItem value="stock" className="text-white">Stock</SelectItem>
                     <SelectItem value="bond" className="text-white">Bond</SelectItem>

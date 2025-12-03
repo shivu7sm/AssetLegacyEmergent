@@ -320,7 +320,7 @@ export default function AssetsNew() {
                     <SelectTrigger className="bg-slate-800 border-slate-700 text-white" style={{width: '320px'}}>
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-slate-800 border-slate-700">
+                    <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
                       {/* Own Account */}
                       <SelectItem value="own" className="text-white">
                         <div className="flex items-center gap-2">

@@ -114,7 +114,7 @@ export default function LoanCalculator() {
                     <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-slate-800 border-slate-700">
+                    <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
                       {LOAN_TYPES.map((type) => (
                         <SelectItem key={type.value} value={type.value} className="text-white">
                           <span className="flex items-center gap-2">

@@ -813,7 +813,7 @@ export default function Settings() {
                       <SelectTrigger className="mt-2" style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="bg-slate-800 border-slate-700">
+                      <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
                         <SelectItem value="US" className="text-white">🇺🇸 United States</SelectItem>
                         <SelectItem value="UK" className="text-white">🇬🇧 United Kingdom</SelectItem>
                         <SelectItem value="IN" className="text-white">🇮🇳 India</SelectItem>
@@ -829,7 +829,7 @@ export default function Settings() {
                       <SelectTrigger className="mt-2" style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="bg-slate-800 border-slate-700">
+                      <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
                         <SelectItem value="en" className="text-white">English</SelectItem>
                         <SelectItem value="es" className="text-white">Español</SelectItem>
                         <SelectItem value="fr" className="text-white">Français</SelectItem>
@@ -926,7 +926,7 @@ export default function Settings() {
                       <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="bg-slate-800 border-slate-700">
+                      <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
                         <SelectItem value="USD" className="text-white">🇺🇸 USD - US Dollar</SelectItem>
                         <SelectItem value="EUR" className="text-white">🇪🇺 EUR - Euro</SelectItem>
                         <SelectItem value="GBP" className="text-white">🇬🇧 GBP - British Pound</SelectItem>
@@ -951,7 +951,7 @@ export default function Settings() {
                       <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="bg-slate-800 border-slate-700">
+                      <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
                         <SelectItem value="standard" className="text-white">Standard (1,000,000)</SelectItem>
                         <SelectItem value="indian" className="text-white">Indian (10,00,000 / Lakhs & Crores)</SelectItem>
                       </SelectContent>
@@ -975,7 +975,7 @@ export default function Settings() {
                       <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="bg-slate-800 border-slate-700">
+                      <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
                         <SelectItem value="grid" className="text-white">Grid View</SelectItem>
                         <SelectItem value="table" className="text-white">Table View</SelectItem>
                       </SelectContent>
@@ -1000,7 +1000,7 @@ export default function Settings() {
                         <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="bg-slate-800 border-slate-700">
+                        <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
                           <SelectItem value="imperial" className="text-white">Imperial (sqft)</SelectItem>
                           <SelectItem value="metric" className="text-white">Metric (sqmt)</SelectItem>
                         </SelectContent>
@@ -1016,7 +1016,7 @@ export default function Settings() {
                         <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="bg-slate-800 border-slate-700">
+                        <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
                           <SelectItem value="ounce" className="text-white">Ounce</SelectItem>
                           <SelectItem value="gram" className="text-white">Gram</SelectItem>
                         </SelectContent>
@@ -1371,7 +1371,7 @@ export default function Settings() {
                           <SelectTrigger style={{background: theme.backgroundTertiary, borderColor: theme.border, color: theme.text}}>
                             <SelectValue placeholder="Select" />
                           </SelectTrigger>
-                          <SelectContent className="bg-slate-800 border-slate-700">
+                          <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
                             <SelectItem value="spouse" className="text-white">Spouse</SelectItem>
                             <SelectItem value="parent" className="text-white">Parent</SelectItem>
                             <SelectItem value="child" className="text-white">Child</SelectItem>
