@@ -5321,6 +5321,20 @@ Return response in JSON format matching this structure:
             time_to_complete=action.get("time", "")
         ))
     
+    # Parse NRI-specific analysis if available
+    nri_analysis_data = None
+    if is_nri and "nri_specific" in ai_content:
+        nri_data = ai_content["nri_specific"]
+        nri_analysis_data = NRITaxAnalysis(
+            tax_on_indian_income=nri_data.get("tax_on_indian_income", ""),
+            dtaa_benefits=nri_data.get("dtaa_benefits", ""),
+            account_recommendations=nri_data.get("account_recommendations", ""),
+            repatriation_rules=nri_data.get("repatriation_rules", ""),
+            investment_restrictions=nri_data.get("investment_restrictions", ""),
+            compliance_requirements=nri_data.get("compliance_requirements", ""),
+            recommended_investments=nri_data.get("recommended_investments", [])
+        )
+    
     # Calculate total savings opportunity
     tax_saved_80c = section_80c_gap * 0.30  # Assuming 30% tax bracket
     total_opportunity = tax_saved_80c + (total_hidden_sip * 12)
