@@ -88,6 +88,7 @@ export default function Dashboard() {
     fetchSummary();
     fetchLoanDetails();
     checkDemoMode();
+    checkProgressStatus();
   }, [selectedCurrency]); // Refetch when currency changes
 
   const checkDemoMode = async () => {
