@@ -5372,6 +5372,7 @@ Return response in JSON format matching this structure:
         priority_actions=priority_actions,
         ai_summary=ai_content.get("ai_summary", "Complete your profile for detailed recommendations."),
         confidence_score=ai_content.get("confidence_score", 75),
+        nri_analysis=nri_analysis_data,
         demo_mode=user.demo_mode  # Track demo/live
     )
     
