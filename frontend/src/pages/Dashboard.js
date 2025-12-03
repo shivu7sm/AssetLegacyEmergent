@@ -100,6 +100,26 @@ export default function Dashboard() {
     }
   };
 
+  const checkProgressStatus = async () => {
+    try {
+      const [userRes, nomineesRes, assetsRes, dmsRes] = await Promise.all([
+        axios.get(`${API}/auth/me`, { withCredentials: true }).catch(() => null),
+        axios.get(`${API}/nominees`, { withCredentials: true }).catch(() => ({ data: [] })),
+        axios.get(`${API}/assets`, { withCredentials: true }).catch(() => ({ data: [] })),
+        axios.get(`${API}/dms`, { withCredentials: true }).catch(() => null)
+      ]);
+
+      setProgressStatus({
+        profileComplete: userRes?.data?.name && userRes?.data?.email,
+        nomineeSetup: nomineesRes?.data?.length > 0,
+        assetsRecorded: assetsRes?.data?.length > 0,
+        dmsConfigured: dmsRes?.data?.is_active === true
+      });
+    } catch (error) {
+      console.error('Failed to check progress status:', error);
+    }
+  };
+
   const fetchSummary = async () => {
     try {
       const response = await axios.get(`${API}/dashboard/summary`, { 
