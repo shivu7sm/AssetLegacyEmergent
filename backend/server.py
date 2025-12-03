@@ -811,6 +811,16 @@ async def create_session(request: Request, response: Response):
     
     logger.info(f"Session created for user {user_id}, cookie set (secure=True, samesite=none, proto={forwarded_proto or 'none'})")
     
+    # Reset DMS timer on login
+    try:
+        await db.dead_man_switches.update_one(
+            {"user_id": user_id},
+            {"$set": {"last_reset": datetime.now(timezone.utc).isoformat()}}
+        )
+        logger.info(f"DMS timer reset for user {user_id}")
+    except Exception as e:
+        logger.error(f"Failed to reset DMS timer: {str(e)}")
+    
     # Get current user data for response (could be new or existing user)
     current_user = await db.users.find_one({"id": user_id}, {"_id": 0})
     
