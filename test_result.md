@@ -585,7 +585,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Enhanced Loan Calculator with CA-Level Features"
+    - "Budget Planner Feature (Phase 1 & 2)"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
