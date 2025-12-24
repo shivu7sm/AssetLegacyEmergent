@@ -476,17 +476,17 @@ export default function LoanCalculatorEnhanced() {
               <div className="lg:col-span-4">
                 {existingLoans.length > 0 ? (
                   <Card style={{background: theme.cardBg, borderColor: theme.border, position: 'sticky', top: '80px'}}>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2 text-base" style={{color: theme.text}}>
+                    <CardHeader className="pb-3">
+                      <CardTitle className="flex items-center gap-2 text-sm" style={{color: theme.text}}>
                         <Wallet className="w-4 h-4" style={{color: '#10b981'}} />
                         Your Loans
                       </CardTitle>
                       <p className="text-xs mt-1" style={{color: theme.textSecondary}}>
-                        Click to auto-fill calculator
+                        Click to load
                       </p>
                     </CardHeader>
-                    <CardContent>
-                      <div className="space-y-3 max-h-[600px] overflow-y-auto">
+                    <CardContent className="pt-0">
+                      <div className="space-y-2 max-h-[550px] overflow-y-auto pr-1">
                         {existingLoans.map((loan) => {
                           const isSelected = selectedLoanId === loan.id;
                           const loanIcon = LOAN_TYPES.find(t => 
@@ -497,25 +497,27 @@ export default function LoanCalculatorEnhanced() {
                             <button
                               key={loan.id}
                               onClick={() => loadLoanData(loan)}
-                              className="w-full p-3 rounded-lg text-left transition-all hover:scale-[1.02]"
+                              className="w-full p-2.5 rounded-lg text-left transition-all hover:scale-[1.01]"
                               style={{
                                 background: isSelected ? 'rgba(168, 85, 247, 0.15)' : theme.backgroundSecondary,
-                                border: `2px solid ${isSelected ? '#a855f7' : theme.border}`
+                                border: `1.5px solid ${isSelected ? '#a855f7' : theme.border}`
                               }}
                             >
-                              <div className="flex items-start justify-between mb-2">
-                                <span className="text-xl">{loanIcon}</span>
-                                {isSelected && <Check className="w-4 h-4" style={{color: '#a855f7'}} />}
+                              <div className="flex items-center justify-between mb-1.5">
+                                <span className="text-base">{loanIcon}</span>
+                                {isSelected && <Check className="w-3.5 h-3.5" style={{color: '#a855f7'}} />}
                               </div>
-                              <h4 className="font-semibold text-sm mb-1 truncate" style={{color: theme.text}}>
+                              <h4 className="font-semibold text-xs mb-1 truncate" style={{color: theme.text}}>
                                 {loan.name}
                               </h4>
-                              <div className="space-y-0.5 text-xs" style={{color: theme.textSecondary}}>
-                                <div>{formatCurrency(loan.principal_amount || loan.total_value || 0)}</div>
-                                {loan.interest_rate && (
-                                  <div>{loan.interest_rate}% p.a.</div>
-                                )}
+                              <div className="text-xs" style={{color: theme.textSecondary}}>
+                                {formatCurrency(loan.principal_amount || loan.total_value || 0)}
                               </div>
+                              {loan.interest_rate && (
+                                <div className="text-xs mt-0.5" style={{color: theme.textSecondary}}>
+                                  {loan.interest_rate}% p.a.
+                                </div>
+                              )}
                             </button>
                           );
                         })}
