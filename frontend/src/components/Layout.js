@@ -148,18 +148,18 @@ export default function Layout({ children }) {
     },
     {
       type: 'single',
-      path: '/settings?tab=security',
+      path: '/nominees',
       label: 'Nominees',
       icon: Users,
-      badge: 'Core',
+      badge: 'New',
       testId: 'nav-nominees'
     },
     {
       type: 'single',
-      path: '/settings?tab=dms',
+      path: '/dead-man-switch',
       label: "Dead Man's Switch",
       icon: Clock,
-      badge: 'Core',
+      badge: 'New',
       testId: 'nav-dms'
     },
     
