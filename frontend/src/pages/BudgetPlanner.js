@@ -48,7 +48,8 @@ export default function BudgetPlanner() {
     if (activeView === 'trends') {
       fetchComparisonData();
     }
-  }, [selectedMonth, budgetRule, activeView]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedMonth, budgetRule, activeView, dataSource]);
 
   const fetchBudgetAnalysis = async () => {
     setLoading(true);
