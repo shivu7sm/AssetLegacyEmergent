@@ -267,6 +267,60 @@ export default function LoanCalculatorEnhanced() {
 
           {/* Calculator Tab */}
           <TabsContent value="calculator" className="space-y-6">
+            {/* Existing Loans Section */}
+            {existingLoans.length > 0 && (
+              <Card style={{background: theme.cardBg, borderColor: theme.border}}>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-3" style={{color: theme.text}}>
+                    <Wallet className="w-5 h-5" style={{color: '#10b981'}} />
+                    Your Existing Loans
+                  </CardTitle>
+                  <p className="text-sm mt-2" style={{color: theme.textSecondary}}>
+                    Click on any loan to calculate repayment strategies and document for your family
+                  </p>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {existingLoans.map((loan) => {
+                      const isSelected = selectedLoanId === loan.id;
+                      const loanIcon = LOAN_TYPES.find(t => 
+                        t.value === (loan.type === 'credit_card' ? 'credit_card' : loan.metadata?.loan_type || 'personal')
+                      )?.icon || '💰';
+                      
+                      return (
+                        <button
+                          key={loan.id}
+                          onClick={() => loadLoanData(loan)}
+                          className="p-4 rounded-lg text-left transition-all"
+                          style={{
+                            background: isSelected ? 'rgba(168, 85, 247, 0.15)' : theme.backgroundSecondary,
+                            border: `2px solid ${isSelected ? '#a855f7' : theme.border}`
+                          }}
+                        >
+                          <div className="flex items-start justify-between mb-2">
+                            <span className="text-2xl">{loanIcon}</span>
+                            {isSelected && <Check className="w-5 h-5" style={{color: '#a855f7'}} />}
+                          </div>
+                          <h4 className="font-semibold mb-1" style={{color: theme.text}}>
+                            {loan.name}
+                          </h4>
+                          <div className="space-y-1 text-sm" style={{color: theme.textSecondary}}>
+                            <div>Amount: {formatCurrency(loan.principal_amount || loan.total_value || 0)}</div>
+                            {loan.interest_rate && (
+                              <div>Rate: {loan.interest_rate}% p.a.</div>
+                            )}
+                            {loan.metadata?.bank_name && (
+                              <div>Bank: {loan.metadata.bank_name}</div>
+                            )}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Input Form */}
               <Card style={{background: theme.cardBg, borderColor: theme.border}}>
