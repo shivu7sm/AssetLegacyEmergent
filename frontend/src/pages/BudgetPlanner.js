@@ -549,43 +549,66 @@ export default function BudgetPlanner() {
                         )}
                       </div>
                       <div className="max-h-64 overflow-y-auto space-y-2">
-                        {/* Auto items */}
+                        {/* Auto items - Editable in manual mode */}
                         {bucket.items && bucket.items.map((item, idx) => (
                           <div 
                             key={`auto-${idx}`}
-                            className="flex justify-between text-sm p-2 rounded"
+                            className="flex justify-between items-center text-sm p-2 rounded"
                             style={{background: theme.backgroundTertiary}}
                           >
-                            <span style={{color: theme.text}} className="truncate">{item.label}</span>
-                            <span className="font-semibold ml-2" style={{color: getBucketColor(bucketKey)}}>
-                              {formatCurrency(item.amount)}
-                            </span>
+                            <span style={{color: theme.text}} className="truncate flex-1">{item.label}</span>
+                            <div className="flex items-center gap-2">
+                              <span className="font-semibold" style={{color: getBucketColor(bucketKey)}}>
+                                {formatCurrency(item.amount)}
+                              </span>
+                              {dataSource === 'manual' && (
+                                <button
+                                  onClick={() => handleEditItem(bucketKey, idx, 'auto', item)}
+                                  className="p-1 rounded transition-all hover:bg-opacity-80"
+                                  style={{background: 'rgba(59, 130, 246, 0.2)'}}
+                                  title="Edit item"
+                                >
+                                  <svg className="w-3 h-3" style={{color: '#3b82f6'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                  </svg>
+                                </button>
+                              )}
+                            </div>
                           </div>
                         ))}
-                        {/* Custom items */}
+                        {/* Custom items - Always editable in manual mode */}
                         {customItems[bucketKey] && customItems[bucketKey].map((item, idx) => (
                           <div 
                             key={`custom-${idx}`}
                             className="flex justify-between items-center text-sm p-2 rounded"
                             style={{background: 'rgba(168, 85, 247, 0.1)', border: '1px dashed rgba(168, 85, 247, 0.3)'}}
                           >
-                            <span style={{color: theme.text}} className="truncate">{item.label}</span>
+                            <span style={{color: theme.text}} className="truncate flex-1">{item.label}</span>
                             <div className="flex items-center gap-2">
                               <span className="font-semibold" style={{color: '#a855f7'}}>
                                 {formatCurrency(item.amount)}
                               </span>
-                              <button
-                                onClick={() => {
-                                  setCustomItems(prev => ({
-                                    ...prev,
-                                    [bucketKey]: prev[bucketKey].filter((_, i) => i !== idx)
-                                  }));
-                                  toast.success('Item removed');
-                                }}
-                                className="p-1 rounded hover:bg-red-500 transition-all"
-                              >
-                                <X className="w-3 h-3" style={{color: '#ef4444'}} />
-                              </button>
+                              {dataSource === 'manual' && (
+                                <>
+                                  <button
+                                    onClick={() => handleEditItem(bucketKey, idx, 'custom', item)}
+                                    className="p-1 rounded transition-all hover:bg-opacity-80"
+                                    style={{background: 'rgba(59, 130, 246, 0.2)'}}
+                                    title="Edit item"
+                                  >
+                                    <svg className="w-3 h-3" style={{color: '#3b82f6'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                    </svg>
+                                  </button>
+                                  <button
+                                    onClick={() => handleDeleteCustomItem(bucketKey, idx)}
+                                    className="p-1 rounded transition-all hover:bg-red-500"
+                                    title="Delete item"
+                                  >
+                                    <X className="w-3 h-3" style={{color: '#ef4444'}} />
+                                  </button>
+                                </>
+                              )}
                             </div>
                           </div>
                         ))}
