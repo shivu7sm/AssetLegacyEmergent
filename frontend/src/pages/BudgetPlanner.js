@@ -29,7 +29,13 @@ export default function BudgetPlanner() {
   const [budgetRule, setBudgetRule] = useState('65/25/10');
   const [budgetData, setBudgetData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [dataSource, setDataSource] = useState('auto'); // 'auto' or 'manual'
+  const [dataSource, setDataSource] = useState('auto');
+  const [showAddItem, setShowAddItem] = useState({ bucket: null, open: false });
+  const [customItems, setCustomItems] = useState({ needs: [], savings: [], wants: [] });
+  const [newItem, setNewItem] = useState({ label: '', amount: '' });
+  const [comparisonData, setComparisonData] = useState(null);
+  const [showComparison, setShowComparison] = useState(false);
+  const [activeView, setActiveView] = useState('current'); // 'current' or 'trends'
 
   useEffect(() => {
     if (dataSource === 'auto') {
