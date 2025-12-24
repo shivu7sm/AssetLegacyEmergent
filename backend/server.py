@@ -6271,7 +6271,45 @@ class LoanCalculatorRequest(BaseModel):
     principal: float
     annual_interest_rate: float  # e.g., 8.5 for 8.5%
     tenure_months: int
-    loan_type: str = "personal"  # personal, home, auto, credit_card
+    loan_type: str = "personal"  # personal, home, auto, credit_card, education, business
+    
+class PrepaymentOption(BaseModel):
+    type: str  # one_time, monthly_extra, annual_extra
+    amount: float
+    start_month: int = 1
+    
+class PrepaymentScenario(BaseModel):
+    monthly_payment: float
+    total_interest: float
+    total_amount: float
+    tenure_months: int
+    interest_saved: float
+    time_saved_months: int
+    amortization_schedule: List[Dict]
+    
+class TaxBenefit(BaseModel):
+    loan_type: str
+    principal_deduction: float  # 80C
+    interest_deduction: float  # 24(b) or 80E
+    total_tax_saved: float
+    effective_interest_rate: float
+    tax_bracket: float
+    
+class RefinanceComparison(BaseModel):
+    current_remaining_payment: float
+    new_total_payment: float
+    closing_costs: float
+    net_savings: float
+    breakeven_months: int
+    should_refinance: bool
+    monthly_savings: float
+
+class MultiLoanStrategy(BaseModel):
+    strategy_name: str  # avalanche or snowball
+    total_interest: float
+    payoff_months: int
+    monthly_payment: float
+    payment_order: List[Dict]
     
 class AmortizationEntry(BaseModel):
     month: int
@@ -6286,6 +6324,9 @@ class LoanCalculatorResponse(BaseModel):
     total_amount: float
     amortization_schedule: List[AmortizationEntry]
     ai_tips: Optional[str] = None
+    prepayment_scenarios: Optional[Dict[str, PrepaymentScenario]] = None
+    tax_benefits: Optional[TaxBenefit] = None
+    principal_vs_interest_split: Optional[Dict] = None
 
 def calculate_amortization(principal: float, monthly_rate: float, tenure_months: int) -> List[Dict[str, float]]:
     """Calculate loan amortization schedule"""
