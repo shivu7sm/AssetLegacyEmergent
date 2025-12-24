@@ -4781,6 +4781,9 @@ print('Test data cleaned up');
             # Tax Blueprint Profile Save and Generation Complete Flow (Review Request)
             self.test_tax_blueprint_profile_save_and_generation_flow()
             
+            # Budget Planner Feature - Comprehensive Testing (Review Request)
+            self.test_budget_planner_comprehensive()
+            
         finally:
             # Always cleanup
             self.cleanup_test_data()
