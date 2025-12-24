@@ -516,26 +516,149 @@ export default function LoanCalculatorEnhanced() {
 
             {/* AI Tips */}
             {result && (
-              <Card style={{background: `linear-gradient(135deg, ${theme.cardBg} 0%, ${theme.backgroundSecondary} 100%)`, borderColor: '#a855f7', borderWidth: '2px'}}>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-3" style={{color: theme.text}}>
-                    <Sparkles className="w-5 h-5" style={{color: '#fbbf24'}} />
-                    AI-Powered Debt Reduction Tips
-                    {loadingTips && <span className="text-sm font-normal" style={{color: theme.textSecondary}}>(Loading...)</span>}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {result.ai_tips ? (
-                    <div className="prose prose-invert max-w-none" style={{color: theme.textSecondary, lineHeight: '1.7'}}>
-                      <div className="whitespace-pre-wrap">{result.ai_tips}</div>
+              <>
+                {/* Family Summary - What Your Family Needs to Know */}
+                <Card style={{background: `linear-gradient(135deg, ${theme.cardBg} 0%, ${theme.backgroundSecondary} 100%)`, borderColor: '#10b981', borderWidth: '2px'}}>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-3" style={{color: theme.text}}>
+                      <ShieldCheck className="w-5 h-5" style={{color: '#10b981'}} />
+                      Essential Info for Your Family
+                    </CardTitle>
+                    <p className="text-sm mt-2" style={{color: theme.textSecondary}}>
+                      If something happens to you, your family needs these details to manage this loan
+                    </p>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="p-4 rounded-lg" style={{background: theme.backgroundSecondary, border: `1px solid ${theme.border}`}}>
+                        <h4 className="font-semibold mb-3 flex items-center gap-2" style={{color: theme.text}}>
+                          <Calendar className="w-4 h-4" />
+                          Monthly Commitment
+                        </h4>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex justify-between">
+                            <span style={{color: theme.textSecondary}}>Monthly EMI:</span>
+                            <span className="font-bold" style={{color: '#10b981'}}>
+                              {formatCurrency(result.monthly_payment)}
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span style={{color: theme.textSecondary}}>Loan Type:</span>
+                            <span style={{color: theme.text}}>{selectedLoanType?.label}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span style={{color: theme.textSecondary}}>Remaining Tenure:</span>
+                            <span style={{color: theme.text}}>
+                              {Math.floor(formData.tenure_months / 12)} years {formData.tenure_months % 12} months
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="p-4 rounded-lg" style={{background: theme.backgroundSecondary, border: `1px solid ${theme.border}`}}>
+                        <h4 className="font-semibold mb-3 flex items-center gap-2" style={{color: theme.text}}>
+                          <DollarSign className="w-4 h-4" />
+                          Outstanding Amount
+                        </h4>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex justify-between">
+                            <span style={{color: theme.textSecondary}}>Principal Amount:</span>
+                            <span className="font-semibold" style={{color: theme.text}}>
+                              {formatCurrency(parseFloat(formData.principal))}
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span style={{color: theme.textSecondary}}>Total to be Paid:</span>
+                            <span className="font-semibold" style={{color: theme.text}}>
+                              {formatCurrency(result.total_amount)}
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span style={{color: theme.textSecondary}}>Interest Cost:</span>
+                            <span style={{color: '#ef4444'}}>
+                              {formatCurrency(result.total_interest)}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {result.tax_benefits && result.tax_benefits.eligible && (
+                        <div className="p-4 rounded-lg md:col-span-2" style={{background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.3)'}}>
+                          <h4 className="font-semibold mb-3 flex items-center gap-2" style={{color: '#3b82f6'}}>
+                            <PiggyBank className="w-4 h-4" />
+                            Tax Benefits Available
+                          </h4>
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+                            <div>
+                              <div style={{color: theme.textSecondary}}>Annual Tax Savings:</div>
+                              <div className="font-bold text-lg" style={{color: '#3b82f6'}}>
+                                {formatCurrency(result.tax_benefits.total_tax_saved)}
+                              </div>
+                            </div>
+                            <div>
+                              <div style={{color: theme.textSecondary}}>Effective Interest Rate:</div>
+                              <div className="font-bold text-lg" style={{color: '#10b981'}}>
+                                {result.tax_benefits.effective_interest_rate}%
+                              </div>
+                              <div className="text-xs" style={{color: theme.textSecondary}}>
+                                (after {result.tax_benefits.tax_bracket * 100}% tax benefit)
+                              </div>
+                            </div>
+                            <div>
+                              <div style={{color: theme.textSecondary}}>Applicable Sections:</div>
+                              <div className="font-semibold" style={{color: theme.text}}>
+                                {result.tax_benefits.sections_applicable.join(', ')}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="md:col-span-2 p-4 rounded-lg" style={{background: 'rgba(251, 191, 36, 0.1)', border: '1px solid rgba(251, 191, 36, 0.3)'}}>
+                        <div className="flex items-start gap-3">
+                          <AlertCircle className="w-5 h-5 mt-0.5" style={{color: '#fbbf24'}} />
+                          <div>
+                            <h4 className="font-semibold mb-1" style={{color: '#fbbf24'}}>
+                              Action Items for Your Family
+                            </h4>
+                            <ul className="text-sm space-y-1" style={{color: theme.textSecondary}}>
+                              <li>• Ensure bank details and loan account number are saved in Documents</li>
+                              <li>• Keep auto-debit mandate details accessible</li>
+                              <li>• Document any loan insurance or protection cover</li>
+                              <li>• Note down the loan officer's contact information</li>
+                              {result.tax_benefits?.eligible && (
+                                <li>• Share tax benefit claim process with your CA/advisor</li>
+                              )}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  ) : (
-                    <div className="flex items-center gap-3 text-sm" style={{color: theme.textSecondary}}>
-                      <div className="animate-pulse">Generating personalized tips...</div>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+
+                {/* AI Tips Section */}
+                <Card style={{background: `linear-gradient(135deg, ${theme.cardBg} 0%, ${theme.backgroundSecondary} 100%)`, borderColor: '#a855f7', borderWidth: '2px'}}>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-3" style={{color: theme.text}}>
+                      <Sparkles className="w-5 h-5" style={{color: '#fbbf24'}} />
+                      AI-Powered Debt Reduction Tips
+                      {loadingTips && <span className="text-sm font-normal" style={{color: theme.textSecondary}}>(Loading...)</span>}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    {result.ai_tips ? (
+                      <div className="prose prose-invert max-w-none" style={{color: theme.textSecondary, lineHeight: '1.7'}}>
+                        <div className="whitespace-pre-wrap">{result.ai_tips}</div>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-3 text-sm" style={{color: theme.textSecondary}}>
+                        <div className="animate-pulse">Generating personalized tips...</div>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </>
             )}
           </TabsContent>
 
