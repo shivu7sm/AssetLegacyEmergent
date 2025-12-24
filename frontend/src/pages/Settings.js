@@ -1946,41 +1946,41 @@ export default function Settings() {
 
   return (
     <Layout>
-      <div className="flex gap-6 h-full" style={{padding: '2rem 1.5rem', margin: '0 auto', maxWidth: '1600px'}}>
-        {/* Left Sidebar */}
-        <div className="w-64 flex-shrink-0">
-          <div className="sticky top-24">
-            <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
-              <CardContent className="p-4">
-                <nav className="space-y-1">
-                  {SECTIONS.map(section => {
-                    const Icon = section.icon;
-                    const isActive = activeSection === section.id;
-                    return (
-                      <button
-                        key={section.id}
-                        onClick={() => setActiveSection(section.id)}
-                        className="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-left"
-                        style={{
-                          background: isActive ? 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)' : 'transparent',
-                          color: isActive ? '#f8fafc' : '#94a3b8'
-                        }}
-                      >
-                        <Icon className="w-5 h-5" />
-                        <span className="text-sm font-medium">{section.label}</span>
-                      </button>
-                    );
-                  })}
-                </nav>
-              </CardContent>
-            </Card>
-          </div>
+      <div className="space-y-6" style={{padding: '1.5rem 0'}}>
+        {/* Header */}
+        <div>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{color: theme.text, fontFamily: 'Space Grotesk, sans-serif'}}>
+            Settings
+          </h1>
+          <p className="text-base sm:text-lg" style={{color: theme.textSecondary}}>
+            Manage your account preferences and configurations
+          </p>
         </div>
 
-        {/* Main Content */}
-        <div className="flex-1 min-w-0">
-          {renderSection()}
-        </div>
+        {/* Tabs */}
+        <Tabs value={activeSection} onValueChange={setActiveSection}>
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4" style={{background: theme.cardBg, borderColor: theme.border}}>
+            {SECTIONS.map(section => {
+              const Icon = section.icon;
+              return (
+                <TabsTrigger 
+                  key={section.id}
+                  value={section.id}
+                  className="flex items-center gap-2"
+                  style={{color: activeSection === section.id ? theme.text : theme.textSecondary}}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span className="hidden sm:inline text-sm">{section.label}</span>
+                </TabsTrigger>
+              );
+            })}
+          </TabsList>
+
+          {/* Tab Content */}
+          <div className="mt-6">
+            {renderSection()}
+          </div>
+        </Tabs>
       </div>
     </Layout>
   );
