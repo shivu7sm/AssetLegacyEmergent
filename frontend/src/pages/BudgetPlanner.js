@@ -651,9 +651,181 @@ export default function BudgetPlanner() {
             </Card>
           </>
         )}
+          </TabsContent>
+
+          {/* Trends View */}
+          <TabsContent value="trends" className="space-y-6 mt-6">
+            {comparisonData && comparisonData.months && comparisonData.months.length > 0 ? (
+              <>
+                {/* Trend Chart */}
+                <Card style={{background: theme.cardBg, borderColor: theme.border}}>
+                  <CardHeader>
+                    <CardTitle style={{color: theme.text}}>6-Month Budget Allocation Trend</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={400}>
+                      <LineChart data={comparisonData.months}>
+                        <CartesianGrid strokeDasharray="3 3" stroke={theme.border} />
+                        <XAxis dataKey="month" stroke={theme.textSecondary} />
+                        <YAxis stroke={theme.textSecondary} />
+                        <RechartsTooltip 
+                          contentStyle={{background: theme.cardBg, border: `1px solid ${theme.border}`, borderRadius: '8px'}}
+                          labelStyle={{color: theme.text}}
+                          formatter={(value) => formatCurrency(value)}
+                        />
+                        <Legend />
+                        <Line type="monotone" dataKey="needs" stroke="#3b82f6" strokeWidth={2} name="Needs" />
+                        <Line type="monotone" dataKey="wants" stroke="#a855f7" strokeWidth={2} name="Wants" />
+                        <Line type="monotone" dataKey="savings" stroke="#10b981" strokeWidth={2} name="Savings" />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+
+                {/* Percentage Trend */}
+                <Card style={{background: theme.cardBg, borderColor: theme.border}}>
+                  <CardHeader>
+                    <CardTitle style={{color: theme.text}}>Budget Allocation % Trend</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={400}>
+                      <RechartsBar data={comparisonData.months}>
+                        <CartesianGrid strokeDasharray="3 3" stroke={theme.border} />
+                        <XAxis dataKey="month" stroke={theme.textSecondary} />
+                        <YAxis stroke={theme.textSecondary} />
+                        <RechartsTooltip 
+                          contentStyle={{background: theme.cardBg, border: `1px solid ${theme.border}`, borderRadius: '8px'}}
+                          labelStyle={{color: theme.text}}
+                          formatter={(value) => `${value}%`}
+                        />
+                        <Legend />
+                        <Bar dataKey="needs_percentage" fill="#3b82f6" name="Needs %" />
+                        <Bar dataKey="wants_percentage" fill="#a855f7" name="Wants %" />
+                        <Bar dataKey="savings_percentage" fill="#10b981" name="Savings %" />
+                      </RechartsBar>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+
+                {/* Monthly Summary Table */}
+                <Card style={{background: theme.cardBg, borderColor: theme.border}}>
+                  <CardHeader>
+                    <CardTitle style={{color: theme.text}}>Month-by-Month Breakdown</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="overflow-x-auto">
+                      <table className="w-full">
+                        <thead style={{background: theme.backgroundSecondary, borderBottom: `1px solid ${theme.border}`}}>
+                          <tr>
+                            <th className="text-left p-3 text-sm" style={{color: theme.textSecondary}}>Month</th>
+                            <th className="text-right p-3 text-sm" style={{color: theme.textSecondary}}>Income</th>
+                            <th className="text-right p-3 text-sm" style={{color: theme.textSecondary}}>Needs</th>
+                            <th className="text-right p-3 text-sm" style={{color: theme.textSecondary}}>Wants</th>
+                            <th className="text-right p-3 text-sm" style={{color: theme.textSecondary}}>Savings</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {comparisonData.months.map((month, idx) => (
+                            <tr key={idx} style={{borderBottom: `1px solid ${theme.border}`}}>
+                              <td className="p-3" style={{color: theme.text}}>{month.month}</td>
+                              <td className="text-right p-3" style={{color: '#10b981'}}>
+                                {formatCurrency(month.total_income)}
+                              </td>
+                              <td className="text-right p-3" style={{color: '#3b82f6'}}>
+                                {formatCurrency(month.needs)}
+                                <span className="text-xs ml-2" style={{color: theme.textSecondary}}>
+                                  ({month.needs_percentage}%)
+                                </span>
+                              </td>
+                              <td className="text-right p-3" style={{color: '#a855f7'}}>
+                                {formatCurrency(month.wants)}
+                                <span className="text-xs ml-2" style={{color: theme.textSecondary}}>
+                                  ({month.wants_percentage}%)
+                                </span>
+                              </td>
+                              <td className="text-right p-3" style={{color: '#10b981'}}>
+                                {formatCurrency(month.savings)}
+                                <span className="text-xs ml-2" style={{color: theme.textSecondary}}>
+                                  ({month.savings_percentage}%)
+                                </span>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </CardContent>
+                </Card>
+              </>
+            ) : (
+              <Card style={{background: theme.cardBg, borderColor: theme.border}}>
+                <CardContent className="py-12 text-center">
+                  <BarChart className="w-16 h-16 mx-auto mb-4" style={{color: theme.textSecondary, opacity: 0.5}} />
+                  <h3 className="text-xl font-semibold mb-2" style={{color: theme.text}}>
+                    No Historical Data
+                  </h3>
+                  <p style={{color: theme.textSecondary}}>
+                    Add income and expenses for multiple months to see trends
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+          </TabsContent>
+        </Tabs>
+
+        {/* Add Custom Item Dialog */}
+        <Dialog open={showAddItem.open} onOpenChange={(open) => setShowAddItem({ ...showAddItem, open })}>
+          <DialogContent style={{background: theme.cardBg, borderColor: theme.border}}>
+            <DialogHeader>
+              <DialogTitle style={{color: theme.text}}>
+                Add Custom Item to {showAddItem.bucket && getBucketLabel(showAddItem.bucket)}
+              </DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 mt-4">
+              <div>
+                <Label style={{color: theme.textSecondary}}>Item Label *</Label>
+                <Input
+                  value={newItem.label}
+                  onChange={(e) => setNewItem({ ...newItem, label: e.target.value })}
+                  placeholder="e.g., Gym Membership"
+                  style={{background: theme.backgroundSecondary, borderColor: theme.border, color: theme.text}}
+                />
+              </div>
+              <div>
+                <Label style={{color: theme.textSecondary}}>Amount *</Label>
+                <Input
+                  type="number"
+                  value={newItem.amount}
+                  onChange={(e) => setNewItem({ ...newItem, amount: e.target.value })}
+                  placeholder="1500"
+                  style={{background: theme.backgroundSecondary, borderColor: theme.border, color: theme.text}}
+                />
+              </div>
+              <div className="flex gap-3 pt-2">
+                <Button
+                  onClick={() => handleAddCustomItem(showAddItem.bucket)}
+                  className="flex-1 text-white font-medium"
+                  style={{background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)'}}
+                >
+                  Add Item
+                </Button>
+                <Button
+                  onClick={() => {
+                    setShowAddItem({ bucket: null, open: false });
+                    setNewItem({ label: '', amount: '' });
+                  }}
+                  variant="outline"
+                  style={{borderColor: theme.border, color: theme.textSecondary}}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
 
         {/* Loading State */}
-        {loading && (
+        {loading && activeView === 'current' && (
           <div className="text-center py-12" style={{color: theme.textSecondary}}>
             <RefreshCw className="w-8 h-8 mx-auto mb-3 animate-spin" style={{color: '#a855f7'}} />
             <p>Loading budget analysis...</p>
@@ -661,7 +833,7 @@ export default function BudgetPlanner() {
         )}
 
         {/* Empty State */}
-        {!loading && !budgetData && (
+        {!loading && !budgetData && activeView === 'current' && (
           <Card style={{background: theme.cardBg, borderColor: theme.border}}>
             <CardContent className="py-12 text-center">
               <PiggyBank className="w-16 h-16 mx-auto mb-4" style={{color: theme.textSecondary, opacity: 0.5}} />
@@ -681,23 +853,6 @@ export default function BudgetPlanner() {
             </CardContent>
           </Card>
         )}
-          </TabsContent>
-
-          {/* Trends View - Placeholder for Phase 2 */}
-          <TabsContent value="trends" className="space-y-6 mt-6">
-            <Card style={{background: theme.cardBg, borderColor: theme.border}}>
-              <CardContent className="py-12 text-center">
-                <BarChart className="w-16 h-16 mx-auto mb-4" style={{color: theme.textSecondary, opacity: 0.5}} />
-                <h3 className="text-xl font-semibold mb-2" style={{color: theme.text}}>
-                  6-Month Trends Coming Soon
-                </h3>
-                <p style={{color: theme.textSecondary}}>
-                  Historical budget comparison and trends will be available here
-                </p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
       </div>
     </Layout>
   );
