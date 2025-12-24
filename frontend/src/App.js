@@ -14,6 +14,9 @@ import ScheduleMessages from "./pages/ScheduleMessages";
 import PortfolioGuide from "./pages/PortfolioGuide";
 import Admin from "./pages/Admin";
 import LoanCalculatorEnhanced from "./pages/LoanCalculatorEnhanced";
+import SIPCalculator from "./pages/calculators/SIPCalculator";
+import SWPCalculator from "./pages/calculators/SWPCalculator";
+import CompoundInterestCalculator from "./pages/calculators/CompoundInterestCalculator";
 import IncomeExpense from "./pages/IncomeExpense";
 import TaxBlueprint from "./pages/TaxBlueprint";
 import NomineeAccess from "./pages/NomineeAccess";
@@ -258,6 +261,30 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <LoanCalculatorEnhanced />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/calculators/sip" 
+        element={
+          <ProtectedRoute>
+            <SIPCalculator />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/calculators/swp" 
+        element={
+          <ProtectedRoute>
+            <SWPCalculator />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/calculators/compound" 
+        element={
+          <ProtectedRoute>
+            <CompoundInterestCalculator />
           </ProtectedRoute>
         } 
       />
