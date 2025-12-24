@@ -638,7 +638,7 @@ export default function Layout({ children }) {
                           background: isLegacy 
                             ? 'linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%)'
                             : 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%)',
-                          border: `1.5px solid ${isLegacy ? 'rgba(239, 68, 68, 0.3)' : 'rgba(16, 185, 129, 0.3)'}',
+                          border: `1.5px solid ${isLegacy ? 'rgba(239, 68, 68, 0.3)' : 'rgba(16, 185, 129, 0.3)'}`,
                           boxShadow: isLegacy 
                             ? '0 2px 8px rgba(239, 68, 68, 0.1)'
                             : '0 2px 8px rgba(16, 185, 129, 0.1)'
