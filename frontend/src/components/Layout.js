@@ -131,21 +131,31 @@ export default function Layout({ children }) {
       ]
     },
     {
-      type: 'single',
-      path: '/tax-blueprint',
-      label: 'Tax & Planning',
-      icon: Zap,
-      testId: 'nav-tax-blueprint'
-    },
-    {
       type: 'group',
       key: 'tools',
-      label: 'Tools & Insights',
+      label: 'Tools & Calculators',
       icon: BookOpen,
       items: [
         { path: '/loan-calculator', label: 'Loan Calculator', icon: Calculator, testId: 'nav-loan-calculator' },
+        { path: '/calculators/sip', label: 'SIP Calculator', icon: TrendingUp, testId: 'nav-sip-calculator' },
+        { path: '/calculators/swp', label: 'SWP Calculator', icon: TrendingDown, testId: 'nav-swp-calculator' },
+        { path: '/calculators/compound', label: 'Compound Interest', icon: Zap, testId: 'nav-compound-calculator' },
         { path: '/insights', label: 'AI Insights', icon: Sparkles, testId: 'nav-insights' },
         { path: '/schedule-messages', label: 'Scheduled Messages', icon: Calendar, testId: 'nav-messages' }
+      ]
+    },
+    {
+      type: 'group',
+      key: 'tax',
+      label: 'Tax & Planning',
+      icon: Zap,
+      items: [
+        { path: '/tax-blueprint', label: 'Dashboard', icon: LayoutDashboard, testId: 'nav-tax-dashboard' },
+        { path: '/tax-blueprint?tab=80c-planner', label: '80C Planner', icon: PiggyBank, testId: 'nav-80c-planner' },
+        { path: '/tax-blueprint?tab=hidden-sip', label: 'Hidden SIP', icon: Eye, testId: 'nav-hidden-sip' },
+        { path: '/tax-blueprint?tab=tax-benefits', label: '📚 Tax Guide', icon: BookOpen, testId: 'nav-tax-guide' },
+        { path: '/tax-blueprint?tab=wealth-structures', label: '🏛️ HUF & Trust', icon: Shield, testId: 'nav-huf-trust' },
+        { path: '/tax-blueprint?tab=regime', label: 'Tax Regime', icon: RefreshCw, testId: 'nav-tax-regime' }
       ]
     },
     {
@@ -154,8 +164,10 @@ export default function Layout({ children }) {
       label: 'Documents',
       icon: FolderLock,
       items: [
-        { path: '/documents?type=assets', label: 'Asset Documents', icon: FileText, testId: 'nav-asset-docs' },
-        { path: '/documents?type=family', label: 'Family Documents', icon: Heart, testId: 'nav-family-docs' }
+        { path: '/documents', label: 'All Documents', icon: FileText, testId: 'nav-all-docs' },
+        { path: '/documents?filter=unlinked', label: 'Unlinked', icon: LinkIcon, testId: 'nav-unlinked-docs' },
+        { path: '/documents?category=asset', label: 'Asset Documents', icon: Wallet, testId: 'nav-asset-docs' },
+        { path: '/documents?category=family', label: 'Family Documents', icon: Heart, testId: 'nav-family-docs' }
       ]
     },
     {
