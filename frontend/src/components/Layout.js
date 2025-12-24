@@ -59,7 +59,7 @@ function NavItem({ item, isChild = false, sidebarOpen, navigate, setMobileMenuOp
         <span 
           className="text-xs font-bold px-2 py-0.5 rounded-full"
           style={{
-            background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+            background: 'linear-gradient(135deg, #ef4444 0%, #ec4899 100%)',
             color: '#ffffff'
           }}
         >
