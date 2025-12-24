@@ -880,6 +880,62 @@ export default function BudgetPlanner() {
           </DialogContent>
         </Dialog>
 
+        {/* Edit Item Dialog */}
+        <Dialog open={editingItem.item !== null} onOpenChange={(open) => !open && setEditingItem({ bucket: null, index: null, type: null, item: null })}>
+          <DialogContent style={{background: theme.cardBg, borderColor: theme.border}}>
+            <DialogHeader>
+              <DialogTitle style={{color: theme.text}}>
+                Edit Item in {editingItem.bucket && getBucketLabel(editingItem.bucket)}
+              </DialogTitle>
+            </DialogHeader>
+            {editingItem.item && (
+              <div className="space-y-4 mt-4">
+                <div>
+                  <Label style={{color: theme.textSecondary}}>Item Label *</Label>
+                  <Input
+                    value={editingItem.item.label}
+                    onChange={(e) => setEditingItem(prev => ({
+                      ...prev,
+                      item: { ...prev.item, label: e.target.value }
+                    }))}
+                    placeholder="e.g., Gym Membership"
+                    style={{background: theme.backgroundSecondary, borderColor: theme.border, color: theme.text}}
+                  />
+                </div>
+                <div>
+                  <Label style={{color: theme.textSecondary}}>Amount *</Label>
+                  <Input
+                    type="number"
+                    value={editingItem.item.amount}
+                    onChange={(e) => setEditingItem(prev => ({
+                      ...prev,
+                      item: { ...prev.item, amount: parseFloat(e.target.value) }
+                    }))}
+                    placeholder="1500"
+                    style={{background: theme.backgroundSecondary, borderColor: theme.border, color: theme.text}}
+                  />
+                </div>
+                <div className="flex gap-3 pt-2">
+                  <Button
+                    onClick={handleSaveEdit}
+                    className="flex-1 text-white font-medium"
+                    style={{background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)'}}
+                  >
+                    Save Changes
+                  </Button>
+                  <Button
+                    onClick={() => setEditingItem({ bucket: null, index: null, type: null, item: null })}
+                    variant="outline"
+                    style={{borderColor: theme.border, color: theme.textSecondary}}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
+
         {/* Loading State */}
         {loading && activeView === 'current' && (
           <div className="text-center py-12" style={{color: theme.textSecondary}}>
