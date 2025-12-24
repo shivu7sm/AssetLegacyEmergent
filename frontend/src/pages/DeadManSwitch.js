@@ -227,6 +227,24 @@ export default function DeadManSwitch() {
                         <span>Phone (SMS)</span>
                       </div>
                     </SelectItem>
+                    <SelectItem value="whatsapp" style={{color: theme.text}}>
+                      <div className="flex items-center gap-2">
+                        <Phone className="w-4 h-4" />
+                        <span>WhatsApp</span>
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="telegram" style={{color: theme.text}}>
+                      <div className="flex items-center gap-2">
+                        <Mail className="w-4 h-4" />
+                        <span>Telegram</span>
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="all" style={{color: theme.text}}>
+                      <div className="flex items-center gap-2">
+                        <Bell className="w-4 h-4" />
+                        <span>All Methods</span>
+                      </div>
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
