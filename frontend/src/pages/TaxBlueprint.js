@@ -513,14 +513,74 @@ export default function TaxBlueprint() {
           </Card>
         ) : (
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
-              <TabsTrigger value="dashboard" style={{color: theme.textTertiary}}>Dashboard</TabsTrigger>
-              <TabsTrigger value="80c-planner" style={{color: theme.textTertiary}}>80C Planner</TabsTrigger>
-              <TabsTrigger value="hidden-sip" style={{color: theme.textTertiary}}>Hidden SIP</TabsTrigger>
-              <TabsTrigger value="tax-benefits" style={{color: theme.textTertiary}}>📚 Tax Guide</TabsTrigger>
-              <TabsTrigger value="wealth-structures" style={{color: theme.textTertiary}}>🏛️ HUF & Trust</TabsTrigger>
+            <TabsList style={{background: theme.backgroundSecondary, borderColor: theme.border, padding: '4px'}}>
+              <TabsTrigger 
+                value="dashboard" 
+                className="transition-all hover:scale-[1.05]"
+                style={{
+                  background: activeTab === 'dashboard' ? theme.primaryGradient : 'transparent',
+                  color: activeTab === 'dashboard' ? '#ffffff' : theme.textTertiary,
+                  fontWeight: activeTab === 'dashboard' ? '600' : '400'
+                }}
+              >
+                Dashboard
+              </TabsTrigger>
+              <TabsTrigger 
+                value="80c-planner" 
+                className="transition-all hover:scale-[1.05]"
+                style={{
+                  background: activeTab === '80c-planner' ? theme.primaryGradient : 'transparent',
+                  color: activeTab === '80c-planner' ? '#ffffff' : theme.textTertiary,
+                  fontWeight: activeTab === '80c-planner' ? '600' : '400'
+                }}
+              >
+                80C Planner
+              </TabsTrigger>
+              <TabsTrigger 
+                value="hidden-sip" 
+                className="transition-all hover:scale-[1.05]"
+                style={{
+                  background: activeTab === 'hidden-sip' ? theme.primaryGradient : 'transparent',
+                  color: activeTab === 'hidden-sip' ? '#ffffff' : theme.textTertiary,
+                  fontWeight: activeTab === 'hidden-sip' ? '600' : '400'
+                }}
+              >
+                Hidden SIP
+              </TabsTrigger>
+              <TabsTrigger 
+                value="tax-benefits" 
+                className="transition-all hover:scale-[1.05]"
+                style={{
+                  background: activeTab === 'tax-benefits' ? theme.primaryGradient : 'transparent',
+                  color: activeTab === 'tax-benefits' ? '#ffffff' : theme.textTertiary,
+                  fontWeight: activeTab === 'tax-benefits' ? '600' : '400'
+                }}
+              >
+                📚 Tax Guide
+              </TabsTrigger>
+              <TabsTrigger 
+                value="wealth-structures" 
+                className="transition-all hover:scale-[1.05]"
+                style={{
+                  background: activeTab === 'wealth-structures' ? theme.primaryGradient : 'transparent',
+                  color: activeTab === 'wealth-structures' ? '#ffffff' : theme.textTertiary,
+                  fontWeight: activeTab === 'wealth-structures' ? '600' : '400'
+                }}
+              >
+                🏛️ HUF & Trust
+              </TabsTrigger>
               {regimeComparison && (
-                <TabsTrigger value="regime" style={{color: theme.textTertiary}}>Tax Regime</TabsTrigger>
+                <TabsTrigger 
+                  value="regime" 
+                  className="transition-all hover:scale-[1.05]"
+                  style={{
+                    background: activeTab === 'regime' ? theme.primaryGradient : 'transparent',
+                    color: activeTab === 'regime' ? '#ffffff' : theme.textTertiary,
+                    fontWeight: activeTab === 'regime' ? '600' : '400'
+                  }}
+                >
+                  Tax Regime
+                </TabsTrigger>
               )}
             </TabsList>
 
