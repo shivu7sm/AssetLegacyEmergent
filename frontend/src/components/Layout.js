@@ -42,13 +42,25 @@ function NavItem({ item, isChild = false, sidebarOpen, navigate, setMobileMenuOp
         navigate(item.path);
         setMobileMenuOpen(false);
       }}
-      className={`w-full flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg transition-all ${
+      className={`w-full flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg transition-all hover:scale-[1.02] ${
         isChild ? 'pl-11' : ''
       }`}
       style={{
         background: isActive ? theme.primaryGradient : 'transparent',
         color: isActive ? '#ffffff' : theme.text,
         fontWeight: isActive ? '600' : '400'
+      }}
+      onMouseEnter={(e) => {
+        if (!isActive) {
+          e.currentTarget.style.background = theme.backgroundSecondary;
+          e.currentTarget.style.transform = 'scale(1.02)';
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (!isActive) {
+          e.currentTarget.style.background = 'transparent';
+          e.currentTarget.style.transform = 'scale(1)';
+        }
       }}
     >
       <div className="flex items-center gap-3 min-w-0 flex-1">
@@ -82,11 +94,21 @@ function NavGroup({ group, expandedSections, toggleSection, sidebarOpen, navigat
     <div>
       <button
         onClick={() => toggleSection(group.key)}
-        className="w-full flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg transition-all"
+        className="w-full flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg transition-all hover:scale-[1.02]"
         style={{
           background: hasActiveChild ? 'rgba(168, 85, 247, 0.1)' : 'transparent',
           color: theme.text,
           fontWeight: hasActiveChild ? '600' : '500'
+        }}
+        onMouseEnter={(e) => {
+          if (!hasActiveChild) {
+            e.currentTarget.style.background = theme.backgroundSecondary;
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (!hasActiveChild) {
+            e.currentTarget.style.background = 'transparent';
+          }
         }}
       >
         <div className="flex items-center gap-3">
@@ -225,6 +247,20 @@ export default function Layout({ children }) {
       testId: 'nav-assets'
     },
     {
+      type: 'single',
+      path: '/nominees',
+      label: 'Nominees',
+      icon: Users,
+      testId: 'nav-nominees'
+    },
+    {
+      type: 'single',
+      path: '/dead-man-switch',
+      label: "Dead Man's Switch",
+      icon: Clock,
+      testId: 'nav-dms'
+    },
+    {
       type: 'group',
       key: 'documents',
       label: 'Documents',
@@ -235,22 +271,6 @@ export default function Layout({ children }) {
         { path: '/documents?category=asset', label: 'Asset Documents', icon: Wallet, testId: 'nav-asset-docs' },
         { path: '/documents?category=family', label: 'Family Documents', icon: Heart, testId: 'nav-family-docs' }
       ]
-    },
-    {
-      type: 'single',
-      path: '/nominees',
-      label: 'Nominees',
-      icon: Users,
-      badge: 'New',
-      testId: 'nav-nominees'
-    },
-    {
-      type: 'single',
-      path: '/dead-man-switch',
-      label: "Dead Man's Switch",
-      icon: Clock,
-      badge: 'New',
-      testId: 'nav-dms'
     },
     
     // DIVIDER
@@ -269,6 +289,7 @@ export default function Layout({ children }) {
       path: '/insights',
       label: 'AI Assistant',
       icon: Sparkles,
+      badge: 'New',
       testId: 'nav-insights'
     },
     {
@@ -294,7 +315,7 @@ export default function Layout({ children }) {
         { path: '/loan-calculator', label: 'Loan Planner', icon: Calculator, testId: 'nav-loan-calculator' },
         { path: '/calculators/sip', label: 'SIP Calculator', icon: TrendingUp, testId: 'nav-sip-calculator' },
         { path: '/calculators/swp', label: 'SWP Calculator', icon: TrendingDown, testId: 'nav-swp-calculator' },
-        { path: '/calculators/compound', label: 'Compound Interest', icon: Zap, testId: 'nav-compound-calculator' }
+        { path: '/calculators/compound', label: 'Compound Interest', icon: Zap, badge: 'New', testId: 'nav-compound-calculator' }
       ]
     },
     {
