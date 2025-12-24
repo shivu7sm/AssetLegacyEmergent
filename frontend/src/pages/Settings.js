@@ -519,7 +519,9 @@ const SECTIONS = [
   { id: 'profile', label: 'Profile', icon: User },
   { id: 'preferences', label: 'Preferences', icon: Eye },
   { id: 'appearance', label: 'Appearance', icon: SettingsIcon },
-  { id: 'subscription', label: 'Subscription & Billing', icon: CreditCard }
+  { id: 'subscription', label: 'Subscription & Billing', icon: CreditCard },
+  { id: 'security', label: 'Security', icon: Shield },
+  { id: 'privacy', label: 'Privacy & Consent', icon: Globe }
 ];
 
 export default function Settings() {
