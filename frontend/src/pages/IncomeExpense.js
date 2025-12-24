@@ -489,27 +489,45 @@ export default function IncomeExpense() {
 
         {/* Tabs for Summary, Income, Expenses */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-3 mb-6" style={{background: theme.cardBg, borderColor: theme.border, border: `2px solid ${theme.border}`, padding: '4px'}}>
+          <TabsList 
+            className="grid w-full grid-cols-3 mb-6" 
+            style={{
+              background: theme.cardBg, 
+              borderColor: theme.border, 
+              border: `2px solid ${theme.border}`,
+              padding: '6px',
+              borderRadius: '12px'
+            }}
+          >
             <TabsTrigger 
               value="summary"
-              className="flex items-center justify-center gap-2 py-3 rounded-lg transition-all hover:scale-[1.03]"
+              className="flex items-center justify-center gap-2 rounded-lg transition-all"
               style={{
                 background: activeTab === 'summary' ? theme.primaryGradient : 'transparent',
                 color: activeTab === 'summary' ? '#ffffff' : theme.textSecondary,
                 fontWeight: activeTab === 'summary' ? '600' : '400',
                 fontSize: '0.95rem',
-                minHeight: '48px'
+                padding: '12px 16px',
+                minHeight: '48px',
+                maxHeight: '48px',
+                height: '48px',
+                display: 'flex',
+                alignItems: 'center',
+                border: 'none',
+                boxSizing: 'border-box'
               }}
               onMouseEnter={(e) => {
                 if (activeTab !== 'summary') {
                   e.currentTarget.style.background = theme.backgroundSecondary;
                   e.currentTarget.style.color = theme.text;
+                  e.currentTarget.style.transform = 'scale(1.02)';
                 }
               }}
               onMouseLeave={(e) => {
                 if (activeTab !== 'summary') {
                   e.currentTarget.style.background = 'transparent';
                   e.currentTarget.style.color = theme.textSecondary;
+                  e.currentTarget.style.transform = 'scale(1)';
                 }
               }}
             >
@@ -518,24 +536,33 @@ export default function IncomeExpense() {
             </TabsTrigger>
             <TabsTrigger 
               value="income"
-              className="flex items-center justify-center gap-2 py-3 rounded-lg transition-all hover:scale-[1.03]"
+              className="flex items-center justify-center gap-2 rounded-lg transition-all"
               style={{
                 background: activeTab === 'income' ? theme.primaryGradient : 'transparent',
                 color: activeTab === 'income' ? '#ffffff' : theme.textSecondary,
                 fontWeight: activeTab === 'income' ? '600' : '400',
                 fontSize: '0.95rem',
-                minHeight: '48px'
+                padding: '12px 16px',
+                minHeight: '48px',
+                maxHeight: '48px',
+                height: '48px',
+                display: 'flex',
+                alignItems: 'center',
+                border: 'none',
+                boxSizing: 'border-box'
               }}
               onMouseEnter={(e) => {
                 if (activeTab !== 'income') {
                   e.currentTarget.style.background = theme.backgroundSecondary;
                   e.currentTarget.style.color = theme.text;
+                  e.currentTarget.style.transform = 'scale(1.02)';
                 }
               }}
               onMouseLeave={(e) => {
                 if (activeTab !== 'income') {
                   e.currentTarget.style.background = 'transparent';
                   e.currentTarget.style.color = theme.textSecondary;
+                  e.currentTarget.style.transform = 'scale(1)';
                 }
               }}
             >
@@ -544,24 +571,33 @@ export default function IncomeExpense() {
             </TabsTrigger>
             <TabsTrigger 
               value="expenses"
-              className="flex items-center justify-center gap-2 py-3 rounded-lg transition-all hover:scale-[1.03]"
+              className="flex items-center justify-center gap-2 rounded-lg transition-all"
               style={{
                 background: activeTab === 'expenses' ? theme.primaryGradient : 'transparent',
                 color: activeTab === 'expenses' ? '#ffffff' : theme.textSecondary,
                 fontWeight: activeTab === 'expenses' ? '600' : '400',
                 fontSize: '0.95rem',
-                minHeight: '48px'
+                padding: '12px 16px',
+                minHeight: '48px',
+                maxHeight: '48px',
+                height: '48px',
+                display: 'flex',
+                alignItems: 'center',
+                border: 'none',
+                boxSizing: 'border-box'
               }}
               onMouseEnter={(e) => {
                 if (activeTab !== 'expenses') {
                   e.currentTarget.style.background = theme.backgroundSecondary;
                   e.currentTarget.style.color = theme.text;
+                  e.currentTarget.style.transform = 'scale(1.02)';
                 }
               }}
               onMouseLeave={(e) => {
                 if (activeTab !== 'expenses') {
                   e.currentTarget.style.background = 'transparent';
                   e.currentTarget.style.color = theme.textSecondary;
+                  e.currentTarget.style.transform = 'scale(1)';
                 }
               }}
             >
