@@ -451,12 +451,84 @@ export default function IncomeExpense() {
           </div>
         )}
 
-        {/* Tabs */}
+        {/* Tabs for Summary, Income, Expenses */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
-            <TabsTrigger value="summary" style={{color: theme.textTertiary}}>Summary</TabsTrigger>
-            <TabsTrigger value="income" style={{color: theme.textTertiary}}>Income</TabsTrigger>
-            <TabsTrigger value="expenses" style={{color: theme.textTertiary}}>Expenses</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3 p-1 mb-6" style={{background: theme.cardBg, borderColor: theme.border, border: `2px solid ${theme.border}`}}>
+            <TabsTrigger 
+              value="summary"
+              className="flex items-center gap-2 px-4 py-3 rounded-lg transition-all hover:scale-[1.03]"
+              style={{
+                background: activeTab === 'summary' ? theme.primaryGradient : 'transparent',
+                color: activeTab === 'summary' ? '#ffffff' : theme.textSecondary,
+                fontWeight: activeTab === 'summary' ? '600' : '400',
+                fontSize: '0.95rem'
+              }}
+              onMouseEnter={(e) => {
+                if (activeTab !== 'summary') {
+                  e.currentTarget.style.background = theme.backgroundSecondary;
+                  e.currentTarget.style.color = theme.text;
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (activeTab !== 'summary') {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.color = theme.textSecondary;
+                }
+              }}
+            >
+              <PieChart className="w-5 h-5" />
+              <span>Summary</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="income"
+              className="flex items-center gap-2 px-4 py-3 rounded-lg transition-all hover:scale-[1.03]"
+              style={{
+                background: activeTab === 'income' ? theme.primaryGradient : 'transparent',
+                color: activeTab === 'income' ? '#ffffff' : theme.textSecondary,
+                fontWeight: activeTab === 'income' ? '600' : '400',
+                fontSize: '0.95rem'
+              }}
+              onMouseEnter={(e) => {
+                if (activeTab !== 'income') {
+                  e.currentTarget.style.background = theme.backgroundSecondary;
+                  e.currentTarget.style.color = theme.text;
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (activeTab !== 'income') {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.color = theme.textSecondary;
+                }
+              }}
+            >
+              <TrendingUp className="w-5 h-5" />
+              <span>Income</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="expenses"
+              className="flex items-center gap-2 px-4 py-3 rounded-lg transition-all hover:scale-[1.03]"
+              style={{
+                background: activeTab === 'expenses' ? theme.primaryGradient : 'transparent',
+                color: activeTab === 'expenses' ? '#ffffff' : theme.textSecondary,
+                fontWeight: activeTab === 'expenses' ? '600' : '400',
+                fontSize: '0.95rem'
+              }}
+              onMouseEnter={(e) => {
+                if (activeTab !== 'expenses') {
+                  e.currentTarget.style.background = theme.backgroundSecondary;
+                  e.currentTarget.style.color = theme.text;
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (activeTab !== 'expenses') {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.color = theme.textSecondary;
+                }
+              }}
+            >
+              <TrendingDown className="w-5 h-5" />
+              <span>Expenses</span>
+            </TabsTrigger>
           </TabsList>
 
           {/* Summary Tab */}
