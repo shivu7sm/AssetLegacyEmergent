@@ -11,7 +11,7 @@ from datetime import datetime, timezone, timedelta
 import time
 
 class AssetManagementAPITester:
-    def __init__(self, base_url="https://wealth-mapper-5.preview.emergentagent.com"):
+    def __init__(self, base_url="https://wealth-tracker-fix.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.session_token = None

@@ -8,7 +8,7 @@ import json
 import time
 
 def test_admin_endpoints():
-    base_url = "https://wealth-mapper-5.preview.emergentagent.com"
+    base_url = "https://wealth-tracker-fix.preview.emergentagent.com"
     api_url = f"{base_url}/api"
     
     # Create admin user
