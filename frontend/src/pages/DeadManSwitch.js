@@ -79,10 +79,10 @@ export default function DeadManSwitch() {
         <div>
           <h1 className="text-3xl sm:text-4xl font-bold mb-2 flex items-center gap-3" style={{color: theme.text, fontFamily: 'Space Grotesk, sans-serif'}}>
             <Clock className="w-8 h-8" />
-            Dead Man's Switch
+            Dead Man&apos;s Switch
           </h1>
           <p className="text-base sm:text-lg" style={{color: theme.textSecondary}}>
-            Automatic notifications to your nominees if you're inactive for too long
+            Automatic notifications to your nominees if you&apos;re inactive for too long
           </p>
         </div>
 
@@ -191,7 +191,7 @@ export default function DeadManSwitch() {
                   style={{background: theme.backgroundSecondary, borderColor: theme.border, color: theme.text}}
                 />
                 <p className="text-xs mt-1" style={{color: '#ef4444'}}>
-                  ⚠️ On day {formData.inactivity_days}, if you haven't responded, your nominees will be notified and granted access
+                  ⚠️ On day {formData.inactivity_days}, if you haven&apos;t responded, your nominees will be notified and granted access
                 </p>
               </div>
             </CardContent>
