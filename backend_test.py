@@ -2829,6 +2829,9 @@ db.networth_snapshots.deleteMany({{user_id: '{self.user_id}'}});
 db.ai_insights.deleteMany({{user_id: '{self.user_id}'}});
 db.tax_profiles.deleteMany({{user_id: '{self.user_id}'}});
 db.tax_blueprints.deleteMany({{user_id: '{self.user_id}'}});
+db.monthly_incomes.deleteMany({{user_id: '{self.user_id}'}});
+db.monthly_expenses.deleteMany({{user_id: '{self.user_id}'}});
+db.budgets.deleteMany({{user_id: '{self.user_id}'}});
 print('User data cleaned up');
 """
         
