@@ -404,22 +404,15 @@ print('Test user and session created successfully');
         print("   Current: ₹20,00,000 at 9% for 180 months")
         print("   New: 8% with ₹50,000 closing costs")
         
-        url = f"{self.api_url}/loan-calculator/refinance"
+        # Use query parameters as the endpoint expects
+        url = f"{self.api_url}/loan-calculator/refinance?current_principal=2000000&current_rate=9&remaining_months=180&new_rate=8&closing_costs=50000"
         headers = {
             'Content-Type': 'application/json',
             'Authorization': f'Bearer {self.session_token}'
         }
         
-        payload = {
-            "current_principal": 2000000,
-            "current_rate": 9,
-            "remaining_months": 180,
-            "new_rate": 8,
-            "closing_costs": 50000
-        }
-        
         try:
-            response = requests.post(url, json=payload, headers=headers, timeout=30)
+            response = requests.post(url, headers=headers, timeout=30)
             
             if response.status_code == 200:
                 data = response.json()
