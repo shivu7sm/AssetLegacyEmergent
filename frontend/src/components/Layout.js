@@ -255,7 +255,7 @@ export default function Layout({ children }) {
 
   const NavItem = ({ item, isChild = false }) => {
     const Icon = item.icon;
-    const isActive = location.pathname === item.path;
+    const isActive = location.pathname === item.path || location.pathname + location.search === item.path;
     
     return (
       <button
@@ -264,7 +264,7 @@ export default function Layout({ children }) {
           navigate(item.path);
           setMobileMenuOpen(false);
         }}
-        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${
+        className={`w-full flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg transition-all ${
           isChild ? 'pl-11' : ''
         }`}
         style={{
@@ -273,8 +273,21 @@ export default function Layout({ children }) {
           fontWeight: isActive ? '600' : '400'
         }}
       >
-        <Icon className="w-4 h-4 flex-shrink-0" />
-        {sidebarOpen && <span className="text-sm">{item.label}</span>}
+        <div className="flex items-center gap-3">
+          <Icon className="w-4 h-4 flex-shrink-0" />
+          {sidebarOpen && <span className="text-sm">{item.label}</span>}
+        </div>
+        {sidebarOpen && item.badge && (
+          <span 
+            className="text-xs font-bold px-2 py-0.5 rounded-full"
+            style={{
+              background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+              color: '#ffffff'
+            }}
+          >
+            {item.badge}
+          </span>
+        )}
       </button>
     );
   };
