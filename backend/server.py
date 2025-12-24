@@ -4518,6 +4518,159 @@ async def get_expense_categories():
         "Debit Card",
         "UPI",
         "Net Banking",
+
+# =======================
+# Budgeting Tool (50/30/20 and 65/25/10 Rules)
+# =======================
+
+@api_router.get("/budget/analysis")
+async def analyze_budget(month: str, rule: str = "50/30/20", target_currency: str = "USD", user: User = Depends(require_auth)):
+    """Analyze budget allocation based on selected rule"""
+    try:
+        # Get income and expenses for the month
+        incomes = await db.monthly_incomes.find({"user_id": user.id, "month": month, "demo_mode": user.demo_mode}, {"_id": 0}).to_list(1000)
+        expenses = await db.monthly_expenses.find({"user_id": user.id, "month": month, "demo_mode": user.demo_mode}, {"_id": 0}).to_list(1000)
+        
+        # Calculate total income (after tax)
+        total_income = sum([inc['amount_after_tax'] for inc in incomes])
+        
+        # Auto-categorize expenses into buckets
+        needs_categories = ['Housing', 'Transportation', 'Food & Dining', 'Healthcare', 'Insurance', 'Utilities', 'Debt Payments']
+        wants_categories = ['Entertainment', 'Personal Care', 'Shopping', 'Travel', 'Pets']
+        savings_categories = ['Savings & Investments']
+        
+        needs_total = 0
+        wants_total = 0
+        savings_total = 0
+        
+        needs_items = []
+        wants_items = []
+        savings_items = []
+        
+        for expense in expenses:
+            category = expense.get('category', 'Other')
+            amount = expense.get('amount', 0)
+            description = expense.get('description', category)
+            
+            if category in needs_categories:
+                needs_total += amount
+                needs_items.append({"label": description, "amount": amount, "category": category})
+            elif category in wants_categories:
+                wants_total += amount
+                wants_items.append({"label": description, "amount": amount, "category": category})
+            elif category in savings_categories:
+                savings_total += amount
+                savings_items.append({"label": description, "amount": amount, "category": category})
+            else:
+                # Default to needs for uncategorized
+                needs_total += amount
+                needs_items.append({"label": description, "amount": amount, "category": category})
+        
+        total_spent = needs_total + wants_total + savings_total
+        
+        # Calculate ideal allocations based on rule
+        if rule == "65/25/10":
+            ideal_needs = total_income * 0.65
+            ideal_savings = total_income * 0.25
+            ideal_wants = total_income * 0.10
+        else:  # Default 50/30/20
+            ideal_needs = total_income * 0.50
+            ideal_wants = total_income * 0.30
+            ideal_savings = total_income * 0.20
+        
+        # Calculate percentages
+        needs_percentage = (needs_total / total_income * 100) if total_income > 0 else 0
+        wants_percentage = (wants_total / total_income * 100) if total_income > 0 else 0
+        savings_percentage = (savings_total / total_income * 100) if total_income > 0 else 0
+        
+        # Calculate variances
+        needs_variance = needs_total - ideal_needs
+        wants_variance = wants_total - ideal_wants
+        savings_variance = savings_total - ideal_savings
+        
+        unallocated = total_income - total_spent
+        
+        return {
+            "month": month,
+            "rule": rule,
+            "total_income": round(total_income, 2),
+            "total_spent": round(total_spent, 2),
+            "unallocated": round(unallocated, 2),
+            "buckets": {
+                "needs": {
+                    "ideal_amount": round(ideal_needs, 2),
+                    "ideal_percentage": 65 if rule == "65/25/10" else 50,
+                    "actual_amount": round(needs_total, 2),
+                    "actual_percentage": round(needs_percentage, 1),
+                    "variance": round(needs_variance, 2),
+                    "status": "over" if needs_variance > 0 else "under" if needs_variance < -100 else "good",
+                    "items": needs_items
+                },
+                "savings": {
+                    "ideal_amount": round(ideal_savings, 2),
+                    "ideal_percentage": 25 if rule == "65/25/10" else 20,
+                    "actual_amount": round(savings_total, 2),
+                    "actual_percentage": round(savings_percentage, 1),
+                    "variance": round(savings_variance, 2),
+                    "status": "over" if savings_variance > 0 else "under" if savings_variance < -100 else "good",
+                    "items": savings_items
+                },
+                "wants": {
+                    "ideal_amount": round(ideal_wants, 2),
+                    "ideal_percentage": 10 if rule == "65/25/10" else 30,
+                    "actual_amount": round(wants_total, 2),
+                    "actual_percentage": round(wants_percentage, 1),
+                    "variance": round(wants_variance, 2),
+                    "status": "over" if wants_variance > 0 else "under" if wants_variance < -100 else "good",
+                    "items": wants_items
+                }
+            },
+            "income_sources": [{"source": inc['source'], "amount": inc['amount_after_tax']} for inc in incomes]
+        }
+    except Exception as e:
+        logger.error(f"Budget analysis error: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/budget/templates")
+async def get_budget_templates():
+    """Get predefined budget item templates"""
+    return {
+        "needs": [
+            "Rent / Mortgage",
+            "Groceries",
+            "Insurance (health, home, car)",
+            "Car Payment",
+            "Gas / Transportation",
+            "Minimum Debt Payments",
+            "Phone Bill",
+            "Internet",
+            "Electricity",
+            "Water Bill",
+            "Utilities",
+            "Miscellaneous"
+        ],
+        "savings": [
+            "Emergency Fund",
+            "Investment accounts",
+            "Workplace retirement (401k, EPF)",
+            "Extra debt payments",
+            "Down payment savings",
+            "Education fund"
+        ],
+        "wants": [
+            "Clothing",
+            "Eating out",
+            "Travel",
+            "Personal Care",
+            "Subscriptions (Netflix, Spotify, etc.)",
+            "Donations",
+            "Coffee & Treats",
+            "Entertainment",
+            "Hobbies",
+            "Miscellaneous"
+        ]
+    }
+
         "Check",
         "Mobile Wallet",
         "Other"
