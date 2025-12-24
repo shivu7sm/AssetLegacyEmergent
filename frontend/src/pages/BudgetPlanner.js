@@ -38,7 +38,8 @@ export default function BudgetPlanner() {
   const [newItem, setNewItem] = useState({ label: '', amount: '' });
   const [comparisonData, setComparisonData] = useState(null);
   const [showComparison, setShowComparison] = useState(false);
-  const [activeView, setActiveView] = useState('current'); // 'current' or 'trends'
+  const [activeView, setActiveView] = useState('current');
+  const [editingItem, setEditingItem] = useState({ bucket: null, index: null, type: null, item: null }); // 'current' or 'trends'
 
   useEffect(() => {
     if (dataSource === 'auto') {
@@ -111,6 +112,38 @@ export default function BudgetPlanner() {
     setNewItem({ label: '', amount: '' });
     setShowAddItem({ bucket: null, open: false });
     toast.success('Item added successfully');
+  };
+
+  const handleEditItem = (bucket, index, type, item) => {
+    setEditingItem({ bucket, index, type, item: { ...item } });
+  };
+
+  const handleSaveEdit = () => {
+    if (editingItem.type === 'custom') {
+      setCustomItems(prev => ({
+        ...prev,
+        [editingItem.bucket]: prev[editingItem.bucket].map((item, idx) => 
+          idx === editingItem.index ? editingItem.item : item
+        )
+      }));
+    } else {
+      // For auto items, convert to custom after editing
+      setCustomItems(prev => ({
+        ...prev,
+        [editingItem.bucket]: [...prev[editingItem.bucket], editingItem.item]
+      }));
+    }
+    
+    setEditingItem({ bucket: null, index: null, type: null, item: null });
+    toast.success('Item updated successfully');
+  };
+
+  const handleDeleteCustomItem = (bucket, index) => {
+    setCustomItems(prev => ({
+      ...prev,
+      [bucket]: prev[bucket].filter((_, i) => i !== index)
+    }));
+    toast.success('Item removed');
   };
 
   const handleSaveBudget = async () => {
