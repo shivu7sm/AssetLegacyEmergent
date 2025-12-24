@@ -6,7 +6,7 @@ import {
   FolderLock, Sparkles, Calendar, Crown, ShieldAlert, FlaskConical, 
   Database, Receipt, Zap, Sun, Moon, Calculator, ChevronDown, ChevronRight,
   Menu, X, TrendingUp, BookOpen, User, Shield, Clock, Eye, Palette, CreditCard, Heart,
-  TrendingDown, PiggyBank, RefreshCw, Link as LinkIcon, Users
+  TrendingDown, PiggyBank, RefreshCw, Link as LinkIcon, Users, Globe, Bell
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -51,13 +51,13 @@ function NavItem({ item, isChild = false, sidebarOpen, navigate, setMobileMenuOp
         fontWeight: isActive ? '600' : '400'
       }}
     >
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 min-w-0 flex-1">
         <Icon className="w-4 h-4 flex-shrink-0" />
-        {sidebarOpen && <span className="text-sm">{item.label}</span>}
+        {sidebarOpen && <span className="text-sm text-left truncate">{item.label}</span>}
       </div>
       {sidebarOpen && item.badge && (
         <span 
-          className="text-xs font-bold px-2 py-0.5 rounded-full"
+          className="text-xs font-bold px-2 py-0.5 rounded-full flex-shrink-0"
           style={{
             background: 'linear-gradient(135deg, #ef4444 0%, #ec4899 100%)',
             color: '#ffffff'
