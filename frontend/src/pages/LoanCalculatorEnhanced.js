@@ -34,6 +34,7 @@ const LOAN_TYPES = [
 
 export default function LoanCalculatorEnhanced() {
   const { theme } = useTheme();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [loadingTips, setLoadingTips] = useState(false);
   const [loadingLoans, setLoadingLoans] = useState(true);
