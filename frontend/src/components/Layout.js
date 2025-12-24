@@ -506,9 +506,27 @@ export default function Layout({ children }) {
             
             // Single Item or Group
             return item.type === 'single' ? (
-              <NavItem key={item.path} item={item} />
+              <NavItem 
+                key={item.path} 
+                item={item}
+                sidebarOpen={sidebarOpen}
+                navigate={navigate}
+                setMobileMenuOpen={setMobileMenuOpen}
+                location={location}
+                theme={theme}
+              />
             ) : item.type === 'group' ? (
-              <NavGroup key={item.key} group={item} />
+              <NavGroup 
+                key={item.key} 
+                group={item}
+                expandedSections={expandedSections}
+                toggleSection={toggleSection}
+                sidebarOpen={sidebarOpen}
+                navigate={navigate}
+                setMobileMenuOpen={setMobileMenuOpen}
+                location={location}
+                theme={theme}
+              />
             ) : null;
           })}
         </div>
@@ -571,9 +589,27 @@ export default function Layout({ children }) {
                 
                 // Single Item or Group
                 return item.type === 'single' ? (
-                  <NavItem key={item.path} item={item} />
+                  <NavItem 
+                    key={item.path} 
+                    item={item}
+                    sidebarOpen={true}
+                    navigate={navigate}
+                    setMobileMenuOpen={setMobileMenuOpen}
+                    location={location}
+                    theme={theme}
+                  />
                 ) : item.type === 'group' ? (
-                  <NavGroup key={item.key} group={item} />
+                  <NavGroup 
+                    key={item.key} 
+                    group={item}
+                    expandedSections={expandedSections}
+                    toggleSection={toggleSection}
+                    sidebarOpen={true}
+                    navigate={navigate}
+                    setMobileMenuOpen={setMobileMenuOpen}
+                    location={location}
+                    theme={theme}
+                  />
                 ) : null;
               })}
             </div>
