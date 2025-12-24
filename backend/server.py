@@ -4517,7 +4517,14 @@ async def get_expense_categories():
         "Credit Card",
         "Debit Card",
         "UPI",
-        "Net Banking",
+        "Net Banking"
+    ]
+
+    return {
+        "expense_categories": categories,
+        "income_sources": income_sources,
+        "payment_methods": payment_methods
+    }
 
 # =======================
 # Budgeting Tool (50/30/20 and 65/25/10 Rules)
