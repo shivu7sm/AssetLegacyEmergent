@@ -474,7 +474,8 @@ print('Test user and session created successfully');
                     print(f"   Net savings: ₹{net_savings:,.2f}")
                     print(f"   Monthly savings: ₹{monthly_savings:,.2f}")
                     print(f"   Breakeven: {breakeven} months")
-                    print(f"   Recommendation: {'✅ Refinance' if should_refinance else '❌ Don't refinance'}")
+                    recommendation_text = "✅ Refinance" if should_refinance else "❌ Don't refinance"
+                    print(f"   Recommendation: {recommendation_text}")
                     
                 else:
                     self.log_test("Refinance - Response Structure", False,
