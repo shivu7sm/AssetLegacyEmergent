@@ -333,7 +333,7 @@ export default function DeadManSwitch() {
                       </p>
                       <div className="p-3 rounded-lg" style={{background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)'}}>
                         <p className="text-xs" style={{color: '#ef4444'}}>
-                          ⚠️ This is when your family protection activates. They'll receive complete asset details, 
+                          ⚠️ This is when your family protection activates. They&apos;ll receive complete asset details, 
                           bank information, and instructions to claim everything.
                         </p>
                       </div>
