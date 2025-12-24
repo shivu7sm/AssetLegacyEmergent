@@ -473,7 +473,7 @@ export default function Layout({ children }) {
           borderRight: `1px solid ${theme.border}`
         }}
       >
-        <div className="h-full overflow-y-auto p-3 space-y-1">
+        <div className="h-full overflow-y-auto p-3 space-y-1 pb-24">
           {navigationStructure.map((item, index) => {
             // Section Header
             if (item.type === 'section-header') {
