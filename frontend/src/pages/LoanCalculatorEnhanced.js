@@ -221,11 +221,28 @@ export default function LoanCalculatorEnhanced() {
         {/* Header */}
         <div>
           <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{color: theme.text, fontFamily: 'Space Grotesk, sans-serif'}}>
-            Smart Loan Calculator
+            Loan Calculator & Payoff Planner
           </h1>
-          <p className="text-base sm:text-lg" style={{color: theme.textSecondary}}>
-            Calculate payments, analyze prepayment strategies, and optimize your debt repayment
+          <p className="text-base sm:text-lg mb-4" style={{color: theme.textSecondary}}>
+            Optimize your loan repayment strategy and document details for your family
           </p>
+          
+          {/* Family Legacy Message */}
+          <div className="mb-6 p-4 rounded-lg" style={{background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.3)'}}>
+            <div className="flex items-start gap-3">
+              <ShieldCheck className="w-5 h-5 mt-0.5" style={{color: '#3b82f6'}} />
+              <div>
+                <h3 className="font-semibold mb-1" style={{color: theme.text}}>
+                  Protect Your Family's Financial Future
+                </h3>
+                <p className="text-sm" style={{color: theme.textSecondary}}>
+                  Calculate optimal repayment strategies and ensure your family knows the loan details - 
+                  EMI amounts, bank contacts, outstanding balance, and tax benefits. 
+                  This information becomes critical during uncertain times.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab}>
