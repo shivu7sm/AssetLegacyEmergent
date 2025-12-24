@@ -12,7 +12,7 @@ import { useTheme } from '@/context/ThemeContext';
 import { 
   Calculator, TrendingDown, Sparkles, DollarSign, Calendar, Percent, 
   TrendingUp, PiggyBank, RefreshCw, Target, BarChart3, Info, Zap,
-  ChevronRight, Check, AlertCircle
+  ChevronRight, Check, AlertCircle, ShieldCheck, Wallet
 } from 'lucide-react';
 import { 
   AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, 
