@@ -2014,6 +2014,483 @@ print('Admin test data cleaned up');
         
         return True
 
+    def test_budget_planner_comprehensive(self):
+        """Test Budget Planner Feature - Comprehensive Testing"""
+        print("\n💰 Testing Budget Planner Feature (Phase 1 & 2)...")
+        
+        # Clean up existing data
+        self.cleanup_user_data()
+        
+        # Create test income and expense data for December 2025
+        print("   📝 Setting up test data for December 2025...")
+        
+        # Create income entries
+        test_incomes = [
+            {
+                "month": "2025-12",
+                "source": "salary",
+                "description": "Monthly Salary",
+                "amount_before_tax": 120000,
+                "tax_deducted": 20000,
+                "currency": "INR"
+            },
+            {
+                "month": "2025-12",
+                "source": "freelance",
+                "description": "Freelance Project",
+                "amount_before_tax": 30000,
+                "tax_deducted": 3000,
+                "currency": "INR"
+            }
+        ]
+        
+        for income in test_incomes:
+            self.run_test(
+                f"Create income: {income['description']}",
+                "POST",
+                "income",
+                200,
+                income
+            )
+        
+        # Create expense entries with proper categorization
+        test_expenses = [
+            # Needs
+            {"month": "2025-12", "category": "Housing", "description": "Rent", "amount": 30000, "currency": "INR"},
+            {"month": "2025-12", "category": "Food & Dining", "description": "Groceries", "amount": 8000, "currency": "INR"},
+            {"month": "2025-12", "category": "Transportation", "description": "Fuel", "amount": 5000, "currency": "INR"},
+            {"month": "2025-12", "category": "Utilities", "description": "Electricity", "amount": 2000, "currency": "INR"},
+            {"month": "2025-12", "category": "Healthcare", "description": "Medical", "amount": 3000, "currency": "INR"},
+            # Wants
+            {"month": "2025-12", "category": "Entertainment", "description": "Netflix", "amount": 500, "currency": "INR"},
+            {"month": "2025-12", "category": "Shopping", "description": "Clothing", "amount": 4000, "currency": "INR"},
+            {"month": "2025-12", "category": "Travel", "description": "Weekend Trip", "amount": 8000, "currency": "INR"},
+            # Savings
+            {"month": "2025-12", "category": "Savings & Investments", "description": "SIP", "amount": 10000, "currency": "INR"}
+        ]
+        
+        for expense in test_expenses:
+            self.run_test(
+                f"Create expense: {expense['description']}",
+                "POST",
+                "expenses",
+                200,
+                expense
+            )
+        
+        print("\n   🧪 Test 1: Budget Templates Endpoint")
+        templates = self.run_test(
+            "GET /api/budget/templates",
+            "GET",
+            "budget/templates",
+            200
+        )
+        
+        if templates:
+            # Verify structure
+            required_arrays = ['needs', 'savings', 'wants']
+            missing_arrays = [arr for arr in required_arrays if arr not in templates]
+            
+            if not missing_arrays:
+                self.log_test(
+                    "Budget templates has all 3 arrays",
+                    True,
+                    f"Arrays present: {required_arrays}"
+                )
+            else:
+                self.log_test(
+                    "Budget templates has all 3 arrays",
+                    False,
+                    f"Missing arrays: {missing_arrays}"
+                )
+            
+            # Verify predefined categories
+            needs = templates.get('needs', [])
+            savings = templates.get('savings', [])
+            wants = templates.get('wants', [])
+            
+            expected_needs = ["Rent / Mortgage", "Groceries", "Insurance (health, home, car)"]
+            expected_savings = ["Emergency Fund", "Investment accounts"]
+            expected_wants = ["Clothing", "Eating out", "Travel"]
+            
+            needs_match = all(item in needs for item in expected_needs)
+            savings_match = all(item in savings for item in expected_savings)
+            wants_match = all(item in wants for item in expected_wants)
+            
+            if needs_match and savings_match and wants_match:
+                self.log_test(
+                    "Budget templates contain expected categories",
+                    True,
+                    f"Needs: {len(needs)}, Savings: {len(savings)}, Wants: {len(wants)}"
+                )
+            else:
+                self.log_test(
+                    "Budget templates contain expected categories",
+                    False,
+                    f"Needs match: {needs_match}, Savings match: {savings_match}, Wants match: {wants_match}"
+                )
+        
+        print("\n   🧪 Test 2: Budget Analysis with 50/30/20 Rule")
+        analysis_50_30_20 = self.run_test(
+            "GET /api/budget/analysis (50/30/20 rule)",
+            "GET",
+            "budget/analysis?month=2025-12&rule=50/30/20&target_currency=USD",
+            200
+        )
+        
+        if analysis_50_30_20:
+            # Verify response structure
+            required_fields = ['month', 'rule', 'total_income', 'total_spent', 'unallocated', 'buckets', 'income_sources']
+            missing_fields = [f for f in required_fields if f not in analysis_50_30_20]
+            
+            if not missing_fields:
+                self.log_test(
+                    "Budget analysis has all required fields",
+                    True,
+                    f"All fields present: {required_fields}"
+                )
+            else:
+                self.log_test(
+                    "Budget analysis has all required fields",
+                    False,
+                    f"Missing fields: {missing_fields}"
+                )
+            
+            # Verify buckets structure
+            buckets = analysis_50_30_20.get('buckets', {})
+            required_buckets = ['needs', 'wants', 'savings']
+            missing_buckets = [b for b in required_buckets if b not in buckets]
+            
+            if not missing_buckets:
+                self.log_test(
+                    "Budget analysis has all 3 buckets",
+                    True,
+                    "Needs, Wants, Savings present"
+                )
+            else:
+                self.log_test(
+                    "Budget analysis has all 3 buckets",
+                    False,
+                    f"Missing buckets: {missing_buckets}"
+                )
+            
+            # Verify bucket structure
+            for bucket_name in required_buckets:
+                bucket = buckets.get(bucket_name, {})
+                bucket_fields = ['ideal_amount', 'ideal_percentage', 'actual_amount', 'actual_percentage', 'variance', 'status', 'items']
+                bucket_missing = [f for f in bucket_fields if f not in bucket]
+                
+                if not bucket_missing:
+                    self.log_test(
+                        f"Bucket '{bucket_name}' has correct structure",
+                        True,
+                        f"All fields present: {bucket_fields}"
+                    )
+                else:
+                    self.log_test(
+                        f"Bucket '{bucket_name}' has correct structure",
+                        False,
+                        f"Missing fields: {bucket_missing}"
+                    )
+            
+            # Verify 50/30/20 percentages
+            needs_bucket = buckets.get('needs', {})
+            wants_bucket = buckets.get('wants', {})
+            savings_bucket = buckets.get('savings', {})
+            
+            if needs_bucket.get('ideal_percentage') == 50 and wants_bucket.get('ideal_percentage') == 30 and savings_bucket.get('ideal_percentage') == 20:
+                self.log_test(
+                    "50/30/20 rule percentages are correct",
+                    True,
+                    "Needs: 50%, Wants: 30%, Savings: 20%"
+                )
+            else:
+                self.log_test(
+                    "50/30/20 rule percentages are correct",
+                    False,
+                    f"Needs: {needs_bucket.get('ideal_percentage')}%, Wants: {wants_bucket.get('ideal_percentage')}%, Savings: {savings_bucket.get('ideal_percentage')}%"
+                )
+            
+            # Verify auto-categorization
+            needs_items = needs_bucket.get('items', [])
+            wants_items = wants_bucket.get('items', [])
+            savings_items = savings_bucket.get('items', [])
+            
+            print(f"   Auto-categorization results:")
+            print(f"   - Needs items: {len(needs_items)}")
+            print(f"   - Wants items: {len(wants_items)}")
+            print(f"   - Savings items: {len(savings_items)}")
+            
+            # Verify status field
+            needs_status = needs_bucket.get('status')
+            wants_status = wants_bucket.get('status')
+            savings_status = savings_bucket.get('status')
+            
+            valid_statuses = ['over', 'under', 'good']
+            if needs_status in valid_statuses and wants_status in valid_statuses and savings_status in valid_statuses:
+                self.log_test(
+                    "Status fields are valid",
+                    True,
+                    f"Needs: {needs_status}, Wants: {wants_status}, Savings: {savings_status}"
+                )
+            else:
+                self.log_test(
+                    "Status fields are valid",
+                    False,
+                    f"Invalid statuses detected"
+                )
+        
+        print("\n   🧪 Test 3: Budget Analysis with 65/25/10 Rule")
+        analysis_65_25_10 = self.run_test(
+            "GET /api/budget/analysis (65/25/10 rule)",
+            "GET",
+            "budget/analysis?month=2025-12&rule=65/25/10&target_currency=USD",
+            200
+        )
+        
+        if analysis_65_25_10:
+            buckets = analysis_65_25_10.get('buckets', {})
+            needs_bucket = buckets.get('needs', {})
+            savings_bucket = buckets.get('savings', {})
+            wants_bucket = buckets.get('wants', {})
+            
+            if needs_bucket.get('ideal_percentage') == 65 and savings_bucket.get('ideal_percentage') == 25 and wants_bucket.get('ideal_percentage') == 10:
+                self.log_test(
+                    "65/25/10 rule percentages are correct",
+                    True,
+                    "Needs: 65%, Savings: 25%, Wants: 10%"
+                )
+            else:
+                self.log_test(
+                    "65/25/10 rule percentages are correct",
+                    False,
+                    f"Needs: {needs_bucket.get('ideal_percentage')}%, Savings: {savings_bucket.get('ideal_percentage')}%, Wants: {wants_bucket.get('ideal_percentage')}%"
+                )
+            
+            # Verify different ideal amounts
+            needs_ideal_50_30_20 = analysis_50_30_20.get('buckets', {}).get('needs', {}).get('ideal_amount', 0)
+            needs_ideal_65_25_10 = needs_bucket.get('ideal_amount', 0)
+            
+            if needs_ideal_65_25_10 > needs_ideal_50_30_20:
+                self.log_test(
+                    "65/25/10 rule calculates different ideal amounts",
+                    True,
+                    f"50/30/20 needs: {needs_ideal_50_30_20}, 65/25/10 needs: {needs_ideal_65_25_10}"
+                )
+            else:
+                self.log_test(
+                    "65/25/10 rule calculates different ideal amounts",
+                    False,
+                    "Ideal amounts should differ between rules"
+                )
+        
+        print("\n   🧪 Test 4: Save Custom Budget")
+        custom_budget = {
+            "month": "2025-12",
+            "rule": "65/25/10",
+            "total_income": 100000,
+            "buckets": {},
+            "custom_items": {
+                "needs": [{"label": "Custom Rent", "amount": 30000}],
+                "savings": [{"label": "SIP", "amount": 10000}],
+                "wants": [{"label": "Netflix", "amount": 500}]
+            }
+        }
+        
+        save_response = self.run_test(
+            "POST /api/budget/save",
+            "POST",
+            "budget/save",
+            200,
+            custom_budget
+        )
+        
+        if save_response:
+            if save_response.get('success'):
+                self.log_test(
+                    "Custom budget saved successfully",
+                    True,
+                    save_response.get('message', 'Budget saved')
+                )
+            else:
+                self.log_test(
+                    "Custom budget saved successfully",
+                    False,
+                    "Save response did not indicate success"
+                )
+        
+        print("\n   🧪 Test 5: Retrieve Saved Budget")
+        saved_budget = self.run_test(
+            "GET /api/budget/saved",
+            "GET",
+            "budget/saved?month=2025-12",
+            200
+        )
+        
+        if saved_budget:
+            # Verify saved budget matches what we saved
+            if saved_budget.get('month') == "2025-12" and saved_budget.get('rule') == "65/25/10":
+                self.log_test(
+                    "Saved budget retrieved correctly",
+                    True,
+                    f"Month: {saved_budget.get('month')}, Rule: {saved_budget.get('rule')}"
+                )
+            else:
+                self.log_test(
+                    "Saved budget retrieved correctly",
+                    False,
+                    f"Month or rule mismatch"
+                )
+            
+            # Verify custom_items are present
+            custom_items = saved_budget.get('custom_items', {})
+            if 'needs' in custom_items and 'savings' in custom_items and 'wants' in custom_items:
+                self.log_test(
+                    "Saved budget contains custom_items",
+                    True,
+                    f"Custom items present for all 3 categories"
+                )
+            else:
+                self.log_test(
+                    "Saved budget contains custom_items",
+                    False,
+                    "Custom items missing or incomplete"
+                )
+        
+        print("\n   🧪 Test 6: Budget Comparison (6 months)")
+        # Create data for additional months
+        additional_months = ["2025-07", "2025-08", "2025-09", "2025-10", "2025-11"]
+        
+        for month in additional_months:
+            # Create minimal income/expense for each month
+            self.run_test(
+                f"Create income for {month}",
+                "POST",
+                "income",
+                200,
+                {
+                    "month": month,
+                    "source": "salary",
+                    "description": "Monthly Salary",
+                    "amount_before_tax": 100000,
+                    "tax_deducted": 15000,
+                    "currency": "INR"
+                }
+            )
+            
+            self.run_test(
+                f"Create expense for {month}",
+                "POST",
+                "expenses",
+                200,
+                {
+                    "month": month,
+                    "category": "Housing",
+                    "description": "Rent",
+                    "amount": 25000,
+                    "currency": "INR"
+                }
+            )
+        
+        comparison = self.run_test(
+            "GET /api/budget/comparison (6 months)",
+            "GET",
+            "budget/comparison?months=2025-07,2025-08,2025-09,2025-10,2025-11,2025-12&rule=65/25/10",
+            200
+        )
+        
+        if comparison:
+            months_data = comparison.get('months', [])
+            
+            if len(months_data) == 6:
+                self.log_test(
+                    "Budget comparison returns 6 months",
+                    True,
+                    f"Returned {len(months_data)} months"
+                )
+            else:
+                self.log_test(
+                    "Budget comparison returns 6 months",
+                    False,
+                    f"Expected 6 months, got {len(months_data)}"
+                )
+            
+            # Verify structure of each month
+            if months_data:
+                first_month = months_data[0]
+                required_fields = ['month', 'total_income', 'needs', 'wants', 'savings', 'needs_percentage', 'wants_percentage', 'savings_percentage']
+                missing_fields = [f for f in required_fields if f not in first_month]
+                
+                if not missing_fields:
+                    self.log_test(
+                        "Budget comparison months have correct structure",
+                        True,
+                        f"All fields present: {required_fields}"
+                    )
+                else:
+                    self.log_test(
+                        "Budget comparison months have correct structure",
+                        False,
+                        f"Missing fields: {missing_fields}"
+                    )
+        
+        print("\n   🧪 Test 7: Edge Case - Month with No Data")
+        empty_month_analysis = self.run_test(
+            "GET /api/budget/analysis (empty month)",
+            "GET",
+            "budget/analysis?month=2025-01&rule=50/30/20&target_currency=USD",
+            200
+        )
+        
+        if empty_month_analysis:
+            total_income = empty_month_analysis.get('total_income', -1)
+            total_spent = empty_month_analysis.get('total_spent', -1)
+            
+            if total_income == 0 and total_spent == 0:
+                self.log_test(
+                    "Empty month returns zeros",
+                    True,
+                    "Total income and spent are 0"
+                )
+            else:
+                self.log_test(
+                    "Empty month returns zeros",
+                    False,
+                    f"Income: {total_income}, Spent: {total_spent}"
+                )
+        
+        print("\n   🧪 Test 8: Auto-Categorization Logic Verification")
+        # Verify specific categorizations from our test data
+        if analysis_50_30_20:
+            buckets = analysis_50_30_20.get('buckets', {})
+            
+            # Check if Housing expense went to Needs
+            needs_items = buckets.get('needs', {}).get('items', [])
+            housing_in_needs = any(item.get('category') == 'Housing' for item in needs_items)
+            
+            # Check if Entertainment went to Wants
+            wants_items = buckets.get('wants', {}).get('items', [])
+            entertainment_in_wants = any(item.get('category') == 'Entertainment' for item in wants_items)
+            
+            # Check if Savings & Investments went to Savings
+            savings_items = buckets.get('savings', {}).get('items', [])
+            savings_in_savings = any(item.get('category') == 'Savings & Investments' for item in savings_items)
+            
+            if housing_in_needs and entertainment_in_wants and savings_in_savings:
+                self.log_test(
+                    "Auto-categorization works correctly",
+                    True,
+                    "Housing→Needs, Entertainment→Wants, Savings & Investments→Savings"
+                )
+            else:
+                self.log_test(
+                    "Auto-categorization works correctly",
+                    False,
+                    f"Housing in Needs: {housing_in_needs}, Entertainment in Wants: {entertainment_in_wants}, Savings in Savings: {savings_in_savings}"
+                )
+        
+        print("\n   ✅ Budget Planner Comprehensive Testing Complete")
+
     def test_tax_blueprint_profile_save_and_generation_flow(self):
         """Test Tax Blueprint Profile Save and Generation Complete Flow"""
         print("\n💰 Testing Tax Blueprint Profile Save and Generation Complete Flow...")
