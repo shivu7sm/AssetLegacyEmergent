@@ -21,6 +21,7 @@ import IncomeExpense from "./pages/IncomeExpense";
 import TaxBlueprint from "./pages/TaxBlueprint";
 import Nominees from "./pages/Nominees";
 import DeadManSwitch from "./pages/DeadManSwitch";
+import BudgetPlanner from "./pages/BudgetPlanner";
 import NomineeAccess from "./pages/NomineeAccess";
 import NomineeDashboard from "./pages/NomineeDashboard";
 import Onboarding from "./components/Onboarding";
@@ -279,6 +280,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <IncomeExpense />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/budget-planner" 
+        element={
+          <ProtectedRoute>
+            <BudgetPlanner />
           </ProtectedRoute>
         } 
       />
