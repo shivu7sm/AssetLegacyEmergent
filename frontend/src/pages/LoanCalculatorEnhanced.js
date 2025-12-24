@@ -247,24 +247,32 @@ export default function LoanCalculatorEnhanced() {
           </div>
         </div>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList style={{background: theme.cardBg, borderColor: theme.border}}>
-            <TabsTrigger value="calculator" style={{color: theme.text}}>
-              <Calculator className="w-4 h-4 mr-2" />
-              Calculator
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-3 mb-6" style={{background: theme.cardBg, borderColor: theme.border}}>
+            <TabsTrigger 
+              value="calculator"
+              className="flex items-center gap-2"
+              style={{color: activeTab === 'calculator' ? theme.text : theme.textSecondary}}
+            >
+              <Calculator className="w-4 h-4" />
+              <span className="hidden sm:inline">Calculator</span>
             </TabsTrigger>
-            {result && (
-              <>
-                <TabsTrigger value="prepayment" style={{color: theme.text}}>
-                  <TrendingUp className="w-4 h-4 mr-2" />
-                  Prepayment
-                </TabsTrigger>
-                <TabsTrigger value="analysis" style={{color: theme.text}}>
-                  <BarChart3 className="w-4 h-4 mr-2" />
-                  Analysis
-                </TabsTrigger>
-              </>
-            )}
+            <TabsTrigger 
+              value="prepayment"
+              className="flex items-center gap-2"
+              style={{color: activeTab === 'prepayment' ? theme.text : theme.textSecondary}}
+            >
+              <Target className="w-4 h-4" />
+              <span className="hidden sm:inline">Prepay Strategies</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="analysis"
+              className="flex items-center gap-2"
+              style={{color: activeTab === 'analysis' ? theme.text : theme.textSecondary}}
+            >
+              <BarChart3 className="w-4 h-4" />
+              <span className="hidden sm:inline">Visual Analysis</span>
+            </TabsTrigger>
           </TabsList>
 
           {/* Calculator Tab */}
