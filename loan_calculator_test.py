@@ -486,35 +486,34 @@ print('Test user and session created successfully');
         print("\n📊 Test 7: Multi-Loan Strategy (Avalanche vs Snowball)")
         print("   Testing with 3 loans")
         
-        url = f"{self.api_url}/loan-calculator/multi-loan-strategy"
+        # Use query parameter for extra_payment and body for loans
+        url = f"{self.api_url}/loan-calculator/multi-loan-strategy?extra_payment=5000"
         headers = {
             'Content-Type': 'application/json',
             'Authorization': f'Bearer {self.session_token}'
         }
         
-        payload = {
-            "loans": [
-                {
-                    "name": "Credit Card",
-                    "principal": 100000,
-                    "annual_interest_rate": 18,
-                    "monthly_payment": 5000
-                },
-                {
-                    "name": "Personal Loan",
-                    "principal": 300000,
-                    "annual_interest_rate": 12,
-                    "monthly_payment": 10000
-                },
-                {
-                    "name": "Auto Loan",
-                    "principal": 500000,
-                    "annual_interest_rate": 9,
-                    "monthly_payment": 15000
-                }
-            ],
-            "extra_payment": 5000
-        }
+        # Send loans as array in body
+        payload = [
+            {
+                "name": "Credit Card",
+                "principal": 100000,
+                "annual_interest_rate": 18,
+                "monthly_payment": 5000
+            },
+            {
+                "name": "Personal Loan",
+                "principal": 300000,
+                "annual_interest_rate": 12,
+                "monthly_payment": 10000
+            },
+            {
+                "name": "Auto Loan",
+                "principal": 500000,
+                "annual_interest_rate": 9,
+                "monthly_payment": 15000
+            }
+        ]
         
         try:
             response = requests.post(url, json=payload, headers=headers, timeout=30)
