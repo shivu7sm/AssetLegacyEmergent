@@ -508,19 +508,51 @@ export default function Layout({ children }) {
           {navigationStructure.map((item, index) => {
             // Section Header
             if (item.type === 'section-header') {
+              const isLegacy = item.label === 'Legacy Protection';
               return (
-                <div key={`header-${index}`} className={`${index > 0 ? 'mt-6' : 'mt-0'} mb-2`}>
+                <div key={`header-${index}`} className={`${index > 0 ? 'mt-6' : 'mt-0'} mb-3`}>
                   {sidebarOpen ? (
-                    <div>
-                      <h3 className="text-xs font-bold uppercase tracking-wider px-3 mb-1" style={{color: theme.primary}}>
-                        {item.label}
-                      </h3>
-                      <p className="text-xs px-3 mb-2" style={{color: theme.textSecondary}}>
+                    <div 
+                      className="p-4 rounded-lg"
+                      style={{
+                        background: isLegacy 
+                          ? 'linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%)'
+                          : 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%)',
+                        border: `2px solid ${isLegacy ? 'rgba(239, 68, 68, 0.3)' : 'rgba(16, 185, 129, 0.3)'}`,
+                        boxShadow: isLegacy 
+                          ? '0 4px 12px rgba(239, 68, 68, 0.1)'
+                          : '0 4px 12px rgba(16, 185, 129, 0.1)'
+                      }}
+                    >
+                      <div className="flex items-center gap-2 mb-2">
+                        {isLegacy ? (
+                          <Shield className="w-5 h-5" style={{color: '#ef4444'}} />
+                        ) : (
+                          <TrendingUp className="w-5 h-5" style={{color: '#10b981'}} />
+                        )}
+                        <h3 
+                          className="text-sm font-bold uppercase tracking-wider" 
+                          style={{
+                            color: isLegacy ? '#ef4444' : '#10b981',
+                            letterSpacing: '0.1em'
+                          }}
+                        >
+                          {item.label}
+                        </h3>
+                      </div>
+                      <p className="text-xs leading-relaxed" style={{color: theme.text, opacity: 0.9}}>
                         {item.description}
                       </p>
                     </div>
                   ) : (
-                    <div className="h-px mx-2 my-2" style={{background: theme.border}} />
+                    <div 
+                      className="h-1 mx-2 my-3 rounded-full" 
+                      style={{
+                        background: isLegacy 
+                          ? 'linear-gradient(90deg, #ef4444 0%, #a855f7 100%)'
+                          : 'linear-gradient(90deg, #10b981 0%, #3b82f6 100%)'
+                      }} 
+                    />
                   )}
                 </div>
               );
