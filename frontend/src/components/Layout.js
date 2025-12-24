@@ -293,6 +293,14 @@ export default function Layout({ children }) {
       testId: 'nav-insights'
     },
     {
+      type: 'single',
+      path: '/budget-planner',
+      label: 'Budget Planner',
+      icon: PiggyBank,
+      badge: 'New',
+      testId: 'nav-budget'
+    },
+    {
       type: 'group',
       key: 'tax',
       label: 'Tax & Planning',
