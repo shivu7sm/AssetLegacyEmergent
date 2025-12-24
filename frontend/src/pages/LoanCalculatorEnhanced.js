@@ -269,251 +269,278 @@ export default function LoanCalculatorEnhanced() {
 
           {/* Calculator Tab */}
           <TabsContent value="calculator" className="space-y-6">
-            {/* Existing Loans Section */}
-            {existingLoans.length > 0 && (
-              <Card style={{background: theme.cardBg, borderColor: theme.border}}>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-3" style={{color: theme.text}}>
-                    <Wallet className="w-5 h-5" style={{color: '#10b981'}} />
-                    Your Existing Loans
-                  </CardTitle>
-                  <p className="text-sm mt-2" style={{color: theme.textSecondary}}>
-                    Click on any loan to calculate repayment strategies and document for your family
-                  </p>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {existingLoans.map((loan) => {
-                      const isSelected = selectedLoanId === loan.id;
-                      const loanIcon = LOAN_TYPES.find(t => 
-                        t.value === (loan.type === 'credit_card' ? 'credit_card' : loan.metadata?.loan_type || 'personal')
-                      )?.icon || '💰';
-                      
-                      return (
-                        <button
-                          key={loan.id}
-                          onClick={() => loadLoanData(loan)}
-                          className="p-4 rounded-lg text-left transition-all"
-                          style={{
-                            background: isSelected ? 'rgba(168, 85, 247, 0.15)' : theme.backgroundSecondary,
-                            border: `2px solid ${isSelected ? '#a855f7' : theme.border}`
-                          }}
-                        >
-                          <div className="flex items-start justify-between mb-2">
-                            <span className="text-2xl">{loanIcon}</span>
-                            {isSelected && <Check className="w-5 h-5" style={{color: '#a855f7'}} />}
-                          </div>
-                          <h4 className="font-semibold mb-1" style={{color: theme.text}}>
-                            {loan.name}
-                          </h4>
-                          <div className="space-y-1 text-sm" style={{color: theme.textSecondary}}>
-                            <div>Amount: {formatCurrency(loan.principal_amount || loan.total_value || 0)}</div>
-                            {loan.interest_rate && (
-                              <div>Rate: {loan.interest_rate}% p.a.</div>
-                            )}
-                            {loan.metadata?.bank_name && (
-                              <div>Bank: {loan.metadata.bank_name}</div>
-                            )}
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Input Form */}
-              <Card style={{background: theme.cardBg, borderColor: theme.border}}>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-3" style={{color: theme.text}}>
-                    <Calculator className="w-5 h-5" style={{color: '#a855f7'}} />
-                    Loan Details
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <form onSubmit={handleCalculate} className="space-y-5">
-                    {/* Loan Type */}
-                    <div>
-                      <Label style={{color: theme.textSecondary}} className="mb-2 block">Loan Type</Label>
-                      <Select 
-                        value={formData.loan_type} 
-                        onValueChange={(value) => setFormData({ ...formData, loan_type: value })}
-                      >
-                        <SelectTrigger style={{background: theme.backgroundSecondary, borderColor: theme.border, color: theme.text}}>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
-                          {LOAN_TYPES.map((type) => (
-                            <SelectItem key={type.value} value={type.value} style={{color: theme.text}}>
-                              <span className="flex items-center gap-2">
-                                <span>{type.icon}</span>
-                                <span>{type.label}</span>
-                              </span>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    {/* Principal */}
-                    <div>
-                      <Label style={{color: theme.textSecondary}} className="mb-2 flex items-center gap-2">
-                        <DollarSign className="w-4 h-4" />
-                        Principal Amount (₹) *
-                      </Label>
-                      <Input
-                        type="number"
-                        step="1000"
-                        value={formData.principal}
-                        onChange={(e) => setFormData({ ...formData, principal: e.target.value })}
-                        placeholder="2500000"
-                        required
-                        style={{background: theme.backgroundSecondary, borderColor: theme.border, color: theme.text}}
-                      />
-                    </div>
-
-                    {/* Interest Rate */}
-                    <div>
-                      <Label style={{color: theme.textSecondary}} className="mb-2 flex items-center gap-2">
-                        <Percent className="w-4 h-4" />
-                        Annual Interest Rate (%) *
-                      </Label>
-                      <Input
-                        type="number"
-                        step="0.1"
-                        value={formData.annual_interest_rate}
-                        onChange={(e) => setFormData({ ...formData, annual_interest_rate: e.target.value })}
-                        placeholder="8.5"
-                        required
-                        style={{background: theme.backgroundSecondary, borderColor: theme.border, color: theme.text}}
-                      />
-                    </div>
-
-                    {/* Tenure */}
-                    <div>
-                      <Label style={{color: theme.textSecondary}} className="mb-2 flex items-center gap-2">
-                        <Calendar className="w-4 h-4" />
-                        Loan Tenure (months) *
-                      </Label>
-                      <Input
-                        type="number"
-                        value={formData.tenure_months}
-                        onChange={(e) => setFormData({ ...formData, tenure_months: e.target.value })}
-                        placeholder="240"
-                        required
-                        style={{background: theme.backgroundSecondary, borderColor: theme.border, color: theme.text}}
-                      />
-                      {formData.tenure_months && (
-                        <p className="text-xs mt-1" style={{color: theme.textSecondary}}>
-                          {Math.floor(formData.tenure_months / 12)} years {formData.tenure_months % 12} months
-                        </p>
-                      )}
-                    </div>
-
-                    {/* Buttons */}
-                    <div className="flex gap-3 pt-2">
-                      <Button
-                        type="submit"
-                        disabled={loading}
-                        className="flex-1 text-white font-medium"
-                        style={{background: 'linear-gradient(135deg, #a855f7 0%, #ef4444 100%)'}}
-                      >
-                        {loading ? 'Calculating...' : 'Calculate'}
-                      </Button>
-                      <Button
-                        type="button"
-                        onClick={handleReset}
-                        variant="outline"
-                        style={{borderColor: theme.border, color: theme.textSecondary}}
-                      >
-                        Reset
-                      </Button>
-                    </div>
-                  </form>
-                </CardContent>
-              </Card>
-
-              {/* Basic Results */}
-              {result && (
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              {/* Main Calculator - Takes Priority (8 columns) */}
+              <div className="lg:col-span-8 space-y-6">
+                {/* Calculator Form */}
                 <Card style={{background: theme.cardBg, borderColor: theme.border}}>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-3" style={{color: theme.text}}>
-                      <TrendingDown className="w-5 h-5" style={{color: '#10b981'}} />
-                      Payment Summary
+                      <Calculator className="w-5 h-5" style={{color: '#a855f7'}} />
+                      Loan Details
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    {/* Monthly EMI */}
-                    <div className="p-5 rounded-lg" style={{background: 'rgba(168, 85, 247, 0.1)', border: '1px solid rgba(168, 85, 247, 0.3)'}}>
-                      <div className="text-sm mb-1" style={{color: theme.textSecondary}}>Monthly EMI</div>
-                      <div className="text-3xl font-bold" style={{color: '#a855f7'}}>
-                        {formatCurrency(result.monthly_payment)}
+                  <CardContent>
+                    <form onSubmit={handleCalculate} className="space-y-6">
+                      {/* Loan Type */}
+                      <div>
+                        <Label className="text-sm mb-2 block" style={{color: theme.textSecondary}}>Loan Type</Label>
+                        <Select 
+                          value={formData.loan_type} 
+                          onValueChange={(value) => setFormData({ ...formData, loan_type: value })}
+                        >
+                          <SelectTrigger style={{background: theme.backgroundSecondary, borderColor: theme.border, color: theme.text}}>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
+                            {LOAN_TYPES.map((type) => (
+                              <SelectItem key={type.value} value={type.value} style={{color: theme.text}}>
+                                <span className="flex items-center gap-2">
+                                  <span>{type.icon}</span>
+                                  <span>{type.label}</span>
+                                </span>
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </div>
-                    </div>
 
-                    <div className="grid grid-cols-2 gap-4">
-                      {/* Total Interest */}
-                      <div className="p-4 rounded-lg" style={{background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)'}}>
-                        <div className="text-xs mb-1" style={{color: theme.textSecondary}}>Total Interest</div>
-                        <div className="text-lg font-bold" style={{color: '#ef4444'}}>
-                          {formatCurrency(result.total_interest)}
-                        </div>
+                      {/* Principal Amount */}
+                      <div>
+                        <Label className="text-sm mb-2 flex items-center gap-2" style={{color: theme.textSecondary}}>
+                          <DollarSign className="w-4 h-4" />
+                          Principal Amount (₹) *
+                        </Label>
+                        <Input
+                          type="number"
+                          step="1000"
+                          value={formData.principal}
+                          onChange={(e) => setFormData({ ...formData, principal: e.target.value })}
+                          placeholder="2500000"
+                          required
+                          style={{background: theme.backgroundSecondary, borderColor: theme.border, color: theme.text}}
+                        />
                       </div>
 
-                      {/* Total Amount */}
-                      <div className="p-4 rounded-lg" style={{background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)'}}>
-                        <div className="text-xs mb-1" style={{color: theme.textSecondary}}>Total Repayment</div>
-                        <div className="text-lg font-bold" style={{color: '#10b981'}}>
-                          {formatCurrency(result.total_amount)}
-                        </div>
+                      {/* Interest Rate */}
+                      <div>
+                        <Label className="text-sm mb-2 flex items-center gap-2" style={{color: theme.textSecondary}}>
+                          <Percent className="w-4 h-4" />
+                          Annual Interest Rate (%) *
+                        </Label>
+                        <Input
+                          type="number"
+                          step="0.1"
+                          value={formData.annual_interest_rate}
+                          onChange={(e) => setFormData({ ...formData, annual_interest_rate: e.target.value })}
+                          placeholder="8.5"
+                          required
+                          style={{background: theme.backgroundSecondary, borderColor: theme.border, color: theme.text}}
+                        />
                       </div>
-                    </div>
 
-                    {/* Tax Benefits */}
-                    {result.tax_benefits && result.tax_benefits.eligible && (
-                      <div className="p-4 rounded-lg" style={{background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.3)'}}>
-                        <div className="flex items-center gap-2 mb-2">
-                          <PiggyBank className="w-4 h-4" style={{color: '#3b82f6'}} />
-                          <span className="text-sm font-semibold" style={{color: theme.text}}>Tax Benefits</span>
-                        </div>
-                        <div className="space-y-1 text-xs" style={{color: theme.textSecondary}}>
-                          <div className="flex justify-between">
-                            <span>Annual Tax Savings:</span>
-                            <span className="font-semibold" style={{color: '#3b82f6'}}>
-                              {formatCurrency(result.tax_benefits.total_tax_saved)}
-                            </span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>Effective Rate:</span>
-                            <span className="font-semibold" style={{color: '#10b981'}}>
-                              {result.tax_benefits.effective_interest_rate}%
-                            </span>
-                          </div>
-                          <div className="text-xs mt-1 opacity-75">
-                            {result.tax_benefits.sections_applicable.join(', ')}
-                          </div>
-                        </div>
+                      {/* Tenure */}
+                      <div>
+                        <Label className="text-sm mb-2 flex items-center gap-2" style={{color: theme.textSecondary}}>
+                          <Calendar className="w-4 h-4" />
+                          Loan Tenure (months) *
+                        </Label>
+                        <Input
+                          type="number"
+                          value={formData.tenure_months}
+                          onChange={(e) => setFormData({ ...formData, tenure_months: e.target.value })}
+                          placeholder="240"
+                          required
+                          style={{background: theme.backgroundSecondary, borderColor: theme.border, color: theme.text}}
+                        />
+                        {formData.tenure_months && (
+                          <p className="text-xs mt-1" style={{color: theme.textSecondary}}>
+                            {Math.floor(formData.tenure_months / 12)} years {formData.tenure_months % 12} months
+                          </p>
+                        )}
                       </div>
-                    )}
 
-                    {/* Quick Stats */}
-                    <div className="pt-3 border-t" style={{borderColor: theme.border}}>
-                      <div className="grid grid-cols-2 gap-2 text-sm">
-                        <div style={{color: theme.textSecondary}}>Principal:</div>
-                        <div style={{color: theme.text, fontWeight: 600}}>{formatCurrency(parseFloat(formData.principal))}</div>
-                        <div style={{color: theme.textSecondary}}>Interest Rate:</div>
-                        <div style={{color: theme.text, fontWeight: 600}}>{formData.annual_interest_rate}% p.a.</div>
-                        <div style={{color: theme.textSecondary}}>Tenure:</div>
-                        <div style={{color: theme.text, fontWeight: 600}}>
-                          {Math.floor(formData.tenure_months / 12)} years {formData.tenure_months % 12} months
-                        </div>
+                      {/* Buttons */}
+                      <div className="flex gap-3 pt-2">
+                        <Button
+                          type="submit"
+                          disabled={loading}
+                          className="flex-1 text-white font-medium"
+                          style={{background: 'linear-gradient(135deg, #a855f7 0%, #ef4444 100%)'}}
+                        >
+                          {loading ? 'Calculating...' : 'Calculate'}
+                        </Button>
+                        <Button
+                          type="button"
+                          onClick={handleReset}
+                          variant="outline"
+                          style={{borderColor: theme.border, color: theme.textSecondary}}
+                        >
+                          Reset
+                        </Button>
                       </div>
-                    </div>
+                    </form>
                   </CardContent>
                 </Card>
-              )}
+
+                {/* Basic Results - Shown immediately after calculation */}
+                {result && (
+                  <Card style={{background: theme.cardBg, borderColor: theme.border}}>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-3" style={{color: theme.text}}>
+                        <TrendingDown className="w-5 h-5" style={{color: '#10b981'}} />
+                        Payment Summary
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      {/* Monthly EMI */}
+                      <div className="p-5 rounded-lg" style={{background: 'rgba(168, 85, 247, 0.1)', border: '1px solid rgba(168, 85, 247, 0.3)'}}>
+                        <div className="text-sm mb-1" style={{color: theme.textSecondary}}>Monthly EMI</div>
+                        <div className="text-3xl font-bold" style={{color: '#a855f7'}}>
+                          {formatCurrency(result.monthly_payment)}
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        {/* Total Interest */}
+                        <div className="p-4 rounded-lg" style={{background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)'}}>
+                          <div className="text-xs mb-1" style={{color: theme.textSecondary}}>Total Interest</div>
+                          <div className="text-lg font-bold" style={{color: '#ef4444'}}>
+                            {formatCurrency(result.total_interest)}
+                          </div>
+                        </div>
+
+                        {/* Total Amount */}
+                        <div className="p-4 rounded-lg" style={{background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)'}}>
+                          <div className="text-xs mb-1" style={{color: theme.textSecondary}}>Total Repayment</div>
+                          <div className="text-lg font-bold" style={{color: '#10b981'}}>
+                            {formatCurrency(result.total_amount)}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Tax Benefits */}
+                      {result.tax_benefits && result.tax_benefits.eligible && (
+                        <div className="p-4 rounded-lg" style={{background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.3)'}}>
+                          <div className="flex items-center gap-2 mb-2">
+                            <PiggyBank className="w-4 h-4" style={{color: '#3b82f6'}} />
+                            <span className="text-sm font-semibold" style={{color: theme.text}}>Tax Benefits</span>
+                          </div>
+                          <div className="space-y-1 text-xs" style={{color: theme.textSecondary}}>
+                            <div className="flex justify-between">
+                              <span>Annual Tax Savings:</span>
+                              <span className="font-semibold" style={{color: '#3b82f6'}}>
+                                {formatCurrency(result.tax_benefits.total_tax_saved)}
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Effective Rate:</span>
+                              <span className="font-semibold" style={{color: '#10b981'}}>
+                                {result.tax_benefits.effective_interest_rate}%
+                              </span>
+                            </div>
+                            <div className="text-xs mt-1 opacity-75">
+                              {result.tax_benefits.sections_applicable.join(', ')}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Quick Stats */}
+                      <div className="pt-3 border-t" style={{borderColor: theme.border}}>
+                        <div className="grid grid-cols-2 gap-2 text-sm">
+                          <div style={{color: theme.textSecondary}}>Principal:</div>
+                          <div style={{color: theme.text, fontWeight: 600}}>{formatCurrency(parseFloat(formData.principal))}</div>
+                          <div style={{color: theme.textSecondary}}>Interest Rate:</div>
+                          <div style={{color: theme.text, fontWeight: 600}}>{formData.annual_interest_rate}% p.a.</div>
+                          <div style={{color: theme.textSecondary}}>Tenure:</div>
+                          <div style={{color: theme.text, fontWeight: 600}}>
+                            {Math.floor(formData.tenure_months / 12)} years {formData.tenure_months % 12} months
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+              </div>
+
+              {/* Sidebar - Existing Loans (4 columns) */}
+              <div className="lg:col-span-4">
+                {existingLoans.length > 0 ? (
+                  <Card style={{background: theme.cardBg, borderColor: theme.border, position: 'sticky', top: '80px'}}>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2 text-base" style={{color: theme.text}}>
+                        <Wallet className="w-4 h-4" style={{color: '#10b981'}} />
+                        Your Loans
+                      </CardTitle>
+                      <p className="text-xs mt-1" style={{color: theme.textSecondary}}>
+                        Click to auto-fill calculator
+                      </p>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-3 max-h-[600px] overflow-y-auto">
+                        {existingLoans.map((loan) => {
+                          const isSelected = selectedLoanId === loan.id;
+                          const loanIcon = LOAN_TYPES.find(t => 
+                            t.value === (loan.type === 'credit_card' ? 'credit_card' : loan.metadata?.loan_type || 'personal')
+                          )?.icon || '💰';
+                          
+                          return (
+                            <button
+                              key={loan.id}
+                              onClick={() => loadLoanData(loan)}
+                              className="w-full p-3 rounded-lg text-left transition-all hover:scale-[1.02]"
+                              style={{
+                                background: isSelected ? 'rgba(168, 85, 247, 0.15)' : theme.backgroundSecondary,
+                                border: `2px solid ${isSelected ? '#a855f7' : theme.border}`
+                              }}
+                            >
+                              <div className="flex items-start justify-between mb-2">
+                                <span className="text-xl">{loanIcon}</span>
+                                {isSelected && <Check className="w-4 h-4" style={{color: '#a855f7'}} />}
+                              </div>
+                              <h4 className="font-semibold text-sm mb-1 truncate" style={{color: theme.text}}>
+                                {loan.name}
+                              </h4>
+                              <div className="space-y-0.5 text-xs" style={{color: theme.textSecondary}}>
+                                <div>{formatCurrency(loan.principal_amount || loan.total_value || 0)}</div>
+                                {loan.interest_rate && (
+                                  <div>{loan.interest_rate}% p.a.</div>
+                                )}
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <Card style={{background: 'rgba(59, 130, 246, 0.1)', borderColor: 'rgba(59, 130, 246, 0.3)'}}>
+                    <CardContent className="p-6">
+                      <div className="flex items-start gap-3">
+                        <Info className="w-5 h-5 mt-0.5" style={{color: '#3b82f6'}} />
+                        <div>
+                          <h4 className="font-semibold mb-2 text-sm" style={{color: theme.text}}>
+                            No Existing Loans
+                          </h4>
+                          <p className="text-xs" style={{color: theme.textSecondary}}>
+                            Add your loans to Assets & Liabilities first to quickly load them here for calculation.
+                          </p>
+                          <Button
+                            onClick={() => navigate('/assets')}
+                            className="mt-3 text-xs"
+                            size="sm"
+                            variant="outline"
+                            style={{borderColor: '#3b82f6', color: '#3b82f6'}}
+                          >
+                            Go to Assets
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+              </div>
             </div>
 
             {/* AI Tips */}
