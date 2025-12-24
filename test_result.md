@@ -224,11 +224,11 @@ backend:
         agent: "main"
         comment: "ENHANCED - Added comprehensive AI insights snapshot to demo data. Now creates a detailed AI insight with portfolio_summary, asset_distribution_analysis, allocation_recommendations (4 items), advantages (5 items), risks (5 items), and action_items (5 items). Demo insight is prefixed with demo_{user_id}_ for proper filtering. Insight is automatically deleted and recreated on force reseed to ensure fresh data."
   
-  - task: "Loan Calculator with Timeout"
+  - task: "Enhanced Loan Calculator with CA-Level Features"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/server.py"
-    stuck_count: 1
+    stuck_count: 0
     priority: "high"
     needs_retesting: false
     status_history:
@@ -238,6 +238,9 @@ backend:
       - working: false
         agent: "testing"
         comment: "FAILED - Endpoint times out due to AI budget exceeded (Budget: 1.001, Current: 1.192). Core calculations are correct but AI tips generation fails. External API budget issue."
+      - working: true
+        agent: "testing"
+        comment: "✅ COMPREHENSIVE TESTING COMPLETE - All 4 enhanced loan calculator endpoints working perfectly! 21/21 tests passed (100% success rate). ENDPOINTS TESTED: 1) POST /api/loan-calculator - Main calculator with prepayment scenarios (4 scenarios: extra_5k_monthly, extra_10k_monthly, annual_50k, onetime_100k), tax benefits (80C + 24b for home loans, 80E for education loans), principal vs interest split analysis. EMI calculations mathematically correct (₹21,695.58 for ₹25L home loan at 8.5% for 20 years). 2) POST /api/loan-calculator/ai-tips - Async AI tips generation working with 20-second timeout and fallback tips. Successfully generates loan-type specific tips (home, education, credit_card, personal, auto, business). 3) POST /api/loan-calculator/refinance - Refinancing comparison calculator working correctly. Tested ₹20L loan at 9% vs 8% with ₹50K closing costs - correctly calculated net savings of ₹1,61,012, monthly savings of ₹1,172, breakeven at 43 months, and recommended refinancing. 4) POST /api/loan-calculator/multi-loan-strategy - Multi-loan debt optimization working. Correctly implements both Debt Avalanche (highest interest first) and Debt Snowball (smallest balance first) strategies with proper payment order prioritization. TAX BENEFITS VERIFIED: Home loans correctly show Section 80C (principal up to ₹1.5L) and Section 24(b) (interest up to ₹2L) deductions. Education loans correctly show Section 80E (unlimited interest deduction, no principal deduction). Credit card debt correctly shows NO tax benefits. PREPAYMENT SCENARIOS: All 4 scenarios calculate interest_saved and time_saved_months correctly. High interest loans (18% credit card) show significant savings potential (₹60K+ interest on ₹2L loan). CALCULATIONS ACCURATE: EMI formula implementation verified, amortization schedules correct, principal vs interest split working, refinance breakeven analysis accurate."
   
   - task: "Demo Mode Filtering"
     implemented: true
