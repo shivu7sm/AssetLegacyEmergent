@@ -6587,15 +6587,67 @@ def calculate_principal_vs_interest_split(schedule: List[Dict], tenure_months: i
 
 @api_router.post("/loan-calculator")
 async def calculate_loan_repayment(request: LoanCalculatorRequest, user: User = Depends(require_auth)):
-    """Calculate loan repayment schedule with AI-powered debt reduction tips"""
+    """Enhanced loan calculator with prepayment analysis, tax benefits, and AI tips"""
     try:
         # Calculate monthly rate
         monthly_rate = (request.annual_interest_rate / 100) / 12
         
-        # Generate amortization schedule
+        # Generate base amortization schedule
         schedule = calculate_amortization(request.principal, monthly_rate, request.tenure_months)
         
         # Calculate totals
+        total_payment = sum([entry["payment"] for entry in schedule])
+        total_interest = total_payment - request.principal
+        monthly_payment = schedule[0]["payment"] if schedule else 0
+        
+        # Calculate prepayment scenarios
+        prepayment_scenarios = calculate_prepayment_scenarios(
+            request.principal, 
+            request.annual_interest_rate, 
+            request.tenure_months,
+            schedule
+        )
+        
+        # Calculate tax benefits (home and education loans)
+        tax_benefits = None
+        if request.loan_type in ["home", "education"]:
+            tax_benefits = calculate_tax_benefits(
+                request.principal,
+                request.annual_interest_rate,
+                request.tenure_months,
+                request.loan_type,
+                tax_bracket=0.30  # Default 30% tax bracket
+            )
+        
+        # Calculate principal vs interest split
+        principal_vs_interest = calculate_principal_vs_interest_split(schedule, request.tenure_months)
+        
+        # Prepare base response
+        response = {
+            "monthly_payment": round(monthly_payment, 2),
+            "total_interest": round(total_interest, 2),
+            "total_amount": round(total_payment, 2),
+            "amortization_schedule": schedule,
+            "prepayment_scenarios": prepayment_scenarios,
+            "tax_benefits": tax_benefits,
+            "principal_vs_interest_split": principal_vs_interest,
+            "ai_tips": None  # Will be loaded separately
+        }
+        
+        # Return immediate response
+        return response
+        
+    except Exception as e:
+        logger.error(f"Loan calculator error: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/loan-calculator/ai-tips")
+async def generate_loan_ai_tips(request: LoanCalculatorRequest, user: User = Depends(require_auth)):
+    """Generate AI tips separately to avoid blocking main calculation"""
+    try:
+        # Calculate basic metrics for AI context
+        monthly_rate = (request.annual_interest_rate / 100) / 12
+        schedule = calculate_amortization(request.principal, monthly_rate, request.tenure_months)
         total_payment = sum([entry["payment"] for entry in schedule])
         total_interest = total_payment - request.principal
         monthly_payment = schedule[0]["payment"] if schedule else 0
@@ -6619,45 +6671,206 @@ async def calculate_loan_repayment(request: LoanCalculatorRequest, user: User = 
                         text=f"""Analyze this loan and provide 3-5 specific, actionable tips for debt reduction:
                         
 Loan Type: {request.loan_type.title()}
-Principal Amount: ${request.principal:,.2f}
+Principal Amount: ₹{request.principal:,.2f}
 Interest Rate: {request.annual_interest_rate}%
-Tenure: {request.tenure_months} months
-Monthly Payment: ${monthly_payment:,.2f}
-Total Interest: ${total_interest:,.2f}
+Tenure: {request.tenure_months} months ({request.tenure_months // 12} years)
+Monthly Payment: ₹{monthly_payment:,.2f}
+Total Interest: ₹{total_interest:,.2f}
 
 Focus on practical strategies like:
 - Extra payment opportunities
-- Refinancing considerations
+- Refinancing considerations (if rate is high)
 - Payment timing optimization
 - Debt avalanche vs snowball methods
 - Budget adjustments
+{"- Tax benefits under Section 80C and 24(b)" if request.loan_type == "home" else ""}
+{"- Tax benefits under Section 80E" if request.loan_type == "education" else ""}
 
-Keep tips concise and numbered. Avoid generic advice."""
+Keep tips concise and numbered. Avoid generic advice. Be specific to Indian context."""
                     )
                     
                     return await chat.send_message(user_message)
                 
-                # Add 15 second timeout for AI generation
-                ai_tips = await asyncio.wait_for(generate_tips(), timeout=15.0)
+                # Add 20 second timeout for AI generation
+                ai_tips = await asyncio.wait_for(generate_tips(), timeout=20.0)
             else:
                 ai_tips = "AI tips feature requires API key configuration."
         except asyncio.TimeoutError:
             logger.warning(f"AI tips generation timed out for user {user.id}")
-            ai_tips = "AI tips generation timed out. Please try again later or continue with the calculation results below."
+            # Provide loan-type specific fallback tips
+            ai_tips = generate_fallback_tips(request.loan_type, request.annual_interest_rate)
         except Exception as ai_error:
             logger.error(f"AI tips generation failed: {str(ai_error)}")
-            ai_tips = "AI tips temporarily unavailable. The calculation results below are still accurate."
+            ai_tips = generate_fallback_tips(request.loan_type, request.annual_interest_rate)
+        
+        return {"ai_tips": ai_tips}
+        
+    except Exception as e:
+        logger.error(f"AI tips generation error: {str(e)}")
+        return {"ai_tips": "Unable to generate personalized tips at this time. The calculation results are accurate."}
+
+def generate_fallback_tips(loan_type: str, interest_rate: float) -> str:
+    """Generate loan-type specific tips when AI is unavailable"""
+    tips = f"**Smart Strategies for Your {loan_type.title()} Loan:**\n\n"
+    
+    if loan_type == "home":
+        tips += """1. **Tax Benefits**: Claim up to ₹1.5L under Section 80C (principal) and ₹2L under Section 24(b) (interest). This can save you significant taxes annually.
+
+2. **Prepayment Strategy**: Even small prepayments of ₹5,000-10,000/month can reduce your tenure by several years and save lakhs in interest.
+
+3. **Refinancing Check**: If your current rate is above 8.5%, consider refinancing with another bank offering lower rates - could save you ₹2-3L over the loan tenure.
+
+4. **Balance Transfer**: Banks often offer lower rates to new customers. Check if balance transfer makes sense after 2-3 years.
+
+5. **Avoid Part-Payment Penalties**: Most banks allow 25% prepayment per year without charges. Use your bonus/increment for prepayments."""
+    
+    elif loan_type == "education":
+        tips += """1. **Tax Deduction**: Section 80E allows full interest deduction with no upper limit for 8 years. This significantly reduces your effective interest rate.
+
+2. **Grace Period**: Use the 6-12 month grace period after course completion to build an emergency fund before EMIs start.
+
+3. **Aggressive Prepayment**: Education loans have lower rates but prepaying aggressively in first 5 years saves maximum interest.
+
+4. **Income-Based Repayment**: If struggling, talk to your bank about extending tenure temporarily during job transitions.
+
+5. **Career ROI**: Focus on career growth - a 20% salary hike can help you prepay 30-40% faster than planned."""
+    
+    elif loan_type == "personal":
+        tips += """1. **High Priority Repayment**: Personal loans have highest interest rates (10-18%). Pay these off before home/auto loans using debt avalanche method.
+
+2. **Balance Transfer**: Look for balance transfer offers from other banks at 0% for 6-12 months - can save thousands in interest.
+
+3. **Debt Consolidation**: If you have multiple personal loans, consolidate into one at a lower rate to simplify payments.
+
+4. **Extra Payments**: Every ₹10,000 prepayment can save ₹2,000-3,000 in interest. Use bonuses/windfalls for prepayment.
+
+5. **Avoid New Debt**: Don't take new loans until this is cleared. Focus on increasing income and reducing expenses."""
+    
+    elif loan_type == "auto":
+        tips += """1. **Asset Depreciation**: Your car depreciates while loan interest accumulates. Prepay aggressively to minimize total cost.
+
+2. **Trade-In Strategy**: If possible, trade in your old car to reduce principal amount before taking new loan.
+
+3. **Shorter Tenure**: Auto loans should ideally be 3-4 years max. Longer tenure means paying interest on a depreciating asset.
+
+4. **Insurance Bundling**: Get better insurance rates by bundling with lender, but compare with standalone policies.
+
+5. **Refinancing**: After 1-2 years, if your credit score improved, refinance at a lower rate."""
+    
+    elif loan_type == "credit_card":
+        tips += f"""1. **URGENT PRIORITY**: Credit card debt at {interest_rate}% is extremely expensive. This should be your #1 repayment priority.
+
+2. **Balance Transfer**: Transfer to a card offering 0% for 6-12 months. Many banks offer this - can save ₹10,000s in interest.
+
+3. **Debt Avalanche**: Pay minimum on all cards, then put ALL extra money toward highest interest card first.
+
+4. **Stop Using Cards**: Freeze or cut cards until debt is cleared. Use debit card or cash only.
+
+5. **Negotiate**: Call your bank - they may reduce interest rate if you commit to a repayment plan. Many customers get 2-4% reduction."""
+    
+    else:  # business or other
+        tips += """1. **Cash Flow Management**: Align EMI dates with your income cycle to avoid cash crunches.
+
+2. **Business Growth**: Focus on growing revenue - every 10% revenue increase can help you prepay 15-20% faster.
+
+3. **Tax Planning**: Consult CA about business loan interest deductibility as business expense under IT Act.
+
+4. **Refinancing**: Review your rate annually - business loan rates fluctuate. Refinance if you can save 1-2%.
+
+5. **Emergency Buffer**: Keep 3-6 months of EMIs as buffer in business account before aggressive prepayment."""
+    
+    if interest_rate > 12:
+        tips += f"\n\n⚠️ **High Interest Alert**: Your rate of {interest_rate}% is quite high. Strongly consider refinancing or balance transfer options."
+    
+    return tips
+
+@api_router.post("/loan-calculator/refinance")
+async def calculate_refinance_options(
+    current_principal: float,
+    current_rate: float,
+    remaining_months: int,
+    new_rate: float,
+    closing_costs: float,
+    user: User = Depends(require_auth)
+):
+    """Calculate if refinancing makes financial sense"""
+    try:
+        comparison = calculate_refinance_comparison(
+            current_principal,
+            current_rate,
+            remaining_months,
+            new_rate,
+            closing_costs
+        )
+        return comparison
+    except Exception as e:
+        logger.error(f"Refinance calculation error: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/loan-calculator/multi-loan-strategy")
+async def calculate_multi_loan_strategy(loans: List[Dict], extra_payment: float, user: User = Depends(require_auth)):
+    """Calculate optimal repayment strategy for multiple loans"""
+    try:
+        # Debt Avalanche: Pay highest interest rate first
+        avalanche_loans = sorted(loans, key=lambda x: x["annual_interest_rate"], reverse=True)
+        
+        # Debt Snowball: Pay smallest balance first
+        snowball_loans = sorted(loans, key=lambda x: x["principal"])
+        
+        # Calculate total payoff for each strategy
+        def calculate_strategy(loan_order, extra_payment):
+            total_months = 0
+            total_interest = 0
+            monthly_payment = sum([l["monthly_payment"] for l in loan_order])
+            
+            payment_order = []
+            for loan in loan_order:
+                # Simplified calculation
+                principal = loan["principal"]
+                rate = loan["annual_interest_rate"] / 100 / 12
+                payment = loan["monthly_payment"] + (extra_payment if loan == loan_order[0] else 0)
+                
+                # Estimate payoff time
+                if rate > 0:
+                    months = -(math.log(1 - (principal * rate) / payment) / math.log(1 + rate))
+                else:
+                    months = principal / payment
+                    
+                total_months += months
+                total_interest += (payment * months) - principal
+                
+                payment_order.append({
+                    "name": loan["name"],
+                    "principal": principal,
+                    "rate": loan["annual_interest_rate"],
+                    "payoff_months": round(months, 1)
+                })
+            
+            return {
+                "total_interest": round(total_interest, 2),
+                "payoff_months": round(total_months, 2),
+                "monthly_payment": round(monthly_payment + extra_payment, 2),
+                "payment_order": payment_order
+            }
+        
+        avalanche_result = calculate_strategy(avalanche_loans, extra_payment)
+        snowball_result = calculate_strategy(snowball_loans, extra_payment)
         
         return {
-            "monthly_payment": round(monthly_payment, 2),
-            "total_interest": round(total_interest, 2),
-            "total_amount": round(total_payment, 2),
-            "amortization_schedule": schedule,
-            "ai_tips": ai_tips
+            "avalanche": {
+                "strategy_name": "Debt Avalanche (Highest Interest First)",
+                **avalanche_result
+            },
+            "snowball": {
+                "strategy_name": "Debt Snowball (Smallest Balance First)",
+                **snowball_result
+            },
+            "recommended": "avalanche" if avalanche_result["total_interest"] < snowball_result["total_interest"] else "snowball",
+            "interest_difference": abs(avalanche_result["total_interest"] - snowball_result["total_interest"])
         }
         
     except Exception as e:
-        logger.error(f"Loan calculator error: {str(e)}")
+        logger.error(f"Multi-loan strategy error: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 app.include_router(api_router)
