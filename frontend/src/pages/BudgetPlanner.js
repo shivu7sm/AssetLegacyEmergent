@@ -12,9 +12,12 @@ import { useApp } from '@/context/AppContext';
 import { 
   PiggyBank, TrendingUp, ShoppingBag, AlertTriangle, CheckCircle2, 
   DollarSign, Plus, RefreshCw, Download, Calendar, Info, Target,
-  TrendingDown, Sparkles
+  TrendingDown, Sparkles, Save, BarChart, X
 } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { LineChart, Line, BarChart as RechartsBar, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
