@@ -1,47 +1,89 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Plus, CreditCard, List, Shield, X } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Plus, CreditCard, List, Shield, X, TrendingUp, TrendingDown, DollarSign } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 
 export default function FloatingQuickActions() {
   const { theme } = useTheme();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const actions = [
-    {
-      icon: Plus,
-      label: 'Add Asset',
-      onClick: () => navigate('/assets?action=add'),
-      color: '#10b981',
-    },
-    {
-      icon: CreditCard,
-      label: 'Add Liability',
-      onClick: () => navigate('/assets?action=add&type=liability'),
-      color: '#ef4444',
-    },
-    {
-      icon: List,
-      label: 'View All',
-      onClick: () => navigate('/assets'),
-      color: '#3b82f6',
-    },
-    {
-      icon: Shield,
-      label: 'Security',
-      onClick: () => navigate('/settings?tab=security'),
-      color: '#8b5cf6',
-    },
-  ];
+  // Context-aware actions based on current page
+  const getActions = () => {
+    // Income & Expense page - show relevant actions
+    if (location.pathname === '/income-expense') {
+      return [
+        {
+          icon: TrendingUp,
+          label: 'Add Income',
+          onClick: () => {
+            setIsExpanded(false);
+            // Trigger income dialog via custom event
+            window.dispatchEvent(new CustomEvent('openIncomeDialog'));
+          },
+          color: '#10b981',
+        },
+        {
+          icon: TrendingDown,
+          label: 'Add Expense',
+          onClick: () => {
+            setIsExpanded(false);
+            // Trigger expense dialog via custom event
+            window.dispatchEvent(new CustomEvent('openExpenseDialog'));
+          },
+          color: '#ef4444',
+        },
+        {
+          icon: DollarSign,
+          label: 'View Summary',
+          onClick: () => {
+            setIsExpanded(false);
+            // Trigger tab change via custom event
+            window.dispatchEvent(new CustomEvent('changeSummaryTab', { detail: 'summary' }));
+          },
+          color: '#3b82f6',
+        },
+      ];
+    }
+
+    // Default actions for other pages
+    return [
+      {
+        icon: Plus,
+        label: 'Add Asset',
+        onClick: () => navigate('/assets?action=add'),
+        color: '#10b981',
+      },
+      {
+        icon: CreditCard,
+        label: 'Add Liability',
+        onClick: () => navigate('/assets?action=add&type=liability'),
+        color: '#ef4444',
+      },
+      {
+        icon: List,
+        label: 'View All',
+        onClick: () => navigate('/assets'),
+        color: '#3b82f6',
+      },
+      {
+        icon: Shield,
+        label: 'Nominees',
+        onClick: () => navigate('/nominees'),
+        color: '#8b5cf6',
+      },
+    ];
+  };
+
+  const actions = getActions();
 
   return (
     <div
       style={{
         position: 'fixed',
-        right: '20px',
-        top: '50%',
-        transform: 'translateY(-50%)',
+        right: '24px',
+        bottom: '24px',
         zIndex: 999,
       }}
     >
@@ -50,9 +92,8 @@ export default function FloatingQuickActions() {
         <div
           style={{
             position: 'absolute',
-            right: '60px',
-            top: '50%',
-            transform: 'translateY(-50%)',
+            right: '0',
+            bottom: '70px',
             display: 'flex',
             flexDirection: 'column',
             gap: '8px',
