@@ -53,6 +53,7 @@ export default function IncomeExpense() {
   const [expenses, setExpenses] = useState([]);
   const [summary, setSummary] = useState(null);
   const [categories, setCategories] = useState({ expense_categories: {}, income_sources: [], payment_methods: [] });
+  const [conversionRates, setConversionRates] = useState({});
   
   // Dialog state
   const [incomeDialogOpen, setIncomeDialogOpen] = useState(false);
@@ -126,6 +127,41 @@ export default function IncomeExpense() {
     } catch (error) {
       console.error('Failed to fetch categories:', error);
     }
+  };
+
+  const fetchConversionRates = async () => {
+    try {
+      // Get unique currencies from incomes and expenses
+      const currencies = new Set();
+      incomes.forEach(inc => currencies.add(inc.currency));
+      expenses.forEach(exp => currencies.add(exp.currency));
+      
+      const rates = {};
+      for (const currency of currencies) {
+        if (currency !== selectedCurrency) {
+          try {
+            const response = await axios.get(
+              `${API}/currency/convert?from=${currency}&to=${selectedCurrency}&amount=1`,
+              { withCredentials: true }
+            );
+            rates[currency] = response.data.rate;
+          } catch (error) {
+            rates[currency] = 1; // Fallback to 1:1 if conversion fails
+          }
+        } else {
+          rates[currency] = 1;
+        }
+      }
+      setConversionRates(rates);
+    } catch (error) {
+      console.error('Failed to fetch conversion rates:', error);
+    }
+  };
+
+  const convertAmount = (amount, fromCurrency) => {
+    if (fromCurrency === selectedCurrency) return amount;
+    const rate = conversionRates[fromCurrency] || 1;
+    return amount * rate;
   };
 
   const fetchIncomes = async () => {
