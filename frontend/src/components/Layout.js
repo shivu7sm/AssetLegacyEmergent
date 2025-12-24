@@ -127,7 +127,6 @@ export default function Layout({ children }) {
       icon: TrendingUp,
       items: [
         { path: '/assets', label: 'Assets & Liabilities', icon: Wallet, testId: 'nav-assets' },
-        { path: '/loan-calculator', label: 'Loan Calculator', icon: Calculator, testId: 'nav-loan-calculator' },
         { path: '/income-expense', label: 'Income & Expenses', icon: Receipt, testId: 'nav-income-expense' }
       ]
     },
@@ -144,6 +143,7 @@ export default function Layout({ children }) {
       label: 'Tools & Insights',
       icon: BookOpen,
       items: [
+        { path: '/loan-calculator', label: 'Loan Calculator', icon: Calculator, testId: 'nav-loan-calculator' },
         { path: '/insights', label: 'AI Insights', icon: Sparkles, testId: 'nav-insights' },
         { path: '/schedule-messages', label: 'Scheduled Messages', icon: Calendar, testId: 'nav-messages' },
         { path: '/documents', label: 'Documents', icon: FolderLock, testId: 'nav-documents' }
