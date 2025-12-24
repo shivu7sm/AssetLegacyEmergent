@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { LayoutDashboard, Wallet, Settings, LogOut, ShieldCheck, FileText, FolderLock, Sparkles, Calendar, Crown, ShieldAlert, FlaskConical, Database, Receipt, Zap, Sun, Moon } from 'lucide-react';
+import { LayoutDashboard, Wallet, Settings, LogOut, ShieldCheck, FileText, FolderLock, Sparkles, Calendar, Crown, ShieldAlert, FlaskConical, Database, Receipt, Zap, Sun, Moon, Calculator } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
@@ -100,6 +100,7 @@ export default function Layout({ children }) {
   const baseNavItems = [
     { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, testId: 'nav-dashboard' },
     { path: '/assets', label: 'Assets', icon: Wallet, testId: 'nav-assets' },
+    { path: '/loan-calculator', label: 'Loan Calculator', icon: Calculator, testId: 'nav-loan-calculator' },
     { path: '/income-expense', label: 'Income & Expenses', icon: Receipt, testId: 'nav-income-expense' },
     { path: '/tax-blueprint', label: 'Tax & Wealth', icon: Zap, testId: 'nav-tax-blueprint' },
     { path: '/insights', label: 'AI Insights', icon: Sparkles, testId: 'nav-insights' },
