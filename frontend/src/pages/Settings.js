@@ -1970,11 +1970,23 @@ export default function Settings() {
                 <TabsTrigger 
                   key={section.id}
                   value={section.id}
-                  className="flex items-center gap-2 px-3 py-2.5 rounded-lg transition-all"
+                  className="flex items-center gap-2 px-3 py-2.5 rounded-lg transition-all hover:scale-[1.03]"
                   style={{
                     background: isActive ? theme.primaryGradient : 'transparent',
                     color: isActive ? '#ffffff' : theme.textSecondary,
                     fontWeight: isActive ? '600' : '400'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isActive) {
+                      e.currentTarget.style.background = theme.backgroundSecondary;
+                      e.currentTarget.style.color = theme.text;
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isActive) {
+                      e.currentTarget.style.background = 'transparent';
+                      e.currentTarget.style.color = theme.textSecondary;
+                    }
                   }}
                 >
                   <Icon className="w-4 h-4" />
