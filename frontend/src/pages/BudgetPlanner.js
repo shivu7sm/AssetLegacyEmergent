@@ -681,6 +681,23 @@ export default function BudgetPlanner() {
             </CardContent>
           </Card>
         )}
+          </TabsContent>
+
+          {/* Trends View - Placeholder for Phase 2 */}
+          <TabsContent value="trends" className="space-y-6 mt-6">
+            <Card style={{background: theme.cardBg, borderColor: theme.border}}>
+              <CardContent className="py-12 text-center">
+                <BarChart className="w-16 h-16 mx-auto mb-4" style={{color: theme.textSecondary, opacity: 0.5}} />
+                <h3 className="text-xl font-semibold mb-2" style={{color: theme.text}}>
+                  6-Month Trends Coming Soon
+                </h3>
+                <p style={{color: theme.textSecondary}}>
+                  Historical budget comparison and trends will be available here
+                </p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </Layout>
   );
