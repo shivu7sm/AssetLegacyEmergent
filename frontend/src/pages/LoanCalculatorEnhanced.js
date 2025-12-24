@@ -35,6 +35,9 @@ export default function LoanCalculatorEnhanced() {
   const { theme } = useTheme();
   const [loading, setLoading] = useState(false);
   const [loadingTips, setLoadingTips] = useState(false);
+  const [loadingLoans, setLoadingLoans] = useState(true);
+  const [existingLoans, setExistingLoans] = useState([]);
+  const [selectedLoanId, setSelectedLoanId] = useState(null);
   const [formData, setFormData] = useState({
     principal: '',
     annual_interest_rate: '',
@@ -44,6 +47,40 @@ export default function LoanCalculatorEnhanced() {
   const [result, setResult] = useState(null);
   const [selectedScenario, setSelectedScenario] = useState('base');
   const [activeTab, setActiveTab] = useState('calculator');
+
+  // Fetch user's existing loans on mount
+  useEffect(() => {
+    fetchExistingLoans();
+  }, []);
+
+  const fetchExistingLoans = async () => {
+    try {
+      const response = await axios.get(`${API}/assets`, { withCredentials: true });
+      const loans = response.data.filter(asset => 
+        asset.type === 'loan' || asset.type === 'credit_card'
+      );
+      setExistingLoans(loans);
+    } catch (error) {
+      console.error('Failed to fetch loans:', error);
+    } finally {
+      setLoadingLoans(false);
+    }
+  };
+
+  const loadLoanData = (loan) => {
+    setSelectedLoanId(loan.id);
+    const loanType = loan.type === 'credit_card' ? 'credit_card' : 
+                     loan.metadata?.loan_type || 'personal';
+    
+    setFormData({
+      principal: loan.principal_amount || loan.total_value || '',
+      annual_interest_rate: loan.interest_rate || '',
+      tenure_months: loan.tenure_months || '',
+      loan_type: loanType
+    });
+    
+    toast.success(`Loaded: ${loan.name}`);
+  };
 
   const handleCalculate = async (e) => {
     e.preventDefault();
