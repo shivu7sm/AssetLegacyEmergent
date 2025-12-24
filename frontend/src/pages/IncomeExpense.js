@@ -453,15 +453,16 @@ export default function IncomeExpense() {
 
         {/* Tabs for Summary, Income, Expenses */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-3 p-1 mb-6" style={{background: theme.cardBg, borderColor: theme.border, border: `2px solid ${theme.border}`}}>
+          <TabsList className="grid w-full grid-cols-3 mb-6" style={{background: theme.cardBg, borderColor: theme.border, border: `2px solid ${theme.border}`, padding: '4px'}}>
             <TabsTrigger 
               value="summary"
-              className="flex items-center gap-2 px-4 py-3 rounded-lg transition-all hover:scale-[1.03]"
+              className="flex items-center justify-center gap-2 py-3 rounded-lg transition-all hover:scale-[1.03]"
               style={{
                 background: activeTab === 'summary' ? theme.primaryGradient : 'transparent',
                 color: activeTab === 'summary' ? '#ffffff' : theme.textSecondary,
                 fontWeight: activeTab === 'summary' ? '600' : '400',
-                fontSize: '0.95rem'
+                fontSize: '0.95rem',
+                minHeight: '48px'
               }}
               onMouseEnter={(e) => {
                 if (activeTab !== 'summary') {
@@ -481,12 +482,13 @@ export default function IncomeExpense() {
             </TabsTrigger>
             <TabsTrigger 
               value="income"
-              className="flex items-center gap-2 px-4 py-3 rounded-lg transition-all hover:scale-[1.03]"
+              className="flex items-center justify-center gap-2 py-3 rounded-lg transition-all hover:scale-[1.03]"
               style={{
                 background: activeTab === 'income' ? theme.primaryGradient : 'transparent',
                 color: activeTab === 'income' ? '#ffffff' : theme.textSecondary,
                 fontWeight: activeTab === 'income' ? '600' : '400',
-                fontSize: '0.95rem'
+                fontSize: '0.95rem',
+                minHeight: '48px'
               }}
               onMouseEnter={(e) => {
                 if (activeTab !== 'income') {
@@ -506,12 +508,13 @@ export default function IncomeExpense() {
             </TabsTrigger>
             <TabsTrigger 
               value="expenses"
-              className="flex items-center gap-2 px-4 py-3 rounded-lg transition-all hover:scale-[1.03]"
+              className="flex items-center justify-center gap-2 py-3 rounded-lg transition-all hover:scale-[1.03]"
               style={{
                 background: activeTab === 'expenses' ? theme.primaryGradient : 'transparent',
                 color: activeTab === 'expenses' ? '#ffffff' : theme.textSecondary,
                 fontWeight: activeTab === 'expenses' ? '600' : '400',
-                fontSize: '0.95rem'
+                fontSize: '0.95rem',
+                minHeight: '48px'
               }}
               onMouseEnter={(e) => {
                 if (activeTab !== 'expenses') {
