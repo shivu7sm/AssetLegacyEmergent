@@ -461,13 +461,43 @@ export default function Layout({ children }) {
         }}
       >
         <div className="h-full overflow-y-auto p-3 space-y-1">
-          {navigationStructure.map((item) => (
-            item.type === 'single' ? (
+          {navigationStructure.map((item, index) => {
+            // Section Header
+            if (item.type === 'section-header') {
+              return (
+                <div key={`header-${index}`} className={`${index > 0 ? 'mt-6' : 'mt-0'} mb-2`}>
+                  {sidebarOpen ? (
+                    <div>
+                      <h3 className="text-xs font-bold uppercase tracking-wider px-3 mb-1" style={{color: theme.primary}}>
+                        {item.label}
+                      </h3>
+                      <p className="text-xs px-3 mb-2" style={{color: theme.textSecondary}}>
+                        {item.description}
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="h-px mx-2 my-2" style={{background: theme.border}} />
+                  )}
+                </div>
+              );
+            }
+            
+            // Divider
+            if (item.type === 'divider') {
+              return (
+                <div key={`divider-${index}`} className="my-4">
+                  <div className="h-px mx-2" style={{background: theme.border}} />
+                </div>
+              );
+            }
+            
+            // Single Item or Group
+            return item.type === 'single' ? (
               <NavItem key={item.path} item={item} />
-            ) : (
+            ) : item.type === 'group' ? (
               <NavGroup key={item.key} group={item} />
-            )
-          ))}
+            ) : null;
+          })}
         </div>
 
         {/* Subscription Badge - Bottom */}
