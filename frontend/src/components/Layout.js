@@ -1,7 +1,12 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { LayoutDashboard, Wallet, Settings, LogOut, ShieldCheck, FileText, FolderLock, Sparkles, Calendar, Crown, ShieldAlert, FlaskConical, Database, Receipt, Zap, Sun, Moon, Calculator } from 'lucide-react';
+import { 
+  LayoutDashboard, Wallet, Settings, LogOut, ShieldCheck, FileText, 
+  FolderLock, Sparkles, Calendar, Crown, ShieldAlert, FlaskConical, 
+  Database, Receipt, Zap, Sun, Moon, Calculator, ChevronDown, ChevronRight,
+  Menu, X, TrendingUp, BookOpen
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
@@ -34,15 +39,18 @@ export default function Layout({ children }) {
   const [demoMode, setDemoMode] = useState(false);
   const [togglingDemo, setTogglingDemo] = useState(false);
   const [userSubscription, setUserSubscription] = useState(null);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [expandedSections, setExpandedSections] = useState({
+    wealth: true,
+    tools: true
+  });
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    // Check if user is admin
     if (user && user.role === 'admin') {
       setIsAdmin(true);
     }
-    // Check demo mode status
     checkDemoStatus();
-    // Fetch subscription status
     fetchSubscription();
   }, [user]);
 
@@ -70,7 +78,6 @@ export default function Layout({ children }) {
       const response = await axios.post(`${API}/demo/toggle`, {}, { withCredentials: true });
       setDemoMode(response.data.demo_mode);
       toast.success(response.data.message);
-      // Refresh the page to reload data
       window.location.reload();
     } catch (error) {
       console.error('Failed to toggle demo mode:', error);
@@ -83,311 +90,346 @@ export default function Layout({ children }) {
   const handleLogout = async () => {
     try {
       await axios.post(`${API}/auth/logout`, {}, { withCredentials: true });
-      // Clear session storage and localStorage token
-      sessionStorage.clear();
       localStorage.removeItem('session_token');
-      toast.success('Logged out successfully');
       navigate('/');
+      toast.success('Logged out successfully');
     } catch (error) {
       console.error('Logout failed:', error);
-      // Even if API call fails, clear local data
-      localStorage.removeItem('session_token');
-      sessionStorage.clear();
-      toast.error('Logout failed');
+      toast.error('Failed to logout');
     }
   };
-
-  const baseNavItems = [
-    { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, testId: 'nav-dashboard' },
-    { path: '/assets', label: 'Assets', icon: Wallet, testId: 'nav-assets' },
-    { path: '/loan-calculator', label: 'Loan Calculator', icon: Calculator, testId: 'nav-loan-calculator' },
-    { path: '/income-expense', label: 'Income & Expenses', icon: Receipt, testId: 'nav-income-expense' },
-    { path: '/tax-blueprint', label: 'Tax & Wealth', icon: Zap, testId: 'nav-tax-blueprint' },
-    { path: '/insights', label: 'AI Insights', icon: Sparkles, testId: 'nav-insights' },
-    { path: '/schedule-messages', label: 'Messages', icon: Calendar, testId: 'nav-messages' },
-    { path: '/documents', label: 'Documents', icon: FolderLock, testId: 'nav-documents' },
-    { path: '/settings', label: 'Settings', icon: Settings, testId: 'nav-settings' }
-  ];
-
-  // Add Admin link if user is admin
-  const navItems = isAdmin 
-    ? [...baseNavItems, { path: '/admin', label: 'Admin', icon: ShieldAlert, testId: 'nav-admin' }]
-    : baseNavItems;
 
   const handleCurrencyChange = async (currency) => {
     await setSelectedCurrency(currency);
     toast.success(`Currency changed to ${currency}`);
   };
 
-  return (
-    <div className="min-h-screen" style={{
-      background: theme.background,
-      transition: 'background-color 0.3s ease'
-    }}>
-      {/* MVP Ribbon */}
-      <div 
-        className="fixed top-0 left-0 z-50 overflow-hidden"
+  const toggleSection = (section) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
+
+  // Navigation structure with groups
+  const navigationStructure = [
+    {
+      type: 'single',
+      path: '/dashboard',
+      label: 'Dashboard',
+      icon: LayoutDashboard,
+      testId: 'nav-dashboard'
+    },
+    {
+      type: 'group',
+      key: 'wealth',
+      label: 'Wealth Management',
+      icon: TrendingUp,
+      items: [
+        { path: '/assets', label: 'Assets & Liabilities', icon: Wallet, testId: 'nav-assets' },
+        { path: '/loan-calculator', label: 'Loan Calculator', icon: Calculator, testId: 'nav-loan-calculator' },
+        { path: '/income-expense', label: 'Income & Expenses', icon: Receipt, testId: 'nav-income-expense' }
+      ]
+    },
+    {
+      type: 'single',
+      path: '/tax-blueprint',
+      label: 'Tax & Planning',
+      icon: Zap,
+      testId: 'nav-tax-blueprint'
+    },
+    {
+      type: 'group',
+      key: 'tools',
+      label: 'Tools & Insights',
+      icon: BookOpen,
+      items: [
+        { path: '/insights', label: 'AI Insights', icon: Sparkles, testId: 'nav-insights' },
+        { path: '/schedule-messages', label: 'Scheduled Messages', icon: Calendar, testId: 'nav-messages' },
+        { path: '/documents', label: 'Documents', icon: FolderLock, testId: 'nav-documents' }
+      ]
+    },
+    {
+      type: 'single',
+      path: '/settings',
+      label: 'Settings',
+      icon: Settings,
+      testId: 'nav-settings'
+    }
+  ];
+
+  // Add admin if applicable
+  if (isAdmin) {
+    navigationStructure.push({
+      type: 'single',
+      path: '/admin',
+      label: 'Admin Panel',
+      icon: ShieldAlert,
+      testId: 'nav-admin'
+    });
+  }
+
+  const NavItem = ({ item, isChild = false }) => {
+    const Icon = item.icon;
+    const isActive = location.pathname === item.path;
+    
+    return (
+      <button
+        data-testid={item.testId}
+        onClick={() => {
+          navigate(item.path);
+          setMobileMenuOpen(false);
+        }}
+        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${
+          isChild ? 'pl-11' : ''
+        }`}
         style={{
-          width: '150px',
-          height: '150px',
-          pointerEvents: 'none'
+          background: isActive ? theme.primaryGradient : 'transparent',
+          color: isActive ? '#ffffff' : theme.text,
+          fontWeight: isActive ? '600' : '400'
         }}
       >
-        <div 
-          className="absolute transform -rotate-45 text-center font-bold text-xs"
+        <Icon className="w-4 h-4 flex-shrink-0" />
+        {sidebarOpen && <span className="text-sm">{item.label}</span>}
+      </button>
+    );
+  };
+
+  const NavGroup = ({ group }) => {
+    const Icon = group.icon;
+    const isExpanded = expandedSections[group.key];
+    const hasActiveChild = group.items.some(item => location.pathname === item.path);
+    
+    return (
+      <div>
+        <button
+          onClick={() => toggleSection(group.key)}
+          className="w-full flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg transition-all"
           style={{
-            background: theme.primaryGradient,
-            color: 'white',
-            width: '200px',
-            padding: '8px 0',
-            top: '30px',
-            left: '-50px',
-            boxShadow: colorTheme === 'dark' ? '0 4px 12px rgba(236, 72, 153, 0.5)' : '0 4px 12px rgba(139, 92, 246, 0.3)',
-            letterSpacing: '1px'
+            background: hasActiveChild ? 'rgba(168, 85, 247, 0.1)' : 'transparent',
+            color: theme.text,
+            fontWeight: hasActiveChild ? '600' : '500'
           }}
         >
-          🚀 MVP
-        </div>
+          <div className="flex items-center gap-3">
+            <Icon className="w-4 h-4 flex-shrink-0" />
+            {sidebarOpen && <span className="text-sm">{group.label}</span>}
+          </div>
+          {sidebarOpen && (
+            isExpanded ? 
+              <ChevronDown className="w-4 h-4" /> : 
+              <ChevronRight className="w-4 h-4" />
+          )}
+        </button>
+        
+        {isExpanded && sidebarOpen && (
+          <div className="mt-1 space-y-1">
+            {group.items.map((item) => (
+              <NavItem key={item.path} item={item} isChild={true} />
+            ))}
+          </div>
+        )}
       </div>
+    );
+  };
 
-      {/* Header */}
-      <header className="backdrop-blur-xl sticky top-0 z-50" style={{
-        borderBottom: `1px solid ${theme.border}`, 
-        background: theme.headerBg,
-        transition: 'all 0.3s ease'
-      }}>
-        <div className="container mx-auto px-4 py-3">
+  return (
+    <div className="min-h-screen" style={{ background: theme.background }}>
+      {/* Top Header */}
+      <header 
+        className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl"
+        style={{
+          borderBottom: `1px solid ${theme.border}`,
+          background: theme.headerBg
+        }}
+      >
+        <div className="px-4 py-3">
           <div className="flex justify-between items-center">
-            {/* Logo */}
-            <div className="flex items-center gap-2 min-w-fit">
-              <ShieldCheck className="w-7 h-7" style={{color: theme.primary}} />
-              <h1 className="text-xl font-bold whitespace-nowrap" style={{fontFamily: 'Space Grotesk, sans-serif', color: theme.text}}>AssetVault</h1>
-            </div>
-            
-            {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-1 flex-1 justify-center">
-              {navItems.map((item) => {
-                const Icon = item.icon;
-                const isActive = location.pathname === item.path;
-                return (
-                  <button
-                    key={item.path}
-                    data-testid={item.testId}
-                    onClick={() => navigate(item.path)}
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-lg transition-all text-sm"
-                    style={{
-                      background: isActive ? theme.primaryGradient : 'transparent',
-                      color: isActive ? (colorTheme === 'dark' ? '#f8fafc' : '#ffffff') : theme.textTertiary
-                    }}
-                  >
-                    <Icon className="w-4 h-4" />
-                    <span className="hidden xl:inline">{item.label}</span>
-                  </button>
-                );
-              })}
-            </nav>
-
-            {/* Actions */}
-            <div className="flex items-center gap-2 min-w-fit">
-              {/* Demo Mode Toggle - Prominent Display */}
-              <div className="relative">
-                <button
-                  onClick={toggleDemoMode}
-                  disabled={togglingDemo}
-                  className="flex items-center gap-2 px-4 py-2 rounded-full transition-all text-sm font-bold shadow-lg"
-                  style={{
-                    background: demoMode 
-                      ? 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' 
-                      : 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-                    color: '#fff',
-                    border: '2px solid rgba(255,255,255,0.3)',
-                    boxShadow: demoMode 
-                      ? '0 4px 12px rgba(245, 158, 11, 0.4)' 
-                      : '0 4px 12px rgba(16, 185, 129, 0.4)'
-                  }}
-                  title={demoMode ? 'Click to switch to Live Data' : 'Click to switch to Demo Mode'}
-                >
-                  {demoMode ? (
-                    <>
-                      <FlaskConical className="w-4 h-4" />
-                      <span>DEMO</span>
-                    </>
-                  ) : (
-                    <>
-                      <Database className="w-4 h-4" />
-                      <span>LIVE</span>
-                    </>
-                  )}
-                </button>
-                
-                {/* Pulsing indicator */}
-                <span 
-                  className="absolute top-0 right-0 w-3 h-3 rounded-full animate-pulse"
-                  style={{
-                    background: demoMode ? '#f59e0b' : '#10b981',
-                    boxShadow: demoMode 
-                      ? '0 0 8px rgba(245, 158, 11, 0.6)' 
-                      : '0 0 8px rgba(16, 185, 129, 0.6)'
-                  }}
-                />
-              </div>
-
-              {/* Theme Toggle */}
+            {/* Left: Logo + Hamburger */}
+            <div className="flex items-center gap-4">
               <button
-                onClick={toggleColorTheme}
-                className="p-2 rounded-lg transition-all hover:scale-110"
-                style={{
-                  background: theme.backgroundSecondary,
-                  border: `1px solid ${theme.border}`,
-                  color: theme.text
-                }}
-                title={colorTheme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+                className="p-2 rounded-lg hover:bg-opacity-80 transition-all hidden lg:block"
+                style={{ background: theme.backgroundSecondary }}
               >
-                {colorTheme === 'dark' ? (
-                  <Sun className="w-4 h-4" />
+                <Menu className="w-5 h-5" style={{ color: theme.text }} />
+              </button>
+              
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="p-2 rounded-lg lg:hidden"
+                style={{ background: theme.backgroundSecondary }}
+              >
+                {mobileMenuOpen ? 
+                  <X className="w-5 h-5" style={{ color: theme.text }} /> :
+                  <Menu className="w-5 h-5" style={{ color: theme.text }} />
+                }
+              </button>
+
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="w-6 h-6" style={{ color: theme.primary }} />
+                <h1 className="text-lg font-bold" style={{ fontFamily: 'Space Grotesk, sans-serif', color: theme.text }}>
+                  AssetVault
+                </h1>
+              </div>
+            </div>
+
+            {/* Right: Actions */}
+            <div className="flex items-center gap-3">
+              {/* Demo/Live Toggle */}
+              <button
+                onClick={toggleDemoMode}
+                disabled={togglingDemo}
+                className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg transition-all"
+                style={{
+                  background: demoMode 
+                    ? 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' 
+                    : 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                  color: '#fff'
+                }}
+              >
+                {demoMode ? (
+                  <>
+                    <FlaskConical className="w-3 h-3" />
+                    <span>DEMO</span>
+                  </>
                 ) : (
-                  <Moon className="w-4 h-4" />
+                  <>
+                    <Database className="w-3 h-3" />
+                    <span>LIVE</span>
+                  </>
                 )}
               </button>
 
               {/* Currency Selector */}
               <Select value={selectedCurrency} onValueChange={handleCurrencyChange}>
                 <SelectTrigger 
-                  className="w-24 h-9 text-sm" 
+                  className="w-24 h-9 text-xs hidden sm:flex"
                   style={{
-                    background: theme.backgroundSecondary, 
-                    borderColor: theme.border, 
-                    color: theme.text,
-                    transition: 'all 0.3s ease'
+                    background: theme.backgroundSecondary,
+                    borderColor: theme.border,
+                    color: theme.text
                   }}
                 >
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent style={{
-                  background: theme.backgroundSecondary, 
-                  borderColor: theme.border
-                }}>
-                  {CURRENCIES.map(curr => (
-                    <SelectItem key={curr.value} value={curr.value} style={{color: theme.text}}>
+                <SelectContent style={{ background: theme.cardBg, borderColor: theme.border }}>
+                  {CURRENCIES.map((curr) => (
+                    <SelectItem key={curr.value} value={curr.value} style={{ color: theme.text }}>
                       {curr.label}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
 
-              <Button 
-                data-testid="logout-btn"
-                onClick={handleLogout} 
-                size="sm"
-                variant="outline" 
-                className="h-9"
+              {/* Theme Toggle */}
+              <button
+                onClick={toggleColorTheme}
+                className="p-2 rounded-lg transition-all"
                 style={{
-                  borderColor: theme.border, 
-                  color: theme.textTertiary,
-                  transition: 'all 0.3s ease'
+                  background: theme.backgroundSecondary,
+                  border: `1px solid ${theme.border}`,
+                  color: theme.text
                 }}
               >
-                <LogOut className="w-4 h-4 lg:mr-2" />
-                <span className="hidden lg:inline">Logout</span>
-              </Button>
+                {colorTheme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              </button>
+
+              {/* User Menu */}
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all text-sm"
+                style={{
+                  background: theme.backgroundSecondary,
+                  border: `1px solid ${theme.border}`,
+                  color: theme.text
+                }}
+              >
+                <LogOut className="w-4 h-4" />
+                <span className="hidden sm:inline">Logout</span>
+              </button>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Mobile Navigation */}
-      <div 
-        className="md:hidden fixed bottom-0 left-0 right-0 z-50" 
+      {/* Left Sidebar - Desktop */}
+      <aside
+        className={`hidden lg:block fixed left-0 top-[57px] bottom-0 z-40 transition-all duration-300 ${
+          sidebarOpen ? 'w-64' : 'w-16'
+        }`}
         style={{
-          background: theme.backgroundSecondary, 
-          borderTop: `1px solid ${theme.border}`,
-          transition: 'all 0.3s ease'
+          background: theme.cardBg,
+          borderRight: `1px solid ${theme.border}`
         }}
       >
-        <div className="flex justify-around items-center py-3">
-          {navItems.slice(0, 5).map((item) => {
-            const Icon = item.icon;
-            const isActive = location.pathname === item.path;
-            return (
-              <button
-                key={item.path}
-                data-testid={`${item.testId}-mobile`}
-                onClick={() => navigate(item.path)}
-                className="flex flex-col items-center gap-1 px-4 py-2 rounded-lg"
-                style={{color: isActive ? theme.primary : theme.textTertiary}}
-              >
-                <Icon className="w-6 h-6" />
-                <span className="text-xs">{item.label}</span>
-              </button>
-            );
-          })}
+        <div className="h-full overflow-y-auto p-3 space-y-1">
+          {navigationStructure.map((item) => (
+            item.type === 'single' ? (
+              <NavItem key={item.path} item={item} />
+            ) : (
+              <NavGroup key={item.key} group={item} />
+            )
+          ))}
         </div>
-      </div>
 
-      {/* Main Content */}
-      <main className="container mx-auto px-6 py-8 pb-24 md:pb-8">
-        {children}
-      </main>
+        {/* Subscription Badge - Bottom */}
+        {sidebarOpen && userSubscription && (
+          <div className="absolute bottom-4 left-3 right-3">
+            <div
+              className="p-3 rounded-lg text-center"
+              style={{
+                background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)',
+                color: '#fff'
+              }}
+            >
+              <Crown className="w-5 h-5 mx-auto mb-1" />
+              <div className="text-xs font-bold">{userSubscription.plan || 'Free'} Plan</div>
+            </div>
+          </div>
+        )}
+      </aside>
 
-      {/* Floating Quick Actions - Available throughout the app */}
-      <FloatingQuickActions />
-
-      {/* Floating Subscription Button - Only show if not subscribed or on Free plan */}
-      {(!userSubscription || userSubscription.plan === 'Free') && (
-        <div 
-          className="fixed bottom-24 md:bottom-8 right-6"
-          style={{
-            zIndex: 9999,
-            animation: 'bounce 2s infinite',
-            pointerEvents: 'auto'
-          }}
-        >
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              console.log('Upgrade button clicked, navigating to /subscription');
-              navigate('/subscription');
-            }}
-            className="flex items-center gap-3 px-6 py-3 rounded-full shadow-2xl transition-all hover:scale-105 relative"
-            style={{
-              background: 'linear-gradient(135deg, #ec4899 0%, #a855f7 100%)',
-              color: '#fff',
-              border: '2px solid rgba(255,255,255,0.3)',
-              boxShadow: '0 8px 24px rgba(236, 72, 153, 0.5)',
-              fontWeight: 'bold',
-              cursor: 'pointer',
-              zIndex: 2
-            }}
-            title="Upgrade to Premium"
-          >
-            <Crown className="w-5 h-5" />
-            <span className="hidden sm:inline">Upgrade</span>
-            <span className="inline sm:hidden">Pro</span>
-          </button>
-          
-          {/* Pulsing ring */}
-          <span 
-            className="absolute inset-0 rounded-full animate-ping opacity-30"
-            style={{
-              background: 'linear-gradient(135deg, #ec4899 0%, #a855f7 100%)',
-              zIndex: 1,
-              pointerEvents: 'none'
-            }}
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden fixed inset-0 z-40 top-[57px]">
+          <div
+            className="absolute inset-0 bg-black bg-opacity-50"
+            onClick={() => setMobileMenuOpen(false)}
           />
+          <aside
+            className="absolute left-0 top-0 bottom-0 w-64 overflow-y-auto"
+            style={{
+              background: theme.cardBg,
+              borderRight: `1px solid ${theme.border}`
+            }}
+          >
+            <div className="p-3 space-y-1">
+              {navigationStructure.map((item) => (
+                item.type === 'single' ? (
+                  <NavItem key={item.path} item={item} />
+                ) : (
+                  <NavGroup key={item.key} group={item} />
+                )
+              ))}
+            </div>
+          </aside>
         </div>
       )}
 
-      <style>{`
-        @keyframes bounce {
-          0%, 100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-10px);
-          }
-        }
-      `}</style>
+      {/* Main Content */}
+      <main
+        className={`transition-all duration-300 pt-[57px] ${
+          sidebarOpen ? 'lg:pl-64' : 'lg:pl-16'
+        }`}
+      >
+        <div className="container mx-auto px-4 py-6">
+          {children}
+        </div>
+      </main>
+
+      {/* Floating Quick Actions */}
+      <FloatingQuickActions />
     </div>
   );
 }

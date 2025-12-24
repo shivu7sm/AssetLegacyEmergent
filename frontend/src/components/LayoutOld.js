@@ -1,0 +1,393 @@
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { LayoutDashboard, Wallet, Settings, LogOut, ShieldCheck, FileText, FolderLock, Sparkles, Calendar, Crown, ShieldAlert, FlaskConical, Database, Receipt, Zap, Sun, Moon, Calculator } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { toast } from 'sonner';
+import { useApp } from '@/context/AppContext';
+import { useAuth } from '@/App';
+import { useTheme } from '@/context/ThemeContext';
+import FloatingQuickActions from '@/components/FloatingQuickActions';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
+
+const CURRENCIES = [
+  { value: 'USD', label: 'USD ($)', symbol: '$' },
+  { value: 'EUR', label: 'EUR (€)', symbol: '€' },
+  { value: 'GBP', label: 'GBP (£)', symbol: '£' },
+  { value: 'INR', label: 'INR (₹)', symbol: '₹' },
+  { value: 'JPY', label: 'JPY (¥)', symbol: '¥' },
+  { value: 'AUD', label: 'AUD (A$)', symbol: 'A$' },
+  { value: 'CAD', label: 'CAD (C$)', symbol: 'C$' },
+  { value: 'SGD', label: 'SGD (S$)', symbol: 'S$' }
+];
+
+export default function Layout({ children }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { selectedCurrency, setSelectedCurrency } = useApp();
+  const { user } = useAuth();
+  const { colorTheme, toggleColorTheme, theme } = useTheme();
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [demoMode, setDemoMode] = useState(false);
+  const [togglingDemo, setTogglingDemo] = useState(false);
+  const [userSubscription, setUserSubscription] = useState(null);
+
+  useEffect(() => {
+    // Check if user is admin
+    if (user && user.role === 'admin') {
+      setIsAdmin(true);
+    }
+    // Check demo mode status
+    checkDemoStatus();
+    // Fetch subscription status
+    fetchSubscription();
+  }, [user]);
+
+  const fetchSubscription = async () => {
+    try {
+      const response = await axios.get(`${API}/subscription/current`, { withCredentials: true });
+      setUserSubscription(response.data);
+    } catch (error) {
+      console.error('Failed to fetch subscription:', error);
+    }
+  };
+
+  const checkDemoStatus = async () => {
+    try {
+      const response = await axios.get(`${API}/demo/status`, { withCredentials: true });
+      setDemoMode(response.data.demo_mode);
+    } catch (error) {
+      console.error('Failed to fetch demo status:', error);
+    }
+  };
+
+  const toggleDemoMode = async () => {
+    setTogglingDemo(true);
+    try {
+      const response = await axios.post(`${API}/demo/toggle`, {}, { withCredentials: true });
+      setDemoMode(response.data.demo_mode);
+      toast.success(response.data.message);
+      // Refresh the page to reload data
+      window.location.reload();
+    } catch (error) {
+      console.error('Failed to toggle demo mode:', error);
+      toast.error('Failed to switch mode');
+    } finally {
+      setTogglingDemo(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await axios.post(`${API}/auth/logout`, {}, { withCredentials: true });
+      // Clear session storage and localStorage token
+      sessionStorage.clear();
+      localStorage.removeItem('session_token');
+      toast.success('Logged out successfully');
+      navigate('/');
+    } catch (error) {
+      console.error('Logout failed:', error);
+      // Even if API call fails, clear local data
+      localStorage.removeItem('session_token');
+      sessionStorage.clear();
+      toast.error('Logout failed');
+    }
+  };
+
+  const baseNavItems = [
+    { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, testId: 'nav-dashboard' },
+    { path: '/assets', label: 'Assets', icon: Wallet, testId: 'nav-assets' },
+    { path: '/loan-calculator', label: 'Loan Calculator', icon: Calculator, testId: 'nav-loan-calculator' },
+    { path: '/income-expense', label: 'Income & Expenses', icon: Receipt, testId: 'nav-income-expense' },
+    { path: '/tax-blueprint', label: 'Tax & Wealth', icon: Zap, testId: 'nav-tax-blueprint' },
+    { path: '/insights', label: 'AI Insights', icon: Sparkles, testId: 'nav-insights' },
+    { path: '/schedule-messages', label: 'Messages', icon: Calendar, testId: 'nav-messages' },
+    { path: '/documents', label: 'Documents', icon: FolderLock, testId: 'nav-documents' },
+    { path: '/settings', label: 'Settings', icon: Settings, testId: 'nav-settings' }
+  ];
+
+  // Add Admin link if user is admin
+  const navItems = isAdmin 
+    ? [...baseNavItems, { path: '/admin', label: 'Admin', icon: ShieldAlert, testId: 'nav-admin' }]
+    : baseNavItems;
+
+  const handleCurrencyChange = async (currency) => {
+    await setSelectedCurrency(currency);
+    toast.success(`Currency changed to ${currency}`);
+  };
+
+  return (
+    <div className="min-h-screen" style={{
+      background: theme.background,
+      transition: 'background-color 0.3s ease'
+    }}>
+      {/* MVP Ribbon */}
+      <div 
+        className="fixed top-0 left-0 z-50 overflow-hidden"
+        style={{
+          width: '150px',
+          height: '150px',
+          pointerEvents: 'none'
+        }}
+      >
+        <div 
+          className="absolute transform -rotate-45 text-center font-bold text-xs"
+          style={{
+            background: theme.primaryGradient,
+            color: 'white',
+            width: '200px',
+            padding: '8px 0',
+            top: '30px',
+            left: '-50px',
+            boxShadow: colorTheme === 'dark' ? '0 4px 12px rgba(236, 72, 153, 0.5)' : '0 4px 12px rgba(139, 92, 246, 0.3)',
+            letterSpacing: '1px'
+          }}
+        >
+          🚀 MVP
+        </div>
+      </div>
+
+      {/* Header */}
+      <header className="backdrop-blur-xl sticky top-0 z-50" style={{
+        borderBottom: `1px solid ${theme.border}`, 
+        background: theme.headerBg,
+        transition: 'all 0.3s ease'
+      }}>
+        <div className="container mx-auto px-4 py-3">
+          <div className="flex justify-between items-center">
+            {/* Logo */}
+            <div className="flex items-center gap-2 min-w-fit">
+              <ShieldCheck className="w-7 h-7" style={{color: theme.primary}} />
+              <h1 className="text-xl font-bold whitespace-nowrap" style={{fontFamily: 'Space Grotesk, sans-serif', color: theme.text}}>AssetVault</h1>
+            </div>
+            
+            {/* Desktop Navigation */}
+            <nav className="hidden lg:flex items-center gap-1 flex-1 justify-center">
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                const isActive = location.pathname === item.path;
+                return (
+                  <button
+                    key={item.path}
+                    data-testid={item.testId}
+                    onClick={() => navigate(item.path)}
+                    className="flex items-center gap-1.5 px-3 py-2 rounded-lg transition-all text-sm"
+                    style={{
+                      background: isActive ? theme.primaryGradient : 'transparent',
+                      color: isActive ? (colorTheme === 'dark' ? '#f8fafc' : '#ffffff') : theme.textTertiary
+                    }}
+                  >
+                    <Icon className="w-4 h-4" />
+                    <span className="hidden xl:inline">{item.label}</span>
+                  </button>
+                );
+              })}
+            </nav>
+
+            {/* Actions */}
+            <div className="flex items-center gap-2 min-w-fit">
+              {/* Demo Mode Toggle - Prominent Display */}
+              <div className="relative">
+                <button
+                  onClick={toggleDemoMode}
+                  disabled={togglingDemo}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full transition-all text-sm font-bold shadow-lg"
+                  style={{
+                    background: demoMode 
+                      ? 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' 
+                      : 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                    color: '#fff',
+                    border: '2px solid rgba(255,255,255,0.3)',
+                    boxShadow: demoMode 
+                      ? '0 4px 12px rgba(245, 158, 11, 0.4)' 
+                      : '0 4px 12px rgba(16, 185, 129, 0.4)'
+                  }}
+                  title={demoMode ? 'Click to switch to Live Data' : 'Click to switch to Demo Mode'}
+                >
+                  {demoMode ? (
+                    <>
+                      <FlaskConical className="w-4 h-4" />
+                      <span>DEMO</span>
+                    </>
+                  ) : (
+                    <>
+                      <Database className="w-4 h-4" />
+                      <span>LIVE</span>
+                    </>
+                  )}
+                </button>
+                
+                {/* Pulsing indicator */}
+                <span 
+                  className="absolute top-0 right-0 w-3 h-3 rounded-full animate-pulse"
+                  style={{
+                    background: demoMode ? '#f59e0b' : '#10b981',
+                    boxShadow: demoMode 
+                      ? '0 0 8px rgba(245, 158, 11, 0.6)' 
+                      : '0 0 8px rgba(16, 185, 129, 0.6)'
+                  }}
+                />
+              </div>
+
+              {/* Theme Toggle */}
+              <button
+                onClick={toggleColorTheme}
+                className="p-2 rounded-lg transition-all hover:scale-110"
+                style={{
+                  background: theme.backgroundSecondary,
+                  border: `1px solid ${theme.border}`,
+                  color: theme.text
+                }}
+                title={colorTheme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+              >
+                {colorTheme === 'dark' ? (
+                  <Sun className="w-4 h-4" />
+                ) : (
+                  <Moon className="w-4 h-4" />
+                )}
+              </button>
+
+              {/* Currency Selector */}
+              <Select value={selectedCurrency} onValueChange={handleCurrencyChange}>
+                <SelectTrigger 
+                  className="w-24 h-9 text-sm" 
+                  style={{
+                    background: theme.backgroundSecondary, 
+                    borderColor: theme.border, 
+                    color: theme.text,
+                    transition: 'all 0.3s ease'
+                  }}
+                >
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent style={{
+                  background: theme.backgroundSecondary, 
+                  borderColor: theme.border
+                }}>
+                  {CURRENCIES.map(curr => (
+                    <SelectItem key={curr.value} value={curr.value} style={{color: theme.text}}>
+                      {curr.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <Button 
+                data-testid="logout-btn"
+                onClick={handleLogout} 
+                size="sm"
+                variant="outline" 
+                className="h-9"
+                style={{
+                  borderColor: theme.border, 
+                  color: theme.textTertiary,
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                <LogOut className="w-4 h-4 lg:mr-2" />
+                <span className="hidden lg:inline">Logout</span>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Mobile Navigation */}
+      <div 
+        className="md:hidden fixed bottom-0 left-0 right-0 z-50" 
+        style={{
+          background: theme.backgroundSecondary, 
+          borderTop: `1px solid ${theme.border}`,
+          transition: 'all 0.3s ease'
+        }}
+      >
+        <div className="flex justify-around items-center py-3">
+          {navItems.slice(0, 5).map((item) => {
+            const Icon = item.icon;
+            const isActive = location.pathname === item.path;
+            return (
+              <button
+                key={item.path}
+                data-testid={`${item.testId}-mobile`}
+                onClick={() => navigate(item.path)}
+                className="flex flex-col items-center gap-1 px-4 py-2 rounded-lg"
+                style={{color: isActive ? theme.primary : theme.textTertiary}}
+              >
+                <Icon className="w-6 h-6" />
+                <span className="text-xs">{item.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <main className="container mx-auto px-6 py-8 pb-24 md:pb-8">
+        {children}
+      </main>
+
+      {/* Floating Quick Actions - Available throughout the app */}
+      <FloatingQuickActions />
+
+      {/* Floating Subscription Button - Only show if not subscribed or on Free plan */}
+      {(!userSubscription || userSubscription.plan === 'Free') && (
+        <div 
+          className="fixed bottom-24 md:bottom-8 right-6"
+          style={{
+            zIndex: 9999,
+            animation: 'bounce 2s infinite',
+            pointerEvents: 'auto'
+          }}
+        >
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log('Upgrade button clicked, navigating to /subscription');
+              navigate('/subscription');
+            }}
+            className="flex items-center gap-3 px-6 py-3 rounded-full shadow-2xl transition-all hover:scale-105 relative"
+            style={{
+              background: 'linear-gradient(135deg, #ec4899 0%, #a855f7 100%)',
+              color: '#fff',
+              border: '2px solid rgba(255,255,255,0.3)',
+              boxShadow: '0 8px 24px rgba(236, 72, 153, 0.5)',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              zIndex: 2
+            }}
+            title="Upgrade to Premium"
+          >
+            <Crown className="w-5 h-5" />
+            <span className="hidden sm:inline">Upgrade</span>
+            <span className="inline sm:hidden">Pro</span>
+          </button>
+          
+          {/* Pulsing ring */}
+          <span 
+            className="absolute inset-0 rounded-full animate-ping opacity-30"
+            style={{
+              background: 'linear-gradient(135deg, #ec4899 0%, #a855f7 100%)',
+              zIndex: 1,
+              pointerEvents: 'none'
+            }}
+          />
+        </div>
+      )}
+
+      <style>{`
+        @keyframes bounce {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-10px);
+          }
+        }
+      `}</style>
+    </div>
+  );
+}
