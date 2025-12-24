@@ -256,6 +256,21 @@ backend:
       - working: true
         agent: "testing"
         comment: "PASSED - All endpoints correctly filter by demo_mode. Documents, will, scheduled-messages, insights all properly isolated."
+  
+  - task: "Budget Planner Feature (Phase 1 & 2)"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented complete Budget Planner feature with 5 endpoints: 1) GET /api/budget/templates - Returns predefined budget categories (needs, savings, wants). 2) GET /api/budget/analysis - Analyzes budget allocation with 50/30/20 or 65/25/10 rules, auto-categorizes expenses, calculates ideal vs actual amounts, variance, and status. 3) POST /api/budget/save - Saves custom budget allocation with custom_items. 4) GET /api/budget/saved - Retrieves saved budget for a specific month. 5) GET /api/budget/comparison - Returns 6-month trend data with percentages. Auto-categorization logic: Housing/Transportation/Food & Dining/Healthcare/Insurance/Utilities/Debt Payments → Needs, Entertainment/Personal Care/Shopping/Travel/Pets → Wants, Savings & Investments → Savings. Uncategorized expenses default to Needs. Status field: 'over' if variance > 0, 'under' if variance < -100, 'good' otherwise."
+      - working: true
+        agent: "testing"
+        comment: "✅ COMPREHENSIVE TESTING COMPLETE - All Budget Planner endpoints working perfectly! 28/28 tests passed (100% success rate). ENDPOINTS TESTED: 1) GET /api/budget/templates: ✅ Returns 3 arrays (needs: 12 categories, savings: 6 categories, wants: 10 categories). Verified predefined categories like 'Rent / Mortgage', 'Emergency Fund', 'Clothing' are present. 2) GET /api/budget/analysis (50/30/20 rule): ✅ Returns complete response with total_income (127000), total_spent (70500), unallocated (56500), buckets (needs/wants/savings with ideal_amount, ideal_percentage, actual_amount, actual_percentage, variance, status, items), income_sources. Ideal percentages correct: Needs 50%, Wants 30%, Savings 20%. Auto-categorization working: Housing→Needs (5 items), Entertainment→Wants (3 items), Savings & Investments→Savings (1 item). Status field correctly identifies 'under' for all buckets. 3) GET /api/budget/analysis (65/25/10 rule): ✅ Returns different ideal allocations: Needs 65% (82550), Savings 25% (31750), Wants 10% (12700). Calculations differ from 50/30/20 rule as expected. 4) POST /api/budget/save: ✅ Successfully saves custom budget with month, rule, total_income, buckets, custom_items. Returns success response. 5) GET /api/budget/saved: ✅ Retrieves saved budget correctly with all fields including custom_items (Needs=1, Savings=1, Wants=1). Month and rule match saved data. 6) GET /api/budget/comparison (6 months): ✅ Returns array of 6 months (2025-07 through 2025-12) with total_income, needs, wants, savings, needs_percentage, wants_percentage, savings_percentage for each month. Max 6 months enforced. 7) EDGE CASE - Empty month: ✅ Returns zeros for total_income and total_spent when no data exists. 8) AUTO-CATEGORIZATION VERIFICATION: ✅ Housing expenses correctly categorized to Needs, Entertainment to Wants, Savings & Investments to Savings. Uncategorized expenses default to Needs as expected. ALL SUCCESS CRITERIA MET: All 5 endpoints return 200, auto-categorization works correctly, both budget rules calculate different allocations, custom budget save/load works, comparison returns max 6 months, status field correctly identifies 'over', 'under', 'good'. Feature is production-ready!"
 
 
 frontend:
