@@ -6,7 +6,7 @@ import {
   FolderLock, Sparkles, Calendar, Crown, ShieldAlert, FlaskConical, 
   Database, Receipt, Zap, Sun, Moon, Calculator, ChevronDown, ChevronRight,
   Menu, X, TrendingUp, BookOpen, User, Shield, Clock, Eye, Palette, CreditCard, Heart,
-  TrendingDown, PiggyBank, RefreshCw, Link as LinkIcon
+  TrendingDown, PiggyBank, RefreshCw, Link as LinkIcon, Users
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
