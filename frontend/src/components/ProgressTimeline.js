@@ -113,30 +113,96 @@ export default function ProgressTimeline({
           </div>
         </div>
 
-        {/* Horizontal Timeline Steps */}
+        {/* Individual Status Cards - No connecting lines */}
         <div className="relative">
-          {/* Connecting Line */}
-          <div className="absolute top-6 left-0 right-0 h-0.5 hidden md:block" 
-            style={{ 
-              background: theme.backgroundTertiary,
-              zIndex: 0
-            }}
-          />
-          
-          {/* Progress Line */}
-          <div 
-            className="absolute top-6 left-0 h-0.5 hidden md:block transition-all duration-500" 
-            style={{ 
-              width: `${(completedCount / totalSteps) * 100}%`,
-              background: 'linear-gradient(90deg, #10b981 0%, #059669 100%)',
-              zIndex: 1
-            }}
-          />
-
-          {/* Steps */}
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 relative z-10">
-            {steps.map((step, index) => {
+          {/* Cards Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {steps.map((step) => {
               const StepIcon = step.icon;
+              return (
+                <button 
+                  key={step.id}
+                  onClick={step.action}
+                  disabled={!step.action}
+                  className="flex flex-col items-center p-4 rounded-lg transition-all text-center hover:scale-105"
+                  style={{
+                    background: step.completed 
+                      ? (colorTheme === 'light' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(16, 185, 129, 0.15)')
+                      : theme.backgroundSecondary,
+                    border: `2px solid ${step.completed ? '#10b981' : theme.border}`,
+                    cursor: step.action ? 'pointer' : 'default'
+                  }}
+                >
+                  {/* Icon with status */}
+                  <div className="relative mb-3">
+                    <div 
+                      className="w-12 h-12 rounded-full flex items-center justify-center"
+                      style={{
+                        background: step.completed 
+                          ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
+                          : theme.backgroundTertiary,
+                        border: `2px solid ${step.completed ? '#10b981' : theme.border}`
+                      }}
+                    >
+                      <StepIcon 
+                        className="w-6 h-6" 
+                        style={{ color: step.completed ? '#ffffff' : theme.textSecondary }}
+                      />
+                    </div>
+                    
+                    {/* Checkmark badge */}
+                    {step.completed && (
+                      <div 
+                        className="absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center"
+                        style={{
+                          background: '#10b981',
+                          border: '2px solid #ffffff'
+                        }}
+                      >
+                        <CheckCircle2 className="w-3 h-3" style={{ color: '#ffffff' }} />
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* Title */}
+                  <h4 
+                    className="font-semibold text-sm mb-1" 
+                    style={{ 
+                      color: step.completed 
+                        ? (colorTheme === 'light' ? '#059669' : '#10b981')
+                        : theme.text
+                    }}
+                  >
+                    {step.title}
+                  </h4>
+                  
+                  {/* Description */}
+                  <p 
+                    className="text-xs" 
+                    style={{ color: theme.textSecondary }}
+                  >
+                    {step.description}
+                  </p>
+                  
+                  {/* Status badge */}
+                  <div 
+                    className="mt-2 px-2 py-0.5 rounded-full text-xs font-medium"
+                    style={{
+                      background: step.completed 
+                        ? (colorTheme === 'light' ? '#10b98120' : '#10b98130')
+                        : (colorTheme === 'light' ? '#ef444420' : '#ef444430'),
+                      color: step.completed 
+                        ? (colorTheme === 'light' ? '#059669' : '#10b981')
+                        : (colorTheme === 'light' ? '#dc2626' : '#ef4444')
+                    }}
+                  >
+                    {step.completed ? 'Done' : 'Pending'}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
               return (
                 <div 
                   key={step.id}
