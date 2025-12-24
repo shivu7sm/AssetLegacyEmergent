@@ -29,7 +29,7 @@ export default function ProgressTimeline({
       description: 'Add beneficiaries',
       icon: Users,
       completed: nomineeSetup,
-      action: () => navigate('/settings?tab=security')
+      action: () => navigate('/nominees')
     },
     {
       id: 'assets',
@@ -45,7 +45,7 @@ export default function ProgressTimeline({
       description: 'Setup DMS',
       icon: Shield,
       completed: dmsConfigured,
-      action: () => navigate('/settings?tab=dms')
+      action: () => navigate('/dead-man-switch')
     }
   ];
 
