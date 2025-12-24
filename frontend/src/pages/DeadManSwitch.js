@@ -56,13 +56,9 @@ export default function DeadManSwitch() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      if (dms) {
-        await axios.put(`${API}/dms`, formData, { withCredentials: true });
-        toast.success('Dead Man\'s Switch updated successfully');
-      } else {
-        await axios.post(`${API}/dms`, formData, { withCredentials: true });
-        toast.success('Dead Man\'s Switch activated successfully');
-      }
+      // Backend only supports POST for create or update
+      await axios.post(`${API}/dms`, formData, { withCredentials: true });
+      toast.success(dms ? 'Dead Man\'s Switch updated successfully' : 'Dead Man\'s Switch activated successfully');
       fetchDMS();
     } catch (error) {
       console.error('Failed to save DMS:', error);
