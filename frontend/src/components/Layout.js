@@ -294,6 +294,13 @@ export default function Layout({ children }) {
     },
     {
       type: 'single',
+      path: '/income-expense',
+      label: 'Income & Expenses',
+      icon: Receipt,
+      testId: 'nav-income-expense'
+    },
+    {
+      type: 'single',
       path: '/budget-planner',
       label: 'Budget Planner',
       icon: PiggyBank,
@@ -325,13 +332,6 @@ export default function Layout({ children }) {
         { path: '/calculators/swp', label: 'SWP Calculator', icon: TrendingDown, testId: 'nav-swp-calculator' },
         { path: '/calculators/compound', label: 'Compound Interest', icon: Zap, badge: 'New', testId: 'nav-compound-calculator' }
       ]
-    },
-    {
-      type: 'single',
-      path: '/income-expense',
-      label: 'Income & Expenses',
-      icon: Receipt,
-      testId: 'nav-income-expense'
     },
     {
       type: 'single',
