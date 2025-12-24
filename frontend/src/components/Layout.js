@@ -327,7 +327,9 @@ export default function Layout({ children }) {
         { path: '/settings?tab=profile', label: 'Profile', icon: User, testId: 'nav-settings-profile' },
         { path: '/settings?tab=preferences', label: 'Preferences', icon: Eye, testId: 'nav-settings-preferences' },
         { path: '/settings?tab=appearance', label: 'Appearance', icon: Palette, testId: 'nav-settings-appearance' },
-        { path: '/settings?tab=subscription', label: 'Subscription', icon: CreditCard, testId: 'nav-settings-subscription' }
+        { path: '/settings?tab=subscription', label: 'Subscription', icon: CreditCard, testId: 'nav-settings-subscription' },
+        { path: '/settings?tab=security', label: 'Security', icon: Shield, testId: 'nav-settings-security' },
+        { path: '/settings?tab=privacy', label: 'Privacy & Consent', icon: Globe, testId: 'nav-settings-privacy' }
       ]
     }
   ];
