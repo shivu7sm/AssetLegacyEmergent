@@ -4678,16 +4678,7 @@ async def get_budget_templates():
         ]
     }
 
-        "Check",
-        "Mobile Wallet",
-        "Other"
-    ]
-    
-    return {
-        "expense_categories": categories,
-        "income_sources": income_sources,
-        "payment_methods": payment_methods
-    }
+# Income & Expense Models and Routes continue...
 
 # Tax & Wealth Blueprint Routes
 @api_router.post("/tax-blueprint/profile")
