@@ -1962,15 +1962,20 @@ export default function Settings() {
 
         {/* Tabs */}
         <Tabs value={activeSection} onValueChange={setActiveSection}>
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4" style={{background: theme.cardBg, borderColor: theme.border}}>
+          <TabsList className="grid w-full grid-cols-3 sm:grid-cols-6 p-1" style={{background: theme.cardBg, borderColor: theme.border}}>
             {SECTIONS.map(section => {
               const Icon = section.icon;
+              const isActive = activeSection === section.id;
               return (
                 <TabsTrigger 
                   key={section.id}
                   value={section.id}
-                  className="flex items-center gap-2"
-                  style={{color: activeSection === section.id ? theme.text : theme.textSecondary}}
+                  className="flex items-center gap-2 px-3 py-2.5 rounded-lg transition-all"
+                  style={{
+                    background: isActive ? theme.primaryGradient : 'transparent',
+                    color: isActive ? '#ffffff' : theme.textSecondary,
+                    fontWeight: isActive ? '600' : '400'
+                  }}
                 >
                   <Icon className="w-4 h-4" />
                   <span className="hidden sm:inline text-sm">{section.label}</span>
