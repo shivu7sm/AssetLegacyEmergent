@@ -500,15 +500,26 @@ export default function BudgetPlanner() {
                       </div>
                     )}
 
-                    {/* Items List */}
-                    {bucket.items && bucket.items.length > 0 && (
-                      <div className="space-y-2 max-h-64 overflow-y-auto">
-                        <div className="text-xs font-semibold mb-2" style={{color: theme.textSecondary}}>
-                          Breakdown ({bucket.items.length} items)
-                        </div>
-                        {bucket.items.map((item, idx) => (
+                    {/* Items List with Add Button */}
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center text-xs font-semibold mb-2" style={{color: theme.textSecondary}}>
+                        <span>Breakdown ({(bucket.items?.length || 0) + (customItems[bucketKey]?.length || 0)} items)</span>
+                        {dataSource === 'manual' && (
+                          <button
+                            onClick={() => setShowAddItem({ bucket: bucketKey, open: true })}
+                            className="flex items-center gap-1 px-2 py-1 rounded transition-all hover:scale-105"
+                            style={{background: getBucketColor(bucketKey), color: '#ffffff'}}
+                          >
+                            <Plus className="w-3 h-3" />
+                            Add
+                          </button>
+                        )}
+                      </div>
+                      <div className="max-h-64 overflow-y-auto space-y-2">
+                        {/* Auto items */}
+                        {bucket.items && bucket.items.map((item, idx) => (
                           <div 
-                            key={idx}
+                            key={`auto-${idx}`}
                             className="flex justify-between text-sm p-2 rounded"
                             style={{background: theme.backgroundTertiary}}
                           >
@@ -518,8 +529,35 @@ export default function BudgetPlanner() {
                             </span>
                           </div>
                         ))}
+                        {/* Custom items */}
+                        {customItems[bucketKey] && customItems[bucketKey].map((item, idx) => (
+                          <div 
+                            key={`custom-${idx}`}
+                            className="flex justify-between items-center text-sm p-2 rounded"
+                            style={{background: 'rgba(168, 85, 247, 0.1)', border: '1px dashed rgba(168, 85, 247, 0.3)'}}
+                          >
+                            <span style={{color: theme.text}} className="truncate">{item.label}</span>
+                            <div className="flex items-center gap-2">
+                              <span className="font-semibold" style={{color: '#a855f7'}}>
+                                {formatCurrency(item.amount)}
+                              </span>
+                              <button
+                                onClick={() => {
+                                  setCustomItems(prev => ({
+                                    ...prev,
+                                    [bucketKey]: prev[bucketKey].filter((_, i) => i !== idx)
+                                  }));
+                                  toast.success('Item removed');
+                                }}
+                                className="p-1 rounded hover:bg-red-500 transition-all"
+                              >
+                                <X className="w-3 h-3" style={{color: '#ef4444'}} />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                    )}
+                    </div>
                   </CardContent>
                 </Card>
               ))}
