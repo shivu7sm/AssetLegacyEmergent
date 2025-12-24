@@ -46,19 +46,11 @@ export default function ProgressTimeline({
       icon: Shield,
       completed: dmsConfigured,
       action: () => navigate('/settings?tab=dms')
-    },
-    {
-      id: 'relax',
-      title: 'All Set!',
-      description: 'Relax now',
-      icon: PartyPopper,
-      completed: profileComplete && nomineeSetup && assetsRecorded && dmsConfigured,
-      action: null
     }
   ];
 
-  const completedCount = steps.filter(s => s.completed && s.id !== 'relax').length;
-  const totalSteps = steps.length - 1; // Exclude 'relax' from count
+  const completedCount = steps.filter(s => s.completed).length;
+  const totalSteps = steps.length;
   const progressPercentage = (completedCount / totalSteps) * 100;
   const allComplete = completedCount === totalSteps;
 
