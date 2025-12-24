@@ -661,13 +661,13 @@ export default function IncomeExpense() {
                             <td className="p-3" style={{color: theme.text}}>{income.source}</td>
                             <td className="p-3" style={{color: theme.textSecondary}}>{income.description}</td>
                             <td className="p-3 text-right" style={{color: theme.textTertiary}}>
-                              {formatCurrency(income.amount_before_tax)}
+                              {formatCurrency(convertAmount(income.amount_before_tax, income.currency))}
                             </td>
                             <td className="p-3 text-right" style={{color: '#ef4444'}}>
-                              {formatCurrency(income.tax_deducted)}
+                              {formatCurrency(convertAmount(income.tax_deducted, income.currency))}
                             </td>
                             <td className="p-3 text-right font-semibold" style={{color: '#10b981'}}>
-                              {formatCurrency(income.amount_after_tax)}
+                              {formatCurrency(convertAmount(income.amount_after_tax, income.currency))}
                             </td>
                             <td className="p-3">
                               <div className="flex justify-center gap-2">
