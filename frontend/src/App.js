@@ -19,6 +19,8 @@ import SWPCalculator from "./pages/calculators/SWPCalculator";
 import CompoundInterestCalculator from "./pages/calculators/CompoundInterestCalculator";
 import IncomeExpense from "./pages/IncomeExpense";
 import TaxBlueprint from "./pages/TaxBlueprint";
+import Nominees from "./pages/Nominees";
+import DeadManSwitch from "./pages/DeadManSwitch";
 import NomineeAccess from "./pages/NomineeAccess";
 import NomineeDashboard from "./pages/NomineeDashboard";
 import Onboarding from "./components/Onboarding";
@@ -181,6 +183,30 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <Assets />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/nominees" 
+        element={
+          <ProtectedRoute>
+            <Nominees />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/dead-man-switch" 
+        element={
+          <ProtectedRoute>
+            <DeadManSwitch />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/documents" 
+        element={
+          <ProtectedRoute>
+            <Documents />
           </ProtectedRoute>
         } 
       />
