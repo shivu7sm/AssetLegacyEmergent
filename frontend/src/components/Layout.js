@@ -30,6 +30,96 @@ const CURRENCIES = [
   { value: 'SGD', label: 'SGD (S$)', symbol: 'S$' }
 ];
 
+// NavItem Component - Moved outside to avoid nested component warning
+function NavItem({ item, isChild = false, sidebarOpen, navigate, setMobileMenuOpen, location, theme }) {
+  const Icon = item.icon;
+  const isActive = location.pathname === item.path || location.pathname + location.search === item.path;
+  
+  return (
+    <button
+      data-testid={item.testId}
+      onClick={() => {
+        navigate(item.path);
+        setMobileMenuOpen(false);
+      }}
+      className={`w-full flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg transition-all ${
+        isChild ? 'pl-11' : ''
+      }`}
+      style={{
+        background: isActive ? theme.primaryGradient : 'transparent',
+        color: isActive ? '#ffffff' : theme.text,
+        fontWeight: isActive ? '600' : '400'
+      }}
+    >
+      <div className="flex items-center gap-3">
+        <Icon className="w-4 h-4 flex-shrink-0" />
+        {sidebarOpen && <span className="text-sm">{item.label}</span>}
+      </div>
+      {sidebarOpen && item.badge && (
+        <span 
+          className="text-xs font-bold px-2 py-0.5 rounded-full"
+          style={{
+            background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+            color: '#ffffff'
+          }}
+        >
+          {item.badge}
+        </span>
+      )}
+    </button>
+  );
+}
+
+// NavGroup Component - Moved outside to avoid nested component warning
+function NavGroup({ group, expandedSections, toggleSection, sidebarOpen, navigate, setMobileMenuOpen, location, theme }) {
+  const Icon = group.icon;
+  const isExpanded = expandedSections[group.key];
+  const hasActiveChild = group.items.some(item => 
+    location.pathname === item.path || location.pathname + location.search === item.path
+  );
+  
+  return (
+    <div>
+      <button
+        onClick={() => toggleSection(group.key)}
+        className="w-full flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg transition-all"
+        style={{
+          background: hasActiveChild ? 'rgba(168, 85, 247, 0.1)' : 'transparent',
+          color: theme.text,
+          fontWeight: hasActiveChild ? '600' : '500'
+        }}
+      >
+        <div className="flex items-center gap-3">
+          <Icon className="w-4 h-4 flex-shrink-0" />
+          {sidebarOpen && <span className="text-sm">{group.label}</span>}
+        </div>
+        {sidebarOpen && (
+          isExpanded ? 
+            <ChevronDown className="w-4 h-4" /> : 
+            <ChevronRight className="w-4 h-4" />
+        )}
+      </button>
+      
+      {isExpanded && sidebarOpen && (
+        <div className="mt-1 space-y-1">
+          {group.items.map((item) => (
+            <NavItem 
+              key={item.path} 
+              item={item} 
+              isChild={true}
+              sidebarOpen={sidebarOpen}
+              navigate={navigate}
+              setMobileMenuOpen={setMobileMenuOpen}
+              location={location}
+              theme={theme}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function Layout({ children }) {
   const navigate = useNavigate();
   const location = useLocation();
