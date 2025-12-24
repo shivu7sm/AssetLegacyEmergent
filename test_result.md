@@ -555,9 +555,8 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Dropdown Fields White Theme Fix - All Forms"
-  stuck_tasks:
-    - "Loan Calculator with Timeout"
+    - "Enhanced Loan Calculator with CA-Level Features"
+  stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
