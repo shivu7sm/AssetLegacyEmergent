@@ -41,7 +41,10 @@ export default function BudgetPlanner() {
     if (dataSource === 'auto') {
       fetchBudgetAnalysis();
     }
-  }, [selectedMonth, budgetRule]);
+    if (activeView === 'trends') {
+      fetchComparisonData();
+    }
+  }, [selectedMonth, budgetRule, activeView]);
 
   const fetchBudgetAnalysis = async () => {
     setLoading(true);
@@ -61,6 +64,72 @@ export default function BudgetPlanner() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const fetchComparisonData = async () => {
+    setLoading(true);
+    try {
+      // Get last 6 months
+      const months = [];
+      const date = new Date(selectedMonth);
+      for (let i = 5; i >= 0; i--) {
+        const d = new Date(date.getFullYear(), date.getMonth() - i, 1);
+        months.push(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`);
+      }
+      
+      const response = await axios.get(`${API}/budget/comparison`, {
+        params: {
+          months: months.join(','),
+          rule: budgetRule,
+          target_currency: selectedCurrency
+        },
+        withCredentials: true
+      });
+      setComparisonData(response.data);
+    } catch (error) {
+      console.error('Failed to fetch comparison:', error);
+      toast.error('Failed to load budget trends');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddCustomItem = (bucket) => {
+    if (!newItem.label || !newItem.amount) {
+      toast.error('Please enter both label and amount');
+      return;
+    }
+
+    setCustomItems(prev => ({
+      ...prev,
+      [bucket]: [...prev[bucket], { label: newItem.label, amount: parseFloat(newItem.amount) }]
+    }));
+
+    setNewItem({ label: '', amount: '' });
+    setShowAddItem({ bucket: null, open: false });
+    toast.success('Item added successfully');
+  };
+
+  const handleSaveBudget = async () => {
+    try {
+      await axios.post(`${API}/budget/save`, {
+        month: selectedMonth,
+        rule: budgetRule,
+        buckets: budgetData?.buckets || {},
+        custom_items: customItems,
+        total_income: budgetData?.total_income || 0
+      }, { withCredentials: true });
+      
+      toast.success('Budget saved successfully!');
+    } catch (error) {
+      console.error('Failed to save budget:', error);
+      toast.error('Failed to save budget');
+    }
+  };
+
+  const handleExportPDF = () => {
+    // Placeholder for PDF export
+    toast.info('PDF export coming soon!');
   };
 
   const formatCurrency = (value) => {
