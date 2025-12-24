@@ -93,10 +93,10 @@ export default function DeadManSwitch() {
               <Shield className="w-6 h-6 mt-0.5" style={{color: '#ef4444'}} />
               <div>
                 <h3 className="font-semibold mb-2" style={{color: theme.text}}>
-                  How Dead Man's Switch Protects Your Family
+                  How Dead Man&apos;s Switch Protects Your Family
                 </h3>
                 <p className="text-sm mb-3" style={{color: theme.textSecondary}}>
-                  If you don't log in for the specified days, we'll send reminders. If you still don't respond, 
+                  If you don&apos;t log in for the specified days, we&apos;ll send reminders. If you still don&apos;t respond, 
                   your nominees are automatically notified and granted access to your asset information. 
                   This ensures your family can find and claim everything, even during the most difficult times.
                 </p>
@@ -234,7 +234,7 @@ export default function DeadManSwitch() {
               <div className="flex items-center justify-between p-4 rounded-lg" style={{background: theme.backgroundSecondary}}>
                 <div>
                   <Label style={{color: theme.text}} className="font-semibold">
-                    Enable Dead Man's Switch
+                    Enable Dead Man&apos;s Switch
                   </Label>
                   <p className="text-xs mt-1" style={{color: theme.textSecondary}}>
                     Activate automatic monitoring and notifications
@@ -277,7 +277,7 @@ export default function DeadManSwitch() {
                     <div className="flex-1 pt-2">
                       <h4 className="font-semibold mb-1" style={{color: theme.text}}>Today - Active</h4>
                       <p className="text-sm" style={{color: theme.textSecondary}}>
-                        You're logged in. Timer resets with each login.
+                        You&apos;re logged in. Timer resets with each login.
                       </p>
                     </div>
                   </div>
@@ -290,7 +290,7 @@ export default function DeadManSwitch() {
                     <div className="flex-1 pt-2">
                       <h4 className="font-semibold mb-1" style={{color: theme.text}}>Day {formData.reminder_1_days} - First Reminder</h4>
                       <p className="text-sm" style={{color: theme.textSecondary}}>
-                        We'll send you a gentle reminder to check in
+                        We&apos;ll send you a gentle reminder to check in
                       </p>
                     </div>
                   </div>
@@ -303,7 +303,7 @@ export default function DeadManSwitch() {
                     <div className="flex-1 pt-2">
                       <h4 className="font-semibold mb-1" style={{color: theme.text}}>Day {formData.reminder_2_days} - Second Reminder</h4>
                       <p className="text-sm" style={{color: theme.textSecondary}}>
-                        Another reminder - we're getting concerned
+                        Another reminder - we&apos;re getting concerned
                       </p>
                     </div>
                   </div>
@@ -354,7 +354,7 @@ export default function DeadManSwitch() {
                 <h3 className="font-semibold mb-2" style={{color: theme.text}}>Important Notes</h3>
                 <ul className="text-sm space-y-1" style={{color: theme.textSecondary}}>
                   <li>• Timer resets automatically every time you log in</li>
-                  <li>• You can pause the Dead Man's Switch anytime (toggle above)</li>
+                  <li>• You can pause the Dead Man&apos;s Switch anytime (toggle above)</li>
                   <li>• Day {formData.inactivity_days} is the final trigger - your nominees will be contacted</li>
                   <li>• Make sure your nominees are added and their contact information is current</li>
                 </ul>

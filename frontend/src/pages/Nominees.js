@@ -156,8 +156,8 @@ export default function Nominees() {
                   Why Nominees Matter
                 </h3>
                 <p className="text-sm" style={{color: theme.textSecondary}}>
-                  In uncertain times, your nominees will be notified by our Dead Man's Switch and granted access to your asset information. 
-                  They'll know what you own, where it's located, and how to claim it. This prevents the ₹20,000 crores lost annually because families don't know what to look for.
+                  In uncertain times, your nominees will be notified by our Dead Man&apos;s Switch and granted access to your asset information. 
+                  They&apos;ll know what you own, where it&apos;s located, and how to claim it. This prevents the ₹20,000 crores lost annually because families don&apos;t know what to look for.
                 </p>
               </div>
             </div>
