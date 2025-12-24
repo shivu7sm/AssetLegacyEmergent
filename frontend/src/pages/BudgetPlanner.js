@@ -215,13 +215,68 @@ export default function BudgetPlanner() {
             <Button
               onClick={fetchBudgetAnalysis}
               variant="outline"
+              className="hover:scale-105 transition-all"
               style={{borderColor: theme.border, color: theme.text}}
             >
               <RefreshCw className="w-4 h-4 mr-2" />
               Refresh
             </Button>
+            {budgetData && (
+              <>
+                <Button
+                  onClick={handleSaveBudget}
+                  variant="outline"
+                  className="hover:scale-105 transition-all"
+                  style={{borderColor: '#10b981', color: '#10b981'}}
+                >
+                  <Save className="w-4 h-4 mr-2" />
+                  Save
+                </Button>
+                <Button
+                  onClick={handleExportPDF}
+                  variant="outline"
+                  className="hover:scale-105 transition-all"
+                  style={{borderColor: '#3b82f6', color: '#3b82f6'}}
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  Export
+                </Button>
+              </>
+            )}
           </div>
         </div>
+
+        {/* View Switcher */}
+        <Tabs value={activeView} onValueChange={setActiveView}>
+          <TabsList className="grid w-full grid-cols-2 max-w-md" style={{background: theme.cardBg, borderColor: theme.border}}>
+            <TabsTrigger 
+              value="current"
+              className="transition-all hover:scale-[1.03]"
+              style={{
+                background: activeView === 'current' ? theme.primaryGradient : 'transparent',
+                color: activeView === 'current' ? '#ffffff' : theme.textSecondary,
+                fontWeight: activeView === 'current' ? '600' : '400'
+              }}
+            >
+              <Target className="w-4 h-4 mr-2" />
+              Current Month
+            </TabsTrigger>
+            <TabsTrigger 
+              value="trends"
+              className="transition-all hover:scale-[1.03]"
+              style={{
+                background: activeView === 'trends' ? theme.primaryGradient : 'transparent',
+                color: activeView === 'trends' ? '#ffffff' : theme.textSecondary,
+                fontWeight: activeView === 'trends' ? '600' : '400'
+              }}
+            >
+              <BarChart className="w-4 h-4 mr-2" />
+              6-Month Trends
+            </TabsTrigger>
+          </TabsList>
+
+          {/* Current Month View */}
+          <TabsContent value="current" className="space-y-6 mt-6">
 
         {/* Info Banner */}
         <Card style={{background: 'rgba(59, 130, 246, 0.1)', borderColor: 'rgba(59, 130, 246, 0.3)', borderWidth: '2px'}}>
