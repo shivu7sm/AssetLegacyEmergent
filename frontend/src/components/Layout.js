@@ -5,7 +5,7 @@ import {
   LayoutDashboard, Wallet, Settings, LogOut, ShieldCheck, FileText, 
   FolderLock, Sparkles, Calendar, Crown, ShieldAlert, FlaskConical, 
   Database, Receipt, Zap, Sun, Moon, Calculator, ChevronDown, ChevronRight,
-  Menu, X, TrendingUp, BookOpen
+  Menu, X, TrendingUp, BookOpen, User, Shield, Clock, Eye, Palette, CreditCard, Heart
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
