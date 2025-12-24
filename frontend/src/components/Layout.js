@@ -145,16 +145,32 @@ export default function Layout({ children }) {
       items: [
         { path: '/loan-calculator', label: 'Loan Calculator', icon: Calculator, testId: 'nav-loan-calculator' },
         { path: '/insights', label: 'AI Insights', icon: Sparkles, testId: 'nav-insights' },
-        { path: '/schedule-messages', label: 'Scheduled Messages', icon: Calendar, testId: 'nav-messages' },
-        { path: '/documents', label: 'Documents', icon: FolderLock, testId: 'nav-documents' }
+        { path: '/schedule-messages', label: 'Scheduled Messages', icon: Calendar, testId: 'nav-messages' }
       ]
     },
     {
-      type: 'single',
-      path: '/settings',
+      type: 'group',
+      key: 'documents',
+      label: 'Documents',
+      icon: FolderLock,
+      items: [
+        { path: '/documents?type=assets', label: 'Asset Documents', icon: FileText, testId: 'nav-asset-docs' },
+        { path: '/documents?type=family', label: 'Family Documents', icon: Heart, testId: 'nav-family-docs' }
+      ]
+    },
+    {
+      type: 'group',
+      key: 'settings',
       label: 'Settings',
       icon: Settings,
-      testId: 'nav-settings'
+      items: [
+        { path: '/settings?tab=profile', label: 'Profile', icon: User, testId: 'nav-settings-profile' },
+        { path: '/settings?tab=security', label: 'Security & Nominees', icon: Shield, testId: 'nav-settings-security' },
+        { path: '/settings?tab=dms', label: "Dead Man's Switch", icon: Clock, testId: 'nav-settings-dms' },
+        { path: '/settings?tab=preferences', label: 'Preferences', icon: Eye, testId: 'nav-settings-preferences' },
+        { path: '/settings?tab=appearance', label: 'Appearance', icon: Palette, testId: 'nav-settings-appearance' },
+        { path: '/settings?tab=subscription', label: 'Subscription', icon: CreditCard, testId: 'nav-settings-subscription' }
+      ]
     }
   ];
 
