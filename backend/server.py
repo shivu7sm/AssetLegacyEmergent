@@ -4678,6 +4678,114 @@ async def get_budget_templates():
         ]
     }
 
+
+
+@api_router.post("/budget/save")
+async def save_budget(budget_data: Dict, user: User = Depends(require_auth)):
+    """Save custom budget allocation"""
+    try:
+        budget_doc = {
+            "id": str(uuid.uuid4()),
+            "user_id": user.id,
+            "month": budget_data.get('month'),
+            "rule": budget_data.get('rule', '50/30/20'),
+            "buckets": budget_data.get('buckets', {}),
+            "custom_items": budget_data.get('custom_items', {}),
+            "total_income": budget_data.get('total_income', 0),
+            "demo_mode": user.demo_mode,
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        # Check if budget exists for this month
+        existing = await db.budgets.find_one({
+            "user_id": user.id, 
+            "month": budget_data.get('month'),
+            "demo_mode": user.demo_mode
+        })
+        
+        if existing:
+            await db.budgets.update_one(
+                {"user_id": user.id, "month": budget_data.get('month'), "demo_mode": user.demo_mode},
+                {"$set": {**budget_doc, "id": existing['id'], "created_at": existing.get('created_at')}}
+            )
+        else:
+            await db.budgets.insert_one(budget_doc)
+        
+        return {"success": True, "message": "Budget saved successfully"}
+    except Exception as e:
+        logger.error(f"Failed to save budget: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/budget/saved")
+async def get_saved_budget(month: str, user: User = Depends(require_auth)):
+    """Get saved custom budget for a month"""
+    try:
+        budget = await db.budgets.find_one({
+            "user_id": user.id,
+            "month": month,
+            "demo_mode": user.demo_mode
+        }, {"_id": 0})
+        
+        if not budget:
+            return None
+        
+        return budget
+    except Exception as e:
+        logger.error(f"Failed to get saved budget: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/budget/comparison")
+async def get_budget_comparison(months: str, rule: str = "50/30/20", target_currency: str = "USD", user: User = Depends(require_auth)):
+    """Get budget comparison across multiple months"""
+    try:
+        month_list = months.split(',')[:6]  # Max 6 months
+        comparison_data = []
+        
+        for month in month_list:
+            # Get income and expenses
+            incomes = await db.monthly_incomes.find({
+                "user_id": user.id, 
+                "month": month.strip(),
+                "demo_mode": user.demo_mode
+            }, {"_id": 0}).to_list(1000)
+            
+            expenses = await db.monthly_expenses.find({
+                "user_id": user.id, 
+                "month": month.strip(),
+                "demo_mode": user.demo_mode
+            }, {"_id": 0}).to_list(1000)
+            
+            total_income = sum([inc['amount_after_tax'] for inc in incomes])
+            total_expenses = sum([exp['amount'] for exp in expenses])
+            
+            # Categorize
+            needs_categories = ['Housing', 'Transportation', 'Food & Dining', 'Healthcare', 'Insurance', 'Utilities', 'Debt Payments']
+            wants_categories = ['Entertainment', 'Personal Care', 'Shopping', 'Travel', 'Pets']
+            
+            needs = sum([exp['amount'] for exp in expenses if exp.get('category') in needs_categories])
+            wants = sum([exp['amount'] for exp in expenses if exp.get('category') in wants_categories])
+            savings = total_income - needs - wants
+            
+            comparison_data.append({
+                "month": month.strip(),
+                "total_income": round(total_income, 2),
+                "needs": round(needs, 2),
+                "wants": round(wants, 2),
+                "savings": round(savings, 2),
+                "needs_percentage": round((needs / total_income * 100) if total_income > 0 else 0, 1),
+                "wants_percentage": round((wants / total_income * 100) if total_income > 0 else 0, 1),
+                "savings_percentage": round((savings / total_income * 100) if total_income > 0 else 0, 1)
+            })
+        
+        return {
+            "months": comparison_data,
+            "rule": rule
+        }
+    except Exception as e:
+        logger.error(f"Budget comparison error: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 # Income & Expense Models and Routes continue...
 
 # Tax & Wealth Blueprint Routes
