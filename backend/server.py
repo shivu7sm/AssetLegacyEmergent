@@ -16,6 +16,7 @@ from pycoingecko import CoinGeckoAPI
 import asyncio
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import stripe
+import math
 
 ROOT_DIR = Path(__file__).parent
 # Load .env file but don't override existing environment variables (from Kubernetes)
