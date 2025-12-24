@@ -251,24 +251,72 @@ export default function LoanCalculatorEnhanced() {
           <TabsList className="grid w-full grid-cols-3 mb-6" style={{background: theme.cardBg, borderColor: theme.border}}>
             <TabsTrigger 
               value="calculator"
-              className="flex items-center gap-2"
-              style={{color: activeTab === 'calculator' ? theme.text : theme.textSecondary}}
+              className="flex items-center gap-2 transition-all hover:scale-[1.03]"
+              style={{
+                background: activeTab === 'calculator' ? theme.primaryGradient : 'transparent',
+                color: activeTab === 'calculator' ? '#ffffff' : theme.textSecondary,
+                fontWeight: activeTab === 'calculator' ? '600' : '400'
+              }}
+              onMouseEnter={(e) => {
+                if (activeTab !== 'calculator') {
+                  e.currentTarget.style.background = theme.backgroundSecondary;
+                  e.currentTarget.style.color = theme.text;
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (activeTab !== 'calculator') {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.color = theme.textSecondary;
+                }
+              }}
             >
               <Calculator className="w-4 h-4" />
               <span className="hidden sm:inline">Calculator</span>
             </TabsTrigger>
             <TabsTrigger 
               value="prepayment"
-              className="flex items-center gap-2"
-              style={{color: activeTab === 'prepayment' ? theme.text : theme.textSecondary}}
+              className="flex items-center gap-2 transition-all hover:scale-[1.03]"
+              style={{
+                background: activeTab === 'prepayment' ? theme.primaryGradient : 'transparent',
+                color: activeTab === 'prepayment' ? '#ffffff' : theme.textSecondary,
+                fontWeight: activeTab === 'prepayment' ? '600' : '400'
+              }}
+              onMouseEnter={(e) => {
+                if (activeTab !== 'prepayment') {
+                  e.currentTarget.style.background = theme.backgroundSecondary;
+                  e.currentTarget.style.color = theme.text;
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (activeTab !== 'prepayment') {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.color = theme.textSecondary;
+                }
+              }}
             >
               <Target className="w-4 h-4" />
               <span className="hidden sm:inline">Prepay Strategies</span>
             </TabsTrigger>
             <TabsTrigger 
               value="analysis"
-              className="flex items-center gap-2"
-              style={{color: activeTab === 'analysis' ? theme.text : theme.textSecondary}}
+              className="flex items-center gap-2 transition-all hover:scale-[1.03]"
+              style={{
+                background: activeTab === 'analysis' ? theme.primaryGradient : 'transparent',
+                color: activeTab === 'analysis' ? '#ffffff' : theme.textSecondary,
+                fontWeight: activeTab === 'analysis' ? '600' : '400'
+              }}
+              onMouseEnter={(e) => {
+                if (activeTab !== 'analysis') {
+                  e.currentTarget.style.background = theme.backgroundSecondary;
+                  e.currentTarget.style.color = theme.text;
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (activeTab !== 'analysis') {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.color = theme.textSecondary;
+                }
+              }}
             >
               <BarChart3 className="w-4 h-4" />
               <span className="hidden sm:inline">Visual Analysis</span>
