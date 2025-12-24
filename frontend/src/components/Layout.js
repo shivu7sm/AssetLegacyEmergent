@@ -112,8 +112,14 @@ export default function Layout({ children }) {
     }));
   };
 
-  // Navigation structure with groups
+  // Navigation structure with clear USP separation
   const navigationStructure = [
+    // CORE USP: Legacy Protection
+    {
+      type: 'section-header',
+      label: 'Legacy Protection',
+      description: 'Protect your family\'s future'
+    },
     {
       type: 'single',
       path: '/dashboard',
@@ -122,28 +128,58 @@ export default function Layout({ children }) {
       testId: 'nav-dashboard'
     },
     {
-      type: 'group',
-      key: 'wealth',
-      label: 'Wealth Management',
-      icon: TrendingUp,
-      items: [
-        { path: '/assets', label: 'Assets & Liabilities', icon: Wallet, testId: 'nav-assets' },
-        { path: '/income-expense', label: 'Income & Expenses', icon: Receipt, testId: 'nav-income-expense' }
-      ]
+      type: 'single',
+      path: '/assets',
+      label: 'Assets & Liabilities',
+      icon: Wallet,
+      testId: 'nav-assets'
     },
     {
       type: 'group',
-      key: 'tools',
-      label: 'Tools & Calculators',
-      icon: BookOpen,
+      key: 'documents',
+      label: 'Documents',
+      icon: FolderLock,
       items: [
-        { path: '/loan-calculator', label: 'Loan Calculator', icon: Calculator, testId: 'nav-loan-calculator' },
-        { path: '/calculators/sip', label: 'SIP Calculator', icon: TrendingUp, testId: 'nav-sip-calculator' },
-        { path: '/calculators/swp', label: 'SWP Calculator', icon: TrendingDown, testId: 'nav-swp-calculator' },
-        { path: '/calculators/compound', label: 'Compound Interest', icon: Zap, testId: 'nav-compound-calculator' },
-        { path: '/insights', label: 'AI Insights', icon: Sparkles, testId: 'nav-insights' },
-        { path: '/schedule-messages', label: 'Scheduled Messages', icon: Calendar, testId: 'nav-messages' }
+        { path: '/documents', label: 'All Documents', icon: FileText, testId: 'nav-all-docs' },
+        { path: '/documents?filter=unlinked', label: 'Unlinked', icon: LinkIcon, testId: 'nav-unlinked-docs' },
+        { path: '/documents?category=asset', label: 'Asset Documents', icon: Wallet, testId: 'nav-asset-docs' },
+        { path: '/documents?category=family', label: 'Family Documents', icon: Heart, testId: 'nav-family-docs' }
       ]
+    },
+    {
+      type: 'single',
+      path: '/settings?tab=security',
+      label: 'Nominees',
+      icon: Users,
+      badge: 'Core',
+      testId: 'nav-nominees'
+    },
+    {
+      type: 'single',
+      path: '/settings?tab=dms',
+      label: "Dead Man's Switch",
+      icon: Clock,
+      badge: 'Core',
+      testId: 'nav-dms'
+    },
+    
+    // DIVIDER
+    {
+      type: 'divider'
+    },
+    
+    // ADD-ON FEATURES: Wealth Building Tools
+    {
+      type: 'section-header',
+      label: 'Wealth Tools',
+      description: 'Grow and optimize your wealth'
+    },
+    {
+      type: 'single',
+      path: '/insights',
+      label: 'AI Assistant',
+      icon: Sparkles,
+      testId: 'nav-insights'
     },
     {
       type: 'group',
@@ -161,16 +197,37 @@ export default function Layout({ children }) {
     },
     {
       type: 'group',
-      key: 'documents',
-      label: 'Documents',
-      icon: FolderLock,
+      key: 'calculators',
+      label: 'Calculators',
+      icon: Calculator,
       items: [
-        { path: '/documents', label: 'All Documents', icon: FileText, testId: 'nav-all-docs' },
-        { path: '/documents?filter=unlinked', label: 'Unlinked', icon: LinkIcon, testId: 'nav-unlinked-docs' },
-        { path: '/documents?category=asset', label: 'Asset Documents', icon: Wallet, testId: 'nav-asset-docs' },
-        { path: '/documents?category=family', label: 'Family Documents', icon: Heart, testId: 'nav-family-docs' }
+        { path: '/loan-calculator', label: 'Loan Planner', icon: Calculator, testId: 'nav-loan-calculator' },
+        { path: '/calculators/sip', label: 'SIP Calculator', icon: TrendingUp, testId: 'nav-sip-calculator' },
+        { path: '/calculators/swp', label: 'SWP Calculator', icon: TrendingDown, testId: 'nav-swp-calculator' },
+        { path: '/calculators/compound', label: 'Compound Interest', icon: Zap, testId: 'nav-compound-calculator' }
       ]
     },
+    {
+      type: 'single',
+      path: '/income-expense',
+      label: 'Income & Expenses',
+      icon: Receipt,
+      testId: 'nav-income-expense'
+    },
+    {
+      type: 'single',
+      path: '/schedule-messages',
+      label: 'Scheduled Messages',
+      icon: Calendar,
+      testId: 'nav-messages'
+    },
+    
+    // DIVIDER
+    {
+      type: 'divider'
+    },
+    
+    // SETTINGS
     {
       type: 'group',
       key: 'settings',
@@ -178,8 +235,6 @@ export default function Layout({ children }) {
       icon: Settings,
       items: [
         { path: '/settings?tab=profile', label: 'Profile', icon: User, testId: 'nav-settings-profile' },
-        { path: '/settings?tab=security', label: 'Security & Nominees', icon: Shield, testId: 'nav-settings-security' },
-        { path: '/settings?tab=dms', label: "Dead Man's Switch", icon: Clock, testId: 'nav-settings-dms' },
         { path: '/settings?tab=preferences', label: 'Preferences', icon: Eye, testId: 'nav-settings-preferences' },
         { path: '/settings?tab=appearance', label: 'Appearance', icon: Palette, testId: 'nav-settings-appearance' },
         { path: '/settings?tab=subscription', label: 'Subscription', icon: CreditCard, testId: 'nav-settings-subscription' }
