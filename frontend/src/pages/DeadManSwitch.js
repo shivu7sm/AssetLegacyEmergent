@@ -203,46 +203,99 @@ export default function DeadManSwitch() {
                 <Label style={{color: theme.textSecondary}} className="mb-3 block">
                   Reminder Method
                 </Label>
-                <Select 
-                  value={formData.reminder_method} 
-                  onValueChange={(value) => setFormData({ ...formData, reminder_method: value })}
-                >
-                  <SelectTrigger style={{background: theme.backgroundSecondary, borderColor: theme.border, color: theme.text}}>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
-                    <SelectItem value="email" style={{color: theme.text}}>
-                      <div className="flex items-center gap-2">
-                        <Mail className="w-4 h-4" />
-                        <span>Email</span>
-                      </div>
-                    </SelectItem>
-                    <SelectItem value="phone" style={{color: theme.text}}>
-                      <div className="flex items-center gap-2">
-                        <Phone className="w-4 h-4" />
-                        <span>Phone (SMS)</span>
-                      </div>
-                    </SelectItem>
-                    <SelectItem value="whatsapp" style={{color: theme.text}}>
-                      <div className="flex items-center gap-2">
-                        <Phone className="w-4 h-4" />
-                        <span>WhatsApp</span>
-                      </div>
-                    </SelectItem>
-                    <SelectItem value="telegram" style={{color: theme.text}}>
-                      <div className="flex items-center gap-2">
-                        <Mail className="w-4 h-4" />
-                        <span>Telegram</span>
-                      </div>
-                    </SelectItem>
-                    <SelectItem value="all" style={{color: theme.text}}>
-                      <div className="flex items-center gap-2">
-                        <Bell className="w-4 h-4" />
-                        <span>All Methods</span>
-                      </div>
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
+                <div className="space-y-3">
+                  {/* Email Radio */}
+                  <label 
+                    className="flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all hover:scale-[1.01]"
+                    style={{
+                      background: formData.reminder_method === 'email' ? 'rgba(59, 130, 246, 0.15)' : theme.backgroundSecondary,
+                      border: `2px solid ${formData.reminder_method === 'email' ? '#3b82f6' : theme.border}`
+                    }}
+                  >
+                    <input
+                      type="radio"
+                      name="reminder_method"
+                      value="email"
+                      checked={formData.reminder_method === 'email'}
+                      onChange={(e) => setFormData({ ...formData, reminder_method: e.target.value })}
+                      style={{width: '20px', height: '20px', accentColor: '#3b82f6'}}
+                    />
+                    <Mail className="w-5 h-5" style={{color: '#3b82f6'}} />
+                    <div className="flex-1">
+                      <div className="font-semibold" style={{color: theme.text}}>Email</div>
+                      <div className="text-xs" style={{color: theme.textSecondary}}>Reminders sent to your email</div>
+                    </div>
+                  </label>
+
+                  {/* Phone Radio */}
+                  <label 
+                    className="flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all hover:scale-[1.01]"
+                    style={{
+                      background: formData.reminder_method === 'phone' ? 'rgba(16, 185, 129, 0.15)' : theme.backgroundSecondary,
+                      border: `2px solid ${formData.reminder_method === 'phone' ? '#10b981' : theme.border}`
+                    }}
+                  >
+                    <input
+                      type="radio"
+                      name="reminder_method"
+                      value="phone"
+                      checked={formData.reminder_method === 'phone'}
+                      onChange={(e) => setFormData({ ...formData, reminder_method: e.target.value })}
+                      style={{width: '20px', height: '20px', accentColor: '#10b981'}}
+                    />
+                    <Phone className="w-5 h-5" style={{color: '#10b981'}} />
+                    <div className="flex-1">
+                      <div className="font-semibold" style={{color: theme.text}}>Phone (SMS)</div>
+                      <div className="text-xs" style={{color: theme.textSecondary}}>Reminders sent via text message</div>
+                    </div>
+                  </label>
+
+                  {/* WhatsApp Radio */}
+                  <label 
+                    className="flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all hover:scale-[1.01]"
+                    style={{
+                      background: formData.reminder_method === 'whatsapp' ? 'rgba(34, 197, 94, 0.15)' : theme.backgroundSecondary,
+                      border: `2px solid ${formData.reminder_method === 'whatsapp' ? '#22c55e' : theme.border}`
+                    }}
+                  >
+                    <input
+                      type="radio"
+                      name="reminder_method"
+                      value="whatsapp"
+                      checked={formData.reminder_method === 'whatsapp'}
+                      onChange={(e) => setFormData({ ...formData, reminder_method: e.target.value })}
+                      style={{width: '20px', height: '20px', accentColor: '#22c55e'}}
+                    />
+                    <Phone className="w-5 h-5" style={{color: '#22c55e'}} />
+                    <div className="flex-1">
+                      <div className="font-semibold" style={{color: theme.text}}>WhatsApp</div>
+                      <div className="text-xs" style={{color: theme.textSecondary}}>Reminders sent via WhatsApp</div>
+                    </div>
+                  </label>
+
+                  {/* All Methods Radio */}
+                  <label 
+                    className="flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all hover:scale-[1.01]"
+                    style={{
+                      background: formData.reminder_method === 'all' ? 'rgba(168, 85, 247, 0.15)' : theme.backgroundSecondary,
+                      border: `2px solid ${formData.reminder_method === 'all' ? '#a855f7' : theme.border}`
+                    }}
+                  >
+                    <input
+                      type="radio"
+                      name="reminder_method"
+                      value="all"
+                      checked={formData.reminder_method === 'all'}
+                      onChange={(e) => setFormData({ ...formData, reminder_method: e.target.value })}
+                      style={{width: '20px', height: '20px', accentColor: '#a855f7'}}
+                    />
+                    <Bell className="w-5 h-5" style={{color: '#a855f7'}} />
+                    <div className="flex-1">
+                      <div className="font-semibold" style={{color: theme.text}}>All Methods</div>
+                      <div className="text-xs" style={{color: theme.textSecondary}}>Use all available channels</div>
+                    </div>
+                  </label>
+                </div>
               </div>
 
               <div className="flex items-center justify-between p-4 rounded-lg" style={{background: theme.backgroundSecondary}}>
