@@ -798,19 +798,24 @@ async def create_session(request: Request, response: Response):
         request.url.scheme == "https"
     )
     
-    # For cross-domain auth (zivinc.com -> legacy-asset-dev.emergent.host),
-    # we MUST use secure=True and samesite="none"
+    # Set cookie attributes depending on environment.
+    # In production (ENVIRONMENT=production) keep secure=True and samesite="none" for cross-domain auth.
+    # In local development, allow non-secure cookies so they can be set on http://localhost.
+    is_production = os.environ.get('ENVIRONMENT') == 'production'
+    cookie_secure = True if is_production else False
+    cookie_samesite = "none" if is_production else "lax"
+
     response.set_cookie(
         key="session_token",
         value=session_token,
         httponly=True,
-        secure=True,  # Always True for production cross-domain cookies
-        samesite="none",  # Required for cross-origin cookies
+        secure=cookie_secure,
+        samesite=cookie_samesite,
         max_age=7 * 24 * 60 * 60,
         path="/"
     )
-    
-    logger.info(f"Session created for user {user_id}, cookie set (secure=True, samesite=none, proto={forwarded_proto or 'none'})")
+
+    logger.info(f"Session created for user {user_id}, cookie set (secure={cookie_secure}, samesite={cookie_samesite}, proto={forwarded_proto or 'none'})")
     
     # Reset DMS timer on login
     try:
