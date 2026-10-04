@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
@@ -7,46 +7,21 @@ import { ShieldCheck, Lock, Clock, Users, DollarSign, TrendingUp, Play, AlertCir
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-// Theme System
-const THEMES = {
-  purple: {
-    name: 'Purple Dream',
-    primary: '#6A11CB',
-    secondary: '#8E54E9',
-    accent: '#FF6A88',
-    light: '#FFB199',
-    neutral: '#FAFAFA',
-    footer: 'var(--fuse-surface)',
-    buttonGradient: '#6A11CB'
-  },
-  blue: {
-    name: 'Ocean Deep',
-    primary: '#0F2027',
-    secondary: '#203A43',
-    accent: '#2C5364',
-    light: '#4CA2CD',
-    neutral: '#F5F7FA',
-    footer: '#0F2027',
-    buttonGradient: '#0F2027'
-  },
-  green: {
-    name: 'Money Growth',
-    primary: '#11998E',
-    secondary: '#38EF7D',
-    accent: '#C8FFB1',
-    light: '#E0FFD1',
-    neutral: '#F8FFF8',
-    footer: '#0D7377',
-    buttonGradient: '#11998E'
-  }
+// Fuse v22 palette: zinc surfaces with the #1565C0 primary scale
+const theme = {
+  primary: '#18181b', // neutral-900: header, hero
+  secondary: '#0d3e76', // primary-800
+  accent: '#11519a', // primary-700
+  light: '#ebf3fc', // primary-50
+  neutral: '#fafafa',
+  footer: '#09090b' // neutral-950
 };
 
-const HIGHLIGHT = '#FFC300';
+// Accent for text and CTAs on dark sections (primary-300)
+const HIGHLIGHT = '#7fb0eb';
 
 export default function LandingPage() {
   const navigate = useNavigate();
-  const [selectedTheme, setSelectedTheme] = useState('purple');
-  const theme = THEMES[selectedTheme];
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -74,10 +49,8 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen" style={{
-      fontFamily: '"Poppins", "Montserrat", sans-serif'
-    }}>
-      {/* Header with Theme Selector */}
+    <div className="min-h-screen">
+      {/* Header */}
       <header className="backdrop-blur-sm sticky top-0 z-50" style={{ 
         borderBottom: '1px solid rgba(255,255,255,0.1)',
         background: `url('/patterns/iso-cube.svg'), ${theme.primary}`,
@@ -90,30 +63,12 @@ export default function LandingPage() {
             <h1 className="text-3xl font-bold" style={{ color: '#fff', letterSpacing: '-0.02em' }}>AssetVault</h1>
           </div>
           
-          {/* Theme Selector */}
-          <div className="hidden lg:flex items-center gap-3 px-4 py-2 rounded-full" style={{ background: 'rgba(0,0,0,0.2)', backdropFilter: 'blur(10px)' }}>
-            <span className="text-white text-sm mr-2">Theme:</span>
-            {Object.keys(THEMES).map(themeKey => (
-              <button
-                key={themeKey}
-                onClick={() => setSelectedTheme(themeKey)}
-                className="w-8 h-8 rounded-full transition-all"
-                style={{
-                  background: THEMES[themeKey].primary,
-                  border: selectedTheme === themeKey ? '3px solid #FFC300' : '2px solid rgba(255,255,255,0.3)',
-                  transform: selectedTheme === themeKey ? 'scale(1.1)' : 'scale(1)'
-                }}
-                title={THEMES[themeKey].name}
-              />
-            ))}
-          </div>
-
           {/* Navigation */}
           <nav className="hidden md:flex items-center gap-8">
             <a 
               href="#why" 
               onClick={(e) => { e.preventDefault(); scrollToSection('why'); }}
-              className="text-white font-medium hover:text-yellow-300 transition-colors" 
+              className="text-white font-medium hover:text-primary-300 transition-colors" 
               style={{ letterSpacing: '0.02em', fontSize: '1rem' }}
             >
               Why AssetVault
@@ -121,7 +76,7 @@ export default function LandingPage() {
             <a 
               href="#features" 
               onClick={(e) => { e.preventDefault(); scrollToSection('features'); }}
-              className="text-white font-medium hover:text-yellow-300 transition-colors" 
+              className="text-white font-medium hover:text-primary-300 transition-colors" 
               style={{ letterSpacing: '0.02em', fontSize: '1rem' }}
             >
               Features
@@ -129,7 +84,7 @@ export default function LandingPage() {
             <a 
               href="#security" 
               onClick={(e) => { e.preventDefault(); scrollToSection('security'); }}
-              className="text-white font-medium hover:text-yellow-300 transition-colors" 
+              className="text-white font-medium hover:text-primary-300 transition-colors" 
               style={{ letterSpacing: '0.02em', fontSize: '1rem' }}
             >
               Security
@@ -137,7 +92,7 @@ export default function LandingPage() {
             <a 
               href="#pricing" 
               onClick={(e) => { e.preventDefault(); scrollToSection('pricing'); }}
-              className="text-white font-medium hover:text-yellow-300 transition-colors" 
+              className="text-white font-medium hover:text-primary-300 transition-colors" 
               style={{ letterSpacing: '0.02em', fontSize: '1rem' }}
             >
               Pricing
@@ -145,7 +100,7 @@ export default function LandingPage() {
             <a 
               href="#faq" 
               onClick={(e) => { e.preventDefault(); scrollToSection('faq'); }}
-              className="text-white font-medium hover:text-yellow-300 transition-colors" 
+              className="text-white font-medium hover:text-primary-300 transition-colors" 
               style={{ letterSpacing: '0.02em', fontSize: '1rem' }}
             >
               FAQ
@@ -161,7 +116,7 @@ export default function LandingPage() {
               borderRadius: '50px',
               border: 'none',
               letterSpacing: '0.02em',
-              boxShadow: `0 4px 20px rgba(255, 195, 0, 0.3)`,
+              boxShadow: `0 4px 20px rgba(75, 141, 223, 0.3)`,
               minWidth: '140px'
             }}
           >
@@ -210,7 +165,7 @@ export default function LandingPage() {
                   borderRadius: '50px',
                   border: 'none',
                   letterSpacing: '0.02em',
-                  boxShadow: '0 8px 30px rgba(255, 195, 0, 0.4)',
+                  boxShadow: '0 8px 30px rgba(75, 141, 223, 0.4)',
                   minWidth: '200px'
                 }}
               >
@@ -225,7 +180,7 @@ export default function LandingPage() {
                   background: 'transparent',
                   color: '#fff',
                   borderRadius: '50px',
-                  border: '2px solid #FFC300',
+                  border: '2px solid ' + HIGHLIGHT,
                   letterSpacing: '0.02em',
                   minWidth: '180px'
                 }}
@@ -303,7 +258,7 @@ export default function LandingPage() {
               {/* What Banks Hide - Yellow Card */}
               <div className="p-8 rounded-3xl" style={{ 
                 background: HIGHLIGHT,
-                boxShadow: '0 8px 32px rgba(255, 195, 0, 0.3)'
+                boxShadow: '0 8px 32px rgba(75, 141, 223, 0.3)'
               }}>
                 <div className="text-5xl mb-4">🔒</div>
                 <h3 className="text-2xl font-bold mb-4" style={{ color: '#000' }}>What Banks WON'T Tell Your Family:</h3>
@@ -494,7 +449,7 @@ export default function LandingPage() {
               <h3 className="text-2xl font-bold mb-3" style={{ color: '#222' }}>Trusted by 5000+ Indian Families</h3>
               <p className="text-lg" style={{ color: '#444' }}>
                 Join thousands who trust AssetVault with their most important financial information. 
-                Rated <strong style={{ color: HIGHLIGHT }}>4.8/5 stars</strong> for security and reliability.
+                Rated <strong style={{ color: '#1565c0' }}>4.8/5 stars</strong> for security and reliability.
               </p>
             </div>
           </div>
@@ -575,7 +530,7 @@ export default function LandingPage() {
                 className="p-8 rounded-3xl"
                 style={{
                   background: plan.highlight ? HIGHLIGHT : '#FFFFFF',
-                  boxShadow: plan.highlight ? '0 12px 40px rgba(255, 195, 0, 0.3)' : '0 4px 20px rgba(0,0,0,0.08)',
+                  boxShadow: plan.highlight ? '0 12px 40px rgba(75, 141, 223, 0.3)' : '0 4px 20px rgba(0,0,0,0.08)',
                   transform: plan.highlight ? 'scale(1.05)' : 'scale(1)',
                   border: plan.highlight ? 'none' : '1px solid rgba(0,0,0,0.08)'
                 }}
@@ -682,7 +637,7 @@ export default function LandingPage() {
                     border: '1px solid rgba(255,255,255,0.5)'
                   }}
                 >
-                  <h3 className="text-xl font-bold mb-3" style={{ color: HIGHLIGHT }}>
+                  <h3 className="text-xl font-bold mb-3" style={{ color: '#1565c0' }}>
                     {faq.q}
                   </h3>
                   <p style={{ color: '#444', lineHeight: '1.7' }}>
@@ -718,7 +673,7 @@ export default function LandingPage() {
                 borderRadius: '50px',
                 border: 'none',
                 letterSpacing: '0.02em',
-                boxShadow: '0 10px 40px rgba(255, 195, 0, 0.4)',
+                boxShadow: '0 10px 40px rgba(75, 141, 223, 0.4)',
                 minWidth: '280px'
               }}
             >
@@ -755,7 +710,7 @@ export default function LandingPage() {
                   <a 
                     href="#features" 
                     onClick={(e) => { e.preventDefault(); scrollToSection('features'); }}
-                    className="hover:text-yellow-300 transition-colors" 
+                    className="hover:text-primary-300 transition-colors" 
                     style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}
                   >
                     Features
@@ -765,7 +720,7 @@ export default function LandingPage() {
                   <a 
                     href="#security" 
                     onClick={(e) => { e.preventDefault(); scrollToSection('security'); }}
-                    className="hover:text-yellow-300 transition-colors" 
+                    className="hover:text-primary-300 transition-colors" 
                     style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}
                   >
                     Security
@@ -775,7 +730,7 @@ export default function LandingPage() {
                   <a 
                     href="#pricing" 
                     onClick={(e) => { e.preventDefault(); scrollToSection('pricing'); }}
-                    className="hover:text-yellow-300 transition-colors" 
+                    className="hover:text-primary-300 transition-colors" 
                     style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}
                   >
                     Pricing
@@ -785,7 +740,7 @@ export default function LandingPage() {
                   <a 
                     href="#faq" 
                     onClick={(e) => { e.preventDefault(); scrollToSection('faq'); }}
-                    className="hover:text-yellow-300 transition-colors" 
+                    className="hover:text-primary-300 transition-colors" 
                     style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}
                   >
                     FAQ
@@ -797,18 +752,18 @@ export default function LandingPage() {
             <div>
               <h4 className="font-bold mb-4" style={{ color: '#fff' }}>Legal</h4>
               <ul className="space-y-2">
-                <li><a href="#" className="hover:text-yellow-300 transition-colors" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-yellow-300 transition-colors" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Terms of Service</a></li>
-                <li><a href="#" className="hover:text-yellow-300 transition-colors" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Security</a></li>
+                <li><a href="#" className="hover:text-primary-300 transition-colors" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Privacy Policy</a></li>
+                <li><a href="#" className="hover:text-primary-300 transition-colors" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Terms of Service</a></li>
+                <li><a href="#" className="hover:text-primary-300 transition-colors" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Security</a></li>
               </ul>
             </div>
             
             <div>
               <h4 className="font-bold mb-4" style={{ color: '#fff' }}>Connect</h4>
               <ul className="space-y-2">
-                <li><a href="#" className="hover:text-yellow-300 transition-colors" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Support</a></li>
-                <li><a href="#" className="hover:text-yellow-300 transition-colors" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Contact Us</a></li>
-                <li><a href="#" className="hover:text-yellow-300 transition-colors" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Blog</a></li>
+                <li><a href="#" className="hover:text-primary-300 transition-colors" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Support</a></li>
+                <li><a href="#" className="hover:text-primary-300 transition-colors" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Contact Us</a></li>
+                <li><a href="#" className="hover:text-primary-300 transition-colors" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>Blog</a></li>
               </ul>
             </div>
           </div>

@@ -335,7 +335,7 @@ function Sidebar({ sections, expanded, onToggle, location, onNavigate, subscript
 
       {/* Plan card */}
       {subscription && (
-        <div className="m-4 mb-2 rounded-lg border border-zinc-50/5 bg-zinc-50/5 p-4">
+        <div className="m-4 mb-2 rounded-lg border border-zinc-50/5 bg-zinc-50/5 p-4 [@media(max-height:820px)]:hidden">
           <div className="flex items-center gap-x-2 text-[13px] font-semibold text-white">
             <Crown className="size-4 text-amber-400" aria-hidden="true" />
             {subscription.plan || 'Free'} plan
