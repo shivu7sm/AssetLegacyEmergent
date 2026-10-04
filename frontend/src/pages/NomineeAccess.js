@@ -48,12 +48,12 @@ export default function NomineeAccess() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center" style={{background: 'linear-gradient(135deg, #1a0b2e 0%, theme.backgroundTertiary 50%, #2d0e3e 100%)'}}>
+    <div className="min-h-screen flex items-center justify-center" style={{background: 'var(--fuse-surface)'}}>
       <div className="w-full max-w-md p-6">
         <Card style={{background: theme.cardBg, borderColor: theme.border}}>
           <CardHeader className="text-center">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{background: 'rgba(168, 85, 247, 0.2)'}}>
-              <Shield className="w-8 h-8" style={{color: '#a855f7'}} />
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{background: 'rgba(21, 101, 192, 0.2)'}}>
+              <Shield className="w-8 h-8" style={{color: 'var(--fuse-primary-text)'}} />
             </div>
             <CardTitle style={{color: theme.text, fontSize: '1.75rem'}}>Nominee Access Portal</CardTitle>
             <p className="text-sm mt-2" style={{color: theme.textSecondary}}>
@@ -75,7 +75,7 @@ export default function NomineeAccess() {
                   required
                   className="bg-slate-800 border-slate-700 text-white mt-2"
                 />
-                <p className="text-xs mt-2" style={{color: '#64748b'}}>
+                <p className="text-xs mt-2" style={{color: '#71717a'}}>
                   You should have received this token via email from the account holder
                 </p>
               </div>
@@ -84,7 +84,7 @@ export default function NomineeAccess() {
                 type="submit"
                 disabled={loading}
                 className="w-full"
-                style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: '#fff'}}
+                style={{background: 'var(--fuse-primary)', color: '#fff'}}
               >
                 {loading ? 'Verifying...' : 'Access Portfolio'}
               </Button>

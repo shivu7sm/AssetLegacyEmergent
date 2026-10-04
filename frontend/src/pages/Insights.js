@@ -114,7 +114,7 @@ export default function Insights() {
     <Layout>
       <div className="space-y-8" style={{padding: '2rem 1.5rem', margin: '0 auto', maxWidth: '1600px'}}>
         <div>
-          <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{fontFamily: 'Space Grotesk, sans-serif', color: theme.text}}>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{color: theme.text}}>
             AI Financial Insights
           </h1>
           <p style={{color: theme.textTertiary}}>AI-powered analysis of your portfolio with personalized recommendations</p>
@@ -146,7 +146,7 @@ export default function Insights() {
                 onClick={generateInsights}
                 disabled={loading || assets.length === 0}
                 className="text-white rounded-full"
-                style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
+                style={{background: 'var(--fuse-primary)'}}
               >
                 {loading ? (
                   <>
@@ -194,7 +194,7 @@ export default function Insights() {
                         <Button
                           variant="outline"
                           className="rounded-full"
-                          style={{borderColor: '#a855f7', color: '#a855f7'}}
+                          style={{borderColor: 'var(--fuse-primary)', color: 'var(--fuse-primary-text)'}}
                         >
                           <Sparkles className="w-4 h-4 mr-2" />
                           View Detailed Analysis
@@ -230,7 +230,7 @@ export default function Insights() {
                           {/* All Recommendations */}
                           {insights.allocation_recommendations && insights.allocation_recommendations.length > 0 && (
                             <div>
-                              <h4 className="font-semibold mb-3" style={{color: '#a855f7', fontSize: '18px'}}>Allocation Recommendations</h4>
+                              <h4 className="font-semibold mb-3" style={{color: 'var(--fuse-primary-text)', fontSize: '18px'}}>Allocation Recommendations</h4>
                               <ul className="space-y-2">
                                 {insights.allocation_recommendations.map((rec, index) => (
                                   <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: theme.backgroundTertiary}}>
@@ -284,7 +284,7 @@ export default function Insights() {
                           {/* All Action Items */}
                           {insights.action_items && insights.action_items.length > 0 && (
                             <div>
-                              <h4 className="font-semibold mb-3" style={{color: '#ec4899', fontSize: '18px'}}>Recommended Actions</h4>
+                              <h4 className="font-semibold mb-3" style={{color: 'var(--fuse-primary-text)', fontSize: '18px'}}>Recommended Actions</h4>
                               <ul className="space-y-2">
                                 {insights.action_items.map((action, index) => (
                                   <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: theme.backgroundTertiary}}>
@@ -314,7 +314,7 @@ export default function Insights() {
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <Target className="w-5 h-5" style={{color: '#a855f7'}} />
+                        <Target className="w-5 h-5" style={{color: 'var(--fuse-primary-text)'}} />
                         <CardTitle style={{color: theme.text}}>Top Recommendations</CardTitle>
                       </div>
                       <Button
@@ -331,7 +331,7 @@ export default function Insights() {
                   <CardContent>
                     <ul className="space-y-3">
                       {insights.allocation_recommendations.slice(0, expandedSections.recommendations ? undefined : 2).map((rec, index) => (
-                        <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: theme.backgroundTertiary, borderLeft: '2px solid #a855f7'}}>
+                        <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: theme.backgroundTertiary, borderLeft: '2px solid var(--fuse-primary)'}}>
                           <span className="text-lg">💡</span>
                           <p 
                             style={{color: theme.textSecondary, lineHeight: '1.6', fontSize: '14px'}}
@@ -344,7 +344,7 @@ export default function Insights() {
                       <button
                         onClick={() => toggleSection('recommendations')}
                         className="text-sm mt-3 hover:underline"
-                        style={{color: '#a855f7'}}
+                        style={{color: 'var(--fuse-primary-text)'}}
                       >
                         +{insights.allocation_recommendations.length - 2} more
                       </button>
@@ -449,7 +449,7 @@ export default function Insights() {
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <Sparkles className="w-5 h-5" style={{color: '#ec4899'}} />
+                        <Sparkles className="w-5 h-5" style={{color: 'var(--fuse-primary-text)'}} />
                         <CardTitle style={{color: theme.text}}>Next Steps</CardTitle>
                       </div>
                       <Button
@@ -466,7 +466,7 @@ export default function Insights() {
                   <CardContent>
                     <ul className="space-y-3">
                       {insights.action_items.slice(0, expandedSections.actions ? undefined : 2).map((action, index) => (
-                        <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: theme.backgroundTertiary, borderLeft: '2px solid #ec4899'}}>
+                        <li key={index} className="flex items-start gap-3 p-3 rounded-lg" style={{background: theme.backgroundTertiary, borderLeft: '2px solid var(--fuse-primary)'}}>
                           <span className="text-lg">✅</span>
                           <p 
                             style={{color: theme.textSecondary, lineHeight: '1.6', fontSize: '14px'}}
@@ -479,7 +479,7 @@ export default function Insights() {
                       <button
                         onClick={() => toggleSection('actions')}
                         className="text-sm mt-3 hover:underline"
-                        style={{color: '#ec4899'}}
+                        style={{color: 'var(--fuse-primary-text)'}}
                       >
                         +{insights.action_items.length - 2} more
                       </button>
@@ -496,7 +496,7 @@ export default function Insights() {
           <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
             <CardContent className="py-16">
               <div className="text-center">
-                <Sparkles className="w-16 h-16 mx-auto mb-4" style={{color: '#2d1f3d'}} />
+                <Sparkles className="w-16 h-16 mx-auto mb-4" style={{color: 'var(--fuse-border)'}} />
                 <h3 className="text-xl font-semibold mb-2" style={{color: theme.text}}>No Assets Yet</h3>
                 <p className="mb-6" style={{color: theme.textTertiary}}>Add assets to your portfolio to get AI-powered insights</p>
               </div>
@@ -508,7 +508,7 @@ export default function Insights() {
           <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
             <CardContent className="py-16">
               <div className="text-center">
-                <Sparkles className="w-16 h-16 mx-auto mb-4" style={{color: '#a855f7'}} />
+                <Sparkles className="w-16 h-16 mx-auto mb-4" style={{color: 'var(--fuse-primary-text)'}} />
                 <h3 className="text-xl font-semibold mb-2" style={{color: theme.text}}>Ready to Analyze</h3>
                 <p className="mb-6" style={{color: theme.textTertiary}}>Click the button above to generate your first AI-powered portfolio analysis</p>
               </div>

@@ -123,7 +123,7 @@ export default function Nominees() {
         {/* Header */}
         <div className="flex justify-between items-start">
           <div>
-            <h1 className="text-3xl sm:text-4xl font-bold mb-2 flex items-center gap-3" style={{color: theme.text, fontFamily: 'Space Grotesk, sans-serif'}}>
+            <h1 className="text-3xl sm:text-4xl font-bold mb-2 flex items-center gap-3" style={{color: theme.text}}>
               <Users className="w-8 h-8" />
               Nominees & Beneficiaries
             </h1>
@@ -139,7 +139,7 @@ export default function Nominees() {
               setDialogOpen(true);
             }}
             className="text-white font-medium"
-            style={{background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)'}}
+            style={{background: 'var(--fuse-primary)'}}
           >
             <Plus className="w-4 h-4 mr-2" />
             Add Nominee
@@ -147,10 +147,10 @@ export default function Nominees() {
         </div>
 
         {/* Legacy Protection Message */}
-        <Card style={{background: 'rgba(168, 85, 247, 0.1)', borderColor: 'rgba(168, 85, 247, 0.3)', borderWidth: '2px'}}>
+        <Card style={{background: 'rgba(21, 101, 192, 0.1)', borderColor: 'rgba(21, 101, 192, 0.3)', borderWidth: '2px'}}>
           <CardContent className="p-6">
             <div className="flex items-start gap-3">
-              <Shield className="w-6 h-6 mt-0.5" style={{color: '#a855f7'}} />
+              <Shield className="w-6 h-6 mt-0.5" style={{color: 'var(--fuse-primary-text)'}} />
               <div>
                 <h3 className="font-semibold mb-2" style={{color: theme.text}}>
                   Why Nominees Matter
@@ -174,7 +174,7 @@ export default function Nominees() {
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)'}}>
+                      <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{background: 'var(--fuse-primary)'}}>
                         <User className="w-6 h-6 text-white" />
                       </div>
                       <div>
@@ -219,7 +219,7 @@ export default function Nominees() {
                   )}
                   
                   <div className="pt-3 border-t flex justify-between" style={{borderColor: theme.border}}>
-                    <span className="text-xs font-semibold px-3 py-1 rounded-full" style={{background: 'rgba(168, 85, 247, 0.2)', color: '#a855f7'}}>
+                    <span className="text-xs font-semibold px-3 py-1 rounded-full" style={{background: 'rgba(21, 101, 192, 0.2)', color: 'var(--fuse-primary-text)'}}>
                       Priority #{nominee.priority}
                     </span>
                     <div className="flex gap-2">
@@ -256,7 +256,7 @@ export default function Nominees() {
               <Button 
                 onClick={() => setDialogOpen(true)}
                 className="text-white font-medium"
-                style={{background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)'}}
+                style={{background: 'var(--fuse-primary)'}}
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add Your First Nominee
@@ -334,7 +334,7 @@ export default function Nominees() {
                 <Button 
                   type="submit"
                   className="flex-1 text-white"
-                  style={{background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)'}}
+                  style={{background: 'var(--fuse-primary)'}}
                 >
                   {editingNomineeId ? 'Update' : 'Add'} Nominee
                 </Button>

@@ -84,7 +84,7 @@ export default function DigitalWill() {
     <Layout>
       <div className="space-y-8" style={{padding: '2rem 1.5rem', margin: '0 auto', maxWidth: '1600px'}}>
         <div>
-          <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{fontFamily: 'Space Grotesk, sans-serif', color: theme.text}}>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{color: theme.text}}>
             Digital Will
           </h1>
           <p style={{color: theme.textTertiary}}>Create and manage your digital will for asset distribution</p>
@@ -122,7 +122,7 @@ export default function DigitalWill() {
               <Button
                 onClick={addBeneficiary}
                 className="text-white"
-                style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
+                style={{background: 'var(--fuse-primary)'}}
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add Beneficiary
@@ -195,7 +195,7 @@ export default function DigitalWill() {
             onClick={handleSave}
             size="lg"
             className="text-white"
-            style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
+            style={{background: 'var(--fuse-primary)'}}
           >
             Save Digital Will
           </Button>

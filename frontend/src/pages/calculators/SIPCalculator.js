@@ -63,7 +63,7 @@ export default function SIPCalculator() {
       <div className="space-y-6" style={{padding: '1.5rem 0'}}>
         {/* Header */}
         <div>
-          <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{color: theme.text, fontFamily: 'Space Grotesk, sans-serif'}}>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{color: theme.text}}>
             SIP Calculator
           </h1>
           <p className="text-base sm:text-lg" style={{color: theme.textSecondary}}>
@@ -162,7 +162,7 @@ export default function SIPCalculator() {
               <Button
                 onClick={calculateSIP}
                 className="w-full text-white font-medium"
-                style={{background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)'}}
+                style={{background: '#10b981'}}
               >
                 Calculate Returns
               </Button>
@@ -174,7 +174,7 @@ export default function SIPCalculator() {
             <Card style={{background: theme.cardBg, borderColor: theme.border}}>
               <CardHeader>
                 <CardTitle className="flex items-center gap-3" style={{color: theme.text}}>
-                  <Target className="w-5 h-5" style={{color: '#a855f7'}} />
+                  <Target className="w-5 h-5" style={{color: 'var(--fuse-primary-text)'}} />
                   Investment Summary
                 </CardTitle>
               </CardHeader>
@@ -197,9 +197,9 @@ export default function SIPCalculator() {
                   </div>
 
                   {/* Future Value */}
-                  <div className="p-4 rounded-lg" style={{background: 'rgba(168, 85, 247, 0.1)', border: '1px solid rgba(168, 85, 247, 0.3)'}}>
+                  <div className="p-4 rounded-lg" style={{background: 'rgba(21, 101, 192, 0.1)', border: '1px solid rgba(21, 101, 192, 0.3)'}}>
                     <div className="text-sm mb-1" style={{color: theme.textSecondary}}>Maturity Value</div>
-                    <div className="text-3xl font-bold" style={{color: '#a855f7'}}>
+                    <div className="text-3xl font-bold" style={{color: 'var(--fuse-primary-text)'}}>
                       {formatCurrency(result.futureValue)}
                     </div>
                   </div>

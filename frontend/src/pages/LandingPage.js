@@ -11,33 +11,33 @@ const API = `${BACKEND_URL}/api`;
 const THEMES = {
   purple: {
     name: 'Purple Dream',
-    primary: 'linear-gradient(135deg, #6A11CB 0%, #8E54E9 50%, #FF6A88 100%)',
-    secondary: 'linear-gradient(135deg, #8E54E9 0%, #FF6A88 100%)',
-    accent: 'linear-gradient(135deg, #FF6A88 0%, #FFB199 100%)',
-    light: 'linear-gradient(135deg, #FFB199 0%, #FFE5DD 100%)',
-    neutral: 'linear-gradient(135deg, #FAFAFA 0%, #FFFFFF 100%)',
-    footer: 'linear-gradient(135deg, #2D1B4E 0%, #1A0B2E 100%)',
-    buttonGradient: 'linear-gradient(135deg, #6A11CB 0%, #FF6A88 100%)'
+    primary: '#6A11CB',
+    secondary: '#8E54E9',
+    accent: '#FF6A88',
+    light: '#FFB199',
+    neutral: '#FAFAFA',
+    footer: 'var(--fuse-surface)',
+    buttonGradient: '#6A11CB'
   },
   blue: {
     name: 'Ocean Deep',
-    primary: 'linear-gradient(135deg, #0F2027 0%, #203A43 50%, #2C5364 100%)',
-    secondary: 'linear-gradient(135deg, #203A43 0%, #2C5364 100%)',
-    accent: 'linear-gradient(135deg, #2C5364 0%, #4CA2CD 100%)',
-    light: 'linear-gradient(135deg, #4CA2CD 0%, #B8E6FF 100%)',
-    neutral: 'linear-gradient(135deg, #F5F7FA 0%, #FFFFFF 100%)',
-    footer: 'linear-gradient(135deg, #0F2027 0%, #000000 100%)',
-    buttonGradient: 'linear-gradient(135deg, #0F2027 0%, #2C5364 100%)'
+    primary: '#0F2027',
+    secondary: '#203A43',
+    accent: '#2C5364',
+    light: '#4CA2CD',
+    neutral: '#F5F7FA',
+    footer: '#0F2027',
+    buttonGradient: '#0F2027'
   },
   green: {
     name: 'Money Growth',
-    primary: 'linear-gradient(135deg, #11998E 0%, #38EF7D 50%, #C8FFB1 100%)',
-    secondary: 'linear-gradient(135deg, #38EF7D 0%, #C8FFB1 100%)',
-    accent: 'linear-gradient(135deg, #C8FFB1 0%, #E0FFD1 100%)',
-    light: 'linear-gradient(135deg, #E0FFD1 0%, #F5FFF0 100%)',
-    neutral: 'linear-gradient(135deg, #F8FFF8 0%, #FFFFFF 100%)',
-    footer: 'linear-gradient(135deg, #0D7377 0%, #0A4D4E 100%)',
-    buttonGradient: 'linear-gradient(135deg, #11998E 0%, #38EF7D 100%)'
+    primary: '#11998E',
+    secondary: '#38EF7D',
+    accent: '#C8FFB1',
+    light: '#E0FFD1',
+    neutral: '#F8FFF8',
+    footer: '#0D7377',
+    buttonGradient: '#11998E'
   }
 };
 

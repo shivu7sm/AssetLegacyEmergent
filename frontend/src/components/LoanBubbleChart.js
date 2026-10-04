@@ -127,7 +127,7 @@ export default function LoanBubbleChart({ data, selectedCurrency, currencyFormat
           size="sm"
           variant="ghost"
           style={{
-            background: metric === 'amount' ? 'linear-gradient(135deg, #ef4444 0%, #f59e0b 100%)' : 'transparent',
+            background: metric === 'amount' ? '#ef4444' : 'transparent',
             color: metric === 'amount' ? '#fff' : theme.textMuted,
             padding: '8px 16px',
           }}
@@ -139,7 +139,7 @@ export default function LoanBubbleChart({ data, selectedCurrency, currencyFormat
           size="sm"
           variant="ghost"
           style={{
-            background: metric === 'rate' ? 'linear-gradient(135deg, #ef4444 0%, #f59e0b 100%)' : 'transparent',
+            background: metric === 'rate' ? '#ef4444' : 'transparent',
             color: metric === 'rate' ? '#fff' : theme.textMuted,
             padding: '8px 16px',
           }}

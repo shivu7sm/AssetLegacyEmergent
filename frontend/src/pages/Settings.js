@@ -47,13 +47,13 @@ function AppearanceSection() {
               onClick={() => setColorTheme('dark')}
               className="cursor-pointer relative p-6 rounded-lg border-2 transition-all"
               style={{
-                background: colorTheme === 'dark' ? 'rgba(168, 85, 247, 0.1)' : theme.backgroundTertiary,
-                borderColor: colorTheme === 'dark' ? '#a855f7' : theme.border,
+                background: colorTheme === 'dark' ? 'rgba(21, 101, 192, 0.1)' : theme.backgroundTertiary,
+                borderColor: colorTheme === 'dark' ? 'var(--fuse-primary)' : theme.border,
                 transform: colorTheme === 'dark' ? 'scale(1.02)' : 'scale(1)'
               }}
             >
               {colorTheme === 'dark' && (
-                <div className="absolute top-3 right-3 w-6 h-6 rounded-full flex items-center justify-center" style={{background: '#a855f7'}}>
+                <div className="absolute top-3 right-3 w-6 h-6 rounded-full flex items-center justify-center" style={{background: 'var(--fuse-primary)'}}>
                   <span style={{color: '#fff', fontSize: '14px'}}>✓</span>
                 </div>
               )}
@@ -62,9 +62,9 @@ function AppearanceSection() {
                 Dark theme with purple and pink gradient accents. Easy on the eyes with vibrant colors.
               </p>
               <div className="flex gap-2">
-                <div className="w-8 h-8 rounded" style={{background: '#0b0b11'}}></div>
-                <div className="w-8 h-8 rounded" style={{background: '#1a1229'}}></div>
-                <div className="w-8 h-8 rounded" style={{background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)'}}></div>
+                <div className="w-8 h-8 rounded" style={{background: 'var(--fuse-surface)'}}></div>
+                <div className="w-8 h-8 rounded" style={{background: 'var(--fuse-surface)'}}></div>
+                <div className="w-8 h-8 rounded" style={{background: 'var(--fuse-primary)'}}></div>
               </div>
             </div>
 
@@ -73,13 +73,13 @@ function AppearanceSection() {
               onClick={() => setColorTheme('light')}
               className="cursor-pointer relative p-6 rounded-lg border-2 transition-all"
               style={{
-                background: colorTheme === 'light' ? 'rgba(139, 92, 246, 0.1)' : theme.backgroundTertiary,
-                borderColor: colorTheme === 'light' ? '#8b5cf6' : theme.border,
+                background: colorTheme === 'light' ? 'rgba(21, 101, 192, 0.1)' : theme.backgroundTertiary,
+                borderColor: colorTheme === 'light' ? 'var(--fuse-primary)' : theme.border,
                 transform: colorTheme === 'light' ? 'scale(1.02)' : 'scale(1)'
               }}
             >
               {colorTheme === 'light' && (
-                <div className="absolute top-3 right-3 w-6 h-6 rounded-full flex items-center justify-center" style={{background: '#8b5cf6'}}>
+                <div className="absolute top-3 right-3 w-6 h-6 rounded-full flex items-center justify-center" style={{background: 'var(--fuse-primary)'}}>
                   <span style={{color: '#fff', fontSize: '14px'}}>✓</span>
                 </div>
               )}
@@ -88,14 +88,14 @@ function AppearanceSection() {
                 Clean white theme with dark text. Perfect for bright environments and better readability.
               </p>
               <div className="flex gap-2">
-                <div className="w-8 h-8 rounded" style={{background: '#ffffff', border: '1px solid #e2e8f0'}}></div>
-                <div className="w-8 h-8 rounded" style={{background: '#f8fafc'}}></div>
-                <div className="w-8 h-8 rounded" style={{background: 'linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%)'}}></div>
+                <div className="w-8 h-8 rounded" style={{background: '#ffffff', border: '1px solid #e4e4e7'}}></div>
+                <div className="w-8 h-8 rounded" style={{background: '#fafafa'}}></div>
+                <div className="w-8 h-8 rounded" style={{background: 'var(--fuse-primary)'}}></div>
               </div>
             </div>
           </div>
 
-          <div className="mt-4 p-4 rounded-lg" style={{background: colorTheme === 'dark' ? 'rgba(168, 85, 247, 0.1)' : 'rgba(139, 92, 246, 0.1)', border: `1px solid ${colorTheme === 'dark' ? 'rgba(168, 85, 247, 0.3)' : 'rgba(139, 92, 246, 0.3)'}`}}>
+          <div className="mt-4 p-4 rounded-lg" style={{background: colorTheme === 'dark' ? 'rgba(21, 101, 192, 0.1)' : 'rgba(21, 101, 192, 0.1)', border: `1px solid ${colorTheme === 'dark' ? 'rgba(21, 101, 192, 0.3)' : 'rgba(21, 101, 192, 0.3)'}`}}>
             <p className="text-sm" style={{color: theme.textSecondary}}>
               <strong style={{color: theme.primary}}>Current theme:</strong> {colorTheme === 'dark' ? 'Standard (Dark)' : 'White (Light)'}
             </p>
@@ -161,7 +161,7 @@ function DemoDataSection() {
             onClick={handleResetDemoData}
             disabled={resetting}
             className="w-full"
-            style={{background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)', color: '#fff'}}
+            style={{background: '#f59e0b', color: '#fff'}}
           >
             <RefreshCw className={`w-4 h-4 mr-2 ${resetting ? 'animate-spin' : ''}`} />
             {resetting ? 'Resetting Demo Data...' : 'Reset Demo Data'}
@@ -261,23 +261,23 @@ function ConnectedAccountsSection({ demoMode }) {
               <CardContent className="py-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{background: 'rgba(168, 85, 247, 0.2)'}}>
-                      <Shield className="w-6 h-6" style={{color: '#a855f7'}} />
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{background: 'rgba(21, 101, 192, 0.2)'}}>
+                      <Shield className="w-6 h-6" style={{color: 'var(--fuse-primary-text)'}} />
                     </div>
                     <div>
                       <p className="font-semibold text-lg" style={{color: theme.text}}>{account.account_name}</p>
                       <p className="text-sm" style={{color: theme.textTertiary}}>{account.account_email}</p>
                       <div className="flex gap-2 mt-1">
                         {account.relationship && (
-                          <span className="text-xs px-2 py-1 rounded-full" style={{background: 'rgba(168, 85, 247, 0.2)', color: '#a855f7'}}>
+                          <span className="text-xs px-2 py-1 rounded-full" style={{background: 'rgba(21, 101, 192, 0.2)', color: 'var(--fuse-primary-text)'}}>
                             {account.relationship}
                           </span>
                         )}
                         <span className="text-xs px-2 py-1 rounded-full" style={{
-                          background: account.access_type === 'immediate' ? 'rgba(168, 85, 247, 0.2)' :
+                          background: account.access_type === 'immediate' ? 'rgba(21, 101, 192, 0.2)' :
                                      account.access_type === 'temporary' ? 'rgba(245, 158, 11, 0.2)' :
                                      'rgba(59, 130, 246, 0.2)',
-                          color: account.access_type === 'immediate' ? '#a855f7' :
+                          color: account.access_type === 'immediate' ? 'var(--fuse-primary)' :
                                  account.access_type === 'temporary' ? '#f59e0b' :
                                  '#3b82f6'
                         }}>
@@ -295,7 +295,7 @@ function ConnectedAccountsSection({ demoMode }) {
                   </div>
                   <Button
                     onClick={() => navigate('/assets')}
-                    style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: '#fff'}}
+                    style={{background: 'var(--fuse-primary)', color: '#fff'}}
                   >
                     View Portfolio
                   </Button>
@@ -308,7 +308,7 @@ function ConnectedAccountsSection({ demoMode }) {
         <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
           <CardContent className="py-16">
             <div className="text-center">
-              <Link className="w-16 h-16 mx-auto mb-4" style={{color: '#2d1f3d'}} />
+              <Link className="w-16 h-16 mx-auto mb-4" style={{color: 'var(--fuse-border)'}} />
               <h3 className="text-xl font-semibold mb-2" style={{color: theme.text}}>No Connected Accounts</h3>
               <p className="mb-6" style={{color: theme.textTertiary}}>
                 You don't have access to any other portfolios yet. When someone grants you nominee access, it will appear here.
@@ -360,7 +360,7 @@ function SecurityAuditSection({ user }) {
     if (action.includes('create') || action.includes('login')) return '#10b981';
     if (action.includes('update')) return '#3b82f6';
     if (action.includes('delete')) return '#ef4444';
-    return '#94a3b8';
+    return '#a1a1aa';
   };
 
   const getActionIcon = (action) => {
@@ -408,11 +408,11 @@ function SecurityAuditSection({ user }) {
               </div>
             </div>
 
-            <div className="p-4 rounded-lg" style={{background: 'rgba(168, 85, 247, 0.1)', border: '1px solid rgba(168, 85, 247, 0.3)'}}>
+            <div className="p-4 rounded-lg" style={{background: 'rgba(21, 101, 192, 0.1)', border: '1px solid rgba(21, 101, 192, 0.3)'}}>
               <div className="flex items-center gap-3">
-                <Clock className="w-10 h-10" style={{color: '#a855f7'}} />
+                <Clock className="w-10 h-10" style={{color: 'var(--fuse-primary-text)'}} />
                 <div>
-                  <div className="text-2xl font-bold" style={{color: '#a855f7'}}>30 Days</div>
+                  <div className="text-2xl font-bold" style={{color: 'var(--fuse-primary-text)'}}>30 Days</div>
                   <div className="text-sm" style={{color: theme.textSecondary}}>Log Retention</div>
                 </div>
               </div>
@@ -453,7 +453,7 @@ function SecurityAuditSection({ user }) {
                 <div 
                   key={index}
                   className="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-800/50 transition-colors"
-                  style={{background: '#131835', border: '1px solid #1e293b'}}
+                  style={{background: '#131835', border: '1px solid #27272a'}}
                 >
                   <div className="text-2xl flex-shrink-0">{getActionIcon(log.action)}</div>
                   <div className="flex-1 min-w-0">
@@ -467,7 +467,7 @@ function SecurityAuditSection({ user }) {
                       {log.resource_type && (
                         <span 
                           className="text-xs px-2 py-0.5 rounded-full"
-                          style={{background: '#2d1f3d', color: theme.textTertiary}}
+                          style={{background: 'var(--fuse-border)', color: theme.textTertiary}}
                         >
                           {log.resource_type}
                         </span>
@@ -770,13 +770,13 @@ export default function Settings() {
               <CardContent className="space-y-6">
                 <div className="flex items-center gap-6">
                   {user?.picture && (
-                    <img src={user.picture} alt={user.name} className="w-24 h-24 rounded-full border-2" style={{borderColor: '#a855f7'}} />
+                    <img src={user.picture} alt={user.name} className="w-24 h-24 rounded-full border-2" style={{borderColor: 'var(--fuse-primary)'}} />
                   )}
                   <div className="flex-1">
                     <p className="text-2xl font-semibold mb-1" style={{color: theme.text}}>{user?.name}</p>
                     <p className="text-lg" style={{color: theme.textTertiary}}>{user?.email}</p>
                     <div className="flex gap-4 mt-3">
-                      <div className="px-3 py-1 rounded-full text-xs font-semibold" style={{background: 'rgba(168, 85, 247, 0.2)', color: '#a855f7'}}>
+                      <div className="px-3 py-1 rounded-full text-xs font-semibold" style={{background: 'rgba(21, 101, 192, 0.2)', color: 'var(--fuse-primary-text)'}}>
                         {user?.subscription_plan || 'Free'} Plan
                       </div>
                       <div className="px-3 py-1 rounded-full text-xs" style={{background: 'rgba(148, 163, 184, 0.2)', color: theme.textSecondary}}>
@@ -787,7 +787,7 @@ export default function Settings() {
                 </div>
 
                 {/* Additional Profile Fields */}
-                <div className="grid grid-cols-2 gap-4 pt-6" style={{borderTop: '1px solid #2d1f3d'}}>
+                <div className="grid grid-cols-2 gap-4 pt-6" style={{borderTop: '1px solid var(--fuse-border)'}}>
                   <div>
                     <Label style={{color: theme.textSecondary}}>Phone Number</Label>
                     <Input
@@ -839,7 +839,7 @@ export default function Settings() {
                 </div>
 
                 {/* Emergency Contact */}
-                <div className="pt-6" style={{borderTop: '1px solid #2d1f3d'}}>
+                <div className="pt-6" style={{borderTop: '1px solid var(--fuse-border)'}}>
                   <h3 className="text-lg font-semibold mb-4" style={{color: theme.text}}>Emergency Contact</h3>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
@@ -862,7 +862,7 @@ export default function Settings() {
 
                 <Button 
                   onClick={() => toast.success('Profile updated (full implementation pending)')}
-                  style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: '#fff'}}
+                  style={{background: 'var(--fuse-primary)', color: '#fff'}}
                 >
                   Save Changes
                 </Button>
@@ -876,7 +876,7 @@ export default function Settings() {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-3 gap-4">
-                  <div className="text-center p-4 rounded-lg" style={{background: 'rgba(168, 85, 247, 0.1)'}}>
+                  <div className="text-center p-4 rounded-lg" style={{background: 'rgba(21, 101, 192, 0.1)'}}>
                     <p className="text-3xl font-bold mb-1" style={{color: theme.primary}}>
                       {user?.last_activity ? Math.floor((Date.now() - new Date(user.last_activity)) / (1000 * 60 * 60 * 24)) : 0}
                     </p>
@@ -1027,7 +1027,7 @@ export default function Settings() {
               <Button 
                 type="submit"
                 className="text-white rounded-full"
-                style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
+                style={{background: 'var(--fuse-primary)'}}
               >
                 Save Preferences
               </Button>
@@ -1074,7 +1074,7 @@ export default function Settings() {
             </div>
             
             {/* Detailed Subscription Card */}
-            <Card style={{background: theme.cardBg, borderColor: '#a855f7'}}>
+            <Card style={{background: theme.cardBg, borderColor: 'var(--fuse-primary)'}}>
               <CardContent className="py-6">
                 <div className="flex items-start justify-between flex-wrap gap-6">
                   <div className="flex-1">
@@ -1086,7 +1086,7 @@ export default function Settings() {
                       <h3 className="text-2xl font-bold" style={{color: theme.text}}>{currentPlan}</h3>
                       {currentPlan !== 'Free' && (
                         <span className="px-3 py-1 rounded-full text-xs font-semibold" style={{
-                          background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)',
+                          background: 'var(--fuse-primary)',
                           color: '#fff'
                         }}>
                           PREMIUM
@@ -1172,7 +1172,7 @@ export default function Settings() {
                         {/* Billing Amount */}
                         <div className="flex items-center gap-2 text-sm">
                           <span style={{color: theme.textTertiary}}>Amount:</span>
-                          <span className="text-lg font-bold" style={{color: '#a855f7'}}>
+                          <span className="text-lg font-bold" style={{color: 'var(--fuse-primary-text)'}}>
                             {subDetails.currency} ${subDetails.amount}/{subDetails.interval}
                           </span>
                         </div>
@@ -1184,7 +1184,7 @@ export default function Settings() {
                       <Button
                         onClick={() => window.location.href = '/subscription'}
                         variant="outline"
-                        style={{borderColor: '#a855f7', color: '#a855f7'}}
+                        style={{borderColor: 'var(--fuse-primary)', color: 'var(--fuse-primary-text)'}}
                       >
                         View All Plans
                       </Button>
@@ -1228,7 +1228,7 @@ export default function Settings() {
                       )}
                     </div>
                   </div>
-                  <CreditCard className="w-12 h-12" style={{color: '#a855f7'}} />
+                  <CreditCard className="w-12 h-12" style={{color: 'var(--fuse-primary-text)'}} />
                 </div>
               </CardContent>
             </Card>
@@ -1256,7 +1256,7 @@ export default function Settings() {
                             width: subscription.features.max_assets > 0 
                               ? `${Math.min((subscription.usage.assets / subscription.features.max_assets) * 100, 100)}%`
                               : '50%',
-                            background: 'linear-gradient(90deg, #10b981 0%, #3b82f6 100%)'
+                            background: '#10b981'
                           }}
                         />
                       </div>
@@ -1277,7 +1277,7 @@ export default function Settings() {
                             width: subscription.features.max_documents > 0 
                               ? `${Math.min((subscription.usage.documents / subscription.features.max_documents) * 100, 100)}%`
                               : '50%',
-                            background: 'linear-gradient(90deg, #10b981 0%, #3b82f6 100%)'
+                            background: '#10b981'
                           }}
                         />
                       </div>
@@ -1300,8 +1300,8 @@ export default function Settings() {
                           style={{
                             width: `${Math.min((subscription.usage.storage_mb / subscription.features.storage_mb) * 100, 100)}%`,
                             background: subscription.usage.storage_mb / subscription.features.storage_mb > 0.8 
-                              ? 'linear-gradient(90deg, #ef4444 0%, #dc2626 100%)'
-                              : 'linear-gradient(90deg, #10b981 0%, #3b82f6 100%)'
+                              ? '#ef4444'
+                              : '#10b981'
                           }}
                         />
                       </div>
@@ -1334,7 +1334,7 @@ export default function Settings() {
                     setNomineeForm({ name: '', email: '', phone: '', relationship: '', priority: nominees.length + 1 });
                     setDialogOpen(true);
                   }}
-                  style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: '#fff'}}
+                  style={{background: 'var(--fuse-primary)', color: '#fff'}}
                 >
                   <Users className="w-4 h-4 mr-2" />
                   Add Nominee
@@ -1405,7 +1405,7 @@ export default function Settings() {
                     </div>
                     
                     <div className="flex gap-3 pt-4">
-                      <Button type="submit" className="flex-1" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: '#fff'}}>
+                      <Button type="submit" className="flex-1" style={{background: 'var(--fuse-primary)', color: '#fff'}}>
                         {editingNomineeId ? 'Update Nominee' : 'Add Nominee'}
                       </Button>
                       <Button 
@@ -1426,7 +1426,7 @@ export default function Settings() {
             {nominees.length > 0 && (
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold flex items-center gap-2" style={{color: theme.text}}>
-                  <Shield className="w-5 h-5" style={{color: '#a855f7'}} />
+                  <Shield className="w-5 h-5" style={{color: 'var(--fuse-primary-text)'}} />
                   Your Nominees ({nominees.length})
                 </h3>
                 <p className="text-sm mb-4" style={{color: theme.textTertiary}}>
@@ -1459,8 +1459,8 @@ export default function Settings() {
                   {/* Flow Diagram */}
                   <div className="flex items-center justify-between">
                     <div className="text-center flex-1">
-                      <div className="w-16 h-16 rounded-full mx-auto mb-2 flex items-center justify-center" style={{background: 'rgba(168, 85, 247, 0.2)'}}>
-                        <User className="w-8 h-8" style={{color: '#a855f7'}} />
+                      <div className="w-16 h-16 rounded-full mx-auto mb-2 flex items-center justify-center" style={{background: 'rgba(21, 101, 192, 0.2)'}}>
+                        <User className="w-8 h-8" style={{color: 'var(--fuse-primary-text)'}} />
                       </div>
                       <p className="text-xs font-semibold" style={{color: theme.text}}>You Grant Access</p>
                       <p className="text-xs" style={{color: theme.textMuted}}>Generate secure link</p>
@@ -1553,7 +1553,7 @@ export default function Settings() {
                 <div className="flex justify-center">
                   <Button 
                     onClick={() => window.location.href = '/will'}
-                    style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: '#fff'}}
+                    style={{background: 'var(--fuse-primary)', color: '#fff'}}
                   >
                     <FileText className="w-4 h-4 mr-2" />
                     Go to Digital Will
@@ -1562,11 +1562,11 @@ export default function Settings() {
               </CardContent>
             </Card>
 
-            <Card style={{background: 'rgba(168, 85, 247, 0.1)', borderColor: '#a855f7'}}>
+            <Card style={{background: 'rgba(21, 101, 192, 0.1)', borderColor: 'var(--fuse-primary)'}}>
               <CardContent className="py-4">
                 <div className="flex items-start gap-3">
-                  <div className="p-2 rounded-lg" style={{background: 'rgba(168, 85, 247, 0.2)'}}>
-                    <FileText className="w-5 h-5" style={{color: '#a855f7'}} />
+                  <div className="p-2 rounded-lg" style={{background: 'rgba(21, 101, 192, 0.2)'}}>
+                    <FileText className="w-5 h-5" style={{color: 'var(--fuse-primary-text)'}} />
                   </div>
                   <div>
                     <h4 className="font-semibold mb-1" style={{color: theme.text}}>What You Can Do</h4>
@@ -1598,7 +1598,7 @@ export default function Settings() {
             <Card style={{background: theme.cardBg, borderColor: theme.primary, borderWidth: '2px'}}>
               <CardContent className="py-8">
                 <div className="flex flex-col items-center text-center">
-                  <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4" style={{background: 'rgba(168, 85, 247, 0.2)'}}>
+                  <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4" style={{background: 'rgba(21, 101, 192, 0.2)'}}>
                     <AlertTriangle className="w-10 h-10" style={{color: theme.primary}} />
                   </div>
                   <h3 className="text-xl font-bold mb-3" style={{color: theme.text}}>How Dead Man's Switch Works</h3>
@@ -1642,8 +1642,8 @@ export default function Settings() {
             {/* Interactive DMS Toggle - Cool Design */}
             <Card style={{
               background: dmsForm.is_active 
-                ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' 
-                : 'linear-gradient(135deg, #374151 0%, #1f2937 100%)',
+                ? '#10b981' 
+                : '#374151',
               borderColor: dmsForm.is_active ? '#10b981' : '#4b5563',
               borderWidth: '2px',
               transition: 'all 0.3s ease'
@@ -1857,7 +1857,7 @@ export default function Settings() {
                     </div>
                   )}
                   
-                  <Button type="submit" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: '#fff'}}>
+                  <Button type="submit" style={{background: 'var(--fuse-primary)', color: '#fff'}}>
                     Save Configuration
                   </Button>
                 </CardContent>
@@ -1934,7 +1934,7 @@ export default function Settings() {
               <Button 
                 type="submit"
                 className="text-white rounded-full mt-6"
-                style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
+                style={{background: 'var(--fuse-primary)'}}
               >
                 Save Privacy Preferences
               </Button>
@@ -1952,7 +1952,7 @@ export default function Settings() {
       <div className="space-y-6" style={{padding: '1.5rem 0'}}>
         {/* Header */}
         <div>
-          <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{color: theme.text, fontFamily: 'Space Grotesk, sans-serif'}}>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{color: theme.text}}>
             Settings
           </h1>
           <p className="text-base sm:text-lg" style={{color: theme.textSecondary}}>

@@ -73,7 +73,7 @@ export default function DeadManSwitch() {
       <div className="space-y-6" style={{padding: '1.5rem 0'}}>
         {/* Header */}
         <div>
-          <h1 className="text-3xl sm:text-4xl font-bold mb-2 flex items-center gap-3" style={{color: theme.text, fontFamily: 'Space Grotesk, sans-serif'}}>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-2 flex items-center gap-3" style={{color: theme.text}}>
             <Clock className="w-8 h-8" />
             Dead Man&apos;s Switch
           </h1>
@@ -277,8 +277,8 @@ export default function DeadManSwitch() {
                   <label 
                     className="flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all hover:scale-[1.01]"
                     style={{
-                      background: formData.reminder_method === 'all' ? 'rgba(168, 85, 247, 0.15)' : theme.backgroundSecondary,
-                      border: `2px solid ${formData.reminder_method === 'all' ? '#a855f7' : theme.border}`
+                      background: formData.reminder_method === 'all' ? 'rgba(21, 101, 192, 0.15)' : theme.backgroundSecondary,
+                      border: `2px solid ${formData.reminder_method === 'all' ? 'var(--fuse-primary)' : theme.border}`
                     }}
                   >
                     <input
@@ -287,9 +287,9 @@ export default function DeadManSwitch() {
                       value="all"
                       checked={formData.reminder_method === 'all'}
                       onChange={(e) => setFormData({ ...formData, reminder_method: e.target.value })}
-                      style={{width: '20px', height: '20px', accentColor: '#a855f7'}}
+                      style={{width: '20px', height: '20px', accentColor: 'var(--fuse-primary)'}}
                     />
-                    <Bell className="w-5 h-5" style={{color: '#a855f7'}} />
+                    <Bell className="w-5 h-5" style={{color: 'var(--fuse-primary-text)'}} />
                     <div className="flex-1">
                       <div className="font-semibold" style={{color: theme.text}}>All Methods</div>
                       <div className="text-xs" style={{color: theme.textSecondary}}>Use all available channels</div>
@@ -317,7 +317,7 @@ export default function DeadManSwitch() {
                 onClick={handleSave}
                 disabled={saving}
                 className="w-full text-white font-medium"
-                style={{background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)'}}
+                style={{background: '#ef4444'}}
               >
                 {saving ? 'Saving...' : 'Save Configuration'}
               </Button>
@@ -338,7 +338,7 @@ export default function DeadManSwitch() {
                   
                   {/* Day 0 */}
                   <div className="relative flex gap-4 pb-8">
-                    <div className="relative z-10 w-12 h-12 rounded-full flex items-center justify-center" style={{background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)'}}>
+                    <div className="relative z-10 w-12 h-12 rounded-full flex items-center justify-center" style={{background: '#10b981'}}>
                       <CheckCircle2 className="w-6 h-6 text-white" />
                     </div>
                     <div className="flex-1 pt-2">
@@ -351,7 +351,7 @@ export default function DeadManSwitch() {
 
                   {/* Reminder 1 */}
                   <div className="relative flex gap-4 pb-8">
-                    <div className="relative z-10 w-12 h-12 rounded-full flex items-center justify-center" style={{background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)'}}>
+                    <div className="relative z-10 w-12 h-12 rounded-full flex items-center justify-center" style={{background: '#fbbf24'}}>
                       <Bell className="w-6 h-6 text-white" />
                     </div>
                     <div className="flex-1 pt-2">
@@ -364,7 +364,7 @@ export default function DeadManSwitch() {
 
                   {/* Reminder 2 */}
                   <div className="relative flex gap-4 pb-8">
-                    <div className="relative z-10 w-12 h-12 rounded-full flex items-center justify-center" style={{background: 'linear-gradient(135deg, #f59e0b 0%, #ea580c 100%)'}}>
+                    <div className="relative z-10 w-12 h-12 rounded-full flex items-center justify-center" style={{background: '#f59e0b'}}>
                       <Bell className="w-6 h-6 text-white" />
                     </div>
                     <div className="flex-1 pt-2">
@@ -377,7 +377,7 @@ export default function DeadManSwitch() {
 
                   {/* Reminder 3 */}
                   <div className="relative flex gap-4 pb-8">
-                    <div className="relative z-10 w-12 h-12 rounded-full flex items-center justify-center" style={{background: 'linear-gradient(135deg, #ea580c 0%, #dc2626 100%)'}}>
+                    <div className="relative z-10 w-12 h-12 rounded-full flex items-center justify-center" style={{background: '#ea580c'}}>
                       <AlertTriangle className="w-6 h-6 text-white" />
                     </div>
                     <div className="flex-1 pt-2">
@@ -390,7 +390,7 @@ export default function DeadManSwitch() {
 
                   {/* Day 90 - Trigger */}
                   <div className="relative flex gap-4">
-                    <div className="relative z-10 w-12 h-12 rounded-full flex items-center justify-center" style={{background: 'linear-gradient(135deg, #dc2626 0%, #991b1b 100%)'}}>
+                    <div className="relative z-10 w-12 h-12 rounded-full flex items-center justify-center" style={{background: '#dc2626'}}>
                       <Shield className="w-6 h-6 text-white" />
                     </div>
                     <div className="flex-1 pt-2">

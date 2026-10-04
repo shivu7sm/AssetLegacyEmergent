@@ -238,9 +238,9 @@ export default function Documents() {
                 <button
                   onClick={() => setSelectedAssetFilter('all')}
                   className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
-                    selectedAssetFilter === 'all' ? 'bg-purple-900/30' : 'hover:bg-gray-800/30'
+                    selectedAssetFilter === 'all' ? 'bg-primary-900/30' : 'hover:bg-gray-800/30'
                   }`}
-                  style={{color: selectedAssetFilter === 'all' ? '#a855f7' : '#cbd5e1'}}
+                  style={{color: selectedAssetFilter === 'all' ? 'var(--fuse-primary)' : '#d4d4d8'}}
                 >
                   <div className="flex items-center justify-between">
                     <span>All Documents</span>
@@ -252,9 +252,9 @@ export default function Documents() {
                 <button
                   onClick={() => setSelectedAssetFilter('unlinked')}
                   className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
-                    selectedAssetFilter === 'unlinked' ? 'bg-purple-900/30' : 'hover:bg-gray-800/30'
+                    selectedAssetFilter === 'unlinked' ? 'bg-primary-900/30' : 'hover:bg-gray-800/30'
                   }`}
-                  style={{color: selectedAssetFilter === 'unlinked' ? '#a855f7' : '#cbd5e1'}}
+                  style={{color: selectedAssetFilter === 'unlinked' ? 'var(--fuse-primary)' : '#d4d4d8'}}
                 >
                   <div className="flex items-center justify-between">
                     <span>Unlinked</span>
@@ -277,9 +277,9 @@ export default function Documents() {
                           key={asset.id}
                           onClick={() => setSelectedAssetFilter(asset.id)}
                           className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
-                            selectedAssetFilter === asset.id ? 'bg-purple-900/30' : 'hover:bg-gray-800/30'
+                            selectedAssetFilter === asset.id ? 'bg-primary-900/30' : 'hover:bg-gray-800/30'
                           }`}
-                          style={{color: selectedAssetFilter === asset.id ? '#a855f7' : '#cbd5e1'}}
+                          style={{color: selectedAssetFilter === asset.id ? 'var(--fuse-primary)' : '#d4d4d8'}}
                         >
                           <div className="flex items-center justify-between">
                             <div className="flex-1 min-w-0">
@@ -305,7 +305,7 @@ export default function Documents() {
           {/* Header Section */}
           <div className="flex justify-between items-start flex-wrap gap-4">
             <div>
-              <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{fontFamily: 'Space Grotesk, sans-serif', color: theme.text}}>
+              <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{color: theme.text}}>
                 Document Vault
               </h1>
               <p style={{color: theme.textTertiary}}>Store important documents securely for your family</p>
@@ -327,8 +327,8 @@ export default function Documents() {
                         style={{
                           width: `${Math.min((storageInfo.usage.storage_mb / storageInfo.features.storage_mb) * 100, 100)}%`,
                           background: storageInfo.usage.storage_mb / storageInfo.features.storage_mb > 0.8 
-                            ? 'linear-gradient(90deg, #ef4444 0%, #dc2626 100%)'
-                            : 'linear-gradient(90deg, #10b981 0%, #3b82f6 100%)'
+                            ? '#ef4444'
+                            : '#10b981'
                         }}
                       />
                     </div>
@@ -342,7 +342,7 @@ export default function Documents() {
 
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
               <DialogTrigger asChild>
-                <Button className="text-white" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}>
+                <Button className="text-white" style={{background: 'var(--fuse-primary)'}}>
                   <Upload className="w-4 h-4 mr-2" />
                   Upload Document
                 </Button>
@@ -408,7 +408,7 @@ export default function Documents() {
                     onClick={handleUpload}
                     disabled={uploading}
                     className="w-full text-white"
-                    style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
+                    style={{background: 'var(--fuse-primary)'}}
                   >
                     {uploading ? 'Uploading...' : 'Upload'}
                   </Button>
@@ -463,9 +463,9 @@ export default function Documents() {
                     variant="outline"
                     size="sm"
                     style={{
-                      background: viewMode === 'grid' ? '#a855f7' : 'transparent',
-                      borderColor: viewMode === 'grid' ? '#a855f7' : '#2d1f3d',
-                      color: viewMode === 'grid' ? '#fff' : '#94a3b8'
+                      background: viewMode === 'grid' ? 'var(--fuse-primary)' : 'transparent',
+                      borderColor: viewMode === 'grid' ? 'var(--fuse-primary)' : 'var(--fuse-border)',
+                      color: viewMode === 'grid' ? '#fff' : '#a1a1aa'
                     }}
                   >
                     <Grid className="w-4 h-4" />
@@ -475,9 +475,9 @@ export default function Documents() {
                     variant="outline"
                     size="sm"
                     style={{
-                      background: viewMode === 'list' ? '#a855f7' : 'transparent',
-                      borderColor: viewMode === 'list' ? '#a855f7' : '#2d1f3d',
-                      color: viewMode === 'list' ? '#fff' : '#94a3b8'
+                      background: viewMode === 'list' ? 'var(--fuse-primary)' : 'transparent',
+                      borderColor: viewMode === 'list' ? 'var(--fuse-primary)' : 'var(--fuse-border)',
+                      color: viewMode === 'list' ? '#fff' : '#a1a1aa'
                     }}
                   >
                     <List className="w-4 h-4" />
@@ -490,12 +490,12 @@ export default function Documents() {
                 <div className="flex items-center gap-2 mt-3 flex-wrap">
                   <span className="text-sm" style={{color: theme.textTertiary}}>Active filters:</span>
                   {selectedAssetFilter !== 'all' && (
-                    <span className="px-2 py-1 rounded text-xs" style={{background: '#2d1f3d', color: theme.text}}>
+                    <span className="px-2 py-1 rounded text-xs" style={{background: 'var(--fuse-border)', color: theme.text}}>
                       {selectedAssetFilter === 'unlinked' ? 'Unlinked Documents' : getAssetName(selectedAssetFilter)}
                     </span>
                   )}
                   {searchTerm && (
-                    <span className="px-2 py-1 rounded text-xs" style={{background: '#2d1f3d', color: theme.text}}>
+                    <span className="px-2 py-1 rounded text-xs" style={{background: 'var(--fuse-border)', color: theme.text}}>
                       Search: "{searchTerm}"
                     </span>
                   )}
@@ -505,7 +505,7 @@ export default function Documents() {
                       setSelectedAssetFilter('all');
                     }}
                     className="text-xs"
-                    style={{color: '#a855f7'}}
+                    style={{color: 'var(--fuse-primary-text)'}}
                   >
                     Clear all
                   </button>
@@ -523,7 +523,7 @@ export default function Documents() {
           {filteredDocuments.length === 0 ? (
             <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
               <CardContent className="py-16 text-center">
-                <FileText className="w-16 h-16 mx-auto mb-4" style={{color: '#2d1f3d'}} />
+                <FileText className="w-16 h-16 mx-auto mb-4" style={{color: 'var(--fuse-border)'}} />
                 <h3 className="text-xl font-semibold mb-2" style={{color: theme.text}}>
                   {documents.length === 0 ? 'No documents yet' : 'No documents found'}
                 </h3>
@@ -534,7 +534,7 @@ export default function Documents() {
                   }
                 </p>
                 {documents.length === 0 && (
-                  <Button onClick={() => setDialogOpen(true)} className="text-white" style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}>
+                  <Button onClick={() => setDialogOpen(true)} className="text-white" style={{background: 'var(--fuse-primary)'}}>
                     <Upload className="w-4 h-4 mr-2" />
                     Upload Your First Document
                   </Button>
@@ -549,7 +549,7 @@ export default function Documents() {
                   <CardHeader>
                     <div className="flex items-start justify-between">
                       <div className="flex items-center gap-3 flex-1 min-w-0">
-                        <FileText className="w-8 h-8 flex-shrink-0" style={{color: '#ec4899'}} />
+                        <FileText className="w-8 h-8 flex-shrink-0" style={{color: 'var(--fuse-primary-text)'}} />
                         <div className="min-w-0 flex-1">
                           <CardTitle style={{color: theme.text, fontSize: '1rem'}} className="truncate">{doc.name}</CardTitle>
                           <p className="text-xs mt-1" style={{color: theme.textTertiary}}>{formatFileSize(doc.file_size)}</p>
@@ -605,7 +605,7 @@ export default function Documents() {
                   {filteredDocuments.map((doc) => (
                     <div key={doc.id} className="p-4 hover:bg-gray-800/20 transition-colors">
                       <div className="flex items-center gap-4">
-                        <FileText className="w-10 h-10 flex-shrink-0" style={{color: '#ec4899'}} />
+                        <FileText className="w-10 h-10 flex-shrink-0" style={{color: 'var(--fuse-primary-text)'}} />
                         
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
@@ -625,8 +625,8 @@ export default function Documents() {
                               <>
                                 <span>•</span>
                                 <div className="flex items-center gap-1">
-                                  <LinkIcon className="w-3 h-3" style={{color: '#a855f7'}} />
-                                  <span style={{color: '#a855f7'}}>{getAssetName(doc.linked_asset_id)}</span>
+                                  <LinkIcon className="w-3 h-3" style={{color: 'var(--fuse-primary-text)'}} />
+                                  <span style={{color: 'var(--fuse-primary-text)'}}>{getAssetName(doc.linked_asset_id)}</span>
                                 </div>
                               </>
                             )}

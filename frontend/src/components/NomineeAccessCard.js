@@ -94,7 +94,7 @@ export default function NomineeAccessCard({ nominee, onUpdate, onEdit, onDelete,
       <div className="absolute top-4 left-4 flex items-center gap-2">
         <div 
           className="w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg"
-          style={{background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)', color: '#fff', boxShadow: '0 2px 8px rgba(168, 85, 247, 0.4)'}}
+          style={{background: 'var(--fuse-primary)', color: '#fff', boxShadow: '0 2px 8px rgba(21, 101, 192, 0.4)'}}
         >
           #{index + 1}
         </div>
@@ -107,9 +107,9 @@ export default function NomineeAccessCard({ nominee, onUpdate, onEdit, onDelete,
               height: '24px', 
               width: '36px', 
               padding: 0,
-              background: isFirst ? theme.backgroundTertiary : 'rgba(168, 85, 247, 0.15)',
-              border: '1px solid rgba(168, 85, 247, 0.3)',
-              color: isFirst ? theme.textMuted : '#a855f7',
+              background: isFirst ? theme.backgroundTertiary : 'rgba(21, 101, 192, 0.15)',
+              border: '1px solid rgba(21, 101, 192, 0.3)',
+              color: isFirst ? theme.textMuted : 'var(--fuse-primary)',
               marginBottom: '2px'
             }}
           >
@@ -123,9 +123,9 @@ export default function NomineeAccessCard({ nominee, onUpdate, onEdit, onDelete,
               height: '24px', 
               width: '36px', 
               padding: 0,
-              background: isLast ? theme.backgroundTertiary : 'rgba(168, 85, 247, 0.15)',
-              border: '1px solid rgba(168, 85, 247, 0.3)',
-              color: isLast ? theme.textMuted : '#a855f7'
+              background: isLast ? theme.backgroundTertiary : 'rgba(21, 101, 192, 0.15)',
+              border: '1px solid rgba(21, 101, 192, 0.3)',
+              color: isLast ? theme.textMuted : 'var(--fuse-primary)'
             }}
           >
             <ChevronDown className="w-4 h-4" />
@@ -185,7 +185,7 @@ export default function NomineeAccessCard({ nominee, onUpdate, onEdit, onDelete,
             )}
             <div className="flex gap-2 mt-2">
               {nominee.relationship && (
-                <span className="text-xs px-2 py-1 rounded-full font-semibold" style={{background: 'rgba(168, 85, 247, 0.2)', color: '#a855f7'}}>
+                <span className="text-xs px-2 py-1 rounded-full font-semibold" style={{background: 'rgba(21, 101, 192, 0.2)', color: 'var(--fuse-primary-text)'}}>
                   {nominee.relationship}
                 </span>
               )}
@@ -205,12 +205,12 @@ export default function NomineeAccessCard({ nominee, onUpdate, onEdit, onDelete,
               onClick={() => updateAccessType('immediate')}
               className="p-4 rounded-lg text-center transition-all hover:scale-105"
               style={{
-                background: nominee.access_type === 'immediate' ? 'linear-gradient(135deg, rgba(168, 85, 247, 0.25) 0%, rgba(168, 85, 247, 0.15) 100%)' : theme.backgroundTertiary,
-                border: `2px solid ${nominee.access_type === 'immediate' ? '#a855f7' : theme.border}`,
-                boxShadow: nominee.access_type === 'immediate' ? '0 4px 12px rgba(168, 85, 247, 0.3)' : 'none'
+                background: nominee.access_type === 'immediate' ? 'linear-gradient(135deg, rgba(21, 101, 192, 0.25) 0%, rgba(21, 101, 192, 0.15) 100%)' : theme.backgroundTertiary,
+                border: `2px solid ${nominee.access_type === 'immediate' ? 'var(--fuse-primary)' : theme.border}`,
+                boxShadow: nominee.access_type === 'immediate' ? '0 4px 12px rgba(21, 101, 192, 0.3)' : 'none'
               }}
             >
-              <Zap className="w-7 h-7 mx-auto mb-2" style={{color: nominee.access_type === 'immediate' ? '#a855f7' : theme.textMuted}} />
+              <Zap className="w-7 h-7 mx-auto mb-2" style={{color: nominee.access_type === 'immediate' ? 'var(--fuse-primary)' : theme.textMuted}} />
               <p className="text-sm font-bold mb-1" style={{color: nominee.access_type === 'immediate' ? theme.text : theme.textTertiary}}>
                 Immediate
               </p>

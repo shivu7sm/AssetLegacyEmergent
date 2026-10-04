@@ -57,8 +57,8 @@ export default function ProgressTimeline({
   return (
     <Card style={{ 
       background: colorTheme === 'light' 
-        ? 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)'
-        : 'linear-gradient(135deg, #1a0f2e 0%, #2d1f3d 100%)', 
+        ? '#ffffff'
+        : 'var(--fuse-surface)', 
       borderColor: theme.border,
       borderWidth: '2px',
       position: 'relative'
@@ -106,8 +106,8 @@ export default function ProgressTimeline({
               style={{
                 width: `${progressPercentage}%`,
                 background: progressPercentage === 100 
-                  ? 'linear-gradient(90deg, #10b981 0%, #059669 100%)'
-                  : 'linear-gradient(90deg, #3b82f6 0%, #2563eb 100%)'
+                  ? '#10b981'
+                  : '#3b82f6'
               }}
             />
           </div>
@@ -139,7 +139,7 @@ export default function ProgressTimeline({
                       className="w-12 h-12 rounded-full flex items-center justify-center"
                       style={{
                         background: step.completed 
-                          ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
+                          ? '#10b981'
                           : theme.backgroundTertiary,
                         border: `2px solid ${step.completed ? '#10b981' : theme.border}`
                       }}

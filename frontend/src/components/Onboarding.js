@@ -26,22 +26,22 @@ export default function Onboarding({ open, onComplete }) {
             AssetVault helps you manage your entire financial life in one place:
           </p>
           <div className="grid grid-cols-2 gap-3">
-            <div className="p-3 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
+            <div className="p-3 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid var(--fuse-border)'}}>
               <Wallet className="w-6 h-6 mb-2" style={{color: '#10b981'}} />
               <p className="text-sm font-semibold" style={{color: theme.text}}>Asset Tracking</p>
               <p className="text-xs" style={{color: theme.textTertiary}}>Stocks, crypto, real estate, gold & more</p>
             </div>
-            <div className="p-3 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
+            <div className="p-3 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid var(--fuse-border)'}}>
               <Receipt className="w-6 h-6 mb-2" style={{color: '#3b82f6'}} />
               <p className="text-sm font-semibold" style={{color: theme.text}}>Income & Expenses</p>
               <p className="text-xs" style={{color: theme.textTertiary}}>Track monthly cash flow</p>
             </div>
-            <div className="p-3 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
-              <Zap className="w-6 h-6 mb-2" style={{color: '#a855f7'}} />
+            <div className="p-3 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid var(--fuse-border)'}}>
+              <Zap className="w-6 h-6 mb-2" style={{color: 'var(--fuse-primary-text)'}} />
               <p className="text-sm font-semibold" style={{color: theme.text}}>Tax & Wealth</p>
               <p className="text-xs" style={{color: theme.textTertiary}}>AI-powered tax optimization</p>
             </div>
-            <div className="p-3 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
+            <div className="p-3 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid var(--fuse-border)'}}>
               <FileText className="w-6 h-6 mb-2" style={{color: '#f59e0b'}} />
               <p className="text-sm font-semibold" style={{color: theme.text}}>Digital Will</p>
               <p className="text-xs" style={{color: theme.textTertiary}}>Legacy planning</p>
@@ -95,7 +95,7 @@ export default function Onboarding({ open, onComplete }) {
             You can switch between Demo and Live modes anytime from the top-right corner:
           </p>
 
-          <div className="p-4 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
+          <div className="p-4 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid var(--fuse-border)'}}>
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <Database className="w-5 h-5" style={{color: '#10b981'}} />
@@ -144,25 +144,25 @@ export default function Onboarding({ open, onComplete }) {
             Want to experiment without consequences? You can reset demo data anytime!
           </p>
 
-          <div className="p-4 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
+          <div className="p-4 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid var(--fuse-border)'}}>
             <p className="text-sm font-semibold mb-2" style={{color: theme.text}}>
               How to Reset Demo Data:
             </p>
             <ol className="space-y-2 text-sm" style={{color: theme.textSecondary}}>
               <li className="flex gap-2">
-                <span className="font-bold" style={{color: '#a855f7'}}>1.</span>
+                <span className="font-bold" style={{color: 'var(--fuse-primary-text)'}}>1.</span>
                 <span>Go to Settings page (sidebar)</span>
               </li>
               <li className="flex gap-2">
-                <span className="font-bold" style={{color: '#a855f7'}}>2.</span>
+                <span className="font-bold" style={{color: 'var(--fuse-primary-text)'}}>2.</span>
                 <span>Scroll to &quot;Demo Data&quot; section</span>
               </li>
               <li className="flex gap-2">
-                <span className="font-bold" style={{color: '#a855f7'}}>3.</span>
+                <span className="font-bold" style={{color: 'var(--fuse-primary-text)'}}>3.</span>
                 <span>Click &quot;Reset Demo Data&quot; button</span>
               </li>
               <li className="flex gap-2">
-                <span className="font-bold" style={{color: '#a855f7'}}>4.</span>
+                <span className="font-bold" style={{color: 'var(--fuse-primary-text)'}}>4.</span>
                 <span>Confirm to reload fresh sample data</span>
               </li>
             </ol>
@@ -191,7 +191,7 @@ export default function Onboarding({ open, onComplete }) {
       icon: Sparkles,
       content: (
         <div className="space-y-3">
-          <div className="p-3 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
+          <div className="p-3 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid var(--fuse-border)'}}>
             <div className="flex items-start gap-3">
               <Wallet className="w-5 h-5 flex-shrink-0" style={{color: '#10b981'}} />
               <div>
@@ -203,7 +203,7 @@ export default function Onboarding({ open, onComplete }) {
             </div>
           </div>
 
-          <div className="p-3 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
+          <div className="p-3 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid var(--fuse-border)'}}>
             <div className="flex items-start gap-3">
               <Receipt className="w-5 h-5 flex-shrink-0" style={{color: '#3b82f6'}} />
               <div>
@@ -215,9 +215,9 @@ export default function Onboarding({ open, onComplete }) {
             </div>
           </div>
 
-          <div className="p-3 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
+          <div className="p-3 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid var(--fuse-border)'}}>
             <div className="flex items-start gap-3">
-              <Zap className="w-5 h-5 flex-shrink-0" style={{color: '#a855f7'}} />
+              <Zap className="w-5 h-5 flex-shrink-0" style={{color: 'var(--fuse-primary-text)'}} />
               <div>
                 <p className="text-sm font-semibold mb-1" style={{color: theme.text}}>Tax & Wealth Blueprint</p>
                 <p className="text-xs" style={{color: theme.textTertiary}}>
@@ -227,7 +227,7 @@ export default function Onboarding({ open, onComplete }) {
             </div>
           </div>
 
-          <div className="p-3 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
+          <div className="p-3 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid var(--fuse-border)'}}>
             <div className="flex items-start gap-3">
               <FileText className="w-5 h-5 flex-shrink-0" style={{color: '#f59e0b'}} />
               <div>
@@ -263,27 +263,27 @@ export default function Onboarding({ open, onComplete }) {
           <div className="space-y-2 text-left">
             <p className="text-sm font-semibold" style={{color: theme.text}}>Quick Start:</p>
             <div className="space-y-2">
-              <div className="p-3 rounded-lg flex items-center gap-3" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
-                <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style={{background: '#a855f7', color: 'white'}}>1</span>
+              <div className="p-3 rounded-lg flex items-center gap-3" style={{background: theme.backgroundTertiary, border: '1px solid var(--fuse-border)'}}>
+                <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style={{background: 'var(--fuse-primary)', color: 'white'}}>1</span>
                 <span className="text-sm" style={{color: theme.textSecondary}}>Check out the Dashboard overview</span>
               </div>
-              <div className="p-3 rounded-lg flex items-center gap-3" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
-                <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style={{background: '#a855f7', color: 'white'}}>2</span>
+              <div className="p-3 rounded-lg flex items-center gap-3" style={{background: theme.backgroundTertiary, border: '1px solid var(--fuse-border)'}}>
+                <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style={{background: 'var(--fuse-primary)', color: 'white'}}>2</span>
                 <span className="text-sm" style={{color: theme.textSecondary}}>Browse the Assets page to see sample data</span>
               </div>
-              <div className="p-3 rounded-lg flex items-center gap-3" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
-                <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style={{background: '#a855f7', color: 'white'}}>3</span>
+              <div className="p-3 rounded-lg flex items-center gap-3" style={{background: theme.backgroundTertiary, border: '1px solid var(--fuse-border)'}}>
+                <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style={{background: 'var(--fuse-primary)', color: 'white'}}>3</span>
                 <span className="text-sm" style={{color: theme.textSecondary}}>Try the Tax & Wealth Blueprint</span>
               </div>
-              <div className="p-3 rounded-lg flex items-center gap-3" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
-                <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style={{background: '#a855f7', color: 'white'}}>4</span>
+              <div className="p-3 rounded-lg flex items-center gap-3" style={{background: theme.backgroundTertiary, border: '1px solid var(--fuse-border)'}}>
+                <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style={{background: 'var(--fuse-primary)', color: 'white'}}>4</span>
                 <span className="text-sm" style={{color: theme.textSecondary}}>Switch to Live mode when ready</span>
               </div>
             </div>
           </div>
 
-          <div className="p-3 rounded-lg" style={{background: 'rgba(168, 85, 247, 0.1)', border: '1px solid #a855f7'}}>
-            <p className="text-xs" style={{color: '#a855f7'}}>
+          <div className="p-3 rounded-lg" style={{background: 'rgba(21, 101, 192, 0.1)', border: '1px solid var(--fuse-primary)'}}>
+            <p className="text-xs" style={{color: 'var(--fuse-primary-text)'}}>
               💜 Need help? Check Settings → Support or reach out to our team
             </p>
           </div>
@@ -343,7 +343,7 @@ export default function Onboarding({ open, onComplete }) {
               <div 
                 className="h-2 rounded-full transition-all duration-300" 
                 style={{
-                  background: 'linear-gradient(90deg, #a855f7 0%, #ec4899 100%)',
+                  background: 'var(--fuse-primary)',
                   width: `${((currentStep + 1) / steps.length) * 100}%`
                 }}
               />
@@ -352,8 +352,8 @@ export default function Onboarding({ open, onComplete }) {
 
           {/* Content */}
           <div className="text-center space-y-4">
-            <div className="w-16 h-16 mx-auto rounded-full flex items-center justify-center" style={{background: 'rgba(168, 85, 247, 0.1)'}}>
-              <Icon className="w-8 h-8" style={{color: '#a855f7'}} />
+            <div className="w-16 h-16 mx-auto rounded-full flex items-center justify-center" style={{background: 'rgba(21, 101, 192, 0.1)'}}>
+              <Icon className="w-8 h-8" style={{color: 'var(--fuse-primary-text)'}} />
             </div>
 
             <div>
@@ -389,7 +389,7 @@ export default function Onboarding({ open, onComplete }) {
               <Button
                 onClick={handleComplete}
                 className="flex-1"
-                style={{background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)', color: 'white'}}
+                style={{background: '#10b981', color: 'white'}}
               >
                 Get Started
                 <CheckCircle className="w-4 h-4 ml-2" />
@@ -398,7 +398,7 @@ export default function Onboarding({ open, onComplete }) {
               <Button
                 onClick={handleNext}
                 className="flex-1"
-                style={{background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)', color: 'white'}}
+                style={{background: 'var(--fuse-primary)', color: 'white'}}
               >
                 Next
                 <ArrowRight className="w-4 h-4 ml-2" />

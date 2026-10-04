@@ -116,7 +116,7 @@ export default function Admin() {
       <div className="space-y-8" style={{padding: '2rem 1.5rem', margin: '0 auto', maxWidth: '1600px'}}>
         {/* Header */}
         <div>
-          <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{fontFamily: 'Space Grotesk, sans-serif', color: theme.text}}>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{color: theme.text}}>
             Admin Dashboard
           </h1>
           <p style={{color: theme.textSecondary}}>Platform management and monitoring</p>
@@ -127,7 +127,7 @@ export default function Admin() {
           <Button
             onClick={fetchAllData}
             className="text-white rounded-full"
-            style={{background: 'linear-gradient(135deg, #a855f7 0%, #3b82f6 100%)'}}
+            style={{background: 'var(--fuse-primary)'}}
           >
             <RefreshCw className="w-4 h-4 mr-2" />
             Refresh Data
@@ -140,8 +140,8 @@ export default function Admin() {
             onClick={() => setActiveTab('overview')}
             className="px-6 py-3 font-semibold transition-all whitespace-nowrap"
             style={{
-              color: activeTab === 'overview' ? '#ec4899' : '#94a3b8',
-              borderBottom: activeTab === 'overview' ? '2px solid #ec4899' : 'none'
+              color: activeTab === 'overview' ? 'var(--fuse-primary)' : '#a1a1aa',
+              borderBottom: activeTab === 'overview' ? '2px solid var(--fuse-primary)' : 'none'
             }}
           >
             Overview
@@ -150,8 +150,8 @@ export default function Admin() {
             onClick={() => setActiveTab('users')}
             className="px-6 py-3 font-semibold transition-all whitespace-nowrap"
             style={{
-              color: activeTab === 'users' ? '#ec4899' : '#94a3b8',
-              borderBottom: activeTab === 'users' ? '2px solid #ec4899' : 'none'
+              color: activeTab === 'users' ? 'var(--fuse-primary)' : '#a1a1aa',
+              borderBottom: activeTab === 'users' ? '2px solid var(--fuse-primary)' : 'none'
             }}
           >
             Users
@@ -160,8 +160,8 @@ export default function Admin() {
             onClick={() => setActiveTab('analytics')}
             className="px-6 py-3 font-semibold transition-all whitespace-nowrap"
             style={{
-              color: activeTab === 'analytics' ? '#ec4899' : '#94a3b8',
-              borderBottom: activeTab === 'analytics' ? '2px solid #ec4899' : 'none'
+              color: activeTab === 'analytics' ? 'var(--fuse-primary)' : '#a1a1aa',
+              borderBottom: activeTab === 'analytics' ? '2px solid var(--fuse-primary)' : 'none'
             }}
           >
             Analytics
@@ -170,8 +170,8 @@ export default function Admin() {
             onClick={() => setActiveTab('jobs')}
             className="px-6 py-3 font-semibold transition-all whitespace-nowrap"
             style={{
-              color: activeTab === 'jobs' ? '#ec4899' : '#94a3b8',
-              borderBottom: activeTab === 'jobs' ? '2px solid #ec4899' : 'none'
+              color: activeTab === 'jobs' ? 'var(--fuse-primary)' : '#a1a1aa',
+              borderBottom: activeTab === 'jobs' ? '2px solid var(--fuse-primary)' : 'none'
             }}
           >
             Scheduled Jobs
@@ -180,8 +180,8 @@ export default function Admin() {
             onClick={() => setActiveTab('audit')}
             className="px-6 py-3 font-semibold transition-all whitespace-nowrap"
             style={{
-              color: activeTab === 'audit' ? '#ec4899' : '#94a3b8',
-              borderBottom: activeTab === 'audit' ? '2px solid #ec4899' : 'none'
+              color: activeTab === 'audit' ? 'var(--fuse-primary)' : '#a1a1aa',
+              borderBottom: activeTab === 'audit' ? '2px solid var(--fuse-primary)' : 'none'
             }}
           >
             Audit Logs
@@ -223,33 +223,33 @@ export default function Admin() {
                 </CardContent>
               </Card>
 
-              <Card style={{background: theme.cardBg, borderColor: '#ec4899'}}>
+              <Card style={{background: theme.cardBg, borderColor: 'var(--fuse-primary)'}}>
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <p className="text-sm font-medium mb-2" style={{color: theme.textSecondary}}>SUBSCRIPTIONS</p>
-                      <div className="text-4xl font-bold mb-1" style={{color: '#ec4899'}}>
+                      <div className="text-4xl font-bold mb-1" style={{color: 'var(--fuse-primary-text)'}}>
                         {(stats.users.by_subscription?.Pro || 0) + (stats.users.by_subscription?.Family || 0)}
                       </div>
                       <p className="text-xs" style={{color: theme.textMuted}}>Pro: {stats.users.by_subscription?.Pro || 0}, Family: {stats.users.by_subscription?.Family || 0}</p>
                     </div>
-                    <div className="p-3 rounded-xl" style={{background: 'rgba(236, 72, 153, 0.1)'}}>
-                      <CreditCard className="w-8 h-8" style={{color: '#ec4899'}} />
+                    <div className="p-3 rounded-xl" style={{background: 'rgba(21, 101, 192, 0.1)'}}>
+                      <CreditCard className="w-8 h-8" style={{color: 'var(--fuse-primary-text)'}} />
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card style={{background: theme.cardBg, borderColor: '#a855f7'}}>
+              <Card style={{background: theme.cardBg, borderColor: 'var(--fuse-primary)'}}>
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <p className="text-sm font-medium mb-2" style={{color: theme.textSecondary}}>AI INSIGHTS</p>
-                      <div className="text-4xl font-bold mb-1" style={{color: '#a855f7'}}>{stats.ai_insights.total_generated}</div>
+                      <div className="text-4xl font-bold mb-1" style={{color: 'var(--fuse-primary-text)'}}>{stats.ai_insights.total_generated}</div>
                       <p className="text-xs" style={{color: theme.textMuted}}>total generated</p>
                     </div>
-                    <div className="p-3 rounded-xl" style={{background: 'rgba(168, 85, 247, 0.1)'}}>
-                      <Sparkles className="w-8 h-8" style={{color: '#a855f7'}} />
+                    <div className="p-3 rounded-xl" style={{background: 'rgba(21, 101, 192, 0.1)'}}>
+                      <Sparkles className="w-8 h-8" style={{color: 'var(--fuse-primary-text)'}} />
                     </div>
                   </div>
                 </CardContent>
@@ -328,7 +328,7 @@ export default function Admin() {
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr style={{borderBottom: '2px solid #2d1f3d'}}>
+                    <tr style={{borderBottom: '2px solid var(--fuse-border)'}}>
                       <th className="text-left py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>USER</th>
                       <th className="text-left py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>EMAIL</th>
                       <th className="text-center py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>ROLE</th>
@@ -370,10 +370,10 @@ export default function Admin() {
                             className="px-3 py-1 rounded-full text-xs font-semibold"
                             style={{
                               background: user.subscription_plan === 'Free' ? 'theme.backgroundTertiary' : 
-                                         user.subscription_plan === 'Pro' ? 'rgba(236, 72, 153, 0.2)' : 
-                                         'rgba(168, 85, 247, 0.2)',
-                              color: user.subscription_plan === 'Free' ? '#94a3b8' : 
-                                     user.subscription_plan === 'Pro' ? '#ec4899' : '#a855f7'
+                                         user.subscription_plan === 'Pro' ? 'rgba(21, 101, 192, 0.2)' : 
+                                         'rgba(21, 101, 192, 0.2)',
+                              color: user.subscription_plan === 'Free' ? '#a1a1aa' : 
+                                     user.subscription_plan === 'Pro' ? 'var(--fuse-primary)' : 'var(--fuse-primary)'
                             }}
                           >
                             {user.subscription_plan || 'Free'}
@@ -422,7 +422,7 @@ export default function Admin() {
                   <div className="overflow-x-auto">
                     <table className="w-full">
                       <thead>
-                        <tr style={{borderBottom: '2px solid #2d1f3d'}}>
+                        <tr style={{borderBottom: '2px solid var(--fuse-border)'}}>
                           <th className="text-left py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>RECIPIENT</th>
                           <th className="text-left py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>SUBJECT</th>
                           <th className="text-left py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>SEND DATE</th>
@@ -460,7 +460,7 @@ export default function Admin() {
             <Card style={{background: 'theme.cardBg', borderColor: theme.border}}>
               <CardHeader>
                 <div className="flex items-center gap-3">
-                  <Shield className="w-5 h-5" style={{color: '#a855f7'}} />
+                  <Shield className="w-5 h-5" style={{color: 'var(--fuse-primary-text)'}} />
                   <CardTitle style={{color: theme.text}}>Dead Man Switch Monitoring</CardTitle>
                 </div>
               </CardHeader>
@@ -469,7 +469,7 @@ export default function Admin() {
                   <div className="overflow-x-auto">
                     <table className="w-full">
                       <thead>
-                        <tr style={{borderBottom: '2px solid #2d1f3d'}}>
+                        <tr style={{borderBottom: '2px solid var(--fuse-border)'}}>
                           <th className="text-left py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>USER</th>
                           <th className="text-center py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>DAYS INACTIVE</th>
                           <th className="text-center py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>DAYS UNTIL TRIGGER</th>
@@ -554,10 +554,10 @@ export default function Admin() {
                 </CardContent>
               </Card>
 
-              <Card style={{background: theme.cardBg, borderColor: '#ec4899'}}>
+              <Card style={{background: theme.cardBg, borderColor: 'var(--fuse-primary)'}}>
                 <CardContent className="p-6">
                   <p className="text-sm font-medium mb-2" style={{color: theme.textSecondary}}>PAID SUBSCRIBERS</p>
-                  <div className="text-4xl font-bold" style={{color: '#ec4899'}}>
+                  <div className="text-4xl font-bold" style={{color: 'var(--fuse-primary-text)'}}>
                     {analytics.total_paid_subscribers}
                   </div>
                   <p className="text-xs mt-1" style={{color: theme.textMuted}}>+{analytics.recent_subscriptions_30d} this month</p>
@@ -575,7 +575,7 @@ export default function Admin() {
                   {Object.entries(analytics.current_subscriptions).map(([plan, count]) => (
                     <div key={plan} className="p-4 rounded-lg text-center" style={{background: 'theme.backgroundTertiary'}}>
                       <div className="text-3xl font-bold mb-2" style={{
-                        color: plan === 'Free' ? '#64748b' : plan === 'Pro' ? '#ec4899' : '#a855f7'
+                        color: plan === 'Free' ? '#71717a' : plan === 'Pro' ? 'var(--fuse-primary)' : 'var(--fuse-primary)'
                       }}>
                         {count}
                       </div>
@@ -598,7 +598,7 @@ export default function Admin() {
                       <div className="w-24 text-sm" style={{color: theme.textSecondary}}>{month.month}</div>
                       <div className="flex-1">
                         <div className="h-8 rounded-lg flex items-center px-3" style={{
-                          background: 'linear-gradient(90deg, #10b981 0%, #3b82f6 100%)',
+                          background: '#10b981',
                           width: `${(month.revenue / Math.max(...analytics.revenue_trend_12_months.map(m => m.revenue))) * 100}%`,
                           minWidth: '60px'
                         }}>
@@ -621,7 +621,7 @@ export default function Admin() {
           <Card style={{background: 'theme.cardBg', borderColor: theme.border}}>
             <CardHeader>
               <div className="flex items-center gap-3">
-                <Shield className="w-5 h-5" style={{color: '#a855f7'}} />
+                <Shield className="w-5 h-5" style={{color: 'var(--fuse-primary-text)'}} />
                 <CardTitle style={{color: theme.text}}>Audit Logs</CardTitle>
               </div>
               <p className="text-sm mt-1" style={{color: theme.textSecondary}}>Track all system changes and admin actions</p>
@@ -631,7 +631,7 @@ export default function Admin() {
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr style={{borderBottom: '2px solid #2d1f3d'}}>
+                      <tr style={{borderBottom: '2px solid var(--fuse-border)'}}>
                         <th className="text-left py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>TIME</th>
                         <th className="text-left py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>USER</th>
                         <th className="text-center py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>ACTION</th>
@@ -646,7 +646,7 @@ export default function Admin() {
                           key={log.id} 
                           style={{
                             borderBottom: '1px solid theme.cardBg',
-                            background: log.is_admin_action ? 'rgba(168, 85, 247, 0.1)' : 'transparent'
+                            background: log.is_admin_action ? 'rgba(21, 101, 192, 0.1)' : 'transparent'
                           }}
                         >
                           <td className="py-3 px-2" style={{color: theme.textSecondary, fontSize: '12px'}}>
@@ -656,7 +656,7 @@ export default function Admin() {
                             <div>
                               <div style={{color: theme.text, fontWeight: 500}}>{log.user_email}</div>
                               {log.is_admin_action && (
-                                <span className="text-xs px-2 py-1 rounded-full" style={{background: '#a855f7', color: '#fff'}}>
+                                <span className="text-xs px-2 py-1 rounded-full" style={{background: 'var(--fuse-primary)', color: '#fff'}}>
                                   ADMIN
                                 </span>
                               )}
@@ -676,7 +676,7 @@ export default function Admin() {
                               {log.action}
                             </span>
                           </td>
-                          <td className="py-3 px-2 text-center" style={{color: '#cbd5e1'}}>
+                          <td className="py-3 px-2 text-center" style={{color: '#d4d4d8'}}>
                             {log.resource_type}
                           </td>
                           <td className="py-3 px-2" style={{color: theme.textMuted, fontSize: '12px', fontFamily: 'monospace'}}>

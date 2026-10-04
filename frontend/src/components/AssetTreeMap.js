@@ -116,8 +116,8 @@ export default function AssetTreeMap({ data, selectedCurrency, currencyFormat })
   const { theme } = useTheme();
 
   const COLORS = [
-    '#3b82f6', // Blue
-    '#8b5cf6', // Purple
+    '#1565c0', // Primary
+    '#8b5cf6', // Violet
     '#ec4899', // Pink
     '#f59e0b', // Orange
     '#10b981', // Green

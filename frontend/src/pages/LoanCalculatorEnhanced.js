@@ -222,7 +222,7 @@ export default function LoanCalculatorEnhanced() {
       <div className="space-y-6" style={{padding: '1.5rem 0'}}>
         {/* Header */}
         <div>
-          <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{color: theme.text, fontFamily: 'Space Grotesk, sans-serif'}}>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{color: theme.text}}>
             Loan Calculator & Payoff Planner
           </h1>
           <p className="text-base sm:text-lg mb-4" style={{color: theme.textSecondary}}>
@@ -332,7 +332,7 @@ export default function LoanCalculatorEnhanced() {
                 <Card style={{background: theme.cardBg, borderColor: theme.border}}>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-3" style={{color: theme.text}}>
-                      <Calculator className="w-5 h-5" style={{color: '#a855f7'}} />
+                      <Calculator className="w-5 h-5" style={{color: 'var(--fuse-primary-text)'}} />
                       Loan Details
                     </CardTitle>
                   </CardHeader>
@@ -422,7 +422,7 @@ export default function LoanCalculatorEnhanced() {
                           type="submit"
                           disabled={loading}
                           className="flex-1 text-white font-medium"
-                          style={{background: 'linear-gradient(135deg, #a855f7 0%, #ef4444 100%)'}}
+                          style={{background: 'var(--fuse-primary)'}}
                         >
                           {loading ? 'Calculating...' : 'Calculate'}
                         </Button>
@@ -450,9 +450,9 @@ export default function LoanCalculatorEnhanced() {
                     </CardHeader>
                     <CardContent className="space-y-4">
                       {/* Monthly EMI */}
-                      <div className="p-5 rounded-lg" style={{background: 'rgba(168, 85, 247, 0.1)', border: '1px solid rgba(168, 85, 247, 0.3)'}}>
+                      <div className="p-5 rounded-lg" style={{background: 'rgba(21, 101, 192, 0.1)', border: '1px solid rgba(21, 101, 192, 0.3)'}}>
                         <div className="text-sm mb-1" style={{color: theme.textSecondary}}>Monthly EMI</div>
-                        <div className="text-3xl font-bold" style={{color: '#a855f7'}}>
+                        <div className="text-3xl font-bold" style={{color: 'var(--fuse-primary-text)'}}>
                           {formatCurrency(result.monthly_payment)}
                         </div>
                       </div>
@@ -547,13 +547,13 @@ export default function LoanCalculatorEnhanced() {
                               onClick={() => loadLoanData(loan)}
                               className="w-full p-2.5 rounded-lg text-left transition-all hover:scale-[1.01]"
                               style={{
-                                background: isSelected ? 'rgba(168, 85, 247, 0.15)' : theme.backgroundSecondary,
-                                border: `1.5px solid ${isSelected ? '#a855f7' : theme.border}`
+                                background: isSelected ? 'rgba(21, 101, 192, 0.15)' : theme.backgroundSecondary,
+                                border: `1.5px solid ${isSelected ? 'var(--fuse-primary)' : theme.border}`
                               }}
                             >
                               <div className="flex items-center justify-between mb-1.5">
                                 <span className="text-base">{loanIcon}</span>
-                                {isSelected && <Check className="w-3.5 h-3.5" style={{color: '#a855f7'}} />}
+                                {isSelected && <Check className="w-3.5 h-3.5" style={{color: 'var(--fuse-primary-text)'}} />}
                               </div>
                               <h4 className="font-semibold text-xs mb-1 truncate" style={{color: theme.text}}>
                                 {loan.name}
@@ -605,7 +605,7 @@ export default function LoanCalculatorEnhanced() {
             {result && (
               <>
                 {/* Family Summary - What Your Family Needs to Know */}
-                <Card style={{background: `linear-gradient(135deg, ${theme.cardBg} 0%, ${theme.backgroundSecondary} 100%)`, borderColor: '#10b981', borderWidth: '2px'}}>
+                <Card style={{background: `var(--fuse-surface)`, borderColor: '#10b981', borderWidth: '2px'}}>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-3" style={{color: theme.text}}>
                       <ShieldCheck className="w-5 h-5" style={{color: '#10b981'}} />
@@ -725,7 +725,7 @@ export default function LoanCalculatorEnhanced() {
                 </Card>
 
                 {/* AI Tips Section */}
-                <Card style={{background: `linear-gradient(135deg, ${theme.cardBg} 0%, ${theme.backgroundSecondary} 100%)`, borderColor: '#a855f7', borderWidth: '2px'}}>
+                <Card style={{background: `var(--fuse-surface)`, borderColor: 'var(--fuse-primary)', borderWidth: '2px'}}>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-3" style={{color: theme.text}}>
                       <Sparkles className="w-5 h-5" style={{color: '#fbbf24'}} />
@@ -771,13 +771,13 @@ export default function LoanCalculatorEnhanced() {
                           className="p-4 rounded-lg cursor-pointer transition-all"
                           style={{
                             background: theme.backgroundSecondary,
-                            border: `2px solid ${selectedScenario === key ? '#a855f7' : theme.border}`
+                            border: `2px solid ${selectedScenario === key ? 'var(--fuse-primary)' : theme.border}`
                           }}
                           onClick={() => setSelectedScenario(key)}
                         >
                           <div className="flex items-center justify-between mb-3">
                             <h4 className="font-semibold" style={{color: theme.text}}>{scenario.name}</h4>
-                            {selectedScenario === key && <Check className="w-5 h-5" style={{color: '#a855f7'}} />}
+                            {selectedScenario === key && <Check className="w-5 h-5" style={{color: 'var(--fuse-primary-text)'}} />}
                           </div>
                           
                           <div className="space-y-2 text-sm">
@@ -820,7 +820,7 @@ export default function LoanCalculatorEnhanced() {
                           />
                           <Legend />
                           <Bar dataKey="interest" fill="#ef4444" name="Total Interest (₹)" />
-                          <Bar dataKey="tenure" fill="#a855f7" name="Tenure (years)" />
+                          <Bar dataKey="tenure" fill="var(--fuse-primary)" name="Tenure (years)" />
                         </BarChart>
                       </ResponsiveContainer>
                     </div>
@@ -873,7 +873,7 @@ export default function LoanCalculatorEnhanced() {
                                     className="h-full" 
                                     style={{
                                       width: `${data.principal_percentage}%`,
-                                      background: 'linear-gradient(90deg, #10b981 0%, #3b82f6 100%)'
+                                      background: '#10b981'
                                     }}
                                   />
                                 </div>

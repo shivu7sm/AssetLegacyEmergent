@@ -59,7 +59,7 @@ export default function Subscription() {
         '24/7 support',
         'Custom integrations'
       ],
-      color: '#ec4899',
+      color: 'var(--fuse-primary-text)',
       icon: Crown
     }
   ];
@@ -214,14 +214,14 @@ export default function Subscription() {
     <Layout>
       <div className="space-y-8" style={{padding: '2rem 1.5rem', margin: '0 auto', maxWidth: '1600px'}}>
         <div>
-          <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{fontFamily: 'Space Grotesk, sans-serif', color: theme.text}}>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{color: theme.text}}>
             Subscription Plans
           </h1>
           <p style={{color: theme.textTertiary}}>Choose the plan that fits your needs</p>
         </div>
 
         {/* Current Plan Banner with Detailed Info */}
-        <Card style={{background: 'linear-gradient(135deg, theme.cardBg 0%, #2d1f3d 100%)', borderColor: '#a855f7'}}>
+        <Card style={{background: 'var(--fuse-surface)', borderColor: 'var(--fuse-primary)'}}>
           <CardContent className="py-6">
             <div className="flex items-start justify-between flex-wrap gap-6">
               <div className="flex-1">
@@ -318,14 +318,14 @@ export default function Subscription() {
                     {/* Billing Amount */}
                     <div className="flex items-center gap-2 text-sm">
                       <span style={{color: theme.textTertiary}}>Amount:</span>
-                      <span className="text-lg font-bold" style={{color: '#a855f7'}}>
+                      <span className="text-lg font-bold" style={{color: 'var(--fuse-primary-text)'}}>
                         {subDetails.currency} ${subDetails.amount}/{subDetails.interval}
                       </span>
                     </div>
                   </div>
                 )}
               </div>
-              <Crown className="w-12 h-12" style={{color: '#a855f7'}} />
+              <Crown className="w-12 h-12" style={{color: 'var(--fuse-primary-text)'}} />
             </div>
           </CardContent>
         </Card>
@@ -340,8 +340,8 @@ export default function Subscription() {
               <Card 
                 key={plan.name}
                 style={{
-                  background: plan.popular ? 'linear-gradient(135deg, #2d1f3d 0%, theme.cardBg 100%)' : 'theme.cardBg',
-                  borderColor: plan.popular ? '#a855f7' : '#2d1f3d',
+                  background: plan.popular ? 'var(--fuse-surface)' : 'theme.cardBg',
+                  borderColor: plan.popular ? 'var(--fuse-primary)' : 'var(--fuse-border)',
                   borderWidth: plan.popular ? '2px' : '1px',
                   position: 'relative'
                 }}
@@ -349,7 +349,7 @@ export default function Subscription() {
                 {plan.popular && (
                   <div 
                     className="absolute -top-3 left-1/2 transform -translate-x-1/2 px-4 py-1 rounded-full text-xs font-semibold"
-                    style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: 'white'}}
+                    style={{background: 'var(--fuse-primary)', color: 'white'}}
                   >
                     MOST POPULAR
                   </div>
@@ -382,9 +382,9 @@ export default function Subscription() {
                       className="w-full text-white rounded-full"
                       style={{
                         background: isCurrentPlan 
-                          ? '#64748b' 
+                          ? '#71717a' 
                           : plan.popular 
-                            ? 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'
+                            ? 'var(--fuse-primary)'
                             : plan.color
                       }}
                     >
@@ -448,7 +448,7 @@ export default function Subscription() {
                         width: subscriptionInfo.features.max_assets > 0 
                           ? `${Math.min((subscriptionInfo.usage.assets / subscriptionInfo.features.max_assets) * 100, 100)}%`
                           : '50%',
-                        background: 'linear-gradient(90deg, #10b981 0%, #3b82f6 100%)'
+                        background: '#10b981'
                       }}
                     />
                   </div>
@@ -469,7 +469,7 @@ export default function Subscription() {
                         width: subscriptionInfo.features.max_documents > 0 
                           ? `${Math.min((subscriptionInfo.usage.documents / subscriptionInfo.features.max_documents) * 100, 100)}%`
                           : '50%',
-                        background: 'linear-gradient(90deg, #10b981 0%, #3b82f6 100%)'
+                        background: '#10b981'
                       }}
                     />
                   </div>
@@ -492,8 +492,8 @@ export default function Subscription() {
                       style={{
                         width: `${Math.min((subscriptionInfo.usage.storage_mb / subscriptionInfo.features.storage_mb) * 100, 100)}%`,
                         background: subscriptionInfo.usage.storage_mb / subscriptionInfo.features.storage_mb > 0.8 
-                          ? 'linear-gradient(90deg, #ef4444 0%, #dc2626 100%)'
-                          : 'linear-gradient(90deg, #10b981 0%, #3b82f6 100%)'
+                          ? '#ef4444'
+                          : '#10b981'
                       }}
                     />
                   </div>

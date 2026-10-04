@@ -17,7 +17,6 @@ import AssetTreeMap from '@/components/AssetTreeMap';
 import LoanBubbleChart from '@/components/LoanBubbleChart';
 import AssetWorldMap from '@/components/AssetWorldMap';
 import ProgressTimeline from '@/components/ProgressTimeline';
-import '@/styles/modernTheme.css';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -26,7 +25,7 @@ const ASSET_COLORS = {
   // Assets - Green/Blue positive tones
   bank: '#10b981',
   insurance: '#3b82f6',
-  investment: '#8b5cf6',
+  investment: '#1565c0',
   crypto: '#f59e0b',
   gold: '#fbbf24',
   precious_metals: '#fbbf24',
@@ -34,7 +33,7 @@ const ASSET_COLORS = {
   locker: '#6366f1',
   property: '#14b8a6',
   stock: '#06b6d4',
-  portfolio: '#a855f7', // Purple for portfolio accounts
+  portfolio: '#8b5cf6',
   // Liabilities - Red negative tones
   loan: '#dc2626',
   credit_card: '#ef4444'
@@ -216,7 +215,7 @@ export default function Dashboard() {
     return {
       name: key.charAt(0).toUpperCase() + key.slice(1).replace('_', ' '),
       value: Math.abs(value),
-      color: ASSET_COLORS[key] || '#64748b',
+      color: ASSET_COLORS[key] || '#71717a',
       percentage: ((Math.abs(value) / totalAssets) * 100).toFixed(1)
     };
   }).filter(item => item.value > 0).sort((a, b) => b.value - a.value) : []; // Sort highest to lowest
@@ -272,7 +271,7 @@ export default function Dashboard() {
       <div className="space-y-8" data-testid="dashboard-container" style={{padding: '2rem 0'}}>
         {/* Header */}
         <div>
-          <h1 className="text-4xl font-bold mb-2" style={{fontFamily: 'Space Grotesk, sans-serif', color: theme.text}} data-testid="dashboard-title">
+          <h1 className="text-4xl font-bold mb-2" style={{color: theme.text}} data-testid="dashboard-title">
             Financial Dashboard
           </h1>
           <p style={{color: theme.textTertiary}}>
@@ -336,7 +335,7 @@ export default function Dashboard() {
                         }));
                         navigate('/nominee-dashboard');
                       }}
-                      style={{background: `rgba(168, 85, 247, ${theme.name === 'dark' ? '0.2' : '0.1'})`, border: `1px solid ${theme.primary}`, color: theme.primary}}
+                      style={{background: `rgba(21, 101, 192, ${theme.name === 'dark' ? '0.2' : '0.1'})`, border: `1px solid ${theme.primary}`, color: theme.primary}}
                     >
                       <Eye className="w-3 h-3 mr-2" />
                       Preview Nominee View
@@ -468,7 +467,7 @@ export default function Dashboard() {
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <p className="text-sm font-medium mb-2" style={{color: theme.textTertiary, letterSpacing: '0.5px'}}>TOTAL ASSETS</p>
-                    <div className="text-4xl font-bold mb-1" style={{color: theme.text, fontFamily: 'Inter, sans-serif'}} data-testid="total-assets-count">
+                    <div className="text-4xl font-bold mb-1" style={{color: theme.text}} data-testid="total-assets-count">
                       {summary?.total_assets || 0}
                     </div>
                     <p className="text-xs" style={{color: theme.textMuted}}>items tracked</p>
@@ -496,7 +495,7 @@ export default function Dashboard() {
                     <p className="text-sm font-medium mb-2" style={{color: theme.textTertiary, letterSpacing: '0.5px'}}>NET WORTH</p>
                     <div 
                       className="text-3xl font-bold mb-1"
-                      style={{color: isPositive ? theme.success : theme.error, fontFamily: 'Inter, sans-serif'}} 
+                      style={{color: isPositive ? theme.success : theme.error}} 
                       data-testid="net-worth-value"
                     >
                       {formatCurrency(netWorthValue, selectedCurrency, currencyFormat)}
@@ -525,7 +524,7 @@ export default function Dashboard() {
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <p className="text-sm font-medium mb-2" style={{color: theme.textTertiary, letterSpacing: '0.5px'}}>NOMINEE</p>
-                    <div className="text-2xl font-bold mb-1" style={{color: summary?.has_nominee ? theme.success : theme.warning, fontFamily: 'Inter, sans-serif'}} data-testid="nominee-status">
+                    <div className="text-2xl font-bold mb-1" style={{color: summary?.has_nominee ? theme.success : theme.warning}} data-testid="nominee-status">
                       {summary?.has_nominee ? '✓ Configured' : 'Not Set'}
                     </div>
                     <p className="text-xs" style={{color: theme.textMuted}}>
@@ -548,7 +547,7 @@ export default function Dashboard() {
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <p className="text-sm font-medium mb-2" style={{color: theme.textTertiary, letterSpacing: '0.5px'}}>DEAD MAN'S SWITCH</p>
-                    <div className="text-2xl font-bold mb-1" style={{color: summary?.has_dms ? theme.success : theme.warning, fontFamily: 'Inter, sans-serif'}} data-testid="dms-status">
+                    <div className="text-2xl font-bold mb-1" style={{color: summary?.has_dms ? theme.success : theme.warning}} data-testid="dms-status">
                       {summary?.has_dms ? '✓ Active' : 'Not Set'}
                     </div>
                     <p className="text-xs" style={{color: theme.textMuted}}>
@@ -586,7 +585,7 @@ export default function Dashboard() {
           return (
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-2xl font-bold" style={{color: theme.text, fontFamily: 'Space Grotesk, sans-serif'}}>
+                <h2 className="text-2xl font-bold" style={{color: theme.text}}>
                   Financial Health Indicators
                 </h2>
                 {/* Legend */}
@@ -741,7 +740,7 @@ export default function Dashboard() {
                         data-testid="add-first-asset-btn"
                         onClick={() => navigate('/assets')} 
                         className="text-white rounded-full"
-                        style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
+                        style={{background: 'var(--fuse-primary)'}}
                       >
                         <Plus className="w-4 h-4 mr-2" />
                         Add Your First Asset
@@ -1031,11 +1030,11 @@ export default function Dashboard() {
                 {/* Legend */}
                 <div className="mt-4 flex items-center justify-center gap-6 text-xs" style={{color: theme.textTertiary}}>
                   <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 rounded-full" style={{background: 'rgba(168, 85, 247, 0.5)'}}></div>
+                    <div className="w-4 h-4 rounded-full" style={{background: 'rgba(21, 101, 192, 0.5)'}}></div>
                     <span>Countries with assets</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 rounded-full" style={{background: '#ec4899'}}></div>
+                    <div className="w-4 h-4 rounded-full" style={{background: 'var(--fuse-primary)'}}></div>
                     <span>Asset locations</span>
                   </div>
                 </div>
@@ -1095,7 +1094,7 @@ export default function Dashboard() {
                           <tr key={index} style={{borderBottom: `1px solid ${theme.border}`}}>
                             <td className="py-3 px-2">
                               <div className="flex items-center gap-2">
-                                <div className="w-3 h-3 rounded-full" style={{background: '#a855f7'}}></div>
+                                <div className="w-3 h-3 rounded-full" style={{background: 'var(--fuse-primary)'}}></div>
                                 <span style={{color: theme.text, fontWeight: 500}}>{item.country}</span>
                               </div>
                             </td>
@@ -1105,7 +1104,7 @@ export default function Dashboard() {
                             <td className="text-right py-3 px-2" style={{color: theme.success, fontWeight: 600}}>
                               {formatCurrency(item.value, selectedCurrency, currencyFormat)}
                             </td>
-                            <td className="text-right py-3 px-2" style={{color: '#a855f7', fontWeight: 600}}>
+                            <td className="text-right py-3 px-2" style={{color: 'var(--fuse-primary-text)', fontWeight: 600}}>
                               {item.percentage}%
                             </td>
                           </tr>
@@ -1142,7 +1141,7 @@ export default function Dashboard() {
         <Card style={{background: theme.cardBg, borderColor: theme.primary, borderWidth: '2px', boxShadow: theme.cardShadow}}>
           <CardContent className="p-6">
             <div className="flex items-start gap-4">
-              <div className="p-3 rounded-xl" style={{background: 'rgba(168, 85, 247, 0.1)'}}>
+              <div className="p-3 rounded-xl" style={{background: 'rgba(21, 101, 192, 0.1)'}}>
                 <BookOpen className="w-8 h-8" style={{color: theme.primary}} />
               </div>
               <div className="flex-1">

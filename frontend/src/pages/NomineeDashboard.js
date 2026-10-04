@@ -60,19 +60,19 @@ export default function NomineeDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{background: 'linear-gradient(135deg, #1a0b2e 0%, theme.backgroundTertiary 50%, #2d0e3e 100%)'}}>
+      <div className="min-h-screen flex items-center justify-center" style={{background: 'var(--fuse-surface)'}}>
         <p style={{color: theme.text}}>Loading portfolio...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen" style={{background: 'linear-gradient(135deg, #1a0b2e 0%, theme.backgroundTertiary 50%, #2d0e3e 100%)'}}>
+    <div className="min-h-screen" style={{background: 'var(--fuse-surface)'}}>
       {/* Header */}
-      <header className="backdrop-blur-xl sticky top-0 z-50" style={{borderBottom: '1px solid #2d1f3d', background: 'rgba(15, 10, 30, 0.9)', padding: '1rem 2rem'}}>
+      <header className="backdrop-blur-xl sticky top-0 z-50" style={{borderBottom: '1px solid var(--fuse-border)', background: 'rgba(15, 10, 30, 0.9)', padding: '1rem 2rem'}}>
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <Shield className="w-7 h-7" style={{color: '#ec4899'}} />
+            <Shield className="w-7 h-7" style={{color: 'var(--fuse-primary-text)'}} />
             <div>
               <h1 className="text-xl font-bold" style={{color: theme.text}}>AssetVault - Nominee View</h1>
               <p className="text-xs" style={{color: theme.textSecondary}}>Portfolio of {nomineeInfo.owner?.name}</p>
@@ -105,8 +105,8 @@ export default function NomineeDashboard() {
           <Card style={{background: theme.cardBg, borderColor: theme.border}}>
             <CardContent className="py-6">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{background: 'rgba(236, 72, 153, 0.2)'}}>
-                  <DollarSign className="w-6 h-6" style={{color: '#ec4899'}} />
+                <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{background: 'rgba(21, 101, 192, 0.2)'}}>
+                  <DollarSign className="w-6 h-6" style={{color: 'var(--fuse-primary-text)'}} />
                 </div>
                 <div>
                   <p className="text-sm" style={{color: theme.textSecondary}}>Total Value</p>
@@ -121,8 +121,8 @@ export default function NomineeDashboard() {
           <Card style={{background: theme.cardBg, borderColor: theme.border}}>
             <CardContent className="py-6">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{background: 'rgba(168, 85, 247, 0.2)'}}>
-                  <Wallet className="w-6 h-6" style={{color: '#a855f7'}} />
+                <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{background: 'rgba(21, 101, 192, 0.2)'}}>
+                  <Wallet className="w-6 h-6" style={{color: 'var(--fuse-primary-text)'}} />
                 </div>
                 <div>
                   <p className="text-sm" style={{color: theme.textSecondary}}>Assets</p>
@@ -175,18 +175,18 @@ export default function NomineeDashboard() {
           <CardContent>
             <div className="space-y-3">
               {data?.assets?.map((asset) => (
-                <div key={asset.id} className="p-4 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
+                <div key={asset.id} className="p-4 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid var(--fuse-border)'}}>
                   <div className="flex justify-between items-center">
                     <div>
                       <p className="font-semibold" style={{color: theme.text}}>{asset.name}</p>
                       <p className="text-sm" style={{color: theme.textSecondary}}>{asset.type}</p>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold" style={{color: '#ec4899'}}>
+                      <p className="font-bold" style={{color: 'var(--fuse-primary-text)'}}>
                         {asset.purchase_currency} {(asset.current_value || asset.total_value || 0).toLocaleString()}
                       </p>
                       {asset.purchase_date && (
-                        <p className="text-xs" style={{color: '#64748b'}}>
+                        <p className="text-xs" style={{color: '#71717a'}}>
                           Since {new Date(asset.purchase_date).toLocaleDateString()}
                         </p>
                       )}

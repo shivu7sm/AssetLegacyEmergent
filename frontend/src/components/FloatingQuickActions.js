@@ -71,7 +71,7 @@ export default function FloatingQuickActions() {
         icon: Shield,
         label: 'Nominees',
         onClick: () => navigate('/nominees'),
-        color: '#8b5cf6',
+        color: 'var(--fuse-primary-text)',
       },
     ];
   };
@@ -159,23 +159,23 @@ export default function FloatingQuickActions() {
           width: '56px',
           height: '56px',
           borderRadius: '50%',
-          background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)',
+          background: 'var(--fuse-primary)',
           border: 'none',
           cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          boxShadow: '0 4px 20px rgba(168, 85, 247, 0.4)',
+          boxShadow: '0 4px 20px rgba(21, 101, 192, 0.4)',
           transition: 'all 0.3s',
           position: 'relative',
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.transform = 'scale(1.1)';
-          e.currentTarget.style.boxShadow = '0 6px 24px rgba(168, 85, 247, 0.6)';
+          e.currentTarget.style.boxShadow = '0 6px 24px rgba(21, 101, 192, 0.6)';
         }}
         onMouseLeave={(e) => {
           e.currentTarget.style.transform = 'scale(1)';
-          e.currentTarget.style.boxShadow = '0 4px 20px rgba(168, 85, 247, 0.4)';
+          e.currentTarget.style.boxShadow = '0 4px 20px rgba(21, 101, 192, 0.4)';
         }}
       >
         {isExpanded ? (

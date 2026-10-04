@@ -511,7 +511,7 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
       {/* Manual Current Value Override - For ALL Asset Types */}
       <div className="space-y-4 p-4 rounded-lg" style={{background: 'rgba(207, 143, 134, 0.05)', border: '1px solid rgba(207, 143, 134, 0.2)'}}>
         <h3 className="text-sm font-bold" style={{color: '#CF8F86'}}>CURRENT VALUE (OPTIONAL)</h3>
-        <p className="text-xs" style={{color: '#94a3b8'}}>
+        <p className="text-xs" style={{color: '#a1a1aa'}}>
           Leave blank to use calculated value. For crypto/stocks, we'll fetch real-time prices automatically.
         </p>
         
@@ -563,7 +563,7 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
         <Button 
           type="submit"
           className="flex-1"
-          style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', color: '#fff'}}
+          style={{background: 'var(--fuse-primary)', color: '#fff'}}
         >
           {editingAsset ? 'Update Asset' : 'Add Asset'}
         </Button>
@@ -571,7 +571,7 @@ export default function AddAssetForm({ onSuccess, onCancel, editingAsset = null,
           type="button"
           onClick={onCancel}
           variant="outline"
-          style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+          style={{borderColor: 'var(--fuse-border)', color: '#a1a1aa'}}
         >
           Cancel
         </Button>

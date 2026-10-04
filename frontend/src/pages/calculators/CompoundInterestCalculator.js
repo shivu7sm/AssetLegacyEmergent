@@ -74,7 +74,7 @@ export default function CompoundInterestCalculator() {
       <div className="space-y-6" style={{padding: '1.5rem 0'}}>
         {/* Header */}
         <div>
-          <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{color: theme.text, fontFamily: 'Space Grotesk, sans-serif'}}>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{color: theme.text}}>
             Compound Interest Calculator
           </h1>
           <p className="text-base sm:text-lg" style={{color: theme.textSecondary}}>
@@ -193,7 +193,7 @@ export default function CompoundInterestCalculator() {
               <Button
                 onClick={calculateCompoundInterest}
                 className="w-full text-white font-medium"
-                style={{background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)'}}
+                style={{background: '#fbbf24'}}
               >
                 Calculate Interest
               </Button>
@@ -205,7 +205,7 @@ export default function CompoundInterestCalculator() {
             <Card style={{background: theme.cardBg, borderColor: theme.border}}>
               <CardHeader>
                 <CardTitle className="flex items-center gap-3" style={{color: theme.text}}>
-                  <Target className="w-5 h-5" style={{color: '#a855f7'}} />
+                  <Target className="w-5 h-5" style={{color: 'var(--fuse-primary-text)'}} />
                   Compound Interest Results
                 </CardTitle>
               </CardHeader>
@@ -228,9 +228,9 @@ export default function CompoundInterestCalculator() {
                   </div>
 
                   {/* Maturity Value */}
-                  <div className="p-4 rounded-lg" style={{background: 'rgba(168, 85, 247, 0.1)', border: '1px solid rgba(168, 85, 247, 0.3)'}}>
+                  <div className="p-4 rounded-lg" style={{background: 'rgba(21, 101, 192, 0.1)', border: '1px solid rgba(21, 101, 192, 0.3)'}}>
                     <div className="text-sm mb-1" style={{color: theme.textSecondary}}>Maturity Value</div>
-                    <div className="text-3xl font-bold" style={{color: '#a855f7'}}>
+                    <div className="text-3xl font-bold" style={{color: 'var(--fuse-primary-text)'}}>
                       {formatCurrency(result.futureValue)}
                     </div>
                   </div>

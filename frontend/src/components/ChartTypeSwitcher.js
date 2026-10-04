@@ -29,7 +29,7 @@ export default function ChartTypeSwitcher({ currentType, onChange, availableType
             size="sm"
             className="px-3 py-2 transition-all"
             style={{
-              background: isActive ? 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)' : 'transparent',
+              background: isActive ? 'var(--fuse-primary)' : 'transparent',
               color: isActive ? theme.text : theme.textMuted
             }}
           >

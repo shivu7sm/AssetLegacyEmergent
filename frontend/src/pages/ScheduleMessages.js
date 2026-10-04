@@ -98,7 +98,7 @@ export default function ScheduleMessages() {
       <div className="space-y-8" style={{padding: '2rem 1.5rem', margin: '0 auto', maxWidth: '1600px'}}>
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{fontFamily: 'Space Grotesk, sans-serif', color: theme.text}}>
+            <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{color: theme.text}}>
               Scheduled Messages
             </h1>
             <p style={{color: theme.textTertiary}}>Schedule messages to be sent to your loved ones in the future</p>
@@ -107,7 +107,7 @@ export default function ScheduleMessages() {
             <DialogTrigger asChild>
               <Button 
                 className="text-white rounded-full"
-                style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
+                style={{background: 'var(--fuse-primary)'}}
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Schedule Message
@@ -196,7 +196,7 @@ export default function ScheduleMessages() {
                   <Button
                     type="submit"
                     className="text-white rounded-full"
-                    style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
+                    style={{background: 'var(--fuse-primary)'}}
                   >
                     Schedule Message
                   </Button>
@@ -216,13 +216,13 @@ export default function ScheduleMessages() {
           <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
             <CardContent className="py-16">
               <div className="text-center">
-                <Calendar className="w-16 h-16 mx-auto mb-4" style={{color: '#2d1f3d'}} />
+                <Calendar className="w-16 h-16 mx-auto mb-4" style={{color: 'var(--fuse-border)'}} />
                 <h3 className="text-xl font-semibold mb-2" style={{color: theme.text}}>No Scheduled Messages</h3>
                 <p className="mb-6" style={{color: theme.textTertiary}}>Schedule messages for future occasions and special moments</p>
                 <Button
                   onClick={() => setDialogOpen(true)}
                   className="text-white rounded-full"
-                  style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
+                  style={{background: 'var(--fuse-primary)'}}
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   Schedule Your First Message
@@ -237,7 +237,7 @@ export default function ScheduleMessages() {
                 <CardHeader>
                   <div className="flex justify-between items-start">
                     <div className="flex items-center gap-3">
-                      <Mail className="w-5 h-5" style={{color: '#ec4899'}} />
+                      <Mail className="w-5 h-5" style={{color: 'var(--fuse-primary-text)'}} />
                       <div>
                         <CardTitle className="text-lg" style={{color: theme.text}}>
                           {message.recipient_name}
@@ -256,7 +256,7 @@ export default function ScheduleMessages() {
                       </div>
                     )}
                     <div className="flex items-center gap-2 text-sm">
-                      <Clock className="w-4 h-4" style={{color: '#a855f7'}} />
+                      <Clock className="w-4 h-4" style={{color: 'var(--fuse-primary-text)'}} />
                       <span style={{color: theme.textTertiary}}>Send Date:</span>
                       <span style={{color: theme.text}}>
                         {new Date(message.send_date).toLocaleDateString()}
@@ -266,12 +266,12 @@ export default function ScheduleMessages() {
                       <p className="text-sm font-semibold mb-1" style={{color: theme.text}}>{message.subject}</p>
                       <p className="text-sm line-clamp-3" style={{color: theme.textTertiary}}>{message.message}</p>
                     </div>
-                    <div className="flex items-center gap-2 pt-3" style={{borderTop: '1px solid #2d1f3d'}}>
+                    <div className="flex items-center gap-2 pt-3" style={{borderTop: '1px solid var(--fuse-border)'}}>
                       <span 
                         className="text-xs px-2 py-1 rounded-full"
                         style={{
-                          background: message.status === 'sent' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(168, 85, 247, 0.1)',
-                          color: message.status === 'sent' ? '#10b981' : '#a855f7'
+                          background: message.status === 'sent' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(21, 101, 192, 0.1)',
+                          color: message.status === 'sent' ? '#10b981' : 'var(--fuse-primary)'
                         }}
                       >
                         {message.status === 'sent' ? 'Sent' : 'Scheduled'}

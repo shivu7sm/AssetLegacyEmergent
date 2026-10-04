@@ -56,9 +56,9 @@ export default function FlexibleChart({ data, chartType, colors, CustomTooltip, 
         return (
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={data} layout="vertical" margin={{ top: 5, right: 30, left: 80, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#2d1f3d" />
-              <XAxis type="number" stroke="#94a3b8" />
-              <YAxis type="category" dataKey="name" stroke="#94a3b8" width={70} style={{fontSize: '12px'}} />
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--fuse-border)" />
+              <XAxis type="number" stroke="#a1a1aa" />
+              <YAxis type="category" dataKey="name" stroke="#a1a1aa" width={70} style={{fontSize: '12px'}} />
               <Tooltip content={CustomTooltip ? <CustomTooltip /> : undefined} />
               <Bar dataKey="value" radius={[0, 8, 8, 0]}>
                 {data.map((entry, index) => (

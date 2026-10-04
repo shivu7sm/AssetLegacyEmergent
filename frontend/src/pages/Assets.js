@@ -1,303 +1,206 @@
 import { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
-import { Plus, Edit, Trash2, DollarSign, TrendingUp, Grid, List, Filter, Calculator, MapPin } from 'lucide-react';
+import { ChevronDown, ChevronRight, Edit2, Check, X, Trash2, Calculator, Sparkles, TrendingUp, TrendingDown, Plus, Info } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 import { useTheme } from '@/context/ThemeContext';
-import { formatCurrency, convertCurrency } from '@/utils/currencyConversion';
-import LoanCalculatorModal from '@/components/LoanCalculatorModal';
+import { formatCurrency } from '@/utils/currencyConversion';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import AddAssetForm from '@/components/AddAssetForm';
+import { calculateLoanSummary } from '@/utils/loanCalculator';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-const ASSET_TYPES = [
-  { value: 'portfolio', label: 'Portfolio Account', icon: '📊', isPortfolio: true, description: 'Exchange/Broker with multiple holdings' },
-  { value: 'crypto', label: 'Cryptocurrency', icon: '₿', hasQuantity: true },
-  { value: 'stock', label: 'Stocks', icon: '📈', hasQuantity: true },
-  { value: 'precious_metals', label: 'Precious Metals (Gold/Silver)', icon: '🥇', hasWeight: true },
-  { value: 'property', label: 'Real Estate', icon: '🏠', hasArea: true },
-  { value: 'bank', label: 'Bank Account', icon: '🏦' },
-  { value: 'investment', label: 'Investment', icon: '💰', hasMaturity: true },
-  { value: 'insurance', label: 'Insurance', icon: '🛡️' },
-  { value: 'loan', label: 'Loan', icon: '💸', isLiability: true },
-  { value: 'credit_card', label: 'Credit Card', icon: '💳', isLiability: true },
-  { value: 'locker', label: 'Safe/Locker', icon: '🔐' },
-  { value: 'diamond', label: 'Diamond/Jewelry', icon: '💎' }
-];
+// Asset type groups for organized display
+const ASSET_GROUPS = {
+  investments: {
+    label: 'Stocks & Bonds',
+    icon: '📈',
+    types: ['stock', 'investment', 'mutual_fund'],
+    color: '#10b981',        // Emerald green - good contrast on both themes
+    colorLight: '#059669'    // Darker emerald for light theme
+  },
+  crypto: {
+    label: 'Crypto & NFT',
+    icon: '₿',
+    types: ['crypto', 'portfolio', 'nft'],
+    color: '#06b6d4',        // Cyan - good contrast
+    colorLight: '#0891b2'    // Darker cyan for light theme
+  },
+  realEstate: {
+    label: 'Real Estate',
+    icon: '🏠',
+    types: ['property'],
+    color: '#f97316',        // Orange - vibrant and visible
+    colorLight: '#ea580c'    // Darker orange for light theme
+  },
+  banking: {
+    label: 'Banking & Cash',
+    icon: '🏦',
+    types: ['bank'],
+    color: '#eab308',        // Yellow - matches gold theme
+    colorLight: '#ca8a04'    // Darker yellow for light theme
+  },
+  valuables: {
+    label: 'Valuables & Others',
+    icon: '💎',
+    types: ['precious_metals', 'diamond', 'locker', 'insurance', 'vehicle', 'art'],
+    color: 'var(--fuse-primary-text)',
+    colorLight: 'var(--fuse-primary)'
+  },
+  liabilities: {
+    label: 'Loans & Debts',
+    icon: '💳',
+    types: ['loan', 'credit_card'],
+    color: '#ef4444',        // Red - attention grabbing
+    colorLight: '#dc2626'    // Darker red for light theme
+  }
+};
 
-const PORTFOLIO_PROVIDERS = [
-  { value: 'binance', label: 'Binance', type: 'crypto_exchange' },
-  { value: 'coinbase', label: 'Coinbase', type: 'crypto_exchange' },
-  { value: 'kraken', label: 'Kraken', type: 'crypto_exchange' },
-  { value: 'gemini', label: 'Gemini', type: 'crypto_exchange' },
-  { value: 'zerodha', label: 'Zerodha', type: 'stock_broker' },
-  { value: 'robinhood', label: 'Robinhood', type: 'stock_broker' },
-  { value: 'etrade', label: 'E*TRADE', type: 'stock_broker' },
-  { value: 'fidelity', label: 'Fidelity', type: 'stock_broker' },
-  { value: 'other', label: 'Other', type: 'other' }
-];
-
-const CURRENCIES = ['USD', 'EUR', 'GBP', 'INR', 'JPY', 'AUD', 'CAD', 'SGD', 'AED'];
-const AREA_UNITS = ['sqft', 'sqmt', 'yard', 'acre'];
-const WEIGHT_UNITS = ['gram', 'kilogram', 'ounce', 'pound'];
-
-function AssetTableRow({ asset, typeInfo, purchaseValueOriginal, currentValueOriginal, selectedCurrency, currencyFormat, getConversionRate, handleEdit, handleDelete, handleCalculateLoan, theme }) {
-  const [purchaseConverted, setPurchaseConverted] = useState(purchaseValueOriginal);
-  const [currentConverted, setCurrentConverted] = useState(currentValueOriginal);
-  const [loading, setLoading] = useState(true);
-  const isLiability = typeInfo.isLiability;
-
-  useEffect(() => {
-    const convert = async () => {
-      setLoading(true);
-      const rate = await getConversionRate(asset.purchase_currency, selectedCurrency);
-      setPurchaseConverted(purchaseValueOriginal * rate);
-      setCurrentConverted(currentValueOriginal * rate);
-      setLoading(false);
-    };
-    convert();
-  }, [asset.purchase_currency, selectedCurrency, purchaseValueOriginal, currentValueOriginal]);
-
-  const gain = currentConverted - purchaseConverted;
-  const gainPercent = purchaseConverted ? ((gain / purchaseConverted) * 100).toFixed(2) : 0;
-
-  return (
-    <tr style={{
-      borderBottom: `1px solid ${theme.border}`,
-      background: isLiability ? 'rgba(220, 38, 38, 0.05)' : 'transparent'
-    }}>
-      <td className="p-4">
-        <div className="flex items-center gap-3">
-          <span className="text-2xl">{typeInfo.icon}</span>
-          <div>
-            <div className="flex items-center gap-2">
-              <span style={{color: isLiability ? theme.error : theme.text, fontWeight: 500}}>{asset.name}</span>
-              {isLiability && (
-                <span 
-                  className="text-xs px-2 py-0.5 rounded-full font-semibold"
-                  style={{background: theme.error, color: '#fff'}}
-                >
-                  DEBT
-                </span>
-              )}
-            </div>
-            {asset.symbol && <div className="text-xs" style={{color: theme.textTertiary}}>{asset.symbol}</div>}
-          </div>
-        </div>
-      </td>
-      <td className="p-4" style={{color: isLiability ? theme.error : theme.textSecondary}}>{typeInfo.label}</td>
-      <td className="p-4 text-right" style={{color: theme.textTertiary}}>
-        {asset.quantity && `${asset.quantity} units`}
-        {asset.weight && `${asset.weight} ${asset.weight_unit}`}
-        {asset.area && `${asset.area} ${asset.area_unit}`}
-        {!asset.quantity && !asset.weight && !asset.area && '-'}
-      </td>
-      <td className="p-4 text-right" style={{color: theme.textSecondary}}>
-        <div className="font-semibold">
-          {isLiability ? '-' : ''}{asset.purchase_currency} {purchaseValueOriginal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
-        </div>
-      </td>
-      <td className="p-4 text-right" style={{color: isLiability ? theme.error : theme.text}}>
-        {loading ? '...' : (isLiability ? '-' : '') + formatCurrency(purchaseConverted, selectedCurrency, currencyFormat)}
-      </td>
-      <td className="p-4 text-right">
-        <div style={{color: isLiability ? theme.error : theme.primary, fontWeight: 600}}>
-          {loading ? '...' : (isLiability ? '-' : '') + formatCurrency(currentConverted, selectedCurrency, currencyFormat)}
-        </div>
-      </td>
-      <td className="p-4 text-right">
-        {!isLiability && !loading && gain !== 0 && (
-          <div>
-            <div style={{color: gain > 0 ? theme.success : theme.error, fontWeight: 600}}>
-              {gain > 0 ? '+' : ''}{gain.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
-            </div>
-            <div className="text-xs" style={{color: gain > 0 ? theme.success : theme.error}}>
-              ({gainPercent}%)
-            </div>
-          </div>
-        )}
-        {isLiability && !loading && (
-          <div style={{color: theme.textTertiary, fontSize: '0.875rem'}}>
-            Liability
-          </div>
-        )}
-      </td>
-      <td className="p-4 text-right">
-        <div className="flex justify-end gap-2">
-          {isLiability && (
-            <Button 
-              onClick={() => handleCalculateLoan(asset)}
-              variant="outline"
-              size="sm"
-              style={{borderColor: '#a855f7', color: '#a855f7'}}
-              title="Calculate Loan"
-            >
-              <Calculator className="w-4 h-4" />
-            </Button>
-          )}
-          <Button 
-            onClick={() => handleEdit(asset)}
-            variant="outline"
-            size="sm"
-            style={{borderColor: theme.border, color: theme.textTertiary}}
-          >
-            <Edit className="w-4 h-4" />
-          </Button>
-          <Button 
-            onClick={() => handleDelete(asset.id)}
-            variant="outline"
-            size="sm"
-            style={{borderColor: '#ef4444', color: '#ef4444'}}
-          >
-            <Trash2 className="w-4 h-4" />
-          </Button>
-        </div>
-      </td>
-    </tr>
-  );
-}
-
-export default function Assets() {
-  const { selectedCurrency, currencyFormat, preferences } = useApp();
-  const { theme } = useTheme();
+export default function AssetsNew() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { selectedCurrency, currencyFormat } = useApp();
+  const { theme, colorTheme } = useTheme();
   const [assets, setAssets] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [expandedGroups, setExpandedGroups] = useState(Object.keys(ASSET_GROUPS));
+  const [selectedAsset, setSelectedAsset] = useState(null);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [loanCalcData, setLoanCalcData] = useState(null);
+  const [calculatingLoan, setCalculatingLoan] = useState(false);
+  const [loanParams, setLoanParams] = useState({ interestRate: 0, tenure: 0 });
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [editingAsset, setEditingAsset] = useState(null);
-  
-  // Initialize viewMode from preferences or sessionStorage
-  const getInitialView = () => {
-    const sessionView = sessionStorage.getItem('assetsViewMode');
-    if (sessionView) return sessionView;
-    return preferences?.default_asset_view || 'table';
-  };
-  const [viewMode, setViewMode] = useState(getInitialView());
-  const [pageMode, setPageMode] = useState('assets'); // 'assets' or 'portfolios'
-  
-  const [filterType, setFilterType] = useState('all');
-  const [sortBy, setSortBy] = useState('date');
-  const [filteredAssets, setFilteredAssets] = useState([]);
-  const [conversionRates, setConversionRates] = useState({});
-  const [portfolioTotal, setPortfolioTotal] = useState(null);
-  const [assetsTotal, setAssetsTotal] = useState(null);
-  const [liabilitiesTotal, setLiabilitiesTotal] = useState(null);
-  const [purchaseTotal, setPurchaseTotal] = useState(null);
-  const [currentTotal, setCurrentTotal] = useState(null);
-  
-  // Portfolio-specific state
-  const [portfolios, setPortfolios] = useState([]);
-  const [selectedPortfolio, setSelectedPortfolio] = useState(null);
-  const [portfolioDialogOpen, setPortfolioDialogOpen] = useState(false);
-  const [holdingDialogOpen, setHoldingDialogOpen] = useState(false);
-  const [editingHolding, setEditingHolding] = useState(null);
-  
-  // Loan Calculator state
-  const [loanCalculatorOpen, setLoanCalculatorOpen] = useState(false);
-  const [calculatingLoanAsset, setCalculatingLoanAsset] = useState(null);
-  const [formData, setFormData] = useState({
-    type: 'crypto',
-    name: '',
-    quantity: '',
-    unit_price: '',
-    current_unit_price: '',
-    total_value: '',
-    current_total_value: '',
-    symbol: '',
-    weight: '',
-    weight_unit: 'gram',
-    purity: '',
-    area: '',
-    area_unit: 'sqft',
-    price_per_area: '',
-    current_price_per_area: '',
-    location: { address: '', lat: '', lng: '' },
-    principal_amount: '',
-    interest_rate: '',
-    tenure_months: '',
-    maturity_date: '',
-    expected_return: '',
-    bank_name: '',
-    branch: '',
-    locker_number: '',
-    purchase_currency: 'USD',
-    purchase_date: '',
-    details: {},
-    // Portfolio-specific fields
-    provider_name: '',
-    provider_type: 'crypto_exchange'
-  });
-
-  // Portfolio holdings state
-  const [portfolioHoldings, setPortfolioHoldings] = useState([]);
-  const [holdingForm, setHoldingForm] = useState({
-    symbol: '',
-    name: '',
-    quantity: '',
-    purchase_price: '',
-    purchase_date: '',
-    purchase_currency: 'USD',
-    current_price: '',
-    asset_type: 'crypto'
-  });
+  const [dialogType, setDialogType] = useState('asset'); // 'asset' or 'liability'
+  const [activeFilter, setActiveFilter] = useState('all'); // Filter by asset group
+  const [activeAccount, setActiveAccount] = useState('own'); // 'own' or 'test_account' or account_id
+  const [testAccountData, setTestAccountData] = useState(null);
+  const [demoMode, setDemoMode] = useState(false);
+  const [connectedAccounts, setConnectedAccounts] = useState([]);
+  const [converting, setConverting] = useState(false);
 
   useEffect(() => {
     fetchAssets();
-    fetchPortfolios();
+    checkDemoMode();
+    fetchConnectedAccounts();
   }, []);
 
+  // Show converting state when currency changes
   useEffect(() => {
-    filterAndSortAssets();
-  }, [assets, filterType, sortBy]);
+    if (assets.length > 0) {
+      setConverting(true);
+      const timer = setTimeout(() => setConverting(false), 800);
+      return () => clearTimeout(timer);
+    }
+  }, [selectedCurrency]);
 
-  // Calculate portfolio totals with proper currency conversion
+  const fetchConnectedAccounts = async () => {
+    try {
+      const response = await axios.get(`${API}/nominees/my-accesses`, { withCredentials: true });
+      setConnectedAccounts(response.data.accessible_accounts || []);
+    } catch (error) {
+      console.error('Failed to fetch connected accounts:', error);
+    }
+  };
+
+  const fetchAccountAssets = async (accountId, accessToken) => {
+    setLoading(true);
+    try {
+      console.log('Fetching assets for account:', accountId, 'with token:', accessToken?.substring(0, 10) + '...');
+      const response = await axios.get(`${API}/nominee/dashboard`, {
+        params: { access_token: accessToken }
+      });
+      console.log('Nominee dashboard response:', response.data);
+      return response.data.assets || [];
+    } catch (error) {
+      console.error('Failed to fetch account assets:', error);
+      console.error('Error details:', error.response?.data);
+      toast.error(`Failed to load account assets: ${error.response?.data?.detail || error.message}`);
+      return [];
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Update assets when account switches
   useEffect(() => {
-    const calculateTotals = async () => {
-      const displayAssets = filteredAssets.length > 0 ? filteredAssets : assets;
-      
-      let totalPortfolio = 0;
-      let totalAssets = 0;
-      let totalLiabilities = 0;
-      let totalPurchase = 0;
-      let totalCurrent = 0;
-      
-      for (const asset of displayAssets) {
-        const assetType = getAssetTypeInfo(asset.type);
-        const currentValue = calculateAssetValue(asset, true) || calculateAssetValue(asset, false);
-        const convertedCurrentValue = await calculateAssetValueConverted(asset, true);
-        const convertedPurchaseValue = await calculateAssetValueConverted(asset, false);
-        
-        if (assetType.isLiability) {
-          totalLiabilities += convertedCurrentValue;
-          totalPortfolio -= convertedCurrentValue;
-        } else {
-          totalAssets += convertedCurrentValue;
-          totalPortfolio += convertedCurrentValue;
-          totalPurchase += convertedPurchaseValue;
-          totalCurrent += convertedCurrentValue;
+    const loadAccountAssets = async () => {
+      if (activeAccount === 'own') {
+        fetchAssets();
+      } else if (activeAccount === 'test_account' && testAccountData) {
+        // Use test account data
+        const testAssets = [...(testAccountData.assets || []), ...(testAccountData.portfolios || [])];
+        setAssets(testAssets);
+        setLoading(false);
+      } else if (activeAccount !== 'own' && activeAccount !== 'test_account') {
+        // It's a connected account - wait for connectedAccounts to load
+        if (connectedAccounts.length > 0) {
+          const account = connectedAccounts.find(a => a.account_id === activeAccount);
+          if (account && account.access_token) {
+            console.log('Loading connected account:', account.account_name);
+            const accountAssets = await fetchAccountAssets(activeAccount, account.access_token);
+            setAssets(accountAssets);
+          } else {
+            console.error('Account not found or no access token:', activeAccount);
+            toast.error('Account access token not found');
+            setActiveAccount('own');
+          }
         }
       }
-      
-      setPortfolioTotal(totalPortfolio);
-      setAssetsTotal(totalAssets);
-      setLiabilitiesTotal(totalLiabilities);
-      setPurchaseTotal(totalPurchase);
-      setCurrentTotal(totalCurrent);
     };
     
-    calculateTotals();
-  }, [assets, filteredAssets, selectedCurrency]);
+    loadAccountAssets();
+  }, [activeAccount, connectedAccounts, testAccountData]);
 
-  // Save viewMode to sessionStorage when changed
+  // Handle query parameters to auto-open add forms
   useEffect(() => {
-    sessionStorage.setItem('assetsViewMode', viewMode);
-  }, [viewMode]);
+    const searchParams = new URLSearchParams(location.search);
+    const action = searchParams.get('action');
+    const type = searchParams.get('type');
+
+    if (action === 'add') {
+      if (type === 'liability') {
+        setDialogType('liability');
+      } else {
+        setDialogType('asset');
+      }
+      setDialogOpen(true);
+      
+      // Clear query params after opening dialog
+      navigate('/assets', { replace: true });
+    }
+  }, [location.search, navigate]);
+
+  const checkDemoMode = async () => {
+    try {
+      const response = await axios.get(`${API}/demo/status`, { withCredentials: true });
+      setDemoMode(response.data.demo_mode);
+      
+      // If in demo mode, fetch test account data
+      if (response.data.demo_mode && response.data.test_account_access) {
+        fetchTestAccountAssets();
+      }
+    } catch (error) {
+      console.error('Failed to check demo mode:', error);
+    }
+  };
+
+  const fetchTestAccountAssets = async () => {
+    try {
+      const response = await axios.get(`${API}/demo/test-account-assets`, { withCredentials: true });
+      setTestAccountData(response.data);
+    } catch (error) {
+      console.error('Failed to fetch test account:', error);
+    }
+  };
 
   const fetchAssets = async () => {
     try {
@@ -311,1589 +214,673 @@ export default function Assets() {
     }
   };
 
-  const fetchPortfolios = async () => {
-    try {
-      const response = await axios.get(`${API}/portfolio-assets`, { withCredentials: true });
-      setPortfolios(response.data);
-    } catch (error) {
-      console.error('Failed to fetch portfolios:', error);
-      toast.error('Failed to load portfolios');
+  const toggleGroup = (groupKey) => {
+    setExpandedGroups(prev => 
+      prev.includes(groupKey) 
+        ? prev.filter(g => g !== groupKey)
+        : [...prev, groupKey]
+    );
+  };
+
+  const scrollToGroup = (groupKey) => {
+    const element = document.getElementById(`group-${groupKey}`);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
-  const fetchPortfolioDetails = async (portfolioId) => {
-    try {
-      const response = await axios.get(`${API}/portfolio-assets/${portfolioId}`, { withCredentials: true });
-      setSelectedPortfolio(response.data);
-    } catch (error) {
-      console.error('Failed to fetch portfolio details:', error);
-      toast.error('Failed to load portfolio details');
-    }
-  };
-
-  const handleCreatePortfolio = async (e) => {
-    e.preventDefault();
-    try {
-      const payload = {
-        name: formData.name,
-        provider_name: formData.provider_name,
-        provider_type: formData.provider_type,
-        purchase_currency: formData.purchase_currency
-      };
-      
-      await axios.post(`${API}/portfolio-assets`, payload, { withCredentials: true });
-      toast.success('Portfolio created successfully');
-      setPortfolioDialogOpen(false);
-      resetForm();
-      fetchPortfolios();
-    } catch (error) {
-      console.error('Failed to create portfolio:', error);
-      toast.error('Failed to create portfolio');
-    }
-  };
-
-  const handleAddHolding = async (e) => {
-    e.preventDefault();
-    if (!selectedPortfolio) return;
+  const groupAssetsByType = () => {
+    const grouped = {};
     
-    try {
-      const payload = {
-        ...holdingForm,
-        quantity: parseFloat(holdingForm.quantity),
-        purchase_price: parseFloat(holdingForm.purchase_price),
-        current_price: holdingForm.current_price ? parseFloat(holdingForm.current_price) : null
-      };
-      
-      if (editingHolding) {
-        await axios.put(
-          `${API}/portfolio-assets/${selectedPortfolio.id}/holdings/${editingHolding.symbol}`,
-          payload,
-          { withCredentials: true }
-        );
-        toast.success('Holding updated successfully');
-      } else {
-        await axios.post(
-          `${API}/portfolio-assets/${selectedPortfolio.id}/holdings`,
-          payload,
-          { withCredentials: true }
-        );
-        toast.success('Holding added successfully');
-      }
-      
-      setHoldingDialogOpen(false);
-      setEditingHolding(null);
-      setHoldingForm({
-        symbol: '',
-        name: '',
-        quantity: '',
-        purchase_price: '',
-        purchase_date: '',
-        purchase_currency: 'USD',
-        current_price: '',
-        asset_type: 'crypto'
-      });
-      fetchPortfolioDetails(selectedPortfolio.id);
-      fetchPortfolios();
-    } catch (error) {
-      console.error('Failed to save holding:', error);
-      toast.error('Failed to save holding');
-    }
-  };
-
-  const handleDeleteHolding = async (portfolioId, symbol) => {
-    if (!window.confirm('Are you sure you want to delete this holding?')) return;
+    // Use test account assets if that's selected
+    const assetsToGroup = activeAccount === 'test_account' && testAccountData 
+      ? [...testAccountData.assets, ...testAccountData.portfolios]
+      : assets;
     
-    try {
-      await axios.delete(
-        `${API}/portfolio-assets/${portfolioId}/holdings/${symbol}`,
-        { withCredentials: true }
-      );
-      toast.success('Holding deleted successfully');
-      fetchPortfolioDetails(portfolioId);
-      fetchPortfolios();
-    } catch (error) {
-      console.error('Failed to delete holding:', error);
-      toast.error('Failed to delete holding');
-    }
+    Object.keys(ASSET_GROUPS).forEach(key => {
+      const group = ASSET_GROUPS[key];
+      grouped[key] = assetsToGroup.filter(asset => group.types.includes(asset.type));
+    });
+    return grouped;
   };
-
-  const handleDeletePortfolio = async (portfolioId) => {
-    if (!window.confirm('Are you sure you want to delete this portfolio and all its holdings?')) return;
-    
-    try {
-      await axios.delete(`${API}/portfolio-assets/${portfolioId}`, { withCredentials: true });
-      toast.success('Portfolio deleted successfully');
-      setSelectedPortfolio(null);
-      fetchPortfolios();
-    } catch (error) {
-      console.error('Failed to delete portfolio:', error);
-      toast.error('Failed to delete portfolio');
-    }
-  };
-
 
   const calculateAssetValue = (asset, useCurrent = false) => {
-    let value = 0;
-    
     if (useCurrent) {
-      // Calculate current value
       if (asset.current_total_value) return asset.current_total_value;
+      if (asset.current_value) return asset.current_value;
       if (asset.quantity && asset.current_unit_price) return asset.quantity * asset.current_unit_price;
       if (asset.area && asset.current_price_per_area) return asset.area * asset.current_price_per_area;
       if (asset.weight && asset.current_unit_price) return asset.weight * asset.current_unit_price;
     }
     
-    // Fall back to purchase value
-    value = asset.total_value || 0;
-    if (asset.quantity && asset.unit_price) value = asset.quantity * asset.unit_price;
-    if (asset.area && asset.price_per_area) value = asset.area * asset.price_per_area;
-    if (asset.weight && asset.unit_price) value = asset.weight * asset.unit_price;
-    if (asset.principal_amount) value = asset.principal_amount;
+    if (asset.total_value) return asset.total_value;
+    if (asset.quantity && asset.unit_price) return asset.quantity * asset.unit_price;
+    if (asset.area && asset.price_per_area) return asset.area * asset.price_per_area;
+    if (asset.weight && asset.unit_price) return asset.weight * asset.unit_price;
+    if (asset.principal_amount) return asset.principal_amount;
     
-    return value;
+    return 0;
   };
 
-  // NEW: Calculate value and convert to selected currency
-  const calculateAssetValueConverted = async (asset, useCurrent = false) => {
-    const valueInOriginalCurrency = calculateAssetValue(asset, useCurrent);
-    const originalCurrency = asset.purchase_currency || 'USD';
-    
-    if (originalCurrency === selectedCurrency) {
-      return valueInOriginalCurrency;
+  const calculateLoanDetails = async (asset) => {
+    if (!asset.principal_amount || !asset.interest_rate || !asset.tenure_months) {
+      toast.error('Missing loan details for calculation');
+      return;
     }
+
+    // Use client-side calculation (instant, no API call)
+    const principal = asset.principal_amount || asset.total_value;
+    const rate = loanParams.interestRate || asset.interest_rate;
+    const months = loanParams.tenure || asset.tenure_months;
     
-    return await convertCurrency(valueInOriginalCurrency, originalCurrency, selectedCurrency);
+    const result = calculateLoanSummary(principal, rate, months);
+    setLoanCalcData(result);
+    setLoanParams({ interestRate: rate, tenure: months });
   };
 
-  const getConversionRate = async (fromCurrency, toCurrency) => {
-    if (fromCurrency === toCurrency) return 1;
-    
-    const key = `${fromCurrency}_${toCurrency}`;
-    if (conversionRates[key]) return conversionRates[key];
-    
-    try {
-      const response = await axios.get(`${API}/prices/currency/${fromCurrency}/${toCurrency}`, { withCredentials: true });
-      const rate = response.data.rate;
-      setConversionRates(prev => ({ ...prev, [key]: rate }));
-      return rate;
-    } catch (error) {
-      console.error('Currency conversion failed:', error);
-      return 1;
-    }
+  // Real-time recalculation when sliders change
+  const recalculateLoan = (principal, rate, months) => {
+    const result = calculateLoanSummary(principal, rate, months);
+    setLoanCalcData(result);
   };
 
-  const convertCurrency = async (amount, fromCurrency, toCurrency) => {
-    const rate = await getConversionRate(fromCurrency, toCurrency);
-    return amount * rate;
-  };
-
-  const filterAndSortAssets = () => {
-    let filtered = assets;
-    
-    if (filterType !== 'all') {
-      filtered = assets.filter(a => a.type === filterType);
-    }
-    
-    filtered = [...filtered].sort((a, b) => {
-      if (sortBy === 'date') {
-        return new Date(b.created_at) - new Date(a.created_at);
-      } else if (sortBy === 'value') {
-        const aValue = calculateAssetValue(a);
-        const bValue = calculateAssetValue(b);
-        return bValue - aValue;
-      } else if (sortBy === 'name') {
-        return a.name.localeCompare(b.name);
-      }
-      return 0;
-    });
-    
-    setFilteredAssets(filtered);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    try {
-      const payload = {
-        ...formData,
-        quantity: formData.quantity ? parseFloat(formData.quantity) : null,
-        unit_price: formData.unit_price ? parseFloat(formData.unit_price) : null,
-        current_unit_price: formData.current_unit_price ? parseFloat(formData.current_unit_price) : null,
-        total_value: formData.total_value ? parseFloat(formData.total_value) : null,
-        current_total_value: formData.current_total_value ? parseFloat(formData.current_total_value) : null,
-        weight: formData.weight ? parseFloat(formData.weight) : null,
-        area: formData.area ? parseFloat(formData.area) : null,
-        price_per_area: formData.price_per_area ? parseFloat(formData.price_per_area) : null,
-        current_price_per_area: formData.current_price_per_area ? parseFloat(formData.current_price_per_area) : null,
-        principal_amount: formData.principal_amount ? parseFloat(formData.principal_amount) : null,
-        interest_rate: formData.interest_rate ? parseFloat(formData.interest_rate) : null,
-        tenure_months: formData.tenure_months ? parseInt(formData.tenure_months) : null,
-        expected_return: formData.expected_return ? parseFloat(formData.expected_return) : null
-      };
-
-      if (editingAsset) {
-        await axios.put(`${API}/assets/${editingAsset.id}`, payload, { withCredentials: true });
-        toast.success('Asset updated successfully');
-      } else {
-        await axios.post(`${API}/assets`, payload, { withCredentials: true });
-        toast.success('Asset added successfully');
-      } setDialogOpen(false);
-      resetForm();
-      fetchAssets();
-    } catch (error) {
-      console.error('Failed to save asset:', error);
-      toast.error('Failed to save asset');
-    }
-  };
-
-  const handleDelete = async (assetId) => {
-    if (!window.confirm('Are you sure you want to delete this asset?')) return;
+  const handleDeleteAsset = async (assetId) => {
+    if (!window.confirm('Delete this asset? This cannot be undone.')) return;
     
     try {
       await axios.delete(`${API}/assets/${assetId}`, { withCredentials: true });
-      toast.success('Asset deleted successfully');
+      toast.success('Asset deleted');
       fetchAssets();
+      if (selectedAsset?.id === assetId) setSelectedAsset(null);
     } catch (error) {
-      console.error('Failed to delete asset:', error);
+      console.error('Delete failed:', error);
       toast.error('Failed to delete asset');
     }
   };
 
-  const handleCalculateLoan = (asset) => {
-    setCalculatingLoanAsset(asset);
-    setLoanCalculatorOpen(true);
-  };
-
-  const handleEdit = (asset) => {
-    setEditingAsset(asset);
-    setFormData({
-      type: asset.type,
-      name: asset.name,
-      quantity: asset.quantity?.toString() || '',
-      unit_price: asset.unit_price?.toString() || '',
-      current_unit_price: asset.current_unit_price?.toString() || '',
-      total_value: asset.total_value?.toString() || '',
-      current_total_value: asset.current_total_value?.toString() || '',
-      symbol: asset.symbol || '',
-      weight: asset.weight?.toString() || '',
-      weight_unit: asset.weight_unit || 'gram',
-      purity: asset.purity || '',
-      area: asset.area?.toString() || '',
-      area_unit: asset.area_unit || 'sqft',
-      price_per_area: asset.price_per_area?.toString() || '',
-      location: asset.location || { address: '', lat: '', lng: '' },
-      principal_amount: asset.principal_amount?.toString() || '',
-      interest_rate: asset.interest_rate?.toString() || '',
-      tenure_months: asset.tenure_months?.toString() || '',
-      maturity_date: asset.maturity_date || '',
-      expected_return: asset.expected_return?.toString() || '',
-      bank_name: asset.bank_name || '',
-      branch: asset.branch || '',
-      locker_number: asset.locker_number || '',
-      purchase_currency: asset.purchase_currency,
-      purchase_date: asset.purchase_date || '',
-      current_price: asset.current_price?.toString() || '',
-      details: asset.details || {}
-    });
-    setDialogOpen(true);
-  };
-
-  const resetForm = () => {
-    setEditingAsset(null);
-    setFormData({
-      type: 'crypto',
-      name: '',
-      quantity: '',
-      unit_price: '',
-      current_unit_price: '',
-      total_value: '',
-      current_total_value: '',
-      symbol: '',
-      weight: '',
-      weight_unit: 'gram',
-      purity: '',
-      area: '',
-      area_unit: 'sqft',
-      price_per_area: '',
-      current_price_per_area: '',
-      location: { address: '', lat: '', lng: '' },
-      principal_amount: '',
-      interest_rate: '',
-      tenure_months: '',
-      maturity_date: '',
-      expected_return: '',
-      bank_name: '',
-      branch: '',
-      locker_number: '',
-      purchase_currency: 'USD',
-      purchase_date: '',
-      details: {}
-    });
-  };
-
-  const handleDialogClose = () => {
-    setDialogOpen(false);
-    resetForm();
-  };
-
-  const getAssetTypeInfo = (type) => {
-    return ASSET_TYPES.find(t => t.value === type) || ASSET_TYPES[0];
-  };
-
-  // Interlinked field calculations
-  const handleQuantityChange = (value) => {
-    const qty = parseFloat(value) || 0;
-    const price = parseFloat(formData.unit_price) || 0;
-    setFormData({
-      ...formData,
-      quantity: value,
-      total_value: qty && price ? (qty * price).toString() : ''
-    });
-  };
-
-  const handleUnitPriceChange = (value) => {
-    const price = parseFloat(value) || 0;
-    const qty = parseFloat(formData.quantity) || 0;
-    setFormData({
-      ...formData,
-      unit_price: value,
-      total_value: qty && price ? (qty * price).toString() : ''
-    });
-  };
-
-  const handleTotalValueChange = (value) => {
-    const total = parseFloat(value) || 0;
-    const qty = parseFloat(formData.quantity) || 0;
-    setFormData({
-      ...formData,
-      total_value: value,
-      unit_price: qty && total ? (total / qty).toString() : ''
-    });
-  };
-
-  const handleCurrentUnitPriceChange = (value) => {
-    const price = parseFloat(value) || 0;
-    const qty = parseFloat(formData.quantity) || 0;
-    setFormData({
-      ...formData,
-      current_unit_price: value,
-      current_total_value: qty && price ? (qty * price).toString() : ''
-    });
-  };
-
-  const handleCurrentTotalValueChange = (value) => {
-    const total = parseFloat(value) || 0;
-    const qty = parseFloat(formData.quantity) || 0;
-    setFormData({
-      ...formData,
-      current_total_value: value,
-      current_unit_price: qty && total ? (total / qty).toString() : ''
-    });
-  };
-
-  if (loading) {
-    return (
-      <Layout>
-        <div className="flex items-center justify-center h-96">
-          <div className="text-slate-400 text-xl">Loading...</div>
-        </div>
-      </Layout>
-    );
-  }
+  const groupedAssets = groupAssetsByType();
 
   return (
     <Layout>
-      <div className="space-y-8" data-testid="assets-container">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-          <div>
-            <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{fontFamily: 'Space Grotesk, sans-serif', color: theme.text}}>
-              {pageMode === 'assets' ? 'Assets' : 'Portfolios'}
-            </h1>
-            <p style={{color: theme.textTertiary}}>
-              {pageMode === 'assets' 
-                ? 'Track and manage all your financial assets' 
-                : 'Manage your exchange and broker accounts'}
-            </p>
-          </div>
-          
-          <div className="flex items-center gap-3">
-            {/* Page Mode Toggle */}
-            <div className="flex rounded-lg overflow-hidden border" style={{borderColor: theme.border}}>
-              <Button
-                onClick={() => setPageMode('assets')}
-                variant={pageMode === 'assets' ? 'default' : 'ghost'}
-                size="sm"
-                style={{
-                  background: pageMode === 'assets' ? 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)' : 'transparent',
-                  color: pageMode === 'assets' ? '#fff' : '#94a3b8',
-                  borderRadius: 0
-                }}
-              >
-                Individual Assets
-              </Button>
-              <Button
-                onClick={() => setPageMode('portfolios')}
-                variant={pageMode === 'portfolios' ? 'default' : 'ghost'}
-                size="sm"
-                style={{
-                  background: pageMode === 'portfolios' ? 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)' : 'transparent',
-                  color: pageMode === 'portfolios' ? '#fff' : '#94a3b8',
-                  borderRadius: 0
-                }}
-              >
-                📊 Portfolios
-              </Button>
-            </div>
-
-            {pageMode === 'assets' && (
-              <Button
-                onClick={() => setViewMode(viewMode === 'grid' ? 'table' : 'grid')}
-                variant="outline"
-                style={{borderColor: theme.border, color: theme.textTertiary}}
-              >
-                {viewMode === 'grid' ? <List className="w-4 h-4 mr-2" /> : <Grid className="w-4 h-4 mr-2" />}
-                {viewMode === 'grid' ? 'Table View' : 'Grid View'}
-              </Button>
-            )}
-
-            {pageMode === 'assets' ? (
-              <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-              <DialogTrigger asChild>
-                <Button 
-                  data-testid="add-asset-dialog-btn"
-                  onClick={() => { resetForm(); setDialogOpen(true); }}
-                  className="text-white rounded-full"
-                  style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
-                >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Asset
-                </Button>
-              </DialogTrigger>
-            <DialogContent className="text-white max-w-2xl max-h-[90vh] overflow-y-auto" style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
-              <DialogHeader>
-                <DialogTitle className="text-2xl">
-                  {editingAsset ? 'Edit Asset' : 'Add New Asset'}
-                </DialogTitle>
-              </DialogHeader>
+      <div className="min-h-screen" style={{background: ''}}>
+        <div className="space-y-6" style={{padding: '2rem', maxWidth: '95%', margin: '0 auto'}}>
+          {/* Header */}
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-4">
+              <div>
+                <h1 className="text-4xl font-bold mb-2" style={{color: theme.text}}>Assets & Portfolio</h1>
+                <p className="text-lg" style={{color: theme.textSecondary}}>Manage your wealth in one place</p>
+              </div>
               
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <Label htmlFor="asset-type" className="text-slate-300">Asset Type</Label>
-                  <Select 
-                    value={formData.type} 
-                    onValueChange={(value) => setFormData({ ...formData, type: value })}
-                  >
-                    <SelectTrigger id="asset-type" data-testid="asset-type-select" className="bg-slate-800 border-slate-700 text-white">
+              {/* Account Switcher - Demo Mode & Connected Accounts */}
+              {((demoMode && testAccountData) || connectedAccounts.length > 0) && (
+                <div className="ml-6">
+                  <Label className="text-xs mb-2 block" style={{color: theme.textSecondary}}>VIEWING ACCOUNT</Label>
+                  <Select value={activeAccount} onValueChange={setActiveAccount}>
+                    <SelectTrigger className="bg-slate-800 border-slate-700 text-white" style={{width: '320px'}}>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
-                      {ASSET_TYPES.map((type) => (
-                        <SelectItem key={type.value} value={type.value} className="text-white">
-                          {type.icon} {type.label}
+                      {/* Own Account */}
+                      <SelectItem value="own" className="text-white">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 rounded-full" style={{background: 'var(--fuse-primary)'}}></div>
+                          <span>My Portfolio</span>
+                        </div>
+                      </SelectItem>
+                      
+                      {/* Test Account - Demo Mode Only */}
+                      {demoMode && testAccountData && (
+                        <SelectItem value="test_account" className="text-white">
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 rounded-full" style={{background: '#f59e0b'}}></div>
+                            <span>🔍 {testAccountData.account_name} (Demo)</span>
+                          </div>
+                        </SelectItem>
+                      )}
+                      
+                      {/* Connected Accounts Where User is Nominee */}
+                      {connectedAccounts.map((account) => (
+                        <SelectItem key={account.account_id} value={account.account_id} className="text-white">
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 rounded-full" style={{background: '#10b981'}}></div>
+                            <span>👤 {account.account_name} ({account.access_type})</span>
+                          </div>
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
+                  {activeAccount !== 'own' && (
+                    <p className="text-xs mt-1" style={{color: '#10b981'}}>
+                      ✓ Viewing as nominee - Read-only access
+                    </p>
+                  )}
                 </div>
-
-                <div>
-                  <Label htmlFor="asset-name" className="text-slate-300">Asset Name *</Label>
-                  <Input
-                    id="asset-name"
-                    data-testid="asset-name-input"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="e.g., Chase Savings Account, Bitcoin Wallet"
-                    required
-                    className="bg-slate-800 border-slate-700 text-white"
-                  />
-                </div>
-
-                {/* Crypto/Stock - Quantity based */}
-                {(formData.type === 'crypto' || formData.type === 'stock') && (
-                  <>
-                    <div className="grid grid-cols-3 gap-4">
-                      <div>
-                        <Label className="text-slate-300">Quantity *</Label>
-                        <Input type="number" step="any" value={formData.quantity} onChange={(e) => handleQuantityChange(e.target.value)} placeholder="10" required className="bg-slate-800 border-slate-700 text-white" />
-                      </div>
-                      <div>
-                        <Label className="text-slate-300">Purchase Price Per Unit</Label>
-                        <Input type="number" step="any" value={formData.unit_price} onChange={(e) => handleUnitPriceChange(e.target.value)} placeholder="50000" className="bg-slate-800 border-slate-700 text-white" />
-                      </div>
-                      <div>
-                        <Label className="text-slate-300">Total Purchase Value</Label>
-                        <Input type="number" step="any" value={formData.total_value} onChange={(e) => handleTotalValueChange(e.target.value)} placeholder="Auto-calculated" className="bg-slate-800 border-slate-700 text-white" />
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label className="text-slate-300">Current Price Per Unit (optional)</Label>
-                        <Input type="number" step="any" value={formData.current_unit_price} onChange={(e) => handleCurrentUnitPriceChange(e.target.value)} placeholder="Defaults to purchase price" className="bg-slate-800 border-slate-700 text-white" />
-                        <p className="text-xs mt-1" style={{color: theme.textMuted}}>For crypto, we'll try to fetch from API</p>
-                      </div>
-                      <div>
-                        <Label className="text-slate-300">Current Total Value (optional)</Label>
-                        <Input type="number" step="any" value={formData.current_total_value} onChange={(e) => handleCurrentTotalValueChange(e.target.value)} placeholder="Auto-calculated" className="bg-slate-800 border-slate-700 text-white" />
-                      </div>
-                    </div>
-                    {formData.type === 'crypto' && (
-                      <div>
-                        <Label className="text-slate-300">Symbol (e.g., bitcoin, ethereum)</Label>
-                        <Input value={formData.symbol} onChange={(e) => setFormData({ ...formData, symbol: e.target.value })} placeholder="bitcoin" className="bg-slate-800 border-slate-700 text-white" />
-                      </div>
-                    )}
-                  </>
-                )}
-
-                {/* Precious Metals - Weight based */}
-                {formData.type === 'precious_metals' && (
-                  <>
-                    <div className="grid grid-cols-3 gap-4">
-                      <div>
-                        <Label className="text-slate-300">Weight *</Label>
-                        <Input type="number" step="any" value={formData.weight} onChange={(e) => {
-                          const w = e.target.value;
-                          const p = parseFloat(formData.unit_price) || 0;
-                          setFormData({ ...formData, weight: w, total_value: w && p ? (parseFloat(w) * p).toString() : '' });
-                        }} placeholder="100" required className="bg-slate-800 border-slate-700 text-white" />
-                      </div>
-                      <div>
-                        <Label className="text-slate-300">Unit</Label>
-                        <Select value={formData.weight_unit} onValueChange={(value) => setFormData({ ...formData, weight_unit: value })}>
-                          <SelectTrigger className="bg-slate-800 border-slate-700 text-white"><SelectValue /></SelectTrigger>
-                          <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
-                            {WEIGHT_UNITS.map(unit => (<SelectItem key={unit} value={unit} className="text-white">{unit}</SelectItem>))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div>
-                        <Label className="text-slate-300">Purity (e.g., 24K)</Label>
-                        <Input value={formData.purity} onChange={(e) => setFormData({ ...formData, purity: e.target.value })} placeholder="24K" className="bg-slate-800 border-slate-700 text-white" />
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-3 gap-4">
-                      <div>
-                        <Label className="text-slate-300">Purchase Price Per {formData.weight_unit}</Label>
-                        <Input type="number" step="any" value={formData.unit_price} onChange={(e) => {
-                          const p = e.target.value;
-                          const w = parseFloat(formData.weight) || 0;
-                          setFormData({ ...formData, unit_price: p, total_value: w && p ? (w * parseFloat(p)).toString() : '' });
-                        }} placeholder="65" className="bg-slate-800 border-slate-700 text-white" />
-                      </div>
-                      <div>
-                        <Label className="text-slate-300">Current Price Per {formData.weight_unit}</Label>
-                        <Input type="number" step="any" value={formData.current_unit_price} onChange={(e) => {
-                          const cp = e.target.value;
-                          const w = parseFloat(formData.weight) || 0;
-                          setFormData({ ...formData, current_unit_price: cp, current_total_value: w && cp ? (w * parseFloat(cp)).toString() : '' });
-                        }} placeholder="70" className="bg-slate-800 border-slate-700 text-white" />
-                      </div>
-                      <div>
-                        <Label className="text-slate-300">Total Purchase Value</Label>
-                        <Input type="number" step="any" value={formData.total_value} onChange={(e) => {
-                          const tv = e.target.value;
-                          const w = parseFloat(formData.weight) || 0;
-                          setFormData({ ...formData, total_value: tv, unit_price: w && tv ? (parseFloat(tv) / w).toString() : '' });
-                        }} placeholder="Auto-calculated" className="bg-slate-800 border-slate-700 text-white" />
-                      </div>
-                    </div>
-                  </>
-                )}
-
-                {/* Real Estate - Area based */}
-                {formData.type === 'property' && (
-                  <>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label className="text-slate-300">Area *</Label>
-                        <Input type="number" step="any" value={formData.area} onChange={(e) => {
-                          const a = e.target.value;
-                          const p = parseFloat(formData.price_per_area) || 0;
-                          const cp = parseFloat(formData.current_price_per_area) || 0;
-                          setFormData({ 
-                            ...formData, 
-                            area: a,
-                            total_value: a && p ? (parseFloat(a) * p).toString() : '',
-                            current_total_value: a && cp ? (parseFloat(a) * cp).toString() : ''
-                          });
-                        }} placeholder="2000" required className="bg-slate-800 border-slate-700 text-white" />
-                      </div>
-                      <div>
-                        <Label className="text-slate-300">Unit</Label>
-                        <Select value={formData.area_unit} onValueChange={(value) => setFormData({ ...formData, area_unit: value })}>
-                          <SelectTrigger className="bg-slate-800 border-slate-700 text-white"><SelectValue /></SelectTrigger>
-                          <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
-                            {AREA_UNITS.map(unit => (<SelectItem key={unit} value={unit} className="text-white">{unit}</SelectItem>))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-3 gap-4">
-                      <div>
-                        <Label className="text-slate-300">Purchase Price Per {formData.area_unit}</Label>
-                        <Input type="number" step="any" value={formData.price_per_area} onChange={(e) => {
-                          const p = e.target.value;
-                          const a = parseFloat(formData.area) || 0;
-                          setFormData({ ...formData, price_per_area: p, total_value: a && p ? (a * parseFloat(p)).toString() : '' });
-                        }} placeholder="500" className="bg-slate-800 border-slate-700 text-white" />
-                      </div>
-                      <div>
-                        <Label className="text-slate-300">Current Price Per {formData.area_unit}</Label>
-                        <Input type="number" step="any" value={formData.current_price_per_area} onChange={(e) => {
-                          const cp = e.target.value;
-                          const a = parseFloat(formData.area) || 0;
-                          setFormData({ ...formData, current_price_per_area: cp, current_total_value: a && cp ? (a * parseFloat(cp)).toString() : '' });
-                        }} placeholder="550" className="bg-slate-800 border-slate-700 text-white" />
-                      </div>
-                      <div>
-                        <Label className="text-slate-300">Total Purchase Value</Label>
-                        <Input type="number" step="any" value={formData.total_value} onChange={(e) => {
-                          const tv = e.target.value;
-                          const a = parseFloat(formData.area) || 0;
-                          setFormData({ ...formData, total_value: tv, price_per_area: a && tv ? (parseFloat(tv) / a).toString() : '' });
-                        }} placeholder="Auto-calculated" className="bg-slate-800 border-slate-700 text-white" />
-                      </div>
-                    </div>
-                    <div>
-                      <Label className="text-slate-300">Location Address</Label>
-                      <Input value={formData.location.address} onChange={(e) => setFormData({ ...formData, location: { ...formData.location, address: e.target.value } })} placeholder="123 Main St, City" className="bg-slate-800 border-slate-700 text-white" />
-                    </div>
-                  </>
-                )}
-
-                {/* Loan/Credit Card */}
-                {(formData.type === 'loan' || formData.type === 'credit_card') && (
-                  <>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label className="text-slate-300">Principal Amount *</Label>
-                        <Input type="number" step="any" value={formData.principal_amount} onChange={(e) => setFormData({ ...formData, principal_amount: e.target.value })} placeholder="100000" required className="bg-slate-800 border-slate-700 text-white" />
-                      </div>
-                      <div>
-                        <Label className="text-slate-300">Interest Rate (%)</Label>
-                        <Input type="number" step="any" value={formData.interest_rate} onChange={(e) => setFormData({ ...formData, interest_rate: e.target.value })} placeholder="8.5" className="bg-slate-800 border-slate-700 text-white" />
-                      </div>
-                    </div>
-                    <div>
-                      <Label className="text-slate-300">Tenure (months)</Label>
-                      <Input type="number" value={formData.tenure_months} onChange={(e) => setFormData({ ...formData, tenure_months: e.target.value })} placeholder="60" className="bg-slate-800 border-slate-700 text-white" />
-                    </div>
-                  </>
-                )}
-
-                {/* Investment */}
-                {formData.type === 'investment' && (
-                  <>
-                    <div>
-                      <Label className="text-slate-300">Total Investment</Label>
-                      <Input type="number" step="any" value={formData.total_value} onChange={(e) => setFormData({ ...formData, total_value: e.target.value })} placeholder="50000" className="bg-slate-800 border-slate-700 text-white" />
-                    </div>
-                    <div>
-                      <Label className="text-slate-300">Maturity Date</Label>
-                      <Input type="date" value={formData.maturity_date} onChange={(e) => setFormData({ ...formData, maturity_date: e.target.value })} className="bg-slate-800 border-slate-700 text-white" />
-                    </div>
-                  </>
-                )}
-
-                {/* Locker */}
-                {formData.type === 'locker' && (
-                  <>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label className="text-slate-300">Bank Name</Label>
-                        <Input value={formData.bank_name} onChange={(e) => setFormData({ ...formData, bank_name: e.target.value })} placeholder="ABC Bank" className="bg-slate-800 border-slate-700 text-white" />
-                      </div>
-                      <div>
-                        <Label className="text-slate-300">Branch</Label>
-                        <Input value={formData.branch} onChange={(e) => setFormData({ ...formData, branch: e.target.value })} placeholder="Main Street" className="bg-slate-800 border-slate-700 text-white" />
-                      </div>
-                    </div>
-                    <div>
-                      <Label className="text-slate-300">Locker Number</Label>
-                      <Input value={formData.locker_number} onChange={(e) => setFormData({ ...formData, locker_number: e.target.value })} placeholder="L-123" className="bg-slate-800 border-slate-700 text-white" />
-                    </div>
-                  </>
-                )}
-
-                {/* Simple total value for other assets */}
-                {!['crypto', 'stock', 'gold', 'silver', 'property', 'loan', 'credit_card', 'investment', 'locker'].includes(formData.type) && (
-                  <div>
-                    <Label className="text-slate-300">Total Value</Label>
-                    <Input type="number" step="any" value={formData.total_value} onChange={(e) => setFormData({ ...formData, total_value: e.target.value })} placeholder="10000" className="bg-slate-800 border-slate-700 text-white" />
-                  </div>
-                )}
-
-                {/* Common fields */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label className="text-slate-300">Currency</Label>
-                    <Select value={formData.purchase_currency} onValueChange={(value) => setFormData({ ...formData, purchase_currency: value })}>
-                      <SelectTrigger className="bg-slate-800 border-slate-700 text-white"><SelectValue /></SelectTrigger>
-                      <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
-                        {CURRENCIES.map((curr) => (<SelectItem key={curr} value={curr} className="text-white">{curr}</SelectItem>))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Label className="text-slate-300">Purchase Date</Label>
-                    <Input type="date" value={formData.purchase_date} onChange={(e) => setFormData({ ...formData, purchase_date: e.target.value })} className="bg-slate-800 border-slate-700 text-white" />
-                  </div>
-                </div>
-
-                <div>
-                  <Label className="text-slate-300">Current Value (Optional - leave blank to use purchase value)</Label>
-                  <Input 
-                    type="number" 
-                    step="any" 
-                    value={formData.current_price || ''} 
-                    onChange={(e) => setFormData({ ...formData, current_price: e.target.value })} 
-                    placeholder="Manual current value or API will fetch" 
-                    className="bg-slate-800 border-slate-700 text-white" 
-                  />
-                  <p className="text-xs mt-1" style={{color: theme.textTertiary}}>For assets with live prices (crypto, stocks), we'll fetch automatically. For others, enter manually.</p>
-                </div>
-
-                <div className="flex gap-3 pt-4">
-                  <Button 
-                    data-testid="save-asset-btn"
-                    type="submit" 
-                    className="flex-1 text-white"
-                    style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
-                  >
-                    {editingAsset ? 'Update Asset' : 'Add Asset'}
-                  </Button>
-                  <Button 
-                    data-testid="cancel-asset-btn"
-                    type="button" 
-                    variant="outline" 
-                    onClick={handleDialogClose}
-                    style={{borderColor: theme.border, color: theme.textTertiary}}
-                  >
-                    Cancel
-                  </Button>
-                </div>
-              </form>
-            </DialogContent>
-          </Dialog>
-            ) : (
-              <Button 
-                onClick={() => setPortfolioDialogOpen(true)}
-                className="text-white rounded-full"
-                style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Add Portfolio
-              </Button>
-            )}
-          </div>
-        </div>
-
-        {pageMode === 'assets' ? (
-          <>
-        {/* Filters and Sort */}
-        {assets.length > 0 && (
-          <div className="flex flex-wrap gap-4 mb-6">
-            <Select value={filterType} onValueChange={setFilterType}>
-              <SelectTrigger className="w-48" style={{background: theme.backgroundSecondary, borderColor: theme.border, color: theme.text}}>
-                <Filter className="w-4 h-4 mr-2" />
-                <SelectValue placeholder="Filter by type" />
-              </SelectTrigger>
-              <SelectContent style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
-                <SelectItem value="all" style={{color: theme.text}}>All Assets</SelectItem>
-                {ASSET_TYPES.map(type => (
-                  <SelectItem key={type.value} value={type.value} style={{color: theme.text}}>
-                    {type.icon} {type.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger className="w-48" style={{background: theme.backgroundSecondary, borderColor: theme.border, color: theme.text}}>
-                <SelectValue placeholder="Sort by" />
-              </SelectTrigger>
-              <SelectContent style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
-                <SelectItem value="date" style={{color: theme.text}}>Date Added</SelectItem>
-                <SelectItem value="value" style={{color: theme.text}}>Value (High to Low)</SelectItem>
-                <SelectItem value="name" style={{color: theme.text}}>Name (A-Z)</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        )}
-
-        {assets.length === 0 ? (
-          <Card data-testid="no-assets-card" style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
-            <CardContent className="py-16">
-              <div className="text-center">
-                <DollarSign className="w-16 h-16 mx-auto mb-4" style={{color: '#2d1f3d'}} />
-                <h3 className="text-xl font-semibold mb-2" style={{color: theme.text}}>No assets yet</h3>
-                <p className="mb-6" style={{color: theme.textTertiary}}>Start tracking your wealth by adding your first asset</p>
+              )}
+            </div>
+            
+            <div className="flex gap-3 items-center">
+              <div className="flex gap-2">
                 <Button 
-                  data-testid="add-first-asset-empty-btn"
-                  onClick={() => setDialogOpen(true)}
-                  className="text-white rounded-full"
-                  style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
+                  onClick={() => {
+                    setDialogType('asset');
+                    setDialogOpen(true);
+                  }}
+                  className="text-white"
+                  style={{background: '#10b981'}}
                 >
                   <Plus className="w-4 h-4 mr-2" />
-                  Add Your First Asset
+                  Add Asset
+                </Button>
+                <Button 
+                  onClick={() => {
+                    setDialogType('liability');
+                    setDialogOpen(true);
+                  }}
+                  className="text-white"
+                  style={{background: '#ef4444'}}
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Liability
                 </Button>
               </div>
-            </CardContent>
-          </Card>
-        ) : viewMode === 'grid' ? (
-          <>
-            {/* Summary Card */}
-            <Card 
-              data-testid="assets-summary-card"
-              className="mb-6"
-              style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', borderColor: theme.border}}
-            >
-              <CardContent className="py-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-sm font-medium text-white/80 mb-1">Total Portfolio Value</div>
-                    <div className="text-4xl font-bold text-white">
-                      {portfolioTotal !== null ? formatCurrency(portfolioTotal, selectedCurrency, currencyFormat) : 'Calculating...'}
-                    </div>
-                    <div className="flex gap-4 mt-2">
-                      {(() => {
-                        const displayAssets = filteredAssets.length > 0 ? filteredAssets : assets;
-                        const assetCount = displayAssets.filter(a => !getAssetTypeInfo(a.type).isLiability).length;
-                        const liabilityCount = displayAssets.filter(a => getAssetTypeInfo(a.type).isLiability).length;
-                        
-                        return (
-                          <>
-                            {assetCount > 0 && (
-                              <div className="text-sm">
-                                <span style={{color: '#10b981', fontWeight: 600}}>↑ {assetCount} Asset{assetCount !== 1 ? 's' : ''}</span>
-                                <div style={{color: 'rgba(255,255,255,0.6)', fontSize: '0.75rem'}}>
-                                  {assetsTotal !== null ? formatCurrency(assetsTotal, selectedCurrency, currencyFormat) : 'Calculating...'}
-                                </div>
-                              </div>
-                            )}
-                            {liabilityCount > 0 && (
-                              <div className="text-sm">
-                                <span style={{color: '#ef4444', fontWeight: 600}}>↓ {liabilityCount} Debt{liabilityCount !== 1 ? 's' : ''}</span>
-                                <div style={{color: 'rgba(255,255,255,0.6)', fontSize: '0.75rem'}}>
-                                  {liabilitiesTotal !== null ? formatCurrency(liabilitiesTotal, selectedCurrency, currencyFormat) : 'Calculating...'}
-                                </div>
-                              </div>
-                            )}
-                          </>
-                        );
-                      })()}
-                    </div>
-                  </div>
-                  <div className="text-6xl text-white/30">
-                    <DollarSign className="w-16 h-16" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {(filteredAssets.length > 0 ? filteredAssets : assets).map((asset) => {
-              const typeInfo = getAssetTypeInfo(asset.type);
-              const isLiability = typeInfo.isLiability;
-              
-              return (
-                <Card 
-                  key={asset.id} 
-                  data-testid={`asset-card-${asset.id}`}
-                  className="transition-all"
-                  style={{
-                    background: theme.cardBg,
-                    borderColor: isLiability ? theme.error : theme.cardBorder,
-                    borderWidth: isLiability ? '2px' : '1px',
-                    boxShadow: theme.cardShadow
-                  }}
-                >
-                  <CardHeader>
-                    <div className="flex justify-between items-start">
-                      <div className="flex items-center gap-3">
-                        <div className="text-3xl">{typeInfo.icon}</div>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <CardTitle className="text-lg" data-testid={`asset-name-${asset.id}`} style={{color: theme.text}}>
-                              {asset.name}
-                            </CardTitle>
-                            {isLiability && (
-                              <span 
-                                className="text-xs px-2 py-0.5 rounded-full font-semibold"
-                                style={{background: '#dc2626', color: '#fff'}}
-                              >
-                                DEBT
-                              </span>
-                            )}
-                          </div>
-                          <p className="text-sm" style={{color: theme.textTertiary}}>{typeInfo.label}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    {(() => {
-                      const purchaseValue = calculateAssetValue(asset, false);
-                      const currentValue = calculateAssetValue(asset, true) || purchaseValue;
-                      const gain = currentValue - purchaseValue;
-                      const gainPercent = purchaseValue ? ((gain / purchaseValue) * 100).toFixed(2) : 0;
-                      
-                      return purchaseValue ? (
-                        <div className="mb-4">
-                          <div className="text-sm mb-1" style={{color: theme.textTertiary}}>
-                            {isLiability ? 'Outstanding Balance' : 'Current Value'}
-                          </div>
-                          <div className="text-2xl font-bold" data-testid={`asset-value-${asset.id}`} style={{color: isLiability ? '#ef4444' : '#ec4899'}}>
-                            {isLiability ? '-' : ''}{asset.purchase_currency} {currentValue.toLocaleString()}
-                          </div>
-                          {!isLiability && gain !== 0 && (
-                            <div className="text-sm mt-1" style={{color: gain > 0 ? '#22c55e' : '#ef4444'}}>
-                              {gain > 0 ? '↑' : '↓'} {gain > 0 ? '+' : ''}{gain.toLocaleString()} ({gainPercent}%)
-                            </div>
-                          )}
-                        </div>
-                      ) : null;
-                    })()}
-                    
-                    {asset.quantity && (
-                      <div className="text-sm mb-2" style={{color: theme.textTertiary}}>
-                        Quantity: <span style={{color: theme.text}}>{asset.quantity}</span>
-                      </div>
-                    )}
-                    
-                    {asset.weight && (
-                      <div className="text-sm mb-2" style={{color: theme.textTertiary}}>
-                        Weight: <span style={{color: theme.text}}>{asset.weight} {asset.weight_unit}</span>
-                      </div>
-                    )}
-                    
-                    {asset.area && (
-                      <div className="text-sm mb-2" style={{color: theme.textTertiary}}>
-                        Area: <span style={{color: theme.text}}>{asset.area} {asset.area_unit}</span>
-                      </div>
-                    )}
-                    
-                    {asset.location?.address && (
-                      <div className="text-sm mb-2" style={{color: theme.textTertiary}}>
-                        📍 {asset.location.address}
-                      </div>
-                    )}
-                    
-                    {asset.maturity_date && (
-                      <div className="text-sm mb-2" style={{color: theme.textTertiary}}>
-                        Maturity: <span style={{color: theme.text}}>{new Date(asset.maturity_date).toLocaleDateString()}</span>
-                      </div>
-                    )}
-                    
-                    {asset.purchase_date && (
-                      <div className="text-sm mb-4" style={{color: theme.textTertiary}}>
-                        Date: {new Date(asset.purchase_date).toLocaleDateString()}
-                      </div>
-                    )}
-
-                    <div className="flex gap-2 pt-4" style={{borderTop: '1px solid #2d1f3d'}}>
-                      <Button 
-                        data-testid={`edit-asset-${asset.id}`}
-                        onClick={() => handleEdit(asset)}
-                        variant="outline"
-                        size="sm"
-                        className="flex-1"
-                        style={{borderColor: theme.border, color: theme.textTertiary}}
-                      >
-                        <Edit className="w-4 h-4 mr-2" />
-                        Edit
-                      </Button>
-                      <Button 
-                        data-testid={`delete-asset-${asset.id}`}
-                        onClick={() => handleDelete(asset.id)}
-                        variant="outline"
-                        size="sm"
-                        className="flex-1"
-                        style={{borderColor: '#ef4444', color: '#ef4444'}}
-                      >
-                        <Trash2 className="w-4 h-4 mr-2" />
-                        Delete
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
+            </div>
           </div>
-          </>
-        ) : (
-          <div>
-            <Card style={{background: theme.cardBg, borderColor: theme.cardBorder, boxShadow: theme.cardShadow}}>
-              <CardContent className="p-0">
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead style={{background: theme.backgroundSecondary, borderBottom: `1px solid ${theme.border}`}}>
+
+        {/* Jump Pills - Section Shortcuts with ALL filter */}
+        <div className="flex flex-wrap gap-2">
+          {/* ALL pill */}
+          <button
+            onClick={() => setActiveFilter('all')}
+            className="px-4 py-2 rounded-full text-sm font-semibold transition-all hover:scale-105"
+            style={{
+              background: activeFilter === 'all' 
+                ? (colorTheme === 'light' ? '#ca8a04' : '#eab308')
+                : (colorTheme === 'light' ? 'rgba(202, 138, 4, 0.15)' : 'rgba(234, 179, 8, 0.15)'),
+              border: `1.5px solid ${activeFilter === 'all' 
+                ? (colorTheme === 'light' ? '#ca8a04' : '#eab308')
+                : (colorTheme === 'light' ? 'rgba(202, 138, 4, 0.4)' : 'rgba(234, 179, 8, 0.4)')}`,
+              color: activeFilter === 'all' 
+                ? '#ffffff'
+                : (colorTheme === 'light' ? '#ca8a04' : '#eab308'),
+              fontWeight: activeFilter === 'all' ? 700 : 600
+            }}
+          >
+            ALL
+            <span className="ml-2 px-2 py-0.5 rounded-full text-xs" style={{
+              background: activeFilter === 'all' 
+                ? 'rgba(255, 255, 255, 0.25)' 
+                : (colorTheme === 'light' ? 'rgba(202, 138, 4, 0.2)' : 'rgba(234, 179, 8, 0.2)')
+            }}>
+              {assets.length}
+            </span>
+          </button>
+          
+          {Object.keys(ASSET_GROUPS).map(groupKey => {
+            const group = ASSET_GROUPS[groupKey];
+            const groupAssets = groupedAssets[groupKey] || [];
+            if (groupAssets.length === 0) return null;
+            
+            const pillColor = colorTheme === 'light' ? group.colorLight : group.color;
+            
+            return (
+              <button
+                key={groupKey}
+                onClick={() => setActiveFilter(groupKey)}
+                className="px-4 py-2 rounded-full text-sm font-semibold transition-all hover:scale-105"
+                style={{
+                  background: activeFilter === groupKey 
+                    ? pillColor
+                    : (colorTheme === 'light' ? `${pillColor}20` : `${pillColor}15`),
+                  border: `1.5px solid ${activeFilter === groupKey 
+                    ? pillColor
+                    : (colorTheme === 'light' ? `${pillColor}50` : `${pillColor}40`)}`,
+                  color: activeFilter === groupKey 
+                    ? '#ffffff'
+                    : pillColor,
+                  fontWeight: activeFilter === groupKey ? 700 : 600
+                }}
+              >
+                <span className="mr-2">{group.icon}</span>
+                {group.label}
+                <span className="ml-2 px-2 py-0.5 rounded-full text-xs" style={{
+                  background: activeFilter === groupKey 
+                    ? 'rgba(255, 255, 255, 0.25)' 
+                    : (colorTheme === 'light' ? `${pillColor}25` : `${pillColor}20`)
+                }}>
+                  {groupAssets.length}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Main Layout: Full Width Table */}
+        <div className="w-full relative">
+          {/* Converting Overlay */}
+          {converting && (
+            <div className="absolute inset-0 bg-black bg-opacity-50 z-20 flex items-center justify-center rounded-lg">
+              <div className="p-4 rounded-lg" style={{background: theme.cardBg, border: '2px solid #E8C27C'}}>
+                <div className="flex items-center gap-3">
+                  <div className="w-6 h-6 border-2 border-t-transparent rounded-full animate-spin" style={{borderColor: '#E8C27C', borderTopColor: 'transparent'}}></div>
+                  <span style={{color: '#E8C27C', fontWeight: 600}}>Converting to {selectedCurrency}...</span>
+                </div>
+              </div>
+            </div>
+          )}
+          
+          <Card style={{background: theme.cardBg, borderColor: theme.border, padding: 0}}>
+            <CardContent className="p-0">
+              <div style={{maxHeight: 'calc(100vh - 280px)', overflowY: 'auto'}}>
+                <table className="w-full" style={{fontSize: '0.813rem'}}>
+                    <thead style={{background: theme.backgroundTertiary, borderBottom: `2px solid ${theme.border}`, position: 'sticky', top: 0, zIndex: 10}}>
                       <tr>
-                        <th className="text-left p-4" style={{color: theme.textTertiary, fontWeight: 600}}>Asset</th>
-                        <th className="text-left p-4" style={{color: theme.textTertiary, fontWeight: 600}}>Type</th>
-                        <th className="text-right p-4" style={{color: theme.textTertiary, fontWeight: 600}}>Quantity</th>
-                        <th className="text-right p-4" style={{color: theme.textTertiary, fontWeight: 600}}>Original Value</th>
-                        <th className="text-right p-4" style={{color: theme.textTertiary, fontWeight: 600}}>Purchase ({selectedCurrency})</th>
-                        <th className="text-right p-4" style={{color: theme.textTertiary, fontWeight: 600}}>Current ({selectedCurrency})</th>
-                        <th className="text-right p-4" style={{color: theme.textTertiary, fontWeight: 600}}>Gain/Loss</th>
-                        <th className="text-right p-4" style={{color: theme.textTertiary, fontWeight: 600}}>Actions</th>
+                        <th className="text-left p-3" style={{color: theme.textSecondary, fontWeight: 600, width: '30%'}}>Asset</th>
+                        <th className="text-right p-3" style={{color: theme.textSecondary, fontWeight: 600}}>Purchase (Original)</th>
+                        <th className="text-right p-3" style={{color: theme.textSecondary, fontWeight: 600}}>Purchase ({selectedCurrency})</th>
+                        <th className="text-right p-3" style={{color: theme.textSecondary, fontWeight: 600}}>Current ({selectedCurrency})</th>
+                        <th className="text-right p-3" style={{color: theme.textSecondary, fontWeight: 600}}>Gain/Loss</th>
+                        <th className="text-center p-3" style={{color: theme.textSecondary, fontWeight: 600}}>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {(filteredAssets.length > 0 ? filteredAssets : assets).map((asset) => {
-                        const typeInfo = getAssetTypeInfo(asset.type);
-                        const purchaseValueOriginal = calculateAssetValue(asset, false);
-                        const currentValueOriginal = calculateAssetValue(asset, true) || purchaseValueOriginal;
-                        
-                        return (
-                          <AssetTableRow 
-                            key={asset.id}
-                            asset={asset}
-                            typeInfo={typeInfo}
-                            purchaseValueOriginal={purchaseValueOriginal}
-                            currentValueOriginal={currentValueOriginal}
-                            selectedCurrency={selectedCurrency}
-                            currencyFormat={currencyFormat}
-                            getConversionRate={getConversionRate}
-                            handleEdit={handleEdit}
-                            handleDelete={handleDelete}
-                            handleCalculateLoan={handleCalculateLoan}
-                            theme={theme}
-                          />
-                        );
-                      })}
-                    </tbody>
-                    <tfoot style={{background: theme.backgroundTertiary, borderTop: `2px solid ${theme.border}`}}>
-                      <tr>
-                        <td colSpan="3" className="p-4" style={{color: theme.text, fontWeight: 600, fontSize: '1.1rem'}}>
-                          TOTAL
-                        </td>
-                        <td className="p-4 text-right" style={{color: theme.textTertiary, fontWeight: 600}}>
-                          {/* Original Value column - skip */}
-                        </td>
-                        <td className="p-4 text-right" style={{color: theme.textSecondary, fontWeight: 600, fontSize: '1rem'}}>
-                          {purchaseTotal !== null ? formatCurrency(purchaseTotal, selectedCurrency, currencyFormat) : 'Calculating...'}
-                        </td>
-                        <td className="p-4 text-right" style={{color: theme.primary, fontWeight: 700, fontSize: '1.2rem'}}>
-                          {currentTotal !== null ? formatCurrency(currentTotal, selectedCurrency, currencyFormat) : 'Calculating...'}
-                        </td>
-                        <td className="p-4 text-right" style={{fontWeight: 600, fontSize: '1rem'}}>
-                          {(purchaseTotal !== null && currentTotal !== null) ? (
-                            <div style={{color: (currentTotal - purchaseTotal) > 0 ? '#22c55e' : '#ef4444'}}>
-                              {(currentTotal - purchaseTotal) > 0 ? '+' : ''}
-                              {formatCurrency(currentTotal - purchaseTotal, selectedCurrency, currencyFormat)}
-                            </div>
-                          ) : null}
-                        </td>
-                        <td></td>
-                      </tr>
-                    </tfoot>
+                    {Object.keys(ASSET_GROUPS).map(groupKey => {
+                      const group = ASSET_GROUPS[groupKey];
+                      const groupAssets = groupedAssets[groupKey] || [];
+                      
+                      // Skip if no assets or filtered out
+                      if (groupAssets.length === 0) return null;
+                      if (activeFilter !== 'all' && activeFilter !== groupKey) return null;
+                      
+                      const isExpanded = expandedGroups.includes(groupKey);
+                      const isLiability = groupKey === 'liabilities';
+                      
+                      // Calculate group total
+                      const groupTotal = groupAssets.reduce((sum, asset) => {
+                        return sum + calculateAssetValue(asset, true);
+                      }, 0);
+                      
+                      const groupColor = colorTheme === 'light' ? group.colorLight : group.color;
+                      
+                      return (
+                        <>
+                          {/* Group Header Row */}
+                          <tr 
+                            id={`group-${groupKey}`}
+                            key={`group-${groupKey}`}
+                            onClick={() => toggleGroup(groupKey)}
+                            className="cursor-pointer transition-all"
+                            style={{
+                              background: colorTheme === 'light'
+                                ? (isLiability ? 'rgba(220, 38, 38, 0.08)' : `${groupColor}15`)
+                                : (isLiability ? 'rgba(239, 68, 68, 0.12)' : `${groupColor}15`),
+                              borderTop: `2px solid ${groupColor}${colorTheme === 'light' ? '50' : '40'}`,
+                              borderBottom: `1px solid ${groupColor}${colorTheme === 'light' ? '40' : '30'}`
+                            }}
+                          >
+                            <td colSpan="2" className="p-3">
+                              <div className="flex items-center gap-3">
+                                {isExpanded ? 
+                                  <ChevronDown className="w-4 h-4" style={{color: groupColor}} /> : 
+                                  <ChevronRight className="w-4 h-4" style={{color: groupColor}} />
+                                }
+                                <span className="text-xl">{group.icon}</span>
+                                <span className="font-bold" style={{color: theme.text, fontSize: '0.938rem'}}>
+                                  {group.label}
+                                </span>
+                                <span className="text-xs px-2 py-1 rounded-full font-semibold" style={{
+                                  background: colorTheme === 'light' ? `${groupColor}20` : `${groupColor}20`, 
+                                  color: groupColor
+                                }}>
+                                  {groupAssets.length}
+                                </span>
+                              </div>
+                            </td>
+                            <td className="p-3 text-right" colSpan="2">
+                              <span className="font-bold" style={{color: groupColor, fontSize: '0.938rem'}}>
+                                {isLiability ? '-' : ''}{formatCurrency(groupTotal, selectedCurrency, currencyFormat)}
+                              </span>
+                            </td>
+                            <td colSpan="2"></td>
+                          </tr>
+                          
+                          {/* Group Assets Rows */}
+                          {isExpanded && groupAssets.map((asset) => {
+                            const purchaseValue = calculateAssetValue(asset, false);
+                            const currentValue = calculateAssetValue(asset, true) || purchaseValue;
+                            const gain = currentValue - purchaseValue;
+                            const gainPercent = purchaseValue ? ((gain / purchaseValue) * 100).toFixed(2) : 0;
+                            
+                            return (
+                              <tr 
+                                key={asset.id}
+                                onClick={() => {
+                                  setSelectedAsset(asset);
+                                  setEditModalOpen(true);
+                                }}
+                                className="cursor-pointer transition-all"
+                                style={{
+                                  background: 'transparent',
+                                  borderBottom: '1px solid rgba(255,255,255,0.03)',
+                                  borderLeft: '3px solid transparent'
+                                }}
+                              >
+                                {/* Asset Name - Clickable */}
+                                <td className="p-3" onClick={() => {
+                                  setSelectedAsset(asset);
+                                  setEditModalOpen(true);
+                                }}>
+                                  <div className="flex items-center gap-2">
+                                    <span style={{color: theme.text, fontWeight: 500}}>{asset.name}</span>
+                                    {asset.symbol && (
+                                      <span className="text-xs px-2 py-0.5 rounded" style={{background: theme.backgroundSecondary, color: theme.textSecondary}}>
+                                        {asset.symbol}
+                                      </span>
+                                    )}
+                                  </div>
+                                </td>
+                                
+                                {/* Purchase Value - Original Currency */}
+                                <td className="p-3 text-right" onClick={() => setSelectedAsset(asset)} style={{color: theme.textSecondary, fontSize: '0.813rem'}}>
+                                  {asset.purchase_currency} {purchaseValue.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})}
+                                </td>
+                                
+                                {/* Purchase Value - Converted Currency */}
+                                <td className="p-3 text-right" onClick={() => setSelectedAsset(asset)} style={{color: theme.textSecondary, fontSize: '0.813rem', fontWeight: 500}}>
+                                  {formatCurrency(purchaseValue, selectedCurrency, currencyFormat)}
+                                </td>
+                                
+                                {/* Current Value - Converted Currency */}
+                                <td className="p-3 text-right" onClick={() => {
+                                  setSelectedAsset(asset);
+                                  setEditModalOpen(true);
+                                }}>
+                                  <span style={{
+                                    color: isLiability 
+                                      ? (colorTheme === 'light' ? '#dc2626' : '#ef4444')
+                                      : (colorTheme === 'light' ? '#0891b2' : '#06b6d4'), 
+                                    fontWeight: 600
+                                  }}>
+                                    {formatCurrency(currentValue, selectedCurrency, currencyFormat)}
+                                  </span>
+                                </td>
+                                
+                                {/* Gain/Loss */}
+                                <td className="p-3 text-right" onClick={() => setSelectedAsset(asset)}>
+                                  {!isLiability && gain !== 0 && (
+                                    <div>
+                                      <div style={{
+                                        color: gain > 0 
+                                          ? (colorTheme === 'light' ? '#059669' : '#10b981')
+                                          : (colorTheme === 'light' ? '#dc2626' : '#ef4444'), 
+                                        fontWeight: 600, 
+                                        fontSize: '0.813rem'
+                                      }}>
+                                        {gain > 0 ? '↑' : '↓'} {formatCurrency(Math.abs(gain), selectedCurrency, currencyFormat)}
+                                      </div>
+                                      <div className="text-xs" style={{
+                                        color: gain > 0 
+                                          ? (colorTheme === 'light' ? '#059669' : '#10b981')
+                                          : (colorTheme === 'light' ? '#dc2626' : '#ef4444')
+                                      }}>
+                                        ({gainPercent}%)
+                                      </div>
+                                    </div>
+                                  )}
+                                </td>
+                                
+                                {/* Actions - Stop propagation */}
+                                <td className="p-3 text-center" onClick={(e) => e.stopPropagation()}>
+                                  {(activeAccount === 'test_account' || activeAccount !== 'own') ? (
+                                    // Read-only mode for test account or connected accounts
+                                    <div className="text-xs px-2 py-1 rounded" style={{background: 'rgba(148, 163, 184, 0.1)', color: theme.textSecondary}}>
+                                      Read-Only
+                                    </div>
+                                  ) : (
+                                    <div className="flex justify-center gap-1">
+                                      <Button 
+                                        size="sm" 
+                                        variant="ghost" 
+                                        onClick={() => {
+                                          setSelectedAsset(asset);
+                                          setEditModalOpen(true);
+                                        }} 
+                                        style={{
+                                          height: '28px', 
+                                          padding: '0 0.5rem',
+                                          background: 'rgba(232, 194, 124, 0.1)',
+                                          border: '1px solid rgba(232, 194, 124, 0.3)',
+                                          color: '#E8C27C'
+                                        }}
+                                      >
+                                        <Edit2 className="w-3 h-3" />
+                                      </Button>
+                                      <Button 
+                                        size="sm" 
+                                        variant="ghost" 
+                                        onClick={() => handleDeleteAsset(asset.id)} 
+                                        style={{
+                                          color: '#FF5C73', 
+                                          height: '28px', 
+                                          padding: '0 0.5rem',
+                                          background: 'rgba(255, 92, 115, 0.1)',
+                                          border: '1px solid rgba(255, 92, 115, 0.3)'
+                                        }}
+                                      >
+                                        <Trash2 className="w-3 h-3" />
+                                      </Button>
+                                    </div>
+                                  )}
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </>
+                      );
+                    })}
+                  </tbody>
                   </table>
                 </div>
               </CardContent>
             </Card>
           </div>
-        )}
-        </>
-        ) : (
-          /* PORTFOLIOS VIEW */
-          <div>
-            {portfolios.length === 0 ? (
-              <Card style={{background: theme.cardBg, borderColor: theme.cardBorder, boxShadow: theme.cardShadow}}>
-                <CardContent className="py-16">
-                  <div className="text-center">
-                    <div className="text-6xl mb-4">📊</div>
-                    <h3 className="text-xl font-semibold mb-2" style={{color: theme.text}}>No Portfolios Yet</h3>
-                    <p className="mb-6" style={{color: theme.textTertiary}}>
-                      Create a portfolio to track holdings across exchanges and brokers
-                    </p>
-                    <Button 
-                      onClick={() => setPortfolioDialogOpen(true)}
-                      className="text-white rounded-full"
-                      style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
-                    >
-                      <Plus className="w-4 h-4 mr-2" />
-                      Create Your First Portfolio
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {portfolios.map((portfolio) => (
-                  <Card 
-                    key={portfolio.id}
-                    className="cursor-pointer hover:border-purple-500 transition-all"
-                    style={{background: theme.backgroundSecondary, borderColor: theme.border}}
-                    onClick={() => fetchPortfolioDetails(portfolio.id)}
-                  >
-                    <CardHeader>
-                      <CardTitle className="flex items-center justify-between" style={{color: theme.text}}>
-                        <div className="flex items-center gap-2">
-                          <span className="text-2xl">📊</span>
-                          <span>{portfolio.name}</span>
-                        </div>
-                        <span 
-                          className="text-xs px-2 py-1 rounded-full"
-                          style={{background: '#2d0e3e', color: '#a855f7'}}
-                        >
-                          {portfolio.provider_name}
-                        </span>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-2">
-                        <div className="flex justify-between items-center">
-                          <span style={{color: theme.textTertiary, fontSize: '0.875rem'}}>Holdings</span>
-                          <span style={{color: theme.text, fontWeight: 600}}>
-                            {portfolio.holdings?.length || 0}
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span style={{color: theme.textTertiary, fontSize: '0.875rem'}}>Total Value</span>
-                          <span style={{color: '#ec4899', fontWeight: 700, fontSize: '1.125rem'}}>
-                            {formatCurrency(portfolio.total_value || 0, portfolio.purchase_currency, currencyFormat)}
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center text-xs">
-                          <span style={{color: theme.textMuted}}>Type</span>
-                          <span style={{color: theme.textTertiary}}>
-                            {portfolio.provider_type.replace('_', ' ')}
-                          </span>
-                        </div>
-                      </div>
-                      <Button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDeletePortfolio(portfolio.id);
-                        }}
-                        variant="outline"
-                        size="sm"
-                        className="w-full mt-4"
-                        style={{borderColor: '#ef4444', color: '#ef4444'}}
+
+        {/* Comprehensive Edit Asset Modal */}
+        {selectedAsset && editModalOpen && (
+          <Dialog open={editModalOpen} onOpenChange={setEditModalOpen}>
+            <DialogContent className="max-w-4xl" style={{background: theme.cardBg, borderColor: theme.border, maxHeight: '90vh', overflowY: 'auto'}}>
+              <DialogHeader>
+                <DialogTitle style={{color: theme.text, fontSize: '1.5rem'}}>
+                  Edit Asset: {selectedAsset.name}
+                </DialogTitle>
+              </DialogHeader>
+              
+              <div className="pt-4">
+                <p className="text-sm mb-4" style={{color: theme.textSecondary}}>
+                  Update asset details below. Changes are saved immediately.
+                </p>
+                
+                {/* Full edit form will go here - using AddAssetForm component */}
+                <AddAssetForm 
+                  editingAsset={selectedAsset}
+                  onSuccess={() => {
+                    setEditModalOpen(false);
+                    setSelectedAsset(null);
+                    fetchAssets();
+                  }}
+                  onCancel={() => {
+                    setEditModalOpen(false);
+                    setSelectedAsset(null);
+                  }}
+                />
+                
+                {/* Loan Calculator for Loans/Credit Cards */}
+                {(selectedAsset.type === 'loan' || selectedAsset.type === 'credit_card') && (
+                  <div className="mt-6 pt-6" style={{borderTop: '2px solid var(--fuse-border)'}}>
+                    <h3 className="text-lg font-bold mb-3 flex items-center gap-2" style={{color: theme.text}}>
+                      <Calculator className="w-5 h-5" style={{color: '#E8C27C'}} />
+                      Loan Repayment Calculator
+                    </h3>
+                    
+                    {!loanCalcData ? (
+                      <Button 
+                        onClick={() => calculateLoanDetails(selectedAsset)}
+                        className="w-full mb-4"
+                        style={{background: '#E8C27C', color: 'var(--fuse-surface)'}}
                       >
-                        <Trash2 className="w-4 h-4 mr-2" />
-                        Delete
+                        Calculate Payment Schedule
                       </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
-
-            {/* Portfolio Details Dialog */}
-            <Dialog open={selectedPortfolio !== null} onOpenChange={(open) => !open && setSelectedPortfolio(null)}>
-              <DialogContent className="text-white max-w-4xl max-h-[90vh] overflow-y-auto" style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
-                <DialogHeader>
-                  <DialogTitle className="text-2xl flex items-center gap-2">
-                    <span>📊</span>
-                    {selectedPortfolio?.name}
-                    <span 
-                      className="text-sm px-3 py-1 rounded-full"
-                      style={{background: '#2d0e3e', color: '#a855f7'}}
-                    >
-                      {selectedPortfolio?.provider_name}
-                    </span>
-                  </DialogTitle>
-                </DialogHeader>
-
-                <div className="space-y-6">
-                  {/* Portfolio Summary */}
-                  <Card style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)', border: 'none'}}>
-                    <CardContent className="py-6">
-                      <div className="grid grid-cols-2 gap-4 text-white">
-                        <div>
-                          <div className="text-sm opacity-80">Total Holdings</div>
-                          <div className="text-3xl font-bold">
-                            {selectedPortfolio?.holdings?.length || 0}
-                          </div>
-                        </div>
-                        <div>
-                          <div className="text-sm opacity-80">Total Value</div>
-                          <div className="text-3xl font-bold">
-                            {formatCurrency(
-                              selectedPortfolio?.total_value || 0,
-                              selectedPortfolio?.purchase_currency || 'USD',
-                              currencyFormat
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Add Holding Button */}
-                  <Button
-                    onClick={() => {
-                      setEditingHolding(null);
-                      setHoldingForm({
-                        symbol: '',
-                        name: '',
-                        quantity: '',
-                        purchase_price: '',
-                        purchase_date: '',
-                        purchase_currency: selectedPortfolio?.purchase_currency || 'USD',
-                        current_price: '',
-                        asset_type: selectedPortfolio?.provider_type === 'crypto_exchange' ? 'crypto' : 'stock'
-                      });
-                      setHoldingDialogOpen(true);
-                    }}
-                    className="w-full text-white"
-                    style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
-                  >
-                    <Plus className="w-4 h-4 mr-2" />
-                    Add Holding
-                  </Button>
-
-                  {/* Holdings List */}
-                  <div className="space-y-3">
-                    <h3 className="text-lg font-semibold" style={{color: theme.text}}>Holdings</h3>
-                    {selectedPortfolio?.holdings && selectedPortfolio.holdings.length > 0 ? (
-                      selectedPortfolio.holdings.map((holding, index) => {
-                        const purchaseValue = holding.quantity * holding.purchase_price;
-                        const currentValue = holding.current_price 
-                          ? holding.quantity * holding.current_price 
-                          : purchaseValue;
-                        const gain = currentValue - purchaseValue;
-                        const gainPercent = purchaseValue ? ((gain / purchaseValue) * 100).toFixed(2) : 0;
-
-                        return (
-                          <Card 
-                            key={index}
-                            style={{background: '#131835', borderColor: '#1e293b'}}
-                          >
-                            <CardContent className="py-4">
-                              <div className="flex justify-between items-start">
-                                <div className="flex-1">
-                                  <div className="flex items-center gap-2 mb-2">
-                                    <span style={{color: theme.text, fontWeight: 600, fontSize: '1.125rem'}}>
-                                      {holding.name}
-                                    </span>
-                                    <span 
-                                      className="text-xs px-2 py-0.5 rounded"
-                                      style={{background: '#2d1f3d', color: theme.textTertiary}}
-                                    >
-                                      {holding.symbol}
-                                    </span>
-                                    <span 
-                                      className="text-xs px-2 py-0.5 rounded"
-                                      style={{background: '#2d0e3e', color: '#a855f7'}}
-                                    >
-                                      {holding.asset_type}
-                                    </span>
-                                  </div>
-                                  
-                                  <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
-                                    <div>
-                                      <span style={{color: theme.textMuted}}>Quantity: </span>
-                                      <span style={{color: theme.textSecondary}}>{holding.quantity}</span>
-                                    </div>
-                                    <div>
-                                      <span style={{color: theme.textMuted}}>Purchase Price: </span>
-                                      <span style={{color: theme.textSecondary}}>
-                                        {formatCurrency(holding.purchase_price, holding.purchase_currency, currencyFormat)}
-                                      </span>
-                                    </div>
-                                    <div>
-                                      <span style={{color: theme.textMuted}}>Current Price: </span>
-                                      <span style={{color: theme.textSecondary}}>
-                                        {holding.current_price 
-                                          ? formatCurrency(holding.current_price, holding.purchase_currency, currencyFormat)
-                                          : 'N/A'}
-                                      </span>
-                                    </div>
-                                    <div>
-                                      <span style={{color: theme.textMuted}}>Current Value: </span>
-                                      <span style={{color: '#ec4899', fontWeight: 600}}>
-                                        {formatCurrency(currentValue, holding.purchase_currency, currencyFormat)}
-                                      </span>
-                                    </div>
-                                    <div>
-                                      <span style={{color: theme.textMuted}}>Gain/Loss: </span>
-                                      <span style={{color: gain >= 0 ? '#10b981' : '#ef4444', fontWeight: 600}}>
-                                        {gain >= 0 ? '+' : ''}{formatCurrency(gain, holding.purchase_currency, currencyFormat)}
-                                        {' '}({gain >= 0 ? '+' : ''}{gainPercent}%)
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div className="flex gap-2 ml-4">
-                                  <Button
-                                    onClick={() => {
-                                      setEditingHolding(holding);
-                                      setHoldingForm({
-                                        symbol: holding.symbol,
-                                        name: holding.name,
-                                        quantity: holding.quantity.toString(),
-                                        purchase_price: holding.purchase_price.toString(),
-                                        purchase_date: holding.purchase_date,
-                                        purchase_currency: holding.purchase_currency,
-                                        current_price: holding.current_price?.toString() || '',
-                                        asset_type: holding.asset_type
-                                      });
-                                      setHoldingDialogOpen(true);
-                                    }}
-                                    size="sm"
-                                    variant="outline"
-                                    style={{borderColor: theme.border, color: '#a855f7'}}
-                                  >
-                                    <Edit className="w-4 h-4" />
-                                  </Button>
-                                  <Button
-                                    onClick={() => handleDeleteHolding(selectedPortfolio.id, holding.symbol)}
-                                    size="sm"
-                                    variant="outline"
-                                    style={{borderColor: '#ef4444', color: '#ef4444'}}
-                                  >
-                                    <Trash2 className="w-4 h-4" />
-                                  </Button>
-                                </div>
-                              </div>
-                            </CardContent>
-                          </Card>
-                        );
-                      })
                     ) : (
-                      <Card style={{background: '#131835', borderColor: '#1e293b'}}>
-                        <CardContent className="py-8 text-center">
-                          <p style={{color: theme.textMuted}}>No holdings yet. Add your first holding above.</p>
-                        </CardContent>
-                      </Card>
+                      <div className="space-y-4">
+                        {/* Interactive Sliders */}
+                        <div className="grid grid-cols-2 gap-4 p-4 rounded-lg" style={{background: 'rgba(232, 194, 124, 0.05)', border: '1px solid rgba(232, 194, 124, 0.2)'}}>
+                          <div>
+                            <Label className="text-slate-300 text-sm mb-2 flex justify-between">
+                              <span>Interest Rate (%)</span>
+                              <span className="font-bold" style={{color: '#E8C27C'}}>{loanParams.interestRate}%</span>
+                            </Label>
+                            <input
+                              type="range"
+                              min="0"
+                              max="30"
+                              step="0.5"
+                              value={loanParams.interestRate}
+                              onChange={(e) => {
+                                const newRate = parseFloat(e.target.value);
+                                setLoanParams({...loanParams, interestRate: newRate});
+                                recalculateLoan(selectedAsset.principal_amount, newRate, loanParams.tenure);
+                              }}
+                              className="w-full"
+                              style={{accentColor: '#E8C27C'}}
+                            />
+                            <p className="text-xs mt-1" style={{color: '#71717a'}}>Adjust to see impact</p>
+                          </div>
+                          
+                          <div>
+                            <Label className="text-slate-300 text-sm mb-2 flex justify-between">
+                              <span>Tenure (months)</span>
+                              <span className="font-bold" style={{color: '#E8C27C'}}>{loanParams.tenure} mo</span>
+                            </Label>
+                            <input
+                              type="range"
+                              min="6"
+                              max="360"
+                              step="6"
+                              value={loanParams.tenure}
+                              onChange={(e) => {
+                                const newTenure = parseInt(e.target.value);
+                                setLoanParams({...loanParams, tenure: newTenure});
+                                recalculateLoan(selectedAsset.principal_amount, loanParams.interestRate, newTenure);
+                              }}
+                              className="w-full"
+                              style={{accentColor: '#E8C27C'}}
+                            />
+                            <p className="text-xs mt-1" style={{color: '#71717a'}}>
+                              {Math.floor(loanParams.tenure / 12)} years {loanParams.tenure % 12} months
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Summary Cards */}
+                        <div className="grid grid-cols-3 gap-3">
+                          <div className="p-3 rounded-lg" style={{background: 'rgba(21, 101, 192, 0.1)', border: '1px solid rgba(21, 101, 192, 0.3)'}}>
+                            <div className="text-xs mb-1" style={{color: theme.textSecondary}}>Monthly Payment</div>
+                            <div className="text-xl font-bold" style={{color: 'var(--fuse-primary-text)'}}>
+                              ${loanCalcData.monthly_payment.toLocaleString()}
+                            </div>
+                          </div>
+                          <div className="p-3 rounded-lg" style={{background: 'rgba(255, 92, 115, 0.1)', border: '1px solid rgba(255, 92, 115, 0.3)'}}>
+                            <div className="text-xs mb-1" style={{color: theme.textSecondary}}>Total Interest</div>
+                            <div className="text-xl font-bold" style={{color: '#FF5C73'}}>
+                              ${loanCalcData.total_interest.toLocaleString()}
+                            </div>
+                          </div>
+                          <div className="p-3 rounded-lg" style={{background: 'rgba(75, 224, 161, 0.1)', border: '1px solid rgba(75, 224, 161, 0.3)'}}>
+                            <div className="text-xs mb-1" style={{color: theme.textSecondary}}>Total Amount</div>
+                            <div className="text-xl font-bold" style={{color: '#4BE0A1'}}>
+                              ${loanCalcData.total_amount.toLocaleString()}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Savings Indicator */}
+                        {(loanParams.interestRate < selectedAsset.interest_rate || loanParams.tenure < selectedAsset.tenure_months) && (
+                          <div className="p-3 rounded-lg" style={{background: 'rgba(75, 224, 161, 0.1)', border: '1px solid rgba(75, 224, 161, 0.3)'}}>
+                            <p className="text-sm font-semibold" style={{color: '#4BE0A1'}}>
+                              💰 Potential Savings Detected!
+                            </p>
+                            <p className="text-xs" style={{color: theme.textSecondary}}>
+                              By adjusting your loan terms, you could save on interest. Consider refinancing.
+                            </p>
+                          </div>
+                        )}
+
+                        {/* Amortization Schedule */}
+                        <div>
+                          <div className="text-xs font-semibold mb-2" style={{color: theme.textSecondary}}>
+                            PAYMENT SCHEDULE (First 12 months)
+                          </div>
+                          <div style={{maxHeight: '200px', overflowY: 'auto'}}>
+                            <table className="w-full" style={{fontSize: '0.75rem'}}>
+                              <thead style={{background: theme.backgroundTertiary, position: 'sticky', top: 0}}>
+                                <tr>
+                                  <th className="p-1.5 text-left" style={{color: theme.textSecondary}}>Mo</th>
+                                  <th className="p-1.5 text-right" style={{color: theme.textSecondary}}>Principal</th>
+                                  <th className="p-1.5 text-right" style={{color: theme.textSecondary}}>Interest</th>
+                                  <th className="p-1.5 text-right" style={{color: theme.textSecondary}}>Balance</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {loanCalcData.amortization_schedule.slice(0, 12).map((entry) => (
+                                  <tr key={entry.month} style={{borderBottom: '1px solid rgba(255,255,255,0.03)'}}>
+                                    <td className="p-1.5" style={{color: theme.textSecondary}}>{entry.month}</td>
+                                    <td className="p-1.5 text-right" style={{color: '#4BE0A1'}}>${entry.principal_payment.toLocaleString()}</td>
+                                    <td className="p-1.5 text-right" style={{color: '#FF5C73'}}>${entry.interest_payment.toLocaleString()}</td>
+                                    <td className="p-1.5 text-right" style={{color: theme.textSecondary}}>${entry.remaining_balance.toLocaleString()}</td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                        
+                        <Button 
+                          onClick={() => setLoanCalcData(null)}
+                          variant="outline"
+                          size="sm"
+                          style={{borderColor: theme.border, color: theme.textSecondary}}
+                        >
+                          Reset Calculator
+                        </Button>
+                      </div>
                     )}
                   </div>
-                </div>
-              </DialogContent>
-            </Dialog>
-
-            {/* Create/Edit Portfolio Dialog */}
-            <Dialog open={portfolioDialogOpen} onOpenChange={setPortfolioDialogOpen}>
-              <DialogContent className="text-white" style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
-                <DialogHeader>
-                  <DialogTitle className="text-2xl">Create New Portfolio</DialogTitle>
-                </DialogHeader>
-                <form onSubmit={handleCreatePortfolio} className="space-y-4">
-                  <div>
-                    <Label className="text-slate-300">Portfolio Name *</Label>
-                    <Input
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder="e.g., My Binance Account"
-                      required
-                      className="bg-slate-800 border-slate-700 text-white"
-                    />
-                  </div>
-
-                  <div>
-                    <Label className="text-slate-300">Provider/Exchange *</Label>
-                    <Select 
-                      value={formData.provider_name} 
-                      onValueChange={(value) => {
-                        const provider = PORTFOLIO_PROVIDERS.find(p => p.value === value);
-                        setFormData({ 
-                          ...formData, 
-                          provider_name: value,
-                          provider_type: provider?.type || 'other'
-                        });
-                      }}
-                    >
-                      <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
-                        <SelectValue placeholder="Select provider" />
-                      </SelectTrigger>
-                      <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
-                        {PORTFOLIO_PROVIDERS.map(provider => (
-                          <SelectItem key={provider.value} value={provider.value} className="text-white">
-                            {provider.label} ({provider.type.replace('_', ' ')})
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div>
-                    <Label className="text-slate-300">Base Currency</Label>
-                    <Select value={formData.purchase_currency} onValueChange={(value) => setFormData({ ...formData, purchase_currency: value })}>
-                      <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
-                        {CURRENCIES.map((curr) => (
-                          <SelectItem key={curr} value={curr} className="text-white">{curr}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="flex gap-3 pt-4">
-                    <Button 
-                      type="submit" 
-                      className="flex-1 text-white"
-                      style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
-                    >
-                      Create Portfolio
-                    </Button>
-                    <Button 
-                      type="button" 
-                      variant="outline" 
-                      onClick={() => setPortfolioDialogOpen(false)}
-                      style={{borderColor: theme.border, color: theme.textTertiary}}
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                </form>
-              </DialogContent>
-            </Dialog>
-
-            {/* Add/Edit Holding Dialog */}
-            <Dialog open={holdingDialogOpen} onOpenChange={setHoldingDialogOpen}>
-              <DialogContent className="text-white" style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
-                <DialogHeader>
-                  <DialogTitle className="text-2xl">
-                    {editingHolding ? 'Edit Holding' : 'Add New Holding'}
-                  </DialogTitle>
-                </DialogHeader>
-                <form onSubmit={handleAddHolding} className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label className="text-slate-300">Asset Type</Label>
-                      <Select value={holdingForm.asset_type} onValueChange={(value) => setHoldingForm({ ...holdingForm, asset_type: value })}>
-                        <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
-                          <SelectItem value="crypto" className="text-white">Cryptocurrency</SelectItem>
-                          <SelectItem value="stock" className="text-white">Stock</SelectItem>
-                          <SelectItem value="bond" className="text-white">Bond</SelectItem>
-                          <SelectItem value="etf" className="text-white">ETF</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <Label className="text-slate-300">Symbol *</Label>
-                      <Input
-                        value={holdingForm.symbol}
-                        onChange={(e) => setHoldingForm({ ...holdingForm, symbol: e.target.value })}
-                        placeholder="BTC, AAPL, etc."
-                        required
-                        disabled={!!editingHolding}
-                        className="bg-slate-800 border-slate-700 text-white"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <Label className="text-slate-300">Name *</Label>
-                    <Input
-                      value={holdingForm.name}
-                      onChange={(e) => setHoldingForm({ ...holdingForm, name: e.target.value })}
-                      placeholder="Bitcoin, Apple Inc., etc."
-                      required
-                      className="bg-slate-800 border-slate-700 text-white"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label className="text-slate-300">Quantity *</Label>
-                      <Input
-                        type="number"
-                        step="any"
-                        value={holdingForm.quantity}
-                        onChange={(e) => setHoldingForm({ ...holdingForm, quantity: e.target.value })}
-                        placeholder="10"
-                        required
-                        className="bg-slate-800 border-slate-700 text-white"
-                      />
-                    </div>
-                    <div>
-                      <Label className="text-slate-300">Purchase Price *</Label>
-                      <Input
-                        type="number"
-                        step="any"
-                        value={holdingForm.purchase_price}
-                        onChange={(e) => setHoldingForm({ ...holdingForm, purchase_price: e.target.value })}
-                        placeholder="50000"
-                        required
-                        className="bg-slate-800 border-slate-700 text-white"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label className="text-slate-300">Current Price (Optional)</Label>
-                      <Input
-                        type="number"
-                        step="any"
-                        value={holdingForm.current_price}
-                        onChange={(e) => setHoldingForm({ ...holdingForm, current_price: e.target.value })}
-                        placeholder="55000"
-                        className="bg-slate-800 border-slate-700 text-white"
-                      />
-                    </div>
-                    <div>
-                      <Label className="text-slate-300">Currency</Label>
-                      <Select value={holdingForm.purchase_currency} onValueChange={(value) => setHoldingForm({ ...holdingForm, purchase_currency: value })}>
-                        <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent style={{background: theme.cardBg, borderColor: theme.border}}>
-                          {CURRENCIES.map((curr) => (
-                            <SelectItem key={curr} value={curr} className="text-white">{curr}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-
-                  <div>
-                    <Label className="text-slate-300">Purchase Date</Label>
-                    <Input
-                      type="date"
-                      value={holdingForm.purchase_date}
-                      onChange={(e) => setHoldingForm({ ...holdingForm, purchase_date: e.target.value })}
-                      className="bg-slate-800 border-slate-700 text-white"
-                    />
-                  </div>
-
-                  <div className="flex gap-3 pt-4">
-                    <Button 
-                      type="submit" 
-                      className="flex-1 text-white"
-                      style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
-                    >
-                      {editingHolding ? 'Update Holding' : 'Add Holding'}
-                    </Button>
-                    <Button 
-                      type="button" 
-                      variant="outline" 
-                      onClick={() => {
-                        setHoldingDialogOpen(false);
-                        setEditingHolding(null);
-                      }}
-                      style={{borderColor: theme.border, color: theme.textTertiary}}
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                </form>
-              </DialogContent>
-            </Dialog>
-          </div>
+                )}
+              </div>
+            </DialogContent>
+          </Dialog>
         )}
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          <DialogContent className="max-w-2xl" style={{background: theme.cardBg, borderColor: theme.border, maxHeight: '90vh', overflowY: 'auto'}}>
+            <DialogHeader>
+              <DialogTitle style={{color: theme.text, fontSize: '1.5rem'}}>
+                {dialogType === 'liability' ? 'Add New Liability' : 'Add New Asset'}
+              </DialogTitle>
+            </DialogHeader>
+            <div className="pt-4">
+              <AddAssetForm
+                initialType={dialogType} 
+                onSuccess={() => {
+                  setDialogOpen(false);
+                  fetchAssets();
+                }}
+                onCancel={() => setDialogOpen(false)}
+              />
+            </div>
+          </DialogContent>
+        </Dialog>
+        </div>
       </div>
-      
-      {/* Loan Calculator Modal */}
-      <LoanCalculatorModal 
-        asset={calculatingLoanAsset}
-        open={loanCalculatorOpen}
-        onClose={() => {
-          setLoanCalculatorOpen(false);
-          setCalculatingLoanAsset(null);
-        }}
-      />
     </Layout>
   );
 }

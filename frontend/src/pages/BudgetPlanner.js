@@ -207,7 +207,7 @@ export default function BudgetPlanner() {
     switch(bucket) {
       case 'needs': return '#3b82f6';
       case 'savings': return '#10b981';
-      case 'wants': return '#a855f7';
+      case 'wants': return 'var(--fuse-primary)';
       default: return theme.textSecondary;
     }
   };
@@ -236,7 +236,7 @@ export default function BudgetPlanner() {
         {/* Header */}
         <div className="flex justify-between items-start">
           <div>
-            <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{color: theme.text, fontFamily: 'Space Grotesk, sans-serif'}}>
+            <h1 className="text-3xl sm:text-4xl font-bold mb-2" style={{color: theme.text}}>
               Budget Planner
             </h1>
             <p className="text-base sm:text-lg" style={{color: theme.textSecondary}}>
@@ -438,7 +438,7 @@ export default function BudgetPlanner() {
               <Card style={{background: theme.cardBg, borderColor: theme.border}}>
                 <CardContent className="p-5">
                   <div className="text-sm mb-1" style={{color: theme.textSecondary}}>Budget Rule</div>
-                  <div className="text-xl font-bold" style={{color: '#a855f7'}}>
+                  <div className="text-xl font-bold" style={{color: 'var(--fuse-primary-text)'}}>
                     {budgetRule}
                   </div>
                   <div className="text-xs mt-1" style={{color: theme.textSecondary}}>
@@ -507,10 +507,10 @@ export default function BudgetPlanner() {
                           style={{
                             width: `${Math.min((bucket.actual_amount / bucket.ideal_amount) * 100, 100)}%`,
                             background: bucket.status === 'over'
-                              ? 'linear-gradient(90deg, #ef4444 0%, #dc2626 100%)'
+                              ? '#ef4444'
                               : bucket.status === 'good'
-                              ? 'linear-gradient(90deg, #10b981 0%, #059669 100%)'
-                              : 'linear-gradient(90deg, #f59e0b 0%, #d97706 100%)'
+                              ? '#10b981'
+                              : '#f59e0b'
                           }}
                         />
                       </div>
@@ -581,11 +581,11 @@ export default function BudgetPlanner() {
                           <div 
                             key={`custom-${idx}`}
                             className="flex justify-between items-center text-sm p-2 rounded"
-                            style={{background: 'rgba(168, 85, 247, 0.1)', border: '1px dashed rgba(168, 85, 247, 0.3)'}}
+                            style={{background: 'rgba(21, 101, 192, 0.1)', border: '1px dashed rgba(21, 101, 192, 0.3)'}}
                           >
                             <span style={{color: theme.text}} className="truncate flex-1">{item.label}</span>
                             <div className="flex items-center gap-2">
-                              <span className="font-semibold" style={{color: '#a855f7'}}>
+                              <span className="font-semibold" style={{color: 'var(--fuse-primary-text)'}}>
                                 {formatCurrency(item.amount)}
                               </span>
                               {dataSource === 'manual' && (
@@ -731,7 +731,7 @@ export default function BudgetPlanner() {
                         />
                         <Legend />
                         <Line type="monotone" dataKey="needs" stroke="#3b82f6" strokeWidth={2} name="Needs" />
-                        <Line type="monotone" dataKey="wants" stroke="#a855f7" strokeWidth={2} name="Wants" />
+                        <Line type="monotone" dataKey="wants" stroke="var(--fuse-primary)" strokeWidth={2} name="Wants" />
                         <Line type="monotone" dataKey="savings" stroke="#10b981" strokeWidth={2} name="Savings" />
                       </LineChart>
                     </ResponsiveContainer>
@@ -756,7 +756,7 @@ export default function BudgetPlanner() {
                         />
                         <Legend />
                         <Bar dataKey="needs_percentage" fill="#3b82f6" name="Needs %" />
-                        <Bar dataKey="wants_percentage" fill="#a855f7" name="Wants %" />
+                        <Bar dataKey="wants_percentage" fill="var(--fuse-primary)" name="Wants %" />
                         <Bar dataKey="savings_percentage" fill="#10b981" name="Savings %" />
                       </RechartsBar>
                     </ResponsiveContainer>
@@ -793,7 +793,7 @@ export default function BudgetPlanner() {
                                   ({month.needs_percentage}%)
                                 </span>
                               </td>
-                              <td className="text-right p-3" style={{color: '#a855f7'}}>
+                              <td className="text-right p-3" style={{color: 'var(--fuse-primary-text)'}}>
                                 {formatCurrency(month.wants)}
                                 <span className="text-xs ml-2" style={{color: theme.textSecondary}}>
                                   ({month.wants_percentage}%)
@@ -861,7 +861,7 @@ export default function BudgetPlanner() {
                 <Button
                   onClick={() => handleAddCustomItem(showAddItem.bucket)}
                   className="flex-1 text-white font-medium"
-                  style={{background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)'}}
+                  style={{background: 'var(--fuse-primary)'}}
                 >
                   Add Item
                 </Button>
@@ -919,7 +919,7 @@ export default function BudgetPlanner() {
                   <Button
                     onClick={handleSaveEdit}
                     className="flex-1 text-white font-medium"
-                    style={{background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)'}}
+                    style={{background: '#10b981'}}
                   >
                     Save Changes
                   </Button>
@@ -939,7 +939,7 @@ export default function BudgetPlanner() {
         {/* Loading State */}
         {loading && activeView === 'current' && (
           <div className="text-center py-12" style={{color: theme.textSecondary}}>
-            <RefreshCw className="w-8 h-8 mx-auto mb-3 animate-spin" style={{color: '#a855f7'}} />
+            <RefreshCw className="w-8 h-8 mx-auto mb-3 animate-spin" style={{color: 'var(--fuse-primary-text)'}} />
             <p>Loading budget analysis...</p>
           </div>
         )}
@@ -958,7 +958,7 @@ export default function BudgetPlanner() {
               <Button 
                 onClick={() => window.location.href = '/income-expense'}
                 className="text-white font-medium"
-                style={{background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)'}}
+                style={{background: 'var(--fuse-primary)'}}
               >
                 Go to Income & Expenses
               </Button>

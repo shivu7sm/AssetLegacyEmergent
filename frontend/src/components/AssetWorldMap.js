@@ -157,15 +157,15 @@ export default function AssetWorldMap({ assets, selectedCurrency, currencyFormat
                     geography={geo}
                     fill={
                       hasData
-                        ? `rgba(168, 85, 247, ${0.5 + (countryData.totalValue / maxValue) * 0.5})`
+                        ? `rgba(21, 101, 192, ${0.5 + (countryData.totalValue / maxValue) * 0.5})`
                         : theme.backgroundTertiary
                     }
-                    stroke={hasData ? '#a855f7' : theme.border}
+                    stroke={hasData ? 'var(--fuse-primary)' : theme.border}
                     strokeWidth={hasData ? 1.5 : 0.5}
                     style={{
                       default: { outline: 'none' },
                       hover: {
-                        fill: hasData ? '#ec4899' : theme.backgroundSecondary,
+                        fill: hasData ? 'var(--fuse-primary)' : theme.backgroundSecondary,
                         outline: 'none',
                         cursor: hasData ? 'pointer' : 'default',
                       },
@@ -194,7 +194,7 @@ export default function AssetWorldMap({ assets, selectedCurrency, currencyFormat
             <Marker key={index} coordinates={marker.coordinates}>
               <circle
                 r={marker.size}
-                fill="#ec4899"
+                fill="var(--fuse-primary)"
                 stroke="#fff"
                 strokeWidth={2}
                 style={{

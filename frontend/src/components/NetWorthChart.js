@@ -103,9 +103,9 @@ export default function NetWorthChart() {
 
   if (loading) {
     return (
-      <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+      <Card style={{background: 'var(--fuse-surface)', borderColor: 'var(--fuse-border)'}}>
         <CardContent className="py-16">
-          <div className="text-center" style={{color: '#94a3b8'}}>Loading chart...</div>
+          <div className="text-center" style={{color: '#a1a1aa'}}>Loading chart...</div>
         </CardContent>
       </Card>
     );
@@ -113,21 +113,21 @@ export default function NetWorthChart() {
 
   if (history.length === 0) {
     return (
-      <Card style={{background: '#1a1229', borderColor: '#2d1f3d'}}>
+      <Card style={{background: 'var(--fuse-surface)', borderColor: 'var(--fuse-border)'}}>
         <CardHeader>
-          <CardTitle style={{color: '#f8fafc'}}>Net Worth History</CardTitle>
+          <CardTitle style={{color: '#fafafa'}}>Net Worth History</CardTitle>
         </CardHeader>
         <CardContent className="py-16">
           <div className="text-center">
-            <Calendar className="w-16 h-16 mx-auto mb-4" style={{color: '#2d1f3d'}} />
-            <h3 className="text-xl font-semibold mb-2" style={{color: '#f8fafc'}}>No Historical Data</h3>
-            <p className="mb-6" style={{color: '#94a3b8'}}>Create snapshots to start tracking net worth over time</p>
+            <Calendar className="w-16 h-16 mx-auto mb-4" style={{color: 'var(--fuse-border)'}} />
+            <h3 className="text-xl font-semibold mb-2" style={{color: '#fafafa'}}>No Historical Data</h3>
+            <p className="mb-6" style={{color: '#a1a1aa'}}>Create snapshots to start tracking net worth over time</p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button
                 onClick={backfillSnapshots}
                 disabled={loading}
                 className="text-white rounded-full"
-                style={{background: 'linear-gradient(135deg, #a855f7 0%, #3b82f6 100%)'}}
+                style={{background: 'var(--fuse-primary)'}}
               >
                 <Calendar className="w-4 h-4 mr-2" />
                 {loading ? 'Creating...' : 'Backfill from Assets'}
@@ -136,13 +136,13 @@ export default function NetWorthChart() {
                 onClick={createSnapshot}
                 variant="outline"
                 className="rounded-full"
-                style={{borderColor: '#2d1f3d', color: '#94a3b8'}}
+                style={{borderColor: 'var(--fuse-border)', color: '#a1a1aa'}}
               >
                 <Calendar className="w-4 h-4 mr-2" />
                 Create Snapshot for Today
               </Button>
             </div>
-            <p className="mt-4 text-xs" style={{color: '#64748b'}}>
+            <p className="mt-4 text-xs" style={{color: '#71717a'}}>
               💡 Backfill automatically creates snapshots from your asset purchase dates
             </p>
           </div>
@@ -198,7 +198,7 @@ export default function NetWorthChart() {
             </CardContent>
           </Card>
 
-          <Card style={{background: theme.cardBg, borderColor: theme.primary, boxShadow: '0 4px 12px rgba(168, 85, 247, 0.2)'}}>
+          <Card style={{background: theme.cardBg, borderColor: theme.primary, boxShadow: '0 4px 12px rgba(21, 101, 192, 0.2)'}}>
             <CardContent className="py-4">
               <p className="text-xs mb-2" style={{color: theme.textSecondary}}>AI INSIGHTS</p>
               <p className="text-sm font-semibold mb-2" style={{color: theme.text}}>Smart Recommendations</p>
@@ -237,7 +237,7 @@ export default function NetWorthChart() {
                 size="sm"
                 variant="outline"
                 className="rounded-full"
-                style={{borderColor: '#a855f7', color: '#a855f7'}}
+                style={{borderColor: 'var(--fuse-primary)', color: 'var(--fuse-primary-text)'}}
               >
                 <Calendar className="w-4 h-4 mr-2" />
                 Backfill
@@ -246,7 +246,7 @@ export default function NetWorthChart() {
                 onClick={createSnapshot}
                 size="sm"
                 className="text-white rounded-full"
-                style={{background: 'linear-gradient(135deg, #ef4444 0%, #a855f7 100%)'}}
+                style={{background: 'var(--fuse-primary)'}}
               >
                 <Calendar className="w-4 h-4 mr-2" />
                 Add Snapshot
@@ -277,9 +277,9 @@ export default function NetWorthChart() {
               <Line 
                 type="monotone" 
                 dataKey="Net Worth" 
-                stroke="#ec4899" 
+                stroke="var(--fuse-primary)" 
                 strokeWidth={3}
-                dot={{ fill: '#ec4899', r: 4 }}
+                dot={{ fill: 'var(--fuse-primary)', r: 4 }}
                 activeDot={{ r: 6 }}
               />
               <Line 

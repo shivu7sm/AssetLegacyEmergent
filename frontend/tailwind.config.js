@@ -1,3 +1,5 @@
+const colors = require('tailwindcss/colors');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     darkMode: ["class"],
@@ -7,6 +9,10 @@ module.exports = {
   ],
   theme: {
   	extend: {
+  		fontFamily: {
+  			sans: ['Geist', 'system-ui', 'sans-serif'],
+  			mono: ['"Geist Mono"', 'ui-monospace', 'monospace']
+  		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
@@ -25,8 +31,22 @@ module.exports = {
   			},
   			primary: {
   				DEFAULT: 'hsl(var(--primary))',
-  				foreground: 'hsl(var(--primary-foreground))'
+  				foreground: 'hsl(var(--primary-foreground))',
+  				'50': 'var(--fuse-primary-50)',
+  				'100': 'var(--fuse-primary-100)',
+  				'200': 'var(--fuse-primary-200)',
+  				'300': 'var(--fuse-primary-300)',
+  				'400': 'var(--fuse-primary-400)',
+  				'500': 'var(--fuse-primary-500)',
+  				'600': 'var(--fuse-primary-600)',
+  				'700': 'var(--fuse-primary-700)',
+  				'800': 'var(--fuse-primary-800)',
+  				'900': 'var(--fuse-primary-900)',
+  				'950': 'var(--fuse-primary-950)',
   			},
+  			// Fuse uses zinc for every neutral surface
+  			neutral: colors.zinc,
+  			slate: colors.zinc,
   			secondary: {
   				DEFAULT: 'hsl(var(--secondary))',
   				foreground: 'hsl(var(--secondary-foreground))'

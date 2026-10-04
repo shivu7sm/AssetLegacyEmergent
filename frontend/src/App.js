@@ -1,33 +1,35 @@
-import { useEffect, useState, createContext, useContext } from "react";
-import "@/App.css";
+import { useEffect, useState, createContext, useContext, lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Loader2 } from "lucide-react";
 import LandingPage from "./pages/LandingPage";
-import Dashboard from "./pages/Dashboard";
-import Assets from "./pages/AssetsNew";
-import Settings from "./pages/Settings";
-import DigitalWill from "./pages/DigitalWill";
-import Documents from "./pages/Documents";
-import Insights from "./pages/Insights";
-import Subscription from "./pages/Subscription";
-import ScheduleMessages from "./pages/ScheduleMessages";
-import PortfolioGuide from "./pages/PortfolioGuide";
-import Admin from "./pages/Admin";
-import LoanCalculatorEnhanced from "./pages/LoanCalculatorEnhanced";
-import SIPCalculator from "./pages/calculators/SIPCalculator";
-import SWPCalculator from "./pages/calculators/SWPCalculator";
-import CompoundInterestCalculator from "./pages/calculators/CompoundInterestCalculator";
-import IncomeExpense from "./pages/IncomeExpense";
-import TaxBlueprint from "./pages/TaxBlueprint";
-import Nominees from "./pages/Nominees";
-import DeadManSwitch from "./pages/DeadManSwitch";
-import BudgetPlanner from "./pages/BudgetPlanner";
-import NomineeAccess from "./pages/NomineeAccess";
-import NomineeDashboard from "./pages/NomineeDashboard";
 import Onboarding from "./components/Onboarding";
 import { Toaster } from "@/components/ui/sonner";
 import { AppProvider } from "./context/AppContext";
 import { ThemeProvider } from "./context/ThemeContext";
+
+// Signed-in pages load on demand so the landing page stays small
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Assets = lazy(() => import("./pages/Assets"));
+const Settings = lazy(() => import("./pages/Settings"));
+const DigitalWill = lazy(() => import("./pages/DigitalWill"));
+const Documents = lazy(() => import("./pages/Documents"));
+const Insights = lazy(() => import("./pages/Insights"));
+const Subscription = lazy(() => import("./pages/Subscription"));
+const ScheduleMessages = lazy(() => import("./pages/ScheduleMessages"));
+const PortfolioGuide = lazy(() => import("./pages/PortfolioGuide"));
+const Admin = lazy(() => import("./pages/Admin"));
+const LoanCalculatorEnhanced = lazy(() => import("./pages/LoanCalculatorEnhanced"));
+const SIPCalculator = lazy(() => import("./pages/calculators/SIPCalculator"));
+const SWPCalculator = lazy(() => import("./pages/calculators/SWPCalculator"));
+const CompoundInterestCalculator = lazy(() => import("./pages/calculators/CompoundInterestCalculator"));
+const IncomeExpense = lazy(() => import("./pages/IncomeExpense"));
+const TaxBlueprint = lazy(() => import("./pages/TaxBlueprint"));
+const Nominees = lazy(() => import("./pages/Nominees"));
+const DeadManSwitch = lazy(() => import("./pages/DeadManSwitch"));
+const BudgetPlanner = lazy(() => import("./pages/BudgetPlanner"));
+const NomineeAccess = lazy(() => import("./pages/NomineeAccess"));
+const NomineeDashboard = lazy(() => import("./pages/NomineeDashboard"));
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -132,9 +134,7 @@ function AuthProvider({ children }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-950">
-        <div className="text-white text-xl">Loading...</div>
-      </div>
+      <PageLoader />
     );
   }
 
@@ -167,173 +167,57 @@ function ProtectedRoute({ children }) {
   return children;
 }
 
+const PROTECTED_ROUTES = [
+  ["/dashboard", Dashboard],
+  ["/assets", Assets],
+  ["/nominees", Nominees],
+  ["/dead-man-switch", DeadManSwitch],
+  ["/documents", Documents],
+  ["/settings", Settings],
+  ["/will", DigitalWill],
+  ["/insights", Insights],
+  ["/subscription", Subscription],
+  ["/schedule-messages", ScheduleMessages],
+  ["/portfolio-guide", PortfolioGuide],
+  ["/admin", Admin],
+  ["/income-expense", IncomeExpense],
+  ["/budget-planner", BudgetPlanner],
+  ["/loan-calculator", LoanCalculatorEnhanced],
+  ["/calculators/sip", SIPCalculator],
+  ["/calculators/swp", SWPCalculator],
+  ["/calculators/compound", CompoundInterestCalculator],
+  ["/tax-blueprint", TaxBlueprint],
+];
+
+function PageLoader() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-[var(--fuse-bg)]" role="status">
+      <Loader2 className="size-6 animate-spin text-[var(--fuse-primary-text)]" aria-hidden="true" />
+      <span className="sr-only">Loading</span>
+    </div>
+  );
+}
+
 function AppRoutes() {
   return (
-    <Routes>
-      <Route path="/" element={<LandingPage />} />
-      <Route 
-        path="/dashboard" 
-        element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/assets" 
-        element={
-          <ProtectedRoute>
-            <Assets />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/nominees" 
-        element={
-          <ProtectedRoute>
-            <Nominees />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/dead-man-switch" 
-        element={
-          <ProtectedRoute>
-            <DeadManSwitch />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/documents" 
-        element={
-          <ProtectedRoute>
-            <Documents />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/settings" 
-        element={
-          <ProtectedRoute>
-            <Settings />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/will" 
-        element={
-          <ProtectedRoute>
-            <DigitalWill />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/documents" 
-        element={
-          <ProtectedRoute>
-            <Documents />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/insights" 
-        element={
-          <ProtectedRoute>
-            <Insights />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/subscription" 
-        element={
-          <ProtectedRoute>
-            <Subscription />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/schedule-messages" 
-        element={
-          <ProtectedRoute>
-            <ScheduleMessages />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/portfolio-guide" 
-        element={
-          <ProtectedRoute>
-            <PortfolioGuide />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/admin" 
-        element={
-          <ProtectedRoute>
-            <Admin />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/income-expense" 
-        element={
-          <ProtectedRoute>
-            <IncomeExpense />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/budget-planner" 
-        element={
-          <ProtectedRoute>
-            <BudgetPlanner />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/loan-calculator" 
-        element={
-          <ProtectedRoute>
-            <LoanCalculatorEnhanced />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/calculators/sip" 
-        element={
-          <ProtectedRoute>
-            <SIPCalculator />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/calculators/swp" 
-        element={
-          <ProtectedRoute>
-            <SWPCalculator />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/calculators/compound" 
-        element={
-          <ProtectedRoute>
-            <CompoundInterestCalculator />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/tax-blueprint" 
-        element={
-          <ProtectedRoute>
-            <TaxBlueprint />
-          </ProtectedRoute>
-        } 
-      />
-      <Route path="/nominee-access" element={<NomineeAccess />} />
-      <Route path="/nominee-dashboard" element={<NomineeDashboard />} />
-    </Routes>
+    <Suspense fallback={<PageLoader />}>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        {PROTECTED_ROUTES.map(([path, Page]) => (
+          <Route
+            key={path}
+            path={path}
+            element={
+              <ProtectedRoute>
+                <Page />
+              </ProtectedRoute>
+            }
+          />
+        ))}
+        <Route path="/nominee-access" element={<NomineeAccess />} />
+        <Route path="/nominee-dashboard" element={<NomineeDashboard />} />
+      </Routes>
+    </Suspense>
   );
 }
 
@@ -352,18 +236,16 @@ function OnboardingWrapper() {
 
 function App() {
   return (
-    <div className="App">
+    <ThemeProvider>
       <BrowserRouter>
         <AuthProvider>
           <AppProvider>
-            <ThemeProvider>
-              <OnboardingWrapper />
-            </ThemeProvider>
+            <OnboardingWrapper />
           </AppProvider>
         </AuthProvider>
       </BrowserRouter>
       <Toaster position="top-right" />
-    </div>
+    </ThemeProvider>
   );
 }
 

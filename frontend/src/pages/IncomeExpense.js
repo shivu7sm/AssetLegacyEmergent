@@ -478,7 +478,7 @@ export default function IncomeExpense() {
                     </p>
                     <p className="text-xs mt-1" style={{color: theme.textMuted}}>Of income saved</p>
                   </div>
-                  <div className="p-3 rounded-lg" style={{background: 'rgba(168, 85, 247, 0.1)'}}>
+                  <div className="p-3 rounded-lg" style={{background: 'rgba(21, 101, 192, 0.1)'}}>
                     <PieChart className="w-6 h-6" style={{color: theme.primary}} />
                   </div>
                 </div>
@@ -681,7 +681,7 @@ export default function IncomeExpense() {
                 {incomes.length > 0 ? (
                   <div className="overflow-x-auto">
                     <table className="w-full">
-                      <thead style={{borderBottom: '1px solid #2d1f3d'}}>
+                      <thead style={{borderBottom: '1px solid var(--fuse-border)'}}>
                         <tr>
                           <th className="p-3 text-left" style={{color: theme.textTertiary}}>Source</th>
                           <th className="p-3 text-left" style={{color: theme.textTertiary}}>Description</th>
@@ -693,7 +693,7 @@ export default function IncomeExpense() {
                       </thead>
                       <tbody>
                         {incomes.map(income => (
-                          <tr key={income.id} style={{borderBottom: '1px solid #2d1f3d'}}>
+                          <tr key={income.id} style={{borderBottom: '1px solid var(--fuse-border)'}}>
                             <td className="p-3" style={{color: theme.text}}>{income.source}</td>
                             <td className="p-3" style={{color: theme.textSecondary}}>{income.description}</td>
                             <td className="p-3 text-right" style={{color: theme.textTertiary}}>
@@ -732,7 +732,7 @@ export default function IncomeExpense() {
                   </div>
                 ) : (
                   <div className="text-center py-12">
-                    <Receipt className="w-12 h-12 mx-auto mb-4" style={{color: '#2d1f3d'}} />
+                    <Receipt className="w-12 h-12 mx-auto mb-4" style={{color: 'var(--fuse-border)'}} />
                     <p style={{color: theme.textMuted}}>No income recorded for {formatMonth(selectedMonth)}</p>
                     <Button 
                       onClick={() => openIncomeDialog()}
@@ -766,7 +766,7 @@ export default function IncomeExpense() {
                 {expenses.length > 0 ? (
                   <div className="overflow-x-auto">
                     <table className="w-full">
-                      <thead style={{borderBottom: '1px solid #2d1f3d'}}>
+                      <thead style={{borderBottom: '1px solid var(--fuse-border)'}}>
                         <tr>
                           <th className="p-3 text-left" style={{color: theme.textTertiary}}>Category</th>
                           <th className="p-3 text-left" style={{color: theme.textTertiary}}>Description</th>
@@ -777,7 +777,7 @@ export default function IncomeExpense() {
                       </thead>
                       <tbody>
                         {expenses.map(expense => (
-                          <tr key={expense.id} style={{borderBottom: '1px solid #2d1f3d'}}>
+                          <tr key={expense.id} style={{borderBottom: '1px solid var(--fuse-border)'}}>
                             <td className="p-3" style={{color: theme.text}}>
                               {expense.category}
                               {expense.subcategory && (
@@ -826,7 +826,7 @@ export default function IncomeExpense() {
                   </div>
                 ) : (
                   <div className="text-center py-12">
-                    <Receipt className="w-12 h-12 mx-auto mb-4" style={{color: '#2d1f3d'}} />
+                    <Receipt className="w-12 h-12 mx-auto mb-4" style={{color: 'var(--fuse-border)'}} />
                     <p style={{color: theme.textMuted}}>No expenses recorded for {formatMonth(selectedMonth)}</p>
                     <Button 
                       onClick={() => openExpenseDialog()}
@@ -1095,7 +1095,7 @@ export default function IncomeExpense() {
                     id="is_recurring"
                     checked={expenseForm.is_recurring}
                     onChange={(e) => setExpenseForm({...expenseForm, is_recurring: e.target.checked})}
-                    style={{accentColor: '#a855f7'}}
+                    style={{accentColor: 'var(--fuse-primary)'}}
                   />
                   <Label htmlFor="is_recurring" style={{color: theme.textTertiary}}>Recurring Expense</Label>
                 </div>
@@ -1105,7 +1105,7 @@ export default function IncomeExpense() {
                     id="is_essential"
                     checked={expenseForm.is_essential}
                     onChange={(e) => setExpenseForm({...expenseForm, is_essential: e.target.checked})}
-                    style={{accentColor: '#a855f7'}}
+                    style={{accentColor: 'var(--fuse-primary)'}}
                   />
                   <Label htmlFor="is_essential" style={{color: theme.textTertiary}}>Essential Expense</Label>
                 </div>

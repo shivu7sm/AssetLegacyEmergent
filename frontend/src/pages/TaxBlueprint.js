@@ -208,7 +208,7 @@ export default function TaxBlueprint() {
           <div className="w-full bg-gray-800 rounded-full h-2">
             <div 
               className="h-2 rounded-full transition-all" 
-              style={{background: '#a855f7', width: `${(currentStep / 3) * 100}%`}}
+              style={{background: 'var(--fuse-primary)', width: `${(currentStep / 3) * 100}%`}}
             />
           </div>
 
@@ -408,7 +408,7 @@ export default function TaxBlueprint() {
               <Button 
                 onClick={() => setCurrentStep(currentStep + 1)}
                 className="flex-1"
-                style={{background: '#a855f7', color: 'white'}}
+                style={{background: 'var(--fuse-primary)', color: 'white'}}
               >
                 Next
               </Button>
@@ -445,7 +445,7 @@ export default function TaxBlueprint() {
             {!profile && (
               <Button 
                 onClick={() => setShowProfileDialog(true)}
-                style={{background: '#a855f7', color: 'white'}}
+                style={{background: 'var(--fuse-primary)', color: 'white'}}
               >
                 <Sparkles className="w-4 h-4 mr-2" />
                 Create Profile
@@ -476,7 +476,7 @@ export default function TaxBlueprint() {
         {!profile ? (
           <Card style={{background: theme.backgroundSecondary, borderColor: theme.border}}>
             <CardContent className="p-12 text-center">
-              <Sparkles className="w-16 h-16 mx-auto mb-4" style={{color: '#a855f7'}} />
+              <Sparkles className="w-16 h-16 mx-auto mb-4" style={{color: 'var(--fuse-primary-text)'}} />
               <h2 className="text-2xl font-bold mb-2" style={{color: theme.text}}>
                 Welcome to Sankalp Planner
               </h2>
@@ -486,7 +486,7 @@ export default function TaxBlueprint() {
               <Button 
                 onClick={() => setShowProfileDialog(true)}
                 size="lg"
-                style={{background: '#a855f7', color: 'white'}}
+                style={{background: 'var(--fuse-primary)', color: 'white'}}
               >
                 Get Started - 7 Minutes Setup
               </Button>
@@ -587,7 +587,7 @@ export default function TaxBlueprint() {
             {/* Dashboard Tab */}
             <TabsContent value="dashboard" className="space-y-6">
               {/* Hero Card */}
-              <Card style={{background: 'linear-gradient(135deg, theme.cardBg 0%, #2d1f3d 100%)', borderColor: '#a855f7'}}>
+              <Card style={{background: 'var(--fuse-surface)', borderColor: 'var(--fuse-primary)'}}>
                 <CardContent className="p-8">
                   <div className="flex items-center justify-between">
                     <div>
@@ -597,7 +597,7 @@ export default function TaxBlueprint() {
                       </h2>
                       <p className="text-base" style={{color: theme.textSecondary}}>Hidden Money You Can Save This Year</p>
                     </div>
-                    <Zap className="w-20 h-20" style={{color: '#a855f7', opacity: 0.3}} />
+                    <Zap className="w-20 h-20" style={{color: 'var(--fuse-primary-text)', opacity: 0.3}} />
                   </div>
                 </CardContent>
               </Card>
@@ -618,7 +618,7 @@ export default function TaxBlueprint() {
                         <div 
                           className="h-3 rounded-full" 
                           style={{
-                            background: 'linear-gradient(90deg, #10b981 0%, #3b82f6 100%)',
+                            background: '#10b981',
                             width: `${(blueprint.section_80c_utilized / 150000) * 100}%`
                           }}
                         />
@@ -639,10 +639,10 @@ export default function TaxBlueprint() {
                     <div className="space-y-3">
                       <p className="font-semibold" style={{color: theme.text}}>Top Recommendations:</p>
                       {blueprint.section_80c_recommendations.slice(0, 2).map((rec, idx) => (
-                        <div key={idx} className="p-4 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
+                        <div key={idx} className="p-4 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid var(--fuse-border)'}}>
                           <div className="flex justify-between items-start mb-2">
                             <p className="font-semibold" style={{color: '#10b981'}}>{rec.instrument}</p>
-                            <span className="text-xs px-2 py-1 rounded" style={{background: 'rgba(168, 85, 247, 0.1)', color: '#a855f7'}}>
+                            <span className="text-xs px-2 py-1 rounded" style={{background: 'rgba(21, 101, 192, 0.1)', color: 'var(--fuse-primary-text)'}}>
                               {rec.risk_level}
                             </span>
                           </div>
@@ -674,7 +674,7 @@ export default function TaxBlueprint() {
                   <CardContent>
                     <div className="space-y-4">
                       {blueprint.hidden_sip_opportunities.slice(0, 1).map((opp, idx) => (
-                        <div key={idx} className="p-6 rounded-lg" style={{background: 'linear-gradient(135deg, #0f0a1a 0%, theme.cardBg 100%)', border: '1px solid #2d1f3d'}}>
+                        <div key={idx} className="p-6 rounded-lg" style={{background: 'var(--fuse-surface)', border: '1px solid var(--fuse-border)'}}>
                           <p className="text-sm mb-2" style={{color: theme.textMuted}}>TOP OPPORTUNITY:</p>
                           <p className="text-xl font-bold mb-4" style={{color: theme.text}}>
                             {opp.expense_category}: {formatCurrency(opp.current_monthly_spend)}/month
@@ -706,7 +706,7 @@ export default function TaxBlueprint() {
                             </div>
                             <div className="text-center">
                               <p className="text-xs mb-1" style={{color: theme.textMuted}}>In 10 years</p>
-                              <p className="font-semibold" style={{color: '#a855f7'}}>
+                              <p className="font-semibold" style={{color: 'var(--fuse-primary-text)'}}>
                                 {formatCurrency(opp.wealth_projection_10yr)} 🚀
                               </p>
                             </div>
@@ -733,12 +733,12 @@ export default function TaxBlueprint() {
                       <div 
                         key={idx} 
                         className="flex items-center justify-between p-4 rounded-lg"
-                        style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}
+                        style={{background: theme.backgroundTertiary, border: '1px solid var(--fuse-border)'}}
                       >
                         <div className="flex items-center gap-4 flex-1">
                           <div 
                             className="w-8 h-8 rounded-full flex items-center justify-center font-bold"
-                            style={{background: '#a855f7', color: 'white'}}
+                            style={{background: 'var(--fuse-primary)', color: 'white'}}
                           >
                             {action.rank}
                           </div>
@@ -769,10 +769,10 @@ export default function TaxBlueprint() {
               </Card>
 
               {/* AI Summary */}
-              <Card style={{background: 'linear-gradient(135deg, theme.cardBg 0%, #2d1f3d 100%)', borderColor: '#a855f7'}}>
+              <Card style={{background: 'var(--fuse-surface)', borderColor: 'var(--fuse-primary)'}}>
                 <CardContent className="p-6">
                   <div className="flex items-start gap-4">
-                    <Sparkles className="w-8 h-8 flex-shrink-0" style={{color: '#a855f7'}} />
+                    <Sparkles className="w-8 h-8 flex-shrink-0" style={{color: 'var(--fuse-primary-text)'}} />
                     <div>
                       <p className="text-sm mb-2" style={{color: theme.textTertiary}}>AI Summary</p>
                       <p className="text-base leading-relaxed" style={{color: theme.text}}>
@@ -796,13 +796,13 @@ export default function TaxBlueprint() {
                 <CardContent>
                   <div className="space-y-4">
                     {blueprint.section_80c_recommendations.map((rec, idx) => (
-                      <div key={idx} className="p-6 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
+                      <div key={idx} className="p-6 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid var(--fuse-border)'}}>
                         <div className="flex justify-between items-start mb-4">
                           <div>
                             <h3 className="text-xl font-bold mb-1" style={{color: '#10b981'}}>
                               {idx + 1}. {rec.instrument}
                             </h3>
-                            <span className="text-xs px-2 py-1 rounded" style={{background: 'rgba(168, 85, 247, 0.1)', color: '#a855f7'}}>
+                            <span className="text-xs px-2 py-1 rounded" style={{background: 'rgba(21, 101, 192, 0.1)', color: 'var(--fuse-primary-text)'}}>
                               Risk: {rec.risk_level}
                             </span>
                           </div>
@@ -916,7 +916,7 @@ export default function TaxBlueprint() {
                           </div>
                           <div className="p-4 rounded text-center" style={{background: theme.backgroundTertiary}}>
                             <p className="text-xs mb-1" style={{color: theme.textMuted}}>Year 10</p>
-                            <p className="text-lg font-bold" style={{color: '#a855f7'}}>
+                            <p className="text-lg font-bold" style={{color: 'var(--fuse-primary-text)'}}>
                               {formatCurrency(opp.wealth_projection_10yr)}
                             </p>
                           </div>
@@ -955,7 +955,7 @@ export default function TaxBlueprint() {
                   <CardContent>
                     <div className="grid grid-cols-2 gap-6 mb-6">
                       {/* Old Regime */}
-                      <div className="p-6 rounded-lg" style={{background: theme.backgroundTertiary, border: '2px solid ' + (regimeComparison.recommended_regime === 'old' ? '#10b981' : '#2d1f3d')}}>
+                      <div className="p-6 rounded-lg" style={{background: theme.backgroundTertiary, border: '2px solid ' + (regimeComparison.recommended_regime === 'old' ? '#10b981' : 'var(--fuse-border)')}}>
                         <div className="flex items-center justify-between mb-4">
                           <h3 className="text-xl font-bold" style={{color: theme.text}}>Old Regime</h3>
                           {regimeComparison.recommended_regime === 'old' && (
@@ -987,7 +987,7 @@ export default function TaxBlueprint() {
                       </div>
 
                       {/* New Regime */}
-                      <div className="p-6 rounded-lg" style={{background: theme.backgroundTertiary, border: '2px solid ' + (regimeComparison.recommended_regime === 'new' ? '#10b981' : '#2d1f3d')}}>
+                      <div className="p-6 rounded-lg" style={{background: theme.backgroundTertiary, border: '2px solid ' + (regimeComparison.recommended_regime === 'new' ? '#10b981' : 'var(--fuse-border)')}}>
                         <div className="flex items-center justify-between mb-4">
                           <h3 className="text-xl font-bold" style={{color: theme.text}}>New Regime</h3>
                           {regimeComparison.recommended_regime === 'new' && (
@@ -1043,7 +1043,7 @@ export default function TaxBlueprint() {
               {taxBenefits ? (
                 <div className="space-y-6">
                   {/* Header */}
-                  <Card style={{background: 'linear-gradient(135deg, theme.cardBg 0%, #2d1f3d 100%)', borderColor: '#a855f7'}}>
+                  <Card style={{background: 'var(--fuse-surface)', borderColor: 'var(--fuse-primary)'}}>
                     <CardContent className="p-6">
                       <h2 className="text-2xl font-bold mb-2" style={{color: theme.text}}>
                         📚 Complete Tax Deductions Guide
@@ -1067,13 +1067,13 @@ export default function TaxBlueprint() {
                     <CardContent>
                       <div className="space-y-4">
                         {taxBenefits.common_deductions.filter(d => d.applicable).map((deduction, idx) => (
-                          <div key={idx} className="p-4 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
+                          <div key={idx} className="p-4 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid var(--fuse-border)'}}>
                             <div className="flex justify-between items-start mb-2">
                               <div>
                                 <h3 className="font-bold text-lg" style={{color: '#10b981'}}>
                                   {deduction.name}
                                 </h3>
-                                <span className="text-xs px-2 py-1 rounded mt-1 inline-block" style={{background: 'rgba(168, 85, 247, 0.1)', color: '#a855f7'}}>
+                                <span className="text-xs px-2 py-1 rounded mt-1 inline-block" style={{background: 'rgba(21, 101, 192, 0.1)', color: 'var(--fuse-primary-text)'}}>
                                   Section {deduction.section}
                                 </span>
                               </div>
@@ -1099,7 +1099,7 @@ export default function TaxBlueprint() {
                     <CardContent>
                       <div className="space-y-4">
                         {taxBenefits.lesser_known_benefits.map((benefit, idx) => (
-                          <div key={idx} className="p-5 rounded-lg" style={{background: 'linear-gradient(135deg, #0f0a1a 0%, theme.cardBg 100%)', border: '2px solid #10b981'}}>
+                          <div key={idx} className="p-5 rounded-lg" style={{background: 'var(--fuse-surface)', border: '2px solid #10b981'}}>
                             <div className="flex items-start gap-3 mb-3">
                               <Sparkles className="w-6 h-6 flex-shrink-0" style={{color: '#10b981'}} />
                               <div className="flex-1">
@@ -1158,15 +1158,15 @@ export default function TaxBlueprint() {
                           <ol className="space-y-2">
                             {taxBenefits.capital_gains_account.how_to_open.map((step, idx) => (
                               <li key={idx} className="flex gap-2">
-                                <span className="font-bold" style={{color: '#a855f7'}}>{idx + 1}.</span>
+                                <span className="font-bold" style={{color: 'var(--fuse-primary-text)'}}>{idx + 1}.</span>
                                 <span style={{color: theme.textSecondary}}>{step}</span>
                               </li>
                             ))}
                           </ol>
                         </div>
 
-                        <div className="p-3 rounded" style={{background: 'rgba(168, 85, 247, 0.1)'}}>
-                          <p className="text-sm font-semibold" style={{color: '#a855f7'}}>
+                        <div className="p-3 rounded" style={{background: 'rgba(21, 101, 192, 0.1)'}}>
+                          <p className="text-sm font-semibold" style={{color: 'var(--fuse-primary-text)'}}>
                             🏛️ Where: {taxBenefits.capital_gains_account.where_to_open}
                           </p>
                         </div>
@@ -1188,7 +1188,7 @@ export default function TaxBlueprint() {
               {wealthStructures ? (
                 <div className="space-y-6">
                   {/* Header */}
-                  <Card style={{background: 'linear-gradient(135deg, theme.cardBg 0%, #2d1f3d 100%)', borderColor: '#a855f7'}}>
+                  <Card style={{background: 'var(--fuse-surface)', borderColor: 'var(--fuse-primary)'}}>
                     <CardContent className="p-6">
                       <h2 className="text-2xl font-bold mb-2" style={{color: theme.text}}>
                         🏛️ Wealth Structuring: HUF & Trust
@@ -1259,7 +1259,7 @@ export default function TaxBlueprint() {
                           <ol className="space-y-2">
                             {wealthStructures.huf.how_to_setup.map((step, idx) => (
                               <li key={idx} className="flex gap-2">
-                                <span className="font-bold" style={{color: '#a855f7'}}>{idx + 1}.</span>
+                                <span className="font-bold" style={{color: 'var(--fuse-primary-text)'}}>{idx + 1}.</span>
                                 <span className="text-sm" style={{color: theme.textSecondary}}>{step}</span>
                               </li>
                             ))}
@@ -1268,9 +1268,9 @@ export default function TaxBlueprint() {
 
                         {/* Bottom Info */}
                         <div className="grid grid-cols-2 gap-4">
-                          <div className="p-3 rounded" style={{background: 'rgba(168, 85, 247, 0.1)'}}>
+                          <div className="p-3 rounded" style={{background: 'rgba(21, 101, 192, 0.1)'}}>
                             <p className="text-xs mb-1" style={{color: theme.textMuted}}>Ideal For:</p>
-                            <p className="text-sm font-semibold" style={{color: '#a855f7'}}>
+                            <p className="text-sm font-semibold" style={{color: 'var(--fuse-primary-text)'}}>
                               {wealthStructures.huf.ideal_for}
                             </p>
                           </div>
@@ -1300,7 +1300,7 @@ export default function TaxBlueprint() {
                           <h4 className="font-semibold mb-2" style={{color: theme.text}}>Types of Trusts:</h4>
                           <div className="grid grid-cols-1 gap-3">
                             {wealthStructures.trust.types.map((type, idx) => (
-                              <div key={idx} className="p-3 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid #2d1f3d'}}>
+                              <div key={idx} className="p-3 rounded-lg" style={{background: theme.backgroundTertiary, border: '1px solid var(--fuse-border)'}}>
                                 <h5 className="font-semibold mb-1" style={{color: '#10b981'}}>{type.name}</h5>
                                 <p className="text-xs mb-1" style={{color: theme.textTertiary}}>{type.description}</p>
                                 <p className="text-xs" style={{color: theme.textMuted}}>Use: {type.use_case}</p>
@@ -1345,7 +1345,7 @@ export default function TaxBlueprint() {
                           <ol className="space-y-2">
                             {wealthStructures.trust.how_to_setup.map((step, idx) => (
                               <li key={idx} className="flex gap-2">
-                                <span className="font-bold" style={{color: '#a855f7'}}>{idx + 1}.</span>
+                                <span className="font-bold" style={{color: 'var(--fuse-primary-text)'}}>{idx + 1}.</span>
                                 <span className="text-sm" style={{color: theme.textSecondary}}>{step}</span>
                               </li>
                             ))}
@@ -1353,8 +1353,8 @@ export default function TaxBlueprint() {
                         </div>
 
                         {/* When to Consider */}
-                        <div className="p-4 rounded-lg" style={{background: 'rgba(168, 85, 247, 0.1)'}}>
-                          <h4 className="font-semibold mb-2" style={{color: '#a855f7'}}>🤔 When to Consider Trust:</h4>
+                        <div className="p-4 rounded-lg" style={{background: 'rgba(21, 101, 192, 0.1)'}}>
+                          <h4 className="font-semibold mb-2" style={{color: 'var(--fuse-primary-text)'}}>🤔 When to Consider Trust:</h4>
                           <ul className="grid grid-cols-2 gap-2">
                             {wealthStructures.trust.when_to_consider.map((point, idx) => (
                               <li key={idx} className="text-sm" style={{color: theme.text}}>• {point}</li>
@@ -1382,7 +1382,7 @@ export default function TaxBlueprint() {
                   </div>
 
                   {/* Comparison Card */}
-                  <Card style={{background: 'linear-gradient(135deg, #0f0a1a 0%, theme.cardBg 100%)', borderColor: '#a855f7'}}>
+                  <Card style={{background: 'var(--fuse-surface)', borderColor: 'var(--fuse-primary)'}}>
                     <CardHeader>
                       <CardTitle style={{color: theme.text}}>⚖️ Quick Comparison</CardTitle>
                     </CardHeader>
@@ -1411,8 +1411,8 @@ export default function TaxBlueprint() {
                           ))}
                         </div>
                       </div>
-                      <div className="mt-4 p-3 rounded" style={{background: 'rgba(168, 85, 247, 0.1)'}}>
-                        <p className="text-sm font-semibold" style={{color: '#a855f7'}}>
+                      <div className="mt-4 p-3 rounded" style={{background: 'rgba(21, 101, 192, 0.1)'}}>
+                        <p className="text-sm font-semibold" style={{color: 'var(--fuse-primary-text)'}}>
                           💡 Recommendation: {wealthStructures.recommendation}
                         </p>
                       </div>
