@@ -858,10 +858,11 @@ async def logout(request: Request, response: Response):
 # User Preferences
 @api_router.put("/user/preferences")
 async def update_preferences(prefs: UserPreferences, user: User = Depends(require_auth)):
-    await db.users.update_one(
-        {"id": user.id},
-        {"$set": {"measurement_unit": prefs.measurement_unit, "weight_unit": prefs.weight_unit}}
-    )
+    # Only save the fields the client sent; partial updates (e.g. just the
+    # currency) must not reset the other preferences to their defaults.
+    update_data = prefs.model_dump(exclude_unset=True)
+    if update_data:
+        await db.users.update_one({"id": user.id}, {"$set": update_data})
     return {"success": True}
 
 # Asset Routes
@@ -2008,15 +2009,6 @@ async def get_dashboard_summary(user: User = Depends(require_auth), target_curre
     }
 
 # User Preferences Routes
-@api_router.put("/user/preferences")
-async def update_preferences(prefs: UserPreferences, user: User = Depends(require_auth)):
-    update_data = {k: v for k, v in prefs.model_dump().items() if v is not None}
-    await db.users.update_one(
-        {"id": user.id},
-        {"$set": update_data}
-    )
-    return {"success": True}
-
 @api_router.get("/user/preferences")
 async def get_preferences(user: User = Depends(require_auth)):
     return {
@@ -5661,26 +5653,6 @@ Return response in JSON format matching this structure:
     
     return blueprint
 
-# Currency Conversion Routes
-@api_router.get("/prices/currency/{from_currency}/{to_currency}")
-async def get_currency_rate(from_currency: str, to_currency: str):
-    if from_currency == to_currency:
-        return {"rate": 1.0}
-    
-    try:
-        response = requests.get(
-            f"https://api.exchangerate-api.com/v4/latest/{from_currency.upper()}",
-            timeout=5
-        )
-        if response.status_code == 200:
-            data = response.json()
-            rate = data["rates"].get(to_currency.upper(), 1.0)
-            return {"rate": rate}
-    except:
-        pass
-    
-    return {"rate": 1.0}
-
 # Exchange Connection Routes
 @api_router.get("/exchange-connections")
 async def get_exchange_connections(user: User = Depends(require_auth)):
@@ -6415,7 +6387,7 @@ async def delete_user(user_id: str, admin: User = Depends(require_admin)):
         raise HTTPException(status_code=500, detail="Failed to delete user")
 
 @api_router.get("/admin/audit-logs")
-async def get_audit_logs(
+async def get_admin_audit_logs(
     admin: User = Depends(require_admin),
     skip: int = 0,
     limit: int = 100,
